@@ -1,4 +1,5 @@
 {
+  "restartable": false,
   "verbose": true,
   "watch": ["fixtures/", "src/"],
   "ext": "js,ts",
