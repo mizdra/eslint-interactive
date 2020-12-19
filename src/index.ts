@@ -1,17 +1,21 @@
+#!/usr/bin/env node
+
 import { ESLint } from 'eslint';
+import yargs from 'yargs/yargs';
+
+const argv = yargs(process.argv.slice(2)).argv;
+// NOTE: convert `string` type because yargs convert `'10'` (`string` type) into `10` (`number` type)
+// and `lintFiles` only accepts `string[]`.
+const patterns = argv._.map((pattern) => pattern.toString());
 
 (async function main() {
-  // 1. Create an instance.
   const eslint = new ESLint({});
 
-  // 2. Lint files.
-  const results = await eslint.lintFiles(['fixtures']);
+  const results = await eslint.lintFiles(patterns);
 
-  // 3. Format the results.
   const formatter = await eslint.loadFormatter('stylish');
   const resultText = formatter.format(results);
 
-  // 4. Output it.
   console.log(resultText);
 })().catch((error) => {
   process.exitCode = 1;

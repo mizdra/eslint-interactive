@@ -9,7 +9,7 @@
   "scripts": {
     "start": "node dist/index.js",
     "build": "tsc",
-    "dev": "nodemon src/index.ts",
+    "dev": "nodemon src/index.ts fixtures",
     "check": "run-s check:*",
     "check:tsc": "tsc --noEmit",
     "check:eslint": "eslint src"
@@ -18,6 +18,7 @@
     "@mizdra/eslint-config-mizdra": "^0.7.0",
     "@types/eslint": "^7.2.6",
     "@types/node": "^14.14.10",
+    "@types/yargs": "^15.0.12",
     "@typescript-eslint/eslint-plugin": "^4.10.0",
     "@typescript-eslint/parser": "^4.10.0",
     "eslint": "^7.16.0",
@@ -29,5 +30,8 @@
     "prettier": "2.2.1",
     "ts-node": "^9.0.0",
     "typescript": "^4.1.2"
+  },
+  "dependencies": {
+    "yargs": "^16.2.0"
   }
 }
