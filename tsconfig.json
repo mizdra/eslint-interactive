@@ -10,7 +10,7 @@
     // "jsx": "react",
 
     /* Module Options */
-    "module": "es2015",
+    "module": "CommonJS",
     "moduleResolution": "node",
     "esModuleInterop": true,
 
