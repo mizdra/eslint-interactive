@@ -1,0 +1,9 @@
+{
+  "verbose": true,
+  "watch": ["fixtures/", "src/"],
+  "ext": "js,ts",
+  "execMap": {
+    "ts": "ts-node",
+    "js": "ts-node"
+  }
+}

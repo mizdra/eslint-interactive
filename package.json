@@ -9,7 +9,7 @@
   "scripts": {
     "start": "node dist/index.js",
     "build": "tsc",
-    "dev": "ts-node src/index.ts",
+    "dev": "nodemon src/index.ts",
     "check": "run-s check:*",
     "check:tsc": "tsc --noEmit",
     "check:eslint": "eslint src"

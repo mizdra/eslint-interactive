@@ -5,7 +5,7 @@ import { ESLint } from 'eslint';
   const eslint = new ESLint({});
 
   // 2. Lint files.
-  const results = await eslint.lintFiles(['src']);
+  const results = await eslint.lintFiles(['fixtures']);
 
   // 3. Format the results.
   const formatter = await eslint.loadFormatter('stylish');
