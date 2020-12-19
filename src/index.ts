@@ -3,7 +3,8 @@
 import { prompt } from 'enquirer';
 import { ESLint } from 'eslint';
 import yargs from 'yargs/yargs';
-import { format } from './eslint-formatter/summary';
+import { format as formatByErrorAndWarning } from './eslint-formatter/stats/byErrorAndWarning';
+import { format as formatBySummary } from './eslint-formatter/summary';
 
 const argv = yargs(process.argv.slice(2)).argv;
 // NOTE: convert `string` type because yargs convert `'10'` (`string` type) into `10` (`number` type)
@@ -15,11 +16,11 @@ const patterns = argv._.map((pattern) => pattern.toString());
 
   const results = await eslint.lintFiles(patterns);
 
-  const resultText = format(results);
+  const formattedTextBySummary = formatBySummary(results);
+  const formattedTextByErrorAndWarning = formatByErrorAndWarning(results);
+  console.log(formattedTextBySummary);
 
-  console.log(resultText);
-
-  const choices = ['a', 'b', 'c'];
+  const choices = formattedTextByErrorAndWarning.split('\n');
   const answers = await prompt<{ rules: string }>([
     {
       name: 'rules',
