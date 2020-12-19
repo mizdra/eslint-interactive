@@ -1,0 +1,31 @@
+{
+  "name": "app_name",
+  "description": "app_description",
+  "version": "0.0.0",
+  "repository": "https://github.com/mizdra/app_name.git",
+  "author": "mizdra <pp.mizdra@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "node dist/index.js",
+    "build": "tsc",
+    "dev": "ts-node src/index.ts",
+    "check": "run-s check:*",
+    "check:tsc": "tsc --noEmit",
+    "check:eslint": "eslint src"
+  },
+  "devDependencies": {
+    "@mizdra/eslint-config-mizdra": "^0.7.0",
+    "@types/node": "^14.14.10",
+    "@typescript-eslint/eslint-plugin": "^4.10.0",
+    "@typescript-eslint/parser": "^4.10.0",
+    "eslint": "^7.16.0",
+    "eslint-config-prettier": "^7.1.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^3.3.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "2.2.1",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.1.2"
+  }
+}

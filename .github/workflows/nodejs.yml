@@ -1,0 +1,29 @@
+name: Node CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+
+      - uses: actions/cache@v1
+        id: cache
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: ${{ runner.OS }}-node-
+
+      - name: yarn install
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: yarn install
+
+      - name: yarn run check
+        run: yarn run check
+
+      - name: yarn run build
+        run: yarn run build

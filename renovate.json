@@ -1,0 +1,14 @@
+{
+  "extends": ["github>hatena/renovate-config", "schedule:monthly"],
+  "ignorePresets": ["github>hatena/renovate-config:schedule"],
+  "packageRules": [
+    {
+      "depTypeList": ["devDependencies"],
+      "automerge": true
+    },
+    {
+      "updateTypes": ["minor", "patch", "pin", "digest"],
+      "automerge": true
+    }
+  ]
+}
