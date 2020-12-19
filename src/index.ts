@@ -3,6 +3,7 @@
 import { prompt } from 'enquirer';
 import { ESLint } from 'eslint';
 import yargs from 'yargs/yargs';
+import { format } from './eslint-formatter/summary';
 
 const argv = yargs(process.argv.slice(2)).argv;
 // NOTE: convert `string` type because yargs convert `'10'` (`string` type) into `10` (`number` type)
@@ -14,8 +15,7 @@ const patterns = argv._.map((pattern) => pattern.toString());
 
   const results = await eslint.lintFiles(patterns);
 
-  const formatter = await eslint.loadFormatter('stylish');
-  const resultText = formatter.format(results);
+  const resultText = format(results);
 
   console.log(resultText);
 

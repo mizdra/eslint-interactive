@@ -7,10 +7,10 @@ function pluralize(word: string, count: number) {
   return plural;
 }
 
-module.exports = (
+export function format(
   results: ESLint.LintResult[],
   _data?: ESLint.LintResultData,
-) => {
+): string {
   const errorColor = 'red';
   const warningColor = 'yellow';
 
@@ -53,4 +53,4 @@ module.exports = (
   }
 
   return '\n' + table([summaryLineArray]) + '\n';
-};
+}
