@@ -49,7 +49,7 @@ export function getObjectOutput(
     ruleStats: SeverityToCount,
     ruleName: keyof RuleIdToSeverityToCount,
   ): string {
-    const ruleCell = _.padEnd(`${ruleName}: `, maxRuleLength + 2);
+    const ruleCell = `${ruleName}: `.padEnd(maxRuleLength + 2);
     return _.map(ruleStats, (count, severity: keyof SeverityToCount) => {
       const countCell = chalk.magenta(
         _.padStart(count.toString(), maxResultLength),
