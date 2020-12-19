@@ -18,6 +18,7 @@
     "@mizdra/eslint-config-mizdra": "^0.7.0",
     "@types/eslint": "^7.2.6",
     "@types/node": "^14.14.10",
+    "@types/text-table": "^0.2.1",
     "@types/yargs": "^15.0.12",
     "@typescript-eslint/eslint-plugin": "^4.10.0",
     "@typescript-eslint/parser": "^4.10.0",
@@ -33,6 +34,7 @@
   },
   "dependencies": {
     "enquirer": "^2.3.6",
+    "text-table": "^0.2.0",
     "yargs": "^16.2.0"
   }
 }
