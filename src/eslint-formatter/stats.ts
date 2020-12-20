@@ -60,7 +60,7 @@ export function getString(
   return chalk[color](' '.repeat(length));
 }
 
-type Choice = {
+export type Choice = {
   name: string;
   message: string;
 };
