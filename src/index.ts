@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 
 import { prompt } from 'enquirer';
-import { ESLint } from 'eslint';
+import { ESLint, Linter } from 'eslint';
 import yargs from 'yargs/yargs';
-import { format as formatByErrorAndWarning } from './eslint-formatter/stats/byErrorAndWarning';
+import { calcFormattedChoices } from './eslint-formatter/stats';
 import { format as formatBySummary } from './eslint-formatter/summary';
+import { calcRuleResults } from './stat';
 
 const argv = yargs(process.argv.slice(2)).argv;
 // NOTE: convert `string` type because yargs convert `'10'` (`string` type) into `10` (`number` type)
@@ -13,14 +14,16 @@ const patterns = argv._.map((pattern) => pattern.toString());
 
 (async function main() {
   const eslint = new ESLint({});
-
   const results = await eslint.lintFiles(patterns);
 
-  const formattedTextBySummary = formatBySummary(results);
-  const formattedTextByErrorAndWarning = formatByErrorAndWarning(results);
-  console.log(formattedTextBySummary);
+  const linter = new Linter();
+  const ruleNameToRuleModule = linter.getRules();
 
-  const choices = formattedTextByErrorAndWarning.split('\n');
+  console.log(formatBySummary(results));
+
+  const ruleResults = calcRuleResults(results, ruleNameToRuleModule);
+  const choices = calcFormattedChoices(ruleResults);
+
   const answers = await prompt<{ rules: string }>([
     {
       name: 'rules',
