@@ -52,5 +52,5 @@ export function format(
     );
   }
 
-  return '\n' + table([summaryLineArray]) + '\n';
+  return table([summaryLineArray]) + '\n';
 }

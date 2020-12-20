@@ -30,6 +30,7 @@ const patterns = argv._.map((pattern) => pattern.toString());
       results = newResults;
       ruleIdChoices = newRuleIdChoices;
     }
+    console.log('-'.repeat(process.stdout.columns));
   }
 })().catch((error) => {
   process.exitCode = 1;
