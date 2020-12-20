@@ -1,5 +1,6 @@
 import { ESLint, Linter } from 'eslint';
 import { calcFormattedChoices } from './eslint-formatter/stats';
+import { format } from './eslint-formatter/summary';
 import { Answers } from './prompt';
 import { calcRuleResults } from './stat';
 
@@ -27,6 +28,8 @@ export async function lint(patterns: string[]) {
 
   const ruleResults = calcRuleResults(results, ruleNameToRuleModule);
   const ruleIdChoices = calcFormattedChoices(ruleResults);
+
+  console.log(format(results));
 
   return { eslint, results, ruleIdChoices };
 }

@@ -2,7 +2,6 @@
 
 import yargs from 'yargs/yargs';
 import { fix, lint, showMessages } from './eslint';
-import { format as formatBySummary } from './eslint-formatter/summary';
 import { prompt } from './prompt';
 
 const argv = yargs(process.argv.slice(2)).argv;
@@ -14,7 +13,6 @@ const patterns = argv._.map((pattern) => pattern.toString());
   // eslint-disable-next-line no-constant-condition
   while (true) {
     let { eslint, results, ruleIdChoices } = await lint(patterns);
-    console.log(formatBySummary(results));
 
     const answers = await prompt(ruleIdChoices);
 
