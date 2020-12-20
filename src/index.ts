@@ -14,6 +14,8 @@ const patterns = argv._.map((pattern) => pattern.toString());
   while (true) {
     let { eslint, results, ruleIdChoices } = await lint(patterns);
 
+    if (ruleIdChoices.length === 0) break;
+
     const answers = await prompt(ruleIdChoices);
 
     if (answers.action === 'showMessages') {
