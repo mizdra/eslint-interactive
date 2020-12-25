@@ -57,16 +57,14 @@ function getBarRatio(ruleStatistics: RuleStatistic[]) {
   };
 }
 
-export function calcFormattedChoices(
-  ruleStatistics: RuleStatistic[],
-): Choice[] {
+export function generateChoices(ruleStatistics: RuleStatistic[]): Choice[] {
   const {
     maxRuleLength,
     maxErrorAndWarningCountLength,
     barRatio,
   } = getBarRatio(ruleStatistics);
 
-  const formattedChoices = ruleStatistics.map((ruleStatistic) => {
+  const choices = ruleStatistics.map((ruleStatistic) => {
     const {
       ruleId,
       ruleModule,
@@ -104,5 +102,5 @@ export function calcFormattedChoices(
     };
   });
 
-  return formattedChoices;
+  return choices;
 }

@@ -1,7 +1,7 @@
 import { ESLint, Linter } from 'eslint';
-import { calcFormattedChoices } from '../eslint-formatter/stats';
 import { format } from '../eslint-formatter/summary';
 import { Answers } from '../types';
+import { generateChoices } from './generate-choices';
 import { calcRuleStatistics } from './statistics';
 
 function filterResultsByRuleId(
@@ -27,7 +27,7 @@ export async function lint(patterns: string[]) {
   const ruleNameToRuleModule = linter.getRules();
 
   const ruleStatistics = calcRuleStatistics(results, ruleNameToRuleModule);
-  const ruleIdChoices = calcFormattedChoices(ruleStatistics);
+  const ruleIdChoices = generateChoices(ruleStatistics);
 
   console.log(format(results));
 
@@ -58,7 +58,7 @@ export async function fix(patterns: string[], answers: Answers) {
   const ruleNameToRuleModule = linter.getRules();
 
   const ruleStatistics = calcRuleStatistics(results, ruleNameToRuleModule);
-  const ruleIdChoices = calcFormattedChoices(ruleStatistics);
+  const ruleIdChoices = generateChoices(ruleStatistics);
 
   return { eslint, results, ruleIdChoices };
 }
