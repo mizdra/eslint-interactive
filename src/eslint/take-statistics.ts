@@ -32,7 +32,8 @@ function convertRuleResult(
   };
 }
 
-export function calcRuleStatistics(
+/** ルールごとのエラー/警告の件数などの統計を取る */
+export function takeStatisticsForEachRule(
   results: ESLint.LintResult[],
   ruleNameToRuleModule: Map<string, Rule.RuleModule>,
 ): RuleStatistic[] {

@@ -2,7 +2,7 @@ import { ESLint, Linter } from 'eslint';
 import { printLintSummary } from '../terminal/print-lint-summary';
 import { Answers } from '../types';
 import { generateChoices } from './generate-choices';
-import { calcRuleStatistics } from './statistics';
+import { takeStatisticsForEachRule } from './take-statistics';
 
 function filterResultsByRuleId(
   results: ESLint.LintResult[],
@@ -26,7 +26,10 @@ export async function lint(patterns: string[]) {
   const linter = new Linter();
   const ruleNameToRuleModule = linter.getRules();
 
-  const ruleStatistics = calcRuleStatistics(results, ruleNameToRuleModule);
+  const ruleStatistics = takeStatisticsForEachRule(
+    results,
+    ruleNameToRuleModule,
+  );
   const ruleIdChoices = generateChoices(ruleStatistics);
 
   printLintSummary(results);
@@ -57,7 +60,10 @@ export async function fix(patterns: string[], answers: Answers) {
   const linter = new Linter();
   const ruleNameToRuleModule = linter.getRules();
 
-  const ruleStatistics = calcRuleStatistics(results, ruleNameToRuleModule);
+  const ruleStatistics = takeStatisticsForEachRule(
+    results,
+    ruleNameToRuleModule,
+  );
   const ruleIdChoices = generateChoices(ruleStatistics);
 
   return { eslint, results, ruleIdChoices };
