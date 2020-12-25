@@ -2,10 +2,7 @@ import chalk from 'chalk';
 import { ESLint } from 'eslint';
 import table from 'text-table';
 
-export function format(
-  results: ESLint.LintResult[],
-  _data?: ESLint.LintResultData,
-): string {
+export function printLintSummary(results: ESLint.LintResult[]): void {
   const errorColor = 'red';
   const warningColor = 'yellow';
 
@@ -39,5 +36,7 @@ export function format(
     summaryLineArray.push(chalk[errorColor].bold(`${errorCount} file(s)`));
   }
 
-  return table([summaryLineArray]) + '\n';
+  const output = table([summaryLineArray]) + '\n';
+
+  console.log(output);
 }

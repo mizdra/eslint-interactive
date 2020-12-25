@@ -1,5 +1,5 @@
 import { ESLint, Linter } from 'eslint';
-import { format } from '../eslint-formatter/summary';
+import { printLintSummary } from '../terminal/print-lint-summary';
 import { Answers } from '../types';
 import { generateChoices } from './generate-choices';
 import { calcRuleStatistics } from './statistics';
@@ -29,7 +29,7 @@ export async function lint(patterns: string[]) {
   const ruleStatistics = calcRuleStatistics(results, ruleNameToRuleModule);
   const ruleIdChoices = generateChoices(ruleStatistics);
 
-  console.log(format(results));
+  printLintSummary(results);
 
   return { eslint, results, ruleIdChoices };
 }
