@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import yargs from 'yargs/yargs';
-import { fix, lint, showMessages } from './eslint';
+import { fix, lint, showMessages } from './eslint/eslint';
 import { prompt } from './prompt';
 
 const argv = yargs(process.argv.slice(2)).argv;

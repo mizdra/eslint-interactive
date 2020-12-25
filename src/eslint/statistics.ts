@@ -1,6 +1,6 @@
 import { ESLint, Rule, Linter } from 'eslint';
-import { groupBy } from './array';
-import { RuleStatistic } from './types';
+import { groupBy } from '../array';
+import { RuleStatistic } from '../types';
 
 function convertRuleResult(
   ruleId: string,
