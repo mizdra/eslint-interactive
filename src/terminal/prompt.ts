@@ -1,5 +1,5 @@
 import { prompt as promptByEnquirer } from 'enquirer';
-import { Choice, Answers } from './types';
+import { Choice, Answers } from '../types';
 
 export async function prompt(ruleIdChoices: Choice[]) {
   return await promptByEnquirer<Answers>([

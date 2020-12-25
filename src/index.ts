@@ -2,7 +2,7 @@
 
 import yargs from 'yargs/yargs';
 import { fix, lint, showMessages } from './eslint/command';
-import { prompt } from './prompt';
+import { prompt } from './terminal/prompt';
 
 const argv = yargs(process.argv.slice(2)).argv;
 // NOTE: convert `string` type because yargs convert `'10'` (`string` type) into `10` (`number` type)
