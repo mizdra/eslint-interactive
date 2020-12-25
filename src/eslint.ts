@@ -1,8 +1,8 @@
 import { ESLint, Linter } from 'eslint';
+import { calcRuleResults } from './calc-rule-results';
 import { calcFormattedChoices } from './eslint-formatter/stats';
 import { format } from './eslint-formatter/summary';
 import { Answers } from './prompt';
-import { calcRuleResults } from './stat';
 
 function filterResultsByRuleId(
   results: ESLint.LintResult[],

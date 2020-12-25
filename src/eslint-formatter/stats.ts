@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 import terminalLink from 'terminal-link';
-import { RuleResult } from '../stat';
+import { RuleResult } from '../calc-rule-results';
 
 function getMaxRuleLength(ruleResults: RuleResult[]): number {
   const ruleLengths = ruleResults.map((ruleResult) => ruleResult.ruleId.length);
