@@ -5,7 +5,7 @@ export type Answers = {
   action: 'showMessages' | 'fix';
 };
 
-export type RuleResult = {
+export type RuleStatistic = {
   ruleId: string;
   ruleModule: Rule.RuleModule | undefined;
   errorCount: number;

@@ -1,12 +1,12 @@
 import { ESLint, Rule, Linter } from 'eslint';
 import { groupBy } from './array';
-import { RuleResult } from './types';
+import { RuleStatistic } from './types';
 
 function convertRuleResult(
   ruleId: string,
   messages: Linter.LintMessage[],
   ruleModule: Rule.RuleModule | undefined,
-): RuleResult {
+): RuleStatistic {
   let errorCount = 0;
   let warningCount = 0;
   let fixableErrorCount = 0;
@@ -32,10 +32,10 @@ function convertRuleResult(
   };
 }
 
-export function calcRuleResults(
+export function calcRuleStatistics(
   results: ESLint.LintResult[],
   ruleNameToRuleModule: Map<string, Rule.RuleModule>,
-): RuleResult[] {
+): RuleStatistic[] {
   const messages = results.flatMap((result) => result.messages);
 
   // NOTE: ruleId が null の可能性もあるので、ちゃんと考慮する

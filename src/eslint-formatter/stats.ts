@@ -1,38 +1,42 @@
 import chalk from 'chalk';
 import terminalLink from 'terminal-link';
-import { Choice, RuleResult } from '../types';
+import { Choice, RuleStatistic } from '../types';
 
-function getMaxRuleLength(ruleResults: RuleResult[]): number {
-  const ruleLengths = ruleResults.map((ruleResult) => ruleResult.ruleId.length);
-  // NOTE: ruleResults が 0 件でも UI が壊れないよう最小値は 0 に
+function getMaxRuleLength(ruleStatistics: RuleStatistic[]): number {
+  const ruleLengths = ruleStatistics.map(
+    (ruleStatistic) => ruleStatistic.ruleId.length,
+  );
+  // NOTE: ruleStatistics が 0 件でも UI が壊れないよう最小値は 0 に
   return Math.max(...ruleLengths, 0);
 }
 
 // それぞれのルールのエラーと警告の和の内、最も大きいものを返す
-function getMaxErrorAndWarningCount(ruleResults: RuleResult[]): number {
-  const errorAndWarningCounts = ruleResults.map(
-    (ruleResult) => ruleResult.errorCount + ruleResult.warningCount,
+function getMaxErrorAndWarningCount(ruleStatistics: RuleStatistic[]): number {
+  const errorAndWarningCounts = ruleStatistics.map(
+    (ruleStatistic) => ruleStatistic.errorCount + ruleStatistic.warningCount,
   );
-  // NOTE: ruleResults が 0 件でも UI が壊れないよう最小値は 0 に
+  // NOTE: ruleStatistics が 0 件でも UI が壊れないよう最小値は 0 に
   return Math.max(...errorAndWarningCounts, 0);
 }
 
 // それぞれのルールのfixableなエラーと警告の和の内、最も大きいものを返す
-function getMaxFixableErrorAndWarningCount(ruleResults: RuleResult[]): number {
-  const errorAndWarningCounts = ruleResults.map(
-    (ruleResult) =>
-      ruleResult.fixableErrorCount + ruleResult.fixableWarningCount,
+function getMaxFixableErrorAndWarningCount(
+  ruleStatistics: RuleStatistic[],
+): number {
+  const errorAndWarningCounts = ruleStatistics.map(
+    (ruleStatistic) =>
+      ruleStatistic.fixableErrorCount + ruleStatistic.fixableWarningCount,
   );
-  // NOTE: ruleResults が 0 件でも UI が壊れないよう最小値は 0 に
+  // NOTE: ruleStatistics が 0 件でも UI が壊れないよう最小値は 0 に
   return Math.max(...errorAndWarningCounts, 0);
 }
 
-/** ruleResults を元にバーの長さの計算に必要なデータを計算する */
-function getBarRatio(ruleResults: RuleResult[]) {
-  const maxRuleLength = getMaxRuleLength(ruleResults);
-  const maxErrorAndWarningCount = getMaxErrorAndWarningCount(ruleResults);
+/** ruleStatistics を元にバーの長さの計算に必要なデータを計算する */
+function getBarRatio(ruleStatistics: RuleStatistic[]) {
+  const maxRuleLength = getMaxRuleLength(ruleStatistics);
+  const maxErrorAndWarningCount = getMaxErrorAndWarningCount(ruleStatistics);
   const maxFixableErrorAndWarningCount = getMaxFixableErrorAndWarningCount(
-    ruleResults,
+    ruleStatistics,
   );
   const maxErrorAndWarningCountLength = maxErrorAndWarningCount.toString()
     .length;
@@ -60,14 +64,16 @@ export function getString(
   return chalk[color](' '.repeat(length));
 }
 
-export function calcFormattedChoices(ruleResults: RuleResult[]): Choice[] {
+export function calcFormattedChoices(
+  ruleStatistics: RuleStatistic[],
+): Choice[] {
   const {
     maxRuleLength,
     maxErrorAndWarningCountLength,
     barRatio,
-  } = getBarRatio(ruleResults);
+  } = getBarRatio(ruleStatistics);
 
-  const formattedChoices = ruleResults.map((ruleResult) => {
+  const formattedChoices = ruleStatistics.map((ruleStatistic) => {
     const {
       ruleId,
       ruleModule,
@@ -75,7 +81,7 @@ export function calcFormattedChoices(ruleResults: RuleResult[]): Choice[] {
       warningCount,
       fixableErrorCount,
       fixableWarningCount,
-    } = ruleResult;
+    } = ruleStatistic;
     // generate ruleCell
     const ruleLink = ruleModule?.meta?.docs?.url
       ? terminalLink(ruleId, ruleModule.meta.docs.url)
