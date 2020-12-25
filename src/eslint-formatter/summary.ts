@@ -2,11 +2,6 @@ import chalk from 'chalk';
 import { ESLint } from 'eslint';
 import table from 'text-table';
 
-function pluralize(word: string, count: number) {
-  const plural = count === 1 ? word : word + 's';
-  return plural;
-}
-
 export function format(
   results: ESLint.LintResult[],
   _data?: ESLint.LintResultData,
@@ -34,22 +29,14 @@ export function format(
   const fileCount = passCount + failureCount;
 
   const summaryLineArray = [
-    chalk.bold(`${fileCount} ${pluralize('file', fileCount)} checked.`),
+    chalk.bold(`${fileCount} file(s) checked.`),
     chalk.bold(`${passCount} passed.`),
     chalk.bold(`${failureCount} failed.`),
   ];
 
   if (warningCount || errorCount) {
-    summaryLineArray.push(
-      chalk[warningColor].bold(
-        `${warningCount} ${pluralize('warning', warningCount)}.`,
-      ),
-    );
-    summaryLineArray.push(
-      chalk[errorColor].bold(
-        `${errorCount} ${pluralize('error', errorCount)}.`,
-      ),
-    );
+    summaryLineArray.push(chalk[warningColor].bold(`${warningCount} file(s).`));
+    summaryLineArray.push(chalk[errorColor].bold(`${errorCount} file(s)`));
   }
 
   return table([summaryLineArray]) + '\n';
