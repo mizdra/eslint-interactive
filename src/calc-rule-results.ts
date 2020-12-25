@@ -1,14 +1,6 @@
 import { ESLint, Rule, Linter } from 'eslint';
 import { groupBy } from './array';
-
-export type RuleResult = {
-  ruleId: string;
-  ruleModule: Rule.RuleModule | undefined;
-  errorCount: number;
-  warningCount: number;
-  fixableErrorCount: number;
-  fixableWarningCount: number;
-};
+import { RuleResult } from './types';
 
 function convertRuleResult(
   ruleId: string,

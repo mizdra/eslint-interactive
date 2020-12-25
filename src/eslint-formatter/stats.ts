@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 import terminalLink from 'terminal-link';
-import { RuleResult } from '../calc-rule-results';
+import { Choice, RuleResult } from '../types';
 
 function getMaxRuleLength(ruleResults: RuleResult[]): number {
   const ruleLengths = ruleResults.map((ruleResult) => ruleResult.ruleId.length);
@@ -59,11 +59,6 @@ export function getString(
 ) {
   return chalk[color](' '.repeat(length));
 }
-
-export type Choice = {
-  name: string;
-  message: string;
-};
 
 export function calcFormattedChoices(ruleResults: RuleResult[]): Choice[] {
   const {

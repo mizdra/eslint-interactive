@@ -1,10 +1,5 @@
 import { prompt as promptByEnquirer } from 'enquirer';
-import { Choice } from './eslint-formatter/stats';
-
-export type Answers = {
-  ruleIds: string[];
-  action: 'showMessages' | 'fix';
-};
+import { Choice, Answers } from './types';
 
 export async function prompt(ruleIdChoices: Choice[]) {
   return await promptByEnquirer<Answers>([
