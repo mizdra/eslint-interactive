@@ -7,7 +7,7 @@
     "target": "esnext",
     "lib": ["esnext"],
     "declaration": false,
-    // "jsx": "react",
+    "jsx": "react",
 
     /* Module Options */
     "module": "CommonJS",

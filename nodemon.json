@@ -2,9 +2,10 @@
   "restartable": false,
   "verbose": true,
   "watch": ["fixtures/", "src/"],
-  "ext": "js,ts",
+  "ext": "js,ts,tsx",
   "execMap": {
     "ts": "ts-node",
+    "tsx": "ts-node",
     "js": "ts-node"
   }
 }
