@@ -32,9 +32,7 @@ export async function lint(patterns: string[]) {
   );
   const ruleIdChoices = generateChoices(ruleStatistics);
 
-  printLintSummary(results);
-
-  return { eslint, results, ruleIdChoices };
+  return { eslint, results, ruleStatistics, ruleIdChoices };
 }
 
 export async function showMessages(

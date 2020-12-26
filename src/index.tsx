@@ -41,4 +41,4 @@ const patterns = argv._.map((pattern) => pattern.toString());
 //   console.error(error);
 // });
 
-render(<App />);
+render(<App patterns={patterns} />);
