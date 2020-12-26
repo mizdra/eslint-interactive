@@ -17,7 +17,6 @@
   "devDependencies": {
     "@mizdra/eslint-config-mizdra": "^0.7.0",
     "@types/eslint": "^7.2.6",
-    "@types/lodash": "^4.14.165",
     "@types/node": "^14.14.10",
     "@types/terminal-link": "^1.2.0",
     "@types/text-table": "^0.2.1",
@@ -36,7 +35,6 @@
   },
   "dependencies": {
     "enquirer": "^2.3.6",
-    "lodash": "^4.17.20",
     "terminal-link": "^2.1.1",
     "text-table": "^0.2.0",
     "yargs": "^16.2.0"
