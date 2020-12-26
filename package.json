@@ -17,6 +17,7 @@
   "devDependencies": {
     "@mizdra/eslint-config-mizdra": "^0.7.0",
     "@types/eslint": "^7.2.6",
+    "@types/figures": "^3.0.1",
     "@types/node": "^14.14.10",
     "@types/terminal-link": "^1.2.0",
     "@types/text-table": "^0.2.1",
@@ -36,6 +37,7 @@
   "dependencies": {
     "@types/react": "^17.0.0",
     "enquirer": "^2.3.6",
+    "figures": "^3.2.0",
     "ink": "^3.0.8",
     "react": "^17.0.1",
     "terminal-link": "^2.1.1",

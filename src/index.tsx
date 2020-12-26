@@ -41,4 +41,7 @@ const patterns = argv._.map((pattern) => pattern.toString());
 //   console.error(error);
 // });
 
-render(<App patterns={patterns} />);
+(async () => {
+  const { waitUntilExit } = render(<App patterns={patterns} />);
+  await waitUntilExit();
+})();
