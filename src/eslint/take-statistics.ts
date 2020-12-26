@@ -2,7 +2,8 @@ import { ESLint, Rule, Linter } from 'eslint';
 import { RuleStatistic } from '../types';
 import { groupBy } from '../util/array';
 
-function convertRuleResult(
+/** 指定されたルールのエラー/警告の件数などの統計を取る */
+function takeRuleStatistic(
   ruleId: string,
   messages: Linter.LintMessage[],
   ruleModule: Rule.RuleModule | undefined,
@@ -46,7 +47,7 @@ export function takeStatisticsForEachRule(
   );
 
   return [...ruleIdToMessages.entries()].map(([ruleId, messages]) => {
-    return convertRuleResult(
+    return takeRuleStatistic(
       ruleId,
       messages,
       ruleNameToRuleModule.get(ruleId),
