@@ -7,6 +7,7 @@ module.exports = {
     // basic
     '@mizdra/mizdra',
     '@mizdra/mizdra/+typescript',
+    '@mizdra/mizdra/+react',
     '@mizdra/mizdra/+prettier',
   ],
   env: {
