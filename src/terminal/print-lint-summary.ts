@@ -1,6 +1,5 @@
 import chalk from 'chalk';
 import { ESLint } from 'eslint';
-import table from 'text-table';
 import { ERROR_COLOR, WARNING_COLOR } from './colors';
 
 export function printLintSummary(results: ESLint.LintResult[]): void {
@@ -36,7 +35,5 @@ export function printLintSummary(results: ESLint.LintResult[]): void {
     summaryLineArray.push(chalk[ERROR_COLOR].bold(`${errorCount} file(s)`));
   }
 
-  const output = table([summaryLineArray]);
-
-  console.log(output);
+  console.log(summaryLineArray.join('  '));
 }
