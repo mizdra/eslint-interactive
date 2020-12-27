@@ -5,7 +5,6 @@ import { fix, lint, showMessages } from './eslint/command';
 import { printLintSummary } from './terminal/print-lint-summary';
 import { printTable } from './terminal/print-table';
 import { prompt } from './terminal/prompt';
-import { Choice } from './types';
 
 const argv = yargs(process.argv.slice(2)).argv;
 // NOTE: convert `string` type because yargs convert `'10'` (`string` type) into `10` (`number` type)

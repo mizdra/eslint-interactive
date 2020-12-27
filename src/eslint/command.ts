@@ -1,6 +1,4 @@
 import { ESLint, Linter } from 'eslint';
-import { generateChoices } from '../terminal/generate-choices';
-import { printLintSummary } from '../terminal/print-lint-summary';
 import { Answers } from '../types';
 import { takeStatisticsForEachRule } from './take-statistics';
 
