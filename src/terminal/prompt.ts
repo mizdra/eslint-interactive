@@ -1,13 +1,13 @@
 import { prompt as promptByEnquirer } from 'enquirer';
 import { Answers } from '../types';
 
-export async function prompt(ruleIds: string[]) {
+export async function prompt(ruleIdsInStatistics: string[]) {
   return await promptByEnquirer<Answers>([
     {
       name: 'ruleIds',
       type: 'multiselect',
       message: 'Which rule(s) would you like to do action?',
-      choices: ruleIds,
+      choices: ruleIdsInStatistics,
     },
     {
       name: 'action',

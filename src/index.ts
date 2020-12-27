@@ -14,18 +14,23 @@ const patterns = argv._.map((pattern) => pattern.toString());
 
   // eslint-disable-next-line no-constant-condition
   while (true) {
-    const { results, ruleStatistics } = await eslint.lint();
+    const statistics = await eslint.lint();
 
-    if (ruleStatistics.length === 0) break;
+    if (statistics.ruleStatistics.length === 0) break;
 
-    eslint.printStatistics(results, ruleStatistics);
+    eslint.printStatistics(statistics);
 
-    const ruleIds = ruleStatistics.map((ruleStatistic) => ruleStatistic.ruleId);
+    const ruleIdsInStatistics = statistics.ruleStatistics.map(
+      (ruleStatistic) => ruleStatistic.ruleId,
+    );
 
-    const answers = await prompt(ruleIds);
+    const answers = await prompt(ruleIdsInStatistics);
 
     if (answers.action === 'showMessages') {
-      await eslint.printErrorAndWarningMessages(results, answers.ruleIds);
+      await eslint.printErrorAndWarningMessages(
+        statistics.results,
+        answers.ruleIds,
+      );
     } else if (answers.action === 'fix') {
       await eslint.fix(answers.ruleIds);
     }

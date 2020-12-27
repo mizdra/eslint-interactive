@@ -1,7 +1,7 @@
 import { ESLint, Linter, Rule } from 'eslint';
 import { printLintSummary } from '../terminal/print-lint-summary';
 import { printTable } from '../terminal/print-table';
-import { RuleStatistic } from '../types';
+import { RuleStatistic, Statistics } from '../types';
 import { takeStatisticsForEachRule } from './take-statistics';
 
 function filterResultsByRuleId(
@@ -19,11 +19,6 @@ function filterResultsByRuleId(
   });
 }
 
-type LintResult = {
-  results: ESLint.LintResult[];
-  ruleStatistics: RuleStatistic[];
-};
-
 export class CachedESLint {
   readonly patterns: string[];
   readonly ruleNameToRuleModule: Map<string, Rule.RuleModule>;
@@ -38,7 +33,7 @@ export class CachedESLint {
     this.ruleStatistics = undefined;
   }
 
-  async lint(): Promise<LintResult> {
+  async lint(): Promise<Statistics> {
     if (this.results !== undefined && this.ruleStatistics !== undefined) {
       return { results: this.results, ruleStatistics: this.ruleStatistics };
     }
@@ -54,12 +49,9 @@ export class CachedESLint {
     return { results, ruleStatistics };
   }
 
-  printStatistics(
-    results: ESLint.LintResult[],
-    ruleStatistics: RuleStatistic[],
-  ): void {
-    printLintSummary(results);
-    printTable(ruleStatistics);
+  printStatistics(statistics: Statistics): void {
+    printLintSummary(statistics.results);
+    printTable(statistics.ruleStatistics);
   }
 
   async printErrorAndWarningMessages(

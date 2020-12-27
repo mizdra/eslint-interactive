@@ -1,8 +1,13 @@
-import { Rule } from 'eslint';
+import { ESLint, Rule } from 'eslint';
 
 export type Answers = {
   ruleIds: string[];
   action: 'showMessages' | 'fix';
+};
+
+export type Statistics = {
+  results: ESLint.LintResult[];
+  ruleStatistics: RuleStatistic[];
 };
 
 export type RuleStatistic = {
