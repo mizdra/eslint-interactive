@@ -7,6 +7,7 @@ import yargs from 'yargs/yargs';
 import { App } from './components/App';
 import { fix, lint, showMessages } from './eslint/command';
 import { prompt } from './terminal/prompt';
+import { RuleStatistic } from './types';
 
 const argv = yargs(process.argv.slice(2)).argv;
 // NOTE: convert `string` type because yargs convert `'10'` (`string` type) into `10` (`number` type)
@@ -42,6 +43,11 @@ const patterns = argv._.map((pattern) => pattern.toString());
 // });
 
 (async () => {
-  const { waitUntilExit } = render(<App patterns={patterns} />);
-  await waitUntilExit();
-})();
+  while (true) {
+    const { waitUntilExit } = render(<App patterns={patterns} />);
+    await waitUntilExit();
+  }
+})().catch((error) => {
+  process.exitCode = 1;
+  console.error(error);
+});

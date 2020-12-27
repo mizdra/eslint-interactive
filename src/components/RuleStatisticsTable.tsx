@@ -12,7 +12,7 @@ function calcMaxRuleIdLength(ruleStatistics: RuleStatistic[]): number {
 
 export type RuleStatisticsTableProps = {
   selectedRuleIds: string[];
-  focusedRuleId: string;
+  focusedRuleId: string | undefined;
   ruleStatistics: RuleStatistic[];
 };
 
