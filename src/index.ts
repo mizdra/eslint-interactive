@@ -2,7 +2,10 @@
 
 import yargs from 'yargs/yargs';
 import { fix, lint, showMessages } from './eslint/command';
+import { printLintSummary } from './terminal/print-lint-summary';
+import { printTable } from './terminal/print-table';
 import { prompt } from './terminal/prompt';
+import { Choice } from './types';
 
 const argv = yargs(process.argv.slice(2)).argv;
 // NOTE: convert `string` type because yargs convert `'10'` (`string` type) into `10` (`number` type)
@@ -12,11 +15,16 @@ const patterns = argv._.map((pattern) => pattern.toString());
 (async function main() {
   // eslint-disable-next-line no-constant-condition
   while (true) {
-    let { eslint, results, ruleIdChoices } = await lint(patterns);
+    let { eslint, results, ruleStatistics } = await lint(patterns);
 
-    if (ruleIdChoices.length === 0) break;
+    if (ruleStatistics.length === 0) break;
 
-    const answers = await prompt(ruleIdChoices);
+    printLintSummary(results);
+    printTable(ruleStatistics);
+
+    const ruleIds = ruleStatistics.map((ruleStatistic) => ruleStatistic.ruleId);
+
+    const answers = await prompt(ruleIds);
 
     if (answers.action === 'showMessages') {
       await showMessages(eslint, results, answers);
@@ -24,11 +32,11 @@ const patterns = argv._.map((pattern) => pattern.toString());
       const {
         eslint: newESLint,
         results: newResults,
-        ruleIdChoices: newRuleIdChoices,
+        ruleStatistics: newRuleStatistics,
       } = await fix(patterns, answers);
       eslint = newESLint;
       results = newResults;
-      ruleIdChoices = newRuleIdChoices;
+      ruleStatistics = newRuleStatistics;
     }
     console.log('-'.repeat(process.stdout.columns));
   }

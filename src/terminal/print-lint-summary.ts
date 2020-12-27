@@ -1,11 +1,9 @@
 import chalk from 'chalk';
 import { ESLint } from 'eslint';
 import table from 'text-table';
+import { ERROR_COLOR, WARNING_COLOR } from './colors';
 
 export function printLintSummary(results: ESLint.LintResult[]): void {
-  const errorColor = 'red';
-  const warningColor = 'yellow';
-
   let errorCount = 0;
   let failureCount = 0;
   let passCount = 0;
@@ -32,11 +30,13 @@ export function printLintSummary(results: ESLint.LintResult[]): void {
   ];
 
   if (warningCount || errorCount) {
-    summaryLineArray.push(chalk[warningColor].bold(`${warningCount} file(s).`));
-    summaryLineArray.push(chalk[errorColor].bold(`${errorCount} file(s)`));
+    summaryLineArray.push(
+      chalk[WARNING_COLOR].bold(`${warningCount} file(s).`),
+    );
+    summaryLineArray.push(chalk[ERROR_COLOR].bold(`${errorCount} file(s)`));
   }
 
-  const output = table([summaryLineArray]) + '\n';
+  const output = table([summaryLineArray]);
 
   console.log(output);
 }

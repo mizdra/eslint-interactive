@@ -30,11 +30,8 @@ export async function lint(patterns: string[]) {
     results,
     ruleNameToRuleModule,
   );
-  const ruleIdChoices = generateChoices(ruleStatistics);
 
-  printLintSummary(results);
-
-  return { eslint, results, ruleIdChoices };
+  return { eslint, results, ruleStatistics };
 }
 
 export async function showMessages(
@@ -64,7 +61,6 @@ export async function fix(patterns: string[], answers: Answers) {
     results,
     ruleNameToRuleModule,
   );
-  const ruleIdChoices = generateChoices(ruleStatistics);
 
-  return { eslint, results, ruleIdChoices };
+  return { eslint, results, ruleStatistics };
 }
