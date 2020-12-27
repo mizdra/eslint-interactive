@@ -1,9 +1,7 @@
 #!/usr/bin/env node
 
 import yargs from 'yargs/yargs';
-import { fix, lint, showMessages } from './eslint/command';
-import { printLintSummary } from './terminal/print-lint-summary';
-import { printTable } from './terminal/print-table';
+import { CachedESLint } from './eslint/cached-eslint';
 import { prompt } from './terminal/prompt';
 
 const argv = yargs(process.argv.slice(2)).argv;
@@ -12,30 +10,24 @@ const argv = yargs(process.argv.slice(2)).argv;
 const patterns = argv._.map((pattern) => pattern.toString());
 
 (async function main() {
+  const eslint = new CachedESLint(patterns);
+
   // eslint-disable-next-line no-constant-condition
   while (true) {
-    let { eslint, results, ruleStatistics } = await lint(patterns);
+    const { results, ruleStatistics } = await eslint.lint();
 
     if (ruleStatistics.length === 0) break;
 
-    printLintSummary(results);
-    printTable(ruleStatistics);
+    eslint.printStatistics(results, ruleStatistics);
 
     const ruleIds = ruleStatistics.map((ruleStatistic) => ruleStatistic.ruleId);
 
     const answers = await prompt(ruleIds);
 
     if (answers.action === 'showMessages') {
-      await showMessages(eslint, results, answers);
+      await eslint.printErrorAndWarningMessages(results, answers.ruleIds);
     } else if (answers.action === 'fix') {
-      const {
-        eslint: newESLint,
-        results: newResults,
-        ruleStatistics: newRuleStatistics,
-      } = await fix(patterns, answers);
-      eslint = newESLint;
-      results = newResults;
-      ruleStatistics = newRuleStatistics;
+      await eslint.fix(answers.ruleIds);
     }
     console.log('-'.repeat(process.stdout.columns));
   }
