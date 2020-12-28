@@ -1527,6 +1527,11 @@ nice-try@^1.0.4:
   resolved "https://registry.yarnpkg.com/nice-try/-/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"
   integrity sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==
 
+node-pager@^0.3.4:
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/node-pager/-/node-pager-0.3.4.tgz#6284b83d6c85fe48c80676ef01d421bfab4d4f59"
+  integrity sha512-mEq+lIofyQnibuV+6HXFezUHJGVP5oRA4jmir+TP7ZrWb9IXXVSSIiXj6OQ3685Sih/22jGX7HJ6jfp6clY+SQ==
+
 nodemon@^2.0.6:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/nodemon/-/nodemon-2.0.6.tgz#1abe1937b463aaf62f0d52e2b7eaadf28cc2240d"

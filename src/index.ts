@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import pager from 'node-pager';
 import ora from 'ora';
 import yargs from 'yargs/yargs';
 import { CachedESLint } from './eslint/cached-eslint';
@@ -31,10 +32,11 @@ const patterns = argv._.map((pattern) => pattern.toString());
     const answers = await prompt(ruleIdsInStatistics);
 
     if (answers.action === 'showMessages') {
-      await eslint.printErrorAndWarningMessages(
+      const formattedMessages = await eslint.formatErrorAndWarningMessages(
         statistics.results,
         answers.ruleIds,
       );
+      await pager(formattedMessages);
     } else if (answers.action === 'fix') {
       const fixingSpinner = ora('Fixing...').start();
       await eslint.fix(answers.ruleIds);

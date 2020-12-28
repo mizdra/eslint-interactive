@@ -54,16 +54,16 @@ export class CachedESLint {
     printTable(statistics.ruleStatistics);
   }
 
-  async printErrorAndWarningMessages(
+  async formatErrorAndWarningMessages(
     results: ESLint.LintResult[],
     ruleIds: string[],
-  ): Promise<void> {
+  ): Promise<string> {
     const eslint = new ESLint({});
     const formatter = await eslint.loadFormatter('stylish');
     const resultText = formatter.format(
       filterResultsByRuleId(results, ruleIds),
     );
-    console.log(resultText);
+    return resultText;
   }
 
   async fix(ruleIds: string[]): Promise<void> {

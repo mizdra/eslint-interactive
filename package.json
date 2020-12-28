@@ -36,6 +36,7 @@
   "dependencies": {
     "cli-table": "^0.3.4",
     "enquirer": "^2.3.6",
+    "node-pager": "^0.3.4",
     "ora": "^5.1.0",
     "terminal-link": "^2.1.1",
     "yargs": "^16.2.0"

@@ -4,7 +4,7 @@
   "watch": ["src/"],
   "ext": "js,ts",
   "execMap": {
-    "ts": "ts-node",
-    "js": "ts-node"
+    "ts": "ts-node --files",
+    "js": "ts-node --files"
   }
 }
