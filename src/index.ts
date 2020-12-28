@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import chalk from 'chalk';
 import pager from 'node-pager';
 import ora from 'ora';
 import yargs from 'yargs/yargs';
@@ -18,7 +19,7 @@ const patterns = argv._.map((pattern) => pattern.toString());
   while (true) {
     const lintingSpinner = ora('Linting...').start();
     const statistics = await eslint.lint();
-    lintingSpinner.succeed('Linting was successful.');
+    lintingSpinner.succeed(chalk.bold('Linting was successful.'));
     console.log();
 
     if (statistics.ruleStatistics.length === 0) break;
@@ -40,7 +41,7 @@ const patterns = argv._.map((pattern) => pattern.toString());
     } else if (answers.action === 'fix') {
       const fixingSpinner = ora('Fixing...').start();
       await eslint.fix(answers.ruleIds);
-      fixingSpinner.succeed('Fixing was successful.');
+      fixingSpinner.succeed(chalk.bold('Fixing was successful.'));
       console.log();
     }
     console.log('-'.repeat(process.stdout.columns));
