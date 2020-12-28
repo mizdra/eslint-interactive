@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import ora from 'ora';
 import yargs from 'yargs/yargs';
 import { CachedESLint } from './eslint/cached-eslint';
 import { prompt } from './terminal/prompt';
@@ -14,7 +15,10 @@ const patterns = argv._.map((pattern) => pattern.toString());
 
   // eslint-disable-next-line no-constant-condition
   while (true) {
+    const lintingSpinner = ora('Linting...').start();
     const statistics = await eslint.lint();
+    lintingSpinner.succeed('Linting was successful.');
+    console.log();
 
     if (statistics.ruleStatistics.length === 0) break;
 
@@ -32,7 +36,10 @@ const patterns = argv._.map((pattern) => pattern.toString());
         answers.ruleIds,
       );
     } else if (answers.action === 'fix') {
+      const fixingSpinner = ora('Fixing...').start();
       await eslint.fix(answers.ruleIds);
+      fixingSpinner.succeed('Fixing was successful.');
+      console.log();
     }
     console.log('-'.repeat(process.stdout.columns));
   }
