@@ -5,7 +5,7 @@ import pager from 'node-pager';
 import ora from 'ora';
 import yargs from 'yargs/yargs';
 import { CachedESLint } from './eslint/cached-eslint';
-import { prompt } from './terminal/prompt';
+import { promptToInputAction } from './terminal/prompt';
 
 const argv = yargs(process.argv.slice(2)).argv;
 // NOTE: convert `string` type because yargs convert `'10'` (`string` type) into `10` (`number` type)
@@ -30,7 +30,7 @@ const patterns = argv._.map((pattern) => pattern.toString());
       (ruleStatistic) => ruleStatistic.ruleId,
     );
 
-    const answers = await prompt(ruleIdsInStatistics);
+    const answers = await promptToInputAction(ruleIdsInStatistics);
 
     if (answers.action === 'showMessages') {
       const formattedMessages = await eslint.formatErrorAndWarningMessages(
