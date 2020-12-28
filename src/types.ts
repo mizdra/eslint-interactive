@@ -1,9 +1,6 @@
 import { ESLint, Rule } from 'eslint';
 
-export type Answers = {
-  ruleIds: string[];
-  action: 'showMessages' | 'fix';
-};
+export type Action = 'showMessages' | 'fix' | 'reselectRules';
 
 export type Statistics = {
   results: ESLint.LintResult[];

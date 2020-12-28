@@ -1,35 +1,46 @@
 import { prompt } from 'enquirer';
-import { Answers } from '../types';
+import { Action } from '../types';
 
-export async function promptToInputAction(ruleIdsInStatistics: string[]) {
-  // eslint-disable-next-line no-constant-condition
-  while (true) {
-    const { ruleIds } = await prompt<{ ruleIds: Answers['ruleIds'] }>([
-      {
-        name: 'ruleIds',
-        type: 'multiselect',
-        message: 'Which rule(s) would you like to apply action?',
-        choices: ruleIdsInStatistics,
-      },
-    ]);
+export async function promptToInputRuleIds(
+  ruleIdsInStatistics: string[],
+): Promise<string[]> {
+  const { ruleIds } = await prompt<{ ruleIds: string[] }>([
+    {
+      name: 'ruleIds',
+      type: 'multiselect',
+      message: 'Which rule(s) would you like to apply action?',
+      choices: ruleIdsInStatistics,
+    },
+  ]);
+  return ruleIds;
+}
 
-    const { action } = await prompt<{
-      action: Answers['action'] | 'reselectRules';
-    }>([
-      {
-        name: 'action',
-        type: 'select',
-        message: 'Which action do you want to apply?',
-        choices: [
-          { name: 'showMessages', message: 'Show error/warning messages' },
-          { name: 'fix', message: 'Fix error/warning' },
-          { name: 'reselectRules', message: 'Reselect rules' },
-        ],
-      },
-    ]);
+export async function promptToInputAction(): Promise<Action> {
+  const { action } = await prompt<{
+    action: Action;
+  }>([
+    {
+      name: 'action',
+      type: 'select',
+      message: 'Which action do you want to apply?',
+      choices: [
+        { name: 'showMessages', message: 'Show error/warning messages' },
+        { name: 'fix', message: 'Fix error/warning' },
+        { name: 'reselectRules', message: 'Reselect rules' },
+      ],
+    },
+  ]);
+  return action;
+}
 
-    if (action !== 'reselectRules') {
-      return { ruleIds, action };
-    }
-  }
+export async function promptToInputContinue(): Promise<boolean> {
+  const { isContinue } = await prompt<{ isContinue: boolean }>([
+    {
+      name: 'isContinue',
+      type: 'confirm',
+      message: 'Continue?',
+      initial: true,
+    },
+  ]);
+  return isContinue;
 }
