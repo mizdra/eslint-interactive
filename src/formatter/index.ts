@@ -8,7 +8,7 @@ const formatter: ESLint.Formatter['format'] = (results, data) => {
 
   let text = '';
   text += printLintSummary(results);
-  text += printTable(statistics, data.rulesMeta);
+  text += printTable(statistics, data);
 
   return text;
 };

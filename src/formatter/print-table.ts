@@ -7,7 +7,7 @@ import { RuleStatistic } from './types';
 
 export function printTable(
   ruleStatistics: RuleStatistic[],
-  rulesMeta: ESLint.LintResultData['rulesMeta'],
+  data: ESLint.LintResultData | undefined,
 ): string {
   const table = new Table({
     head: ['Rule', 'Error (fixable)', 'Warning (fixable)'],
@@ -21,7 +21,7 @@ export function printTable(
       fixableErrorCount,
       fixableWarningCount,
     } = ruleStatistic;
-    const ruleMetaData = rulesMeta[ruleId];
+    const ruleMetaData = data?.rulesMeta[ruleId];
 
     const ruleCell = ruleMetaData?.docs?.url
       ? terminalLink(ruleId, ruleMetaData?.docs.url)
