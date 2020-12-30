@@ -11,6 +11,12 @@ import {
   promptToInputRuleIds,
 } from './terminal/prompt';
 
+export function notEmpty<TValue>(
+  value: TValue | null | undefined,
+): value is TValue {
+  return value !== null && value !== undefined;
+}
+
 const argv = yargs(process.argv.slice(2)).argv;
 // NOTE: convert `string` type because yargs convert `'10'` (`string` type) into `10` (`number` type)
 // and `lintFiles` only accepts `string[]`.
@@ -22,24 +28,25 @@ const patterns = argv._.map((pattern) => pattern.toString());
   // eslint-disable-next-line no-constant-condition
   while (true) {
     const lintingSpinner = ora('Linting...').start();
-    const statistics = await eslint.lint();
+    const results = await eslint.lint();
 
-    if (statistics.ruleStatistics.length === 0) {
+    if (results.length === 0) {
       lintingSpinner.succeed(chalk.bold('No error found.'));
       break;
     }
     lintingSpinner.succeed(chalk.bold('Found errors.'));
     console.log();
 
-    eslint.printStatistics(statistics);
+    await eslint.printResults(results);
 
-    const ruleIdsInStatistics = statistics.ruleStatistics.map(
-      (ruleStatistic) => ruleStatistic.ruleId,
-    );
+    const ruleIdsInResults = results
+      .flatMap((result) => result.messages)
+      .flatMap((message) => message.ruleId)
+      .filter(notEmpty);
 
     // eslint-disable-next-line no-constant-condition
     selectRule: while (true) {
-      const selectedRuleIds = await promptToInputRuleIds(ruleIdsInStatistics);
+      const selectedRuleIds = await promptToInputRuleIds(ruleIdsInResults);
 
       // eslint-disable-next-line no-constant-condition
       selectAction: while (true) {
@@ -49,7 +56,7 @@ const patterns = argv._.map((pattern) => pattern.toString());
 
         if (action === 'showMessages') {
           const formattedMessages = await eslint.formatErrorAndWarningMessages(
-            statistics.results,
+            results,
             selectedRuleIds,
           );
           await pager(formattedMessages);

@@ -1,8 +1,5 @@
+import { join } from 'path';
 import { ESLint, Linter, Rule } from 'eslint';
-import { printLintSummary } from '../terminal/print-lint-summary';
-import { printTable } from '../terminal/print-table';
-import { RuleStatistic, Statistics } from '../types';
-import { takeStatisticsForEachRule } from './take-statistics';
 
 function filterResultsByRuleId(
   results: ESLint.LintResult[],
@@ -23,35 +20,39 @@ export class CachedESLint {
   readonly patterns: string[];
   readonly ruleNameToRuleModule: Map<string, Rule.RuleModule>;
   results: ESLint.LintResult[] | undefined;
-  ruleStatistics: RuleStatistic[] | undefined;
 
   constructor(patterns: string[]) {
     this.patterns = patterns;
     const linter = new Linter();
     this.ruleNameToRuleModule = linter.getRules();
     this.results = undefined;
-    this.ruleStatistics = undefined;
   }
 
-  async lint(): Promise<Statistics> {
-    if (this.results !== undefined && this.ruleStatistics !== undefined) {
-      return { results: this.results, ruleStatistics: this.ruleStatistics };
+  async lint(): Promise<ESLint.LintResult[]> {
+    if (this.results !== undefined) {
+      return this.results;
     }
 
     const eslint = new ESLint({});
     const results = await eslint.lintFiles(this.patterns);
 
-    const ruleStatistics = takeStatisticsForEachRule(
-      results,
-      this.ruleNameToRuleModule,
-    );
-
-    return { results, ruleStatistics };
+    return results;
   }
 
-  printStatistics(statistics: Statistics): void {
-    printLintSummary(statistics.results);
-    printTable(statistics.ruleStatistics);
+  async loadFormatter(
+    nameOrPath?: string | undefined,
+  ): Promise<ESLint.Formatter> {
+    const eslint = new ESLint({});
+    return eslint.loadFormatter(nameOrPath);
+  }
+
+  async printResults(results: ESLint.LintResult[]): Promise<void> {
+    const eslint = new ESLint({});
+    const formatter = await eslint.loadFormatter(
+      join(__dirname, '../../formatter'),
+    );
+    const resultText = formatter.format(results);
+    console.log(resultText);
   }
 
   async formatErrorAndWarningMessages(
@@ -74,12 +75,6 @@ export class CachedESLint {
     const results = await eslint.lintFiles(this.patterns);
     await ESLint.outputFixes(results);
 
-    const ruleStatistics = takeStatisticsForEachRule(
-      results,
-      this.ruleNameToRuleModule,
-    );
-
     this.results = results;
-    this.ruleStatistics = ruleStatistics;
   }
 }

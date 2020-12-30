@@ -2,14 +2,14 @@ import { prompt } from 'enquirer';
 import { Action } from '../types';
 
 export async function promptToInputRuleIds(
-  ruleIdsInStatistics: string[],
+  ruleIdsInResults: string[],
 ): Promise<string[]> {
   const { ruleIds } = await prompt<{ ruleIds: string[] }>([
     {
       name: 'ruleIds',
       type: 'multiselect',
       message: 'Which rule(s) would you like to apply action?',
-      choices: ruleIdsInStatistics,
+      choices: ruleIdsInResults,
     },
   ]);
   return ruleIds;

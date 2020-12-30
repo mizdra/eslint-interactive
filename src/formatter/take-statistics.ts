@@ -1,12 +1,23 @@
-import { ESLint, Rule, Linter } from 'eslint';
-import { RuleStatistic } from '../types';
-import { groupBy } from '../util/array';
+import { ESLint, Linter } from 'eslint';
+import { RuleStatistic } from './types';
+
+export function groupBy<T, K>(array: T[], toKey: (item: T) => K): Map<K, T[]> {
+  const map = new Map<K, T[]>();
+
+  for (const item of array) {
+    const key = toKey(item);
+    const oldValue = map.get(key);
+    const newValue = oldValue ? [...oldValue, item] : [item];
+    map.set(key, newValue);
+  }
+
+  return map;
+}
 
 /** 指定されたルールのエラー/警告の件数などの統計を取る */
 function takeRuleStatistic(
   ruleId: string,
   messages: Linter.LintMessage[],
-  ruleModule: Rule.RuleModule | undefined,
 ): RuleStatistic {
   let errorCount = 0;
   let warningCount = 0;
@@ -25,7 +36,6 @@ function takeRuleStatistic(
 
   return {
     ruleId,
-    ruleModule,
     errorCount,
     warningCount,
     fixableErrorCount,
@@ -36,7 +46,6 @@ function takeRuleStatistic(
 /** ルールごとのエラー/警告の件数などの統計を取る */
 export function takeStatisticsForEachRule(
   results: ESLint.LintResult[],
-  ruleNameToRuleModule: Map<string, Rule.RuleModule>,
 ): RuleStatistic[] {
   const messages = results.flatMap((result) => result.messages);
 
@@ -47,10 +56,6 @@ export function takeStatisticsForEachRule(
   );
 
   return [...ruleIdToMessages.entries()].map(([ruleId, messages]) => {
-    return takeRuleStatistic(
-      ruleId,
-      messages,
-      ruleNameToRuleModule.get(ruleId),
-    );
+    return takeRuleStatistic(ruleId, messages);
   });
 }

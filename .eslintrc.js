@@ -16,7 +16,7 @@ module.exports = {
     {
       files: ['*.ts', '*.tsx'],
       parserOptions: {
-        project: ['./tsconfig.bin.json'],
+        project: ['./tsconfig.bin.json', './tsconfig.formatter.json'],
       },
       rules: {},
     },

@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import { ESLint } from 'eslint';
 import { ERROR_COLOR, WARNING_COLOR } from './colors';
 
-export function printLintSummary(results: ESLint.LintResult[]): void {
+export function printLintSummary(results: ESLint.LintResult[]): string {
   let errorCount = 0;
   let failureCount = 0;
   let passCount = 0;
@@ -35,5 +35,5 @@ export function printLintSummary(results: ESLint.LintResult[]): void {
     summaryLineArray.push(chalk[ERROR_COLOR].bold(`${errorCount} file(s)`));
   }
 
-  console.log(summaryLineArray.join('  '));
+  return summaryLineArray.join('  ');
 }
