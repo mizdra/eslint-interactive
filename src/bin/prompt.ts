@@ -6,13 +6,19 @@ function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
   return value !== null && value !== undefined;
 }
 
+function unique<T>(array: T[]): T[] {
+  return [...new Set(array)];
+}
+
 export async function promptToInputRuleIds(
   results: ESLint.LintResult[],
 ): Promise<string[]> {
-  const ruleIdsInResults = results
-    .flatMap((result) => result.messages)
-    .flatMap((message) => message.ruleId)
-    .filter(notEmpty);
+  const ruleIdsInResults = unique(
+    results
+      .flatMap((result) => result.messages)
+      .flatMap((message) => message.ruleId)
+      .filter(notEmpty),
+  );
 
   const { ruleIds } = await prompt<{ ruleIds: string[] }>([
     {
