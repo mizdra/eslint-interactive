@@ -50,7 +50,7 @@ export class CachedESLint {
   async printResults(results: ESLint.LintResult[]): Promise<void> {
     const eslint = new ESLint({});
     const formatter = await eslint.loadFormatter(
-      join(__dirname, '../../formatter'),
+      join(__dirname, '../formatter'),
     );
     const resultText = formatter.format(results);
     console.log(resultText);
