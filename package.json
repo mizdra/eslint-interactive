@@ -8,10 +8,10 @@
   "private": true,
   "scripts": {
     "start": "node dist/index.js",
-    "build": "tsc",
+    "build": "tsc --build",
     "dev": "nodemon --no-stdin src/index.ts fixtures",
     "check": "run-s check:*",
-    "check:tsc": "tsc --noEmit",
+    "check:tsc": "tsc --build",
     "check:eslint": "eslint src"
   },
   "devDependencies": {

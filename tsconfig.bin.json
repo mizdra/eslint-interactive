@@ -3,7 +3,8 @@
   "include": ["src/bin/**/*", "src/typings/**/*"],
   "exclude": ["node_modules"],
   "compilerOptions": {
-    "outDir": "./dist/bin",
+    "outDir": "./dist/bin/",
+    "rootDir": "./src/bin",
     "lib": ["esnext"],
     /* Module Options */
     "module": "CommonJS",

@@ -3,7 +3,8 @@
   "include": ["src/formatter/**/*", "src/typings/**/*"],
   "exclude": ["node_modules"],
   "compilerOptions": {
-    "outDir": "./dist/formatter",
+    "outDir": "./dist/formatter/",
+    "rootDir": "./src/formatter",
     "lib": ["ESNext"],
     /* Module Options */
     "module": "CommonJS",
