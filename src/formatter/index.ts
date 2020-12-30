@@ -7,4 +7,4 @@ const formatter: ESLint.Formatter['format'] = (results, data) => {
 };
 
 // eslint-disable-next-line import/no-default-export
-export default formatter;
+export = formatter;
