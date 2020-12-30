@@ -1,21 +1,14 @@
 #!/usr/bin/env node
 
 import chalk from 'chalk';
-import pager from 'node-pager';
 import ora from 'ora';
 import yargs from 'yargs/yargs';
-import { CachedESLint } from './eslint/cached-eslint';
+import { CachedESLint } from './cached-eslint';
 import {
   promptToInputAction,
   promptToInputContinue,
   promptToInputRuleIds,
-} from './terminal/prompt';
-
-export function notEmpty<TValue>(
-  value: TValue | null | undefined,
-): value is TValue {
-  return value !== null && value !== undefined;
-}
+} from './prompt';
 
 const argv = yargs(process.argv.slice(2)).argv;
 // NOTE: convert `string` type because yargs convert `'10'` (`string` type) into `10` (`number` type)
@@ -39,14 +32,9 @@ const patterns = argv._.map((pattern) => pattern.toString());
 
     await eslint.printResults(results);
 
-    const ruleIdsInResults = results
-      .flatMap((result) => result.messages)
-      .flatMap((message) => message.ruleId)
-      .filter(notEmpty);
-
     // eslint-disable-next-line no-constant-condition
     selectRule: while (true) {
-      const selectedRuleIds = await promptToInputRuleIds(ruleIdsInResults);
+      const selectedRuleIds = await promptToInputRuleIds(results);
 
       // eslint-disable-next-line no-constant-condition
       selectAction: while (true) {
@@ -55,11 +43,7 @@ const patterns = argv._.map((pattern) => pattern.toString());
         if (action === 'reselectRules') continue selectRule;
 
         if (action === 'showMessages') {
-          const formattedMessages = await eslint.formatErrorAndWarningMessages(
-            results,
-            selectedRuleIds,
-          );
-          await pager(formattedMessages);
+          await eslint.showErrorAndWarningMessages(results, selectedRuleIds);
           continue selectAction;
         } else if (action === 'fix') {
           const fixingSpinner = ora('Fixing...').start();

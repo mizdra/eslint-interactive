@@ -1,16 +1,9 @@
 import { ESLint } from 'eslint';
-import { printLintSummary } from './print-lint-summary';
-import { printTable } from './print-table';
-import { takeStatisticsForEachRule } from './take-statistics';
+import { formatByFiles } from './format-by-files';
+import { formatByRules } from './format-by-rules';
 
 const formatter: ESLint.Formatter['format'] = (results, data) => {
-  const statistics = takeStatisticsForEachRule(results);
-
-  let text = '';
-  text += printLintSummary(results);
-  text += printTable(statistics, data);
-
-  return text;
+  return formatByFiles(results) + '\n' + formatByRules(results, data);
 };
 
 // eslint-disable-next-line import/no-default-export

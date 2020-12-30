@@ -1,5 +1,6 @@
 import { join } from 'path';
 import { ESLint, Linter, Rule } from 'eslint';
+import pager from 'node-pager';
 
 function filterResultsByRuleId(
   results: ESLint.LintResult[],
@@ -55,16 +56,16 @@ export class CachedESLint {
     console.log(resultText);
   }
 
-  async formatErrorAndWarningMessages(
+  async showErrorAndWarningMessages(
     results: ESLint.LintResult[],
     ruleIds: string[],
-  ): Promise<string> {
+  ): Promise<void> {
     const eslint = new ESLint({});
     const formatter = await eslint.loadFormatter('stylish');
     const resultText = formatter.format(
       filterResultsByRuleId(results, ruleIds),
     );
-    return resultText;
+    await pager(resultText);
   }
 
   async fix(ruleIds: string[]): Promise<void> {

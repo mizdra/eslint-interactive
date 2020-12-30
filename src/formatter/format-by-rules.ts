@@ -3,12 +3,10 @@ import Table from 'cli-table';
 import { ESLint } from 'eslint';
 import terminalLink from 'terminal-link';
 import { ERROR_COLOR, WARNING_COLOR } from './colors';
-import { RuleStatistic } from './types';
+import { takeStatisticsForEachRule } from './take-statistics';
 
-export function printTable(
-  ruleStatistics: RuleStatistic[],
-  data: ESLint.LintResultData | undefined,
-): string {
+export const formatByRules: ESLint.Formatter['format'] = (results, data) => {
+  const ruleStatistics = takeStatisticsForEachRule(results);
   const table = new Table({
     head: ['Rule', 'Error (fixable)', 'Warning (fixable)'],
   });
@@ -34,4 +32,4 @@ export function printTable(
   });
 
   return table.toString();
-}
+};

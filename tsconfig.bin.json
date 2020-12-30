@@ -1,6 +1,6 @@
 {
   "extends": "./tsconfig.base.json",
-  "include": ["src/bin/**/*"],
+  "include": ["src/bin/**/*", "src/typings/**/*"],
   "exclude": ["node_modules"],
   "compilerOptions": {
     "outDir": "./dist/bin",

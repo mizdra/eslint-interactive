@@ -1,9 +1,19 @@
 import { prompt } from 'enquirer';
-import { Action } from '../types';
+import { ESLint } from 'eslint';
+import { Action } from './types';
+
+function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
+  return value !== null && value !== undefined;
+}
 
 export async function promptToInputRuleIds(
-  ruleIdsInResults: string[],
+  results: ESLint.LintResult[],
 ): Promise<string[]> {
+  const ruleIdsInResults = results
+    .flatMap((result) => result.messages)
+    .flatMap((message) => message.ruleId)
+    .filter(notEmpty);
+
   const { ruleIds } = await prompt<{ ruleIds: string[] }>([
     {
       name: 'ruleIds',
