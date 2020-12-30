@@ -6,6 +6,8 @@
     "outDir": "./dist/formatter",
     "lib": ["ESNext"],
     /* Module Options */
-    "module": "CommonJS"
+    "module": "CommonJS",
+    /* Project Reference Options */
+    "composite": true
   }
 }

@@ -6,6 +6,9 @@
     "outDir": "./dist/bin",
     "lib": ["esnext"],
     /* Module Options */
-    "module": "CommonJS"
-  }
+    "module": "CommonJS",
+    /* Project Reference Options */
+    "composite": true
+  },
+  "references": [{ "path": "./tsconfig.formatter.json" }]
 }
