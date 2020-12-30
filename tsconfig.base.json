@@ -1,0 +1,34 @@
+{
+  // "include": ["src/**/*"],
+  // "exclude": ["node_modules"],
+  "compilerOptions": {
+    /* Basic Options */
+    // "outDir": "./dist", // 継承先で上書きする
+    "target": "esnext", // ES周りは babel に任せる
+    // "lib": ["esnext", "dom"], // 継承先で上書きする
+    "isolatedModules": true, // for isolated file emit (ref: https://github.com/microsoft/TypeScript/wiki/Performance#isolated-file-emit , https://www.typescriptlang.org/v2/ja/tsconfig#isolatedModules)
+    // "importsNotUsedAsValues": "error", // for isolated file emit (https://www.typescriptlang.org/v2/ja/tsconfig#isolatedModules , https://qiita.com/vvakame/items/72da760526ec7cc25c2d#%E5%9E%8B%E3%81%AE%E3%81%BF%E3%81%AEimport-export%E3%81%AE%E3%82%B5%E3%83%9D%E3%83%BC%E3%83%88)
+
+    /* Module Options */
+    // "module": "esnext", // 継承先で上書きする
+    "esModuleInterop": true, // CommonJS モジュールを `import _ from 'commonjs'` で import できるように
+    "resolveJsonModule": true, // import した json の型を推論するように
+    "moduleResolution": "node", // `node` にしないと `resolveJsonModule` が使えない
+    "forceConsistentCasingInFileNames": true, // 大文字小文字を区別しない環境 (win) でも unix と同じように区別する
+
+    /* Additional Features */
+    // "jsx": "react",
+
+    /* Strict Type-Checking Options */
+    "strict": true,
+    "skipLibCheck": true,
+
+    /* Lint Options */
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+
+    /* Debug Options */
+    "sourceMap": true, // for ts-loader (ref: https://github.com/TypeStrong/ts-loader#devtool--sourcemaps)
+    "locale": "ja"
+  }
+}

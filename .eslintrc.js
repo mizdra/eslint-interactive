@@ -12,4 +12,13 @@ module.exports = {
   env: {
     node: true,
   },
+  overrides: [
+    {
+      files: ['*.ts', '*.tsx'],
+      parserOptions: {
+        project: ['./tsconfig.bin.json'],
+      },
+      rules: {},
+    },
+  ],
 };

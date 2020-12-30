@@ -1,29 +1,6 @@
+// 🙏 "Solution Style" tsconfig.json 🙏
+// ref: https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-9.html#support-for-solution-style-tsconfigjson-files
 {
-  "include": ["./src/bin/**/*"],
-  "exclude": ["node_modules"],
-  "compilerOptions": {
-    /* Basic Options */
-    "outDir": "./dist",
-    "target": "esnext",
-    "lib": ["esnext"],
-    "declaration": false,
-    // "jsx": "react",
-
-    /* Module Options */
-    "module": "CommonJS",
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-
-    /* Strict Type-Checking Options */
-    "strict": true,
-
-    /* Helper Options */
-    "noEmitHelpers": true,
-    "importHelpers": true,
-
-    /* Debug Options */
-    "sourceMap": true,
-    "pretty": true,
-    "locale": "ja"
-  }
+  "files": [],
+  "references": [{ "path": "./tsconfig.bin.json" }]
 }
