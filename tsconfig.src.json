@@ -7,8 +7,6 @@
     "rootDir": "./src",
     "lib": ["esnext"],
     /* Module Options */
-    "module": "CommonJS",
-    /* Project Reference Options */
-    "composite": true
+    "module": "CommonJS"
   }
 }

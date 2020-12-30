@@ -1,8 +1,5 @@
-#!/usr/bin/env node
-
 import chalk from 'chalk';
 import ora from 'ora';
-import sourceMapSupport from 'source-map-support';
 import yargs from 'yargs/yargs';
 import { CachedESLint } from './cached-eslint';
 import {
@@ -10,8 +7,6 @@ import {
   promptToInputContinue,
   promptToInputRuleIds,
 } from './prompt';
-
-sourceMapSupport.install();
 
 const argv = yargs(process.argv.slice(2)).argv;
 // NOTE: convert `string` type because yargs convert `'10'` (`string` type) into `10` (`number` type)

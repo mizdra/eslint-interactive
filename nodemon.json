@@ -1,9 +1,9 @@
 {
   "restartable": false,
   "verbose": true,
-  "watch": ["dist/"],
-  "ext": "js",
+  "watch": ["src/"],
+  "ext": "ts",
   "execMap": {
-    "js": "node"
+    "ts": "ts-node --files --project tsconfig.src.json"
   }
 }

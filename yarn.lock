@@ -110,13 +110,6 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.10.tgz#5958a82e41863cfc71f2307b3748e3491ba03785"
   integrity sha512-J32dgx2hw8vXrSbu4ZlVhn1Nm3GbeCFNw2FWL8S5QKucHGY0cyNwjdQdO+KMBZ4wpmC7KhLCiNsdk1RFRIYUQQ==
 
-"@types/source-map-support@^0.5.3":
-  version "0.5.3"
-  resolved "https://registry.yarnpkg.com/@types/source-map-support/-/source-map-support-0.5.3.tgz#acb6b3e499c20692552d16934c16162c84594e16"
-  integrity sha512-fvjMjVH8Rmokw2dWh1dkj90iX5R8FPjeZzjNH+6eFXReh0QnHFf1YBl3B0CF0RohIAA3SDRJsGeeUWKl6d7HqA==
-  dependencies:
-    source-map "^0.6.0"
-
 "@types/terminal-link@^1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@types/terminal-link/-/terminal-link-1.2.0.tgz#cdc1255bf3163419b800c012f1f66c0248784295"
