@@ -10,6 +10,7 @@
     // "importsNotUsedAsValues": "error", // for isolated file emit (https://www.typescriptlang.org/v2/ja/tsconfig#isolatedModules , https://qiita.com/vvakame/items/72da760526ec7cc25c2d#%E5%9E%8B%E3%81%AE%E3%81%BF%E3%81%AEimport-export%E3%81%AE%E3%82%B5%E3%83%9D%E3%83%BC%E3%83%88)
     "declaration": true, // Project Reference で依存された先から型が読み込めるように
     "declarationMap": true, // Project Reference で依存された先から *.ts が追跡できるように
+    "incremental": true, // ビルド結果をキャッシュするように
 
     /* Module Options */
     // "module": "esnext", // 継承先で上書きする

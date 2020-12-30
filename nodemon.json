@@ -1,10 +1,9 @@
 {
   "restartable": false,
   "verbose": true,
-  "watch": ["src/"],
-  "ext": "js,ts",
+  "watch": ["dist/"],
+  "ext": "js",
   "execMap": {
-    "ts": "ts-node --files",
-    "js": "ts-node --files"
+    "js": "node"
   }
 }
