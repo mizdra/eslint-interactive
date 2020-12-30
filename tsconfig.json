@@ -2,8 +2,5 @@
 // ref: https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-9.html#support-for-solution-style-tsconfigjson-files
 {
   "files": [],
-  "references": [
-    { "path": "./tsconfig.bin.json" },
-    { "path": "./tsconfig.formatter.json" }
-  ]
+  "references": [{ "path": "./tsconfig.src.json" }]
 }

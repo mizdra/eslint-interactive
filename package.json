@@ -12,7 +12,7 @@
     "dev:tsc": "tsc --build --watch",
     "dev:nodemon": "nodemon --no-stdin dist/bin/index.js fixtures",
     "check": "run-s check:*",
-    "check:tsc": "tsc --build",
+    "check:tsc": "tsc --noEmit",
     "check:eslint": "eslint src"
   },
   "devDependencies": {

@@ -33,7 +33,7 @@ const patterns = argv._.map((pattern) => pattern.toString());
     lintingSpinner.succeed(chalk.bold('Found errors.'));
     console.log();
 
-    await eslint.printResults(results);
+    eslint.printResults(results);
 
     // eslint-disable-next-line no-constant-condition
     selectRule: while (true) {

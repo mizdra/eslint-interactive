@@ -1,11 +1,11 @@
 {
   "extends": "./tsconfig.base.json",
-  "include": ["src/formatter/**/*", "src/typings/**/*"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules"],
   "compilerOptions": {
-    "outDir": "./dist/formatter/",
-    "rootDir": "./src/formatter",
-    "lib": ["ESNext"],
+    "outDir": "./dist/",
+    "rootDir": "./src",
+    "lib": ["esnext"],
     /* Module Options */
     "module": "CommonJS",
     /* Project Reference Options */
