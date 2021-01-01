@@ -12,4 +12,21 @@ module.exports = {
   env: {
     node: true,
   },
+  overrides: [
+    // for typescript
+    {
+      files: ['*.ts', '*.tsx'],
+      parserOptions: {
+        project: ['./tsconfig.src.json', './tsconfig.test.json'],
+      },
+      rules: {},
+    },
+    // for test
+    {
+      files: ['test/**/*.{ts,tsx}'],
+      env: {
+        jest: true,
+      },
+    },
+  ],
 };

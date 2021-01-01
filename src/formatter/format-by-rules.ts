@@ -1,10 +1,12 @@
 import chalk from 'chalk';
 import Table from 'cli-table';
+import { ESLint } from 'eslint';
 import terminalLink from 'terminal-link';
-import { RuleStatistic } from '../types';
 import { ERROR_COLOR, WARNING_COLOR } from './colors';
+import { takeStatisticsForEachRule } from './take-statistics';
 
-export function printTable(ruleStatistics: RuleStatistic[]): void {
+export const formatByRules: ESLint.Formatter['format'] = (results, data) => {
+  const ruleStatistics = takeStatisticsForEachRule(results);
   const table = new Table({
     head: ['Rule', 'Error (fixable)', 'Warning (fixable)'],
   });
@@ -12,14 +14,15 @@ export function printTable(ruleStatistics: RuleStatistic[]): void {
   ruleStatistics.forEach((ruleStatistic) => {
     const {
       ruleId,
-      ruleModule,
       errorCount,
       warningCount,
       fixableErrorCount,
       fixableWarningCount,
     } = ruleStatistic;
-    const ruleCell = ruleModule?.meta?.docs?.url
-      ? terminalLink(ruleId, ruleModule.meta.docs.url)
+    const ruleMetaData = data?.rulesMeta[ruleId];
+
+    const ruleCell = ruleMetaData?.docs?.url
+      ? terminalLink(ruleId, ruleMetaData?.docs.url)
       : ruleId;
     let errorCell = `${errorCount} (${fixableErrorCount})`;
     if (errorCount > 0) errorCell = chalk[ERROR_COLOR].bold(errorCell);
@@ -28,5 +31,5 @@ export function printTable(ruleStatistics: RuleStatistic[]): void {
     table.push([ruleCell, errorCell, warningCell]);
   });
 
-  console.log(table.toString());
-}
+  return table.toString();
+};

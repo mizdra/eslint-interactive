@@ -1,15 +1,31 @@
 import { prompt } from 'enquirer';
-import { Action } from '../types';
+import { ESLint } from 'eslint';
+import { Action } from './types';
+
+function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
+  return value !== null && value !== undefined;
+}
+
+function unique<T>(array: T[]): T[] {
+  return [...new Set(array)];
+}
 
 export async function promptToInputRuleIds(
-  ruleIdsInStatistics: string[],
+  results: ESLint.LintResult[],
 ): Promise<string[]> {
+  const ruleIdsInResults = unique(
+    results
+      .flatMap((result) => result.messages)
+      .flatMap((message) => message.ruleId)
+      .filter(notEmpty),
+  );
+
   const { ruleIds } = await prompt<{ ruleIds: string[] }>([
     {
       name: 'ruleIds',
       type: 'multiselect',
       message: 'Which rule(s) would you like to apply action?',
-      choices: ruleIdsInStatistics,
+      choices: ruleIdsInResults,
     },
   ]);
   return ruleIds;
