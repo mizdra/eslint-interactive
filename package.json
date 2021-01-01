@@ -9,8 +9,10 @@
   "scripts": {
     "build": "tsc -p tsconfig.src.json",
     "dev": "nodemon --no-stdin src/index.ts fixtures",
-    "check": "run-s check:*",
-    "check:tsc": "tsc -p tsconfig.src.json --noEmit ",
+    "check": "run-s -c check:*",
+    "check:tsc": "run-s -c check:tsc:*",
+    "check:tsc:src": "tsc -p tsconfig.src.json --noEmit",
+    "check:tsc:test": "tsc -p tsconfig.test.json --noEmit",
     "check:eslint": "eslint src",
     "test": "jest"
   },
