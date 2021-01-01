@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.base.json",
+  "include": ["test/**/*"],
+  "exclude": ["node_modules"],
+  "compilerOptions": {
+    // "outDir": "./dist/",
+    // "rootDir": "./test",
+    "lib": ["esnext"],
+    /* Module Options */
+    "module": "CommonJS"
+  }
+}
