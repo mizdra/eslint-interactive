@@ -1,18 +1,6 @@
 import { ESLint, Linter } from 'eslint';
-import { RuleStatistic } from './types';
-
-export function groupBy<T, K>(array: T[], toKey: (item: T) => K): Map<K, T[]> {
-  const map = new Map<K, T[]>();
-
-  for (const item of array) {
-    const key = toKey(item);
-    const oldValue = map.get(key);
-    const newValue = oldValue ? [...oldValue, item] : [item];
-    map.set(key, newValue);
-  }
-
-  return map;
-}
+import { RuleStatistic } from '../types';
+import { groupBy } from '../util/array';
 
 /** 指定されたルールのエラー/警告の件数などの統計を取る */
 function takeRuleStatistic(
@@ -44,7 +32,7 @@ function takeRuleStatistic(
 }
 
 /** ルールごとのエラー/警告の件数などの統計を取る */
-export function takeStatisticsForEachRule(
+export function takeRuleStatistics(
   results: ESLint.LintResult[],
 ): RuleStatistic[] {
   const messages = results.flatMap((result) => result.messages);

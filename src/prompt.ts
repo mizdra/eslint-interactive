@@ -1,14 +1,8 @@
 import { prompt } from 'enquirer';
 import { ESLint } from 'eslint';
 import { Action } from './types';
-
-function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
-  return value !== null && value !== undefined;
-}
-
-function unique<T>(array: T[]): T[] {
-  return [...new Set(array)];
-}
+import { unique } from './util/array';
+import { notEmpty } from './util/filter';
 
 export async function promptToInputRuleIds(
   results: ESLint.LintResult[],
