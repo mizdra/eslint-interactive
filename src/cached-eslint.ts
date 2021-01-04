@@ -40,13 +40,6 @@ export class CachedESLint {
     return results;
   }
 
-  async loadFormatter(
-    nameOrPath?: string | undefined,
-  ): Promise<ESLint.Formatter> {
-    const eslint = new ESLint({});
-    return eslint.loadFormatter(nameOrPath);
-  }
-
   printResults(results: ESLint.LintResult[]): void {
     const resultText = format(results);
     console.log(resultText);
