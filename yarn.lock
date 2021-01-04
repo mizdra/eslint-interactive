@@ -486,6 +486,11 @@
   resolved "https://registry.yarnpkg.com/@mizdra/eslint-config-mizdra/-/eslint-config-mizdra-0.7.0.tgz#2c93fa9e9ca8139f4dfbfd7739c8987c38f8de51"
   integrity sha512-BSaDJpcuUcK/NQKhGWCts70hLgTJMQryIzfTTwRkRDIEUpNb+lC7O2ZX8a0qCXdt9GX8DWYpznjkp4cP83Hczw==
 
+"@mizdra/prettier-config-mizdra@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@mizdra/prettier-config-mizdra/-/prettier-config-mizdra-0.3.0.tgz#ee76817458859104aeb9dcfc6e715f1a56949abd"
+  integrity sha512-L1YvGDkMHF7vlY97/+Ljf03vkc+wrh/rhIFNADuDE+lmC3JhikaxVhTP0ppsbAcTWdm00crrxGO6PGKVlyMVMg==
+
 "@nodelib/fs.scandir@2.1.3":
   version "2.1.3"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.scandir/-/fs.scandir-2.1.3.tgz#3a582bdb53804c6ba6d146579c46e52130cf4a3b"

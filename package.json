@@ -19,6 +19,7 @@
   "devDependencies": {
     "@jest/types": "^26.6.2",
     "@mizdra/eslint-config-mizdra": "^0.7.0",
+    "@mizdra/prettier-config-mizdra": "^0.3.0",
     "@types/cli-table": "^0.3.0",
     "@types/eslint": "^7.2.6",
     "@types/node": "^14.14.10",
