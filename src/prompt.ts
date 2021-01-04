@@ -4,9 +4,7 @@ import { Action } from './types';
 import { unique } from './util/array';
 import { notEmpty } from './util/filter';
 
-export async function promptToInputRuleIds(
-  results: ESLint.LintResult[],
-): Promise<string[]> {
+export async function promptToInputRuleIds(results: ESLint.LintResult[]): Promise<string[]> {
   const ruleIdsInResults = unique(
     results
       .flatMap((result) => result.messages)

@@ -12,18 +12,10 @@ export const formatByRules: ESLint.Formatter['format'] = (results, data) => {
   });
 
   ruleStatistics.forEach((ruleStatistic) => {
-    const {
-      ruleId,
-      errorCount,
-      warningCount,
-      fixableErrorCount,
-      fixableWarningCount,
-    } = ruleStatistic;
+    const { ruleId, errorCount, warningCount, fixableErrorCount, fixableWarningCount } = ruleStatistic;
     const ruleMetaData = data?.rulesMeta[ruleId];
 
-    const ruleCell = ruleMetaData?.docs?.url
-      ? terminalLink(ruleId, ruleMetaData?.docs.url)
-      : ruleId;
+    const ruleCell = ruleMetaData?.docs?.url ? terminalLink(ruleId, ruleMetaData?.docs.url) : ruleId;
     let errorCell = `${errorCount} (${fixableErrorCount})`;
     if (errorCount > 0) errorCell = chalk[ERROR_COLOR].bold(errorCell);
     let warningCell = `${warningCount} (${fixableWarningCount})`;

@@ -30,9 +30,7 @@ export const formatByFiles: ESLint.Formatter['format'] = (results) => {
 
   if (warningCount || errorCount) {
     summaryLineArray.push(chalk[ERROR_COLOR].bold(`${errorCount} file(s)`));
-    summaryLineArray.push(
-      chalk[WARNING_COLOR].bold(`${warningCount} file(s).`),
-    );
+    summaryLineArray.push(chalk[WARNING_COLOR].bold(`${warningCount} file(s).`));
   }
 
   return summaryLineArray.join('  ');

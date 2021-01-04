@@ -8,9 +8,7 @@ export function fakeFix(arg?: Partial<Rule.Fix>): Rule.Fix {
   };
 }
 
-export function fakeLintMessage(
-  arg?: Partial<Linter.LintMessage>,
-): Linter.LintMessage {
+export function fakeLintMessage(arg?: Partial<Linter.LintMessage>): Linter.LintMessage {
   return {
     column: 0,
     line: 0,
@@ -21,9 +19,7 @@ export function fakeLintMessage(
   };
 }
 
-export function fakeLintResult(
-  arg?: Partial<ESLint.LintResult>,
-): ESLint.LintResult {
+export function fakeLintResult(arg?: Partial<ESLint.LintResult>): ESLint.LintResult {
   return {
     filePath: '',
     messages: [],

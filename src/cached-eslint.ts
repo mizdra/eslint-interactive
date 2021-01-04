@@ -4,17 +4,11 @@ import { ESLint, Linter, Rule } from 'eslint';
 import pager from 'node-pager';
 import { format } from './formatter';
 
-function filterResultsByRuleId(
-  results: ESLint.LintResult[],
-  ruleIds: string[],
-): ESLint.LintResult[] {
+function filterResultsByRuleId(results: ESLint.LintResult[], ruleIds: string[]): ESLint.LintResult[] {
   return results.map((result) => {
     return {
       ...result,
-      messages: result.messages.filter(
-        (message) =>
-          message.ruleId !== null && ruleIds.includes(message.ruleId),
-      ),
+      messages: result.messages.filter((message) => message.ruleId !== null && ruleIds.includes(message.ruleId)),
     };
   });
 }
@@ -30,10 +24,7 @@ export class CachedESLint {
     this.ruleNameToRuleModule = linter.getRules();
     this.defaultOptions = {
       cache: true,
-      cacheLocation: join(
-        tmpdir(),
-        `eslint-interactive--${Date.now()}-${Math.random()}`,
-      ),
+      cacheLocation: join(tmpdir(), `eslint-interactive--${Date.now()}-${Math.random()}`),
     };
   }
 
@@ -49,23 +40,17 @@ export class CachedESLint {
     console.log(resultText);
   }
 
-  async showErrorAndWarningMessages(
-    results: ESLint.LintResult[],
-    ruleIds: string[],
-  ): Promise<void> {
+  async showErrorAndWarningMessages(results: ESLint.LintResult[], ruleIds: string[]): Promise<void> {
     const eslint = new ESLint(this.defaultOptions);
     const formatter = await eslint.loadFormatter('stylish');
-    const resultText = formatter.format(
-      filterResultsByRuleId(results, ruleIds),
-    );
+    const resultText = formatter.format(filterResultsByRuleId(results, ruleIds));
     await pager(resultText);
   }
 
   async fix(ruleIds: string[]): Promise<void> {
     const eslint = new ESLint({
       ...this.defaultOptions,
-      fix: (message) =>
-        message.ruleId !== null && ruleIds.includes(message.ruleId),
+      fix: (message) => message.ruleId !== null && ruleIds.includes(message.ruleId),
     });
     const results = await eslint.lintFiles(this.patterns);
     await ESLint.outputFixes(results);

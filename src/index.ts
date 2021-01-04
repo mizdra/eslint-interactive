@@ -2,11 +2,7 @@ import chalk from 'chalk';
 import ora from 'ora';
 import yargs from 'yargs/yargs';
 import { CachedESLint } from './cached-eslint';
-import {
-  promptToInputAction,
-  promptToInputContinue,
-  promptToInputRuleIds,
-} from './prompt';
+import { promptToInputAction, promptToInputContinue, promptToInputRuleIds } from './prompt';
 
 export type Options = {
   argv: string[];

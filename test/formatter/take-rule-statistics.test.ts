@@ -86,10 +86,7 @@ describe('takeRuleStatistics', () => {
   test('aggregates errors and warnings that are without a `ruleId`', () => {
     const results: ESLint.LintResult[] = [
       fakeLintResult({
-        messages: [
-          fakeLintMessage({ ruleId: null, severity: 2 }),
-          fakeLintMessage({ ruleId: undefined, severity: 2 }),
-        ],
+        messages: [fakeLintMessage({ ruleId: null, severity: 2 }), fakeLintMessage({ ruleId: undefined, severity: 2 })],
       }),
     ];
     expect(takeRuleStatistics(results)).toEqual([

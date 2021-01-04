@@ -25,8 +25,6 @@ describe('formatByFiles', () => {
     expect(stripAnsi(formattedText)).toMatchInlineSnapshot(
       `"2 file(s) checked.  1 passed.  1 failed.  2 file(s)  1 file(s)."`,
     );
-    expect(formattedText).toMatchInlineSnapshot(
-      `"[1m2 file(s) checked.[22m  [1m1 passed.[22m  [1m1 failed.[22m  [31m[1m2 file(s)[22m[39m  [33m[1m1 file(s).[22m[39m"`,
-    );
+    expect(formattedText).toMatchInlineSnapshot(`"[1m2 file(s) checked.[22m  [1m1 passed.[22m  [1m1 failed.[22m  [31m[1m2 file(s)[22m[39m  [33m[1m1 file(s).[22m[39m"`);
   });
 });
