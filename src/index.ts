@@ -8,12 +8,16 @@ import {
   promptToInputRuleIds,
 } from './prompt';
 
-const argv = yargs(process.argv.slice(2)).argv;
-// NOTE: convert `string` type because yargs convert `'10'` (`string` type) into `10` (`number` type)
-// and `lintFiles` only accepts `string[]`.
-const patterns = argv._.map((pattern) => pattern.toString());
+export type Options = {
+  argv: string[];
+};
 
-(async function main() {
+export async function run(options: Options) {
+  const argv = yargs(options.argv.slice(2)).argv;
+  // NOTE: convert `string` type because yargs convert `'10'` (`string` type) into `10` (`number` type)
+  // and `lintFiles` only accepts `string[]`.
+  const patterns = argv._.map((pattern) => pattern.toString());
+
   const eslint = new CachedESLint(patterns);
 
   // eslint-disable-next-line no-constant-condition
@@ -59,7 +63,4 @@ const patterns = argv._.map((pattern) => pattern.toString());
     console.log('─'.repeat(process.stdout.columns));
     console.log();
   }
-})().catch((error) => {
-  process.exitCode = 1;
-  console.error(error);
-});
+}

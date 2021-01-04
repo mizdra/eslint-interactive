@@ -1,3 +1,10 @@
 #!/usr/bin/env node -r source-map-support/register
 
-require('../dist');
+const { run } = require('../dist');
+
+run({
+  argv: process.argv,
+}).catch((error) => {
+  process.exitCode = 1;
+  console.error(error);
+});
