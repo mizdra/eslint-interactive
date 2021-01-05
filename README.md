@@ -2,7 +2,11 @@
 
 The CLI tool to run `eslint --fix` for each rule
 
-https://user-images.githubusercontent.com/9639995/103660802-5e9bb300-4fb1-11eb-9889-444db9c29777.mov
+---
+
+[You can see the demo movie here.](https://youtu.be/UKrm4v-jdbw)
+
+[![Watch the video](https://img.youtube.com/vi/UKrm4v-jdbw/maxresdefault.jpg)](https://youtu.be/UKrm4v-jdbw)
 
 ## Motivation
 
