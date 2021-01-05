@@ -14,7 +14,7 @@
     "check:tsc:src": "tsc -p tsconfig.src.json --noEmit",
     "check:tsc:test": "tsc -p tsconfig.test.json --noEmit",
     "check:eslint": "eslint src test",
-    "test": "jest"
+    "test": "jest --colors"
   },
   "devDependencies": {
     "@jest/types": "^26.6.2",
