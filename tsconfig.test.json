@@ -5,7 +5,9 @@
   "compilerOptions": {
     // "outDir": "./dist/",
     // "rootDir": "./test",
-    "lib": ["esnext"],
+    // Compatible for Node.js v12 (ref: https://github.com/microsoft/TypeScript/wiki/Node-Target-Mapping)
+    "target": "ES2019",
+    "lib": ["ES2019"],
     /* Module Options */
     "module": "CommonJS"
   }

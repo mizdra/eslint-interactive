@@ -4,7 +4,7 @@
   "compilerOptions": {
     /* Basic Options */
     // "outDir": "./dist", // 継承先で上書きする
-    "target": "esnext", // ES周りは babel に任せる
+    // "target": "esnext", // 継承先で上書きする
     // "lib": ["esnext", "dom"], // 継承先で上書きする
     "isolatedModules": true, // for isolated file emit (ref: https://github.com/microsoft/TypeScript/wiki/Performance#isolated-file-emit , https://www.typescriptlang.org/v2/ja/tsconfig#isolatedModules)
     // "importsNotUsedAsValues": "error", // for isolated file emit (https://www.typescriptlang.org/v2/ja/tsconfig#isolatedModules , https://qiita.com/vvakame/items/72da760526ec7cc25c2d#%E5%9E%8B%E3%81%AE%E3%81%BF%E3%81%AEimport-export%E3%81%AE%E3%82%B5%E3%83%9D%E3%83%BC%E3%83%88)
