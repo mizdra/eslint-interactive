@@ -3,6 +3,8 @@ import ora from 'ora';
 import yargs from 'yargs/yargs';
 import { CachedESLint } from './cached-eslint';
 import { promptToInputAction, promptToInputContinue, promptToInputRuleIds } from './prompt';
+import { unique } from './util/array';
+import { notEmpty } from './util/filter';
 
 export type Options = {
   argv: string[];
@@ -20,8 +22,14 @@ export async function run(options: Options) {
   while (true) {
     const lintingSpinner = ora('Linting...').start();
     const results = await eslint.lint();
+    const ruleIdsInResults = unique(
+      results
+        .flatMap((result) => result.messages)
+        .flatMap((message) => message.ruleId)
+        .filter(notEmpty),
+    );
 
-    if (results.length === 0) {
+    if (ruleIdsInResults.length === 0) {
       lintingSpinner.succeed(chalk.bold('No error found.'));
       break;
     }
@@ -32,7 +40,7 @@ export async function run(options: Options) {
 
     // eslint-disable-next-line no-constant-condition
     selectRule: while (true) {
-      const selectedRuleIds = await promptToInputRuleIds(results);
+      const selectedRuleIds = await promptToInputRuleIds(ruleIdsInResults);
 
       // eslint-disable-next-line no-constant-condition
       selectAction: while (true) {

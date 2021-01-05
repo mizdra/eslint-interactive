@@ -1,17 +1,7 @@
 import { prompt } from 'enquirer';
-import { ESLint } from 'eslint';
 import { Action } from './types';
-import { unique } from './util/array';
-import { notEmpty } from './util/filter';
 
-export async function promptToInputRuleIds(results: ESLint.LintResult[]): Promise<string[]> {
-  const ruleIdsInResults = unique(
-    results
-      .flatMap((result) => result.messages)
-      .flatMap((message) => message.ruleId)
-      .filter(notEmpty),
-  );
-
+export async function promptToInputRuleIds(ruleIdsInResults: string[]): Promise<string[]> {
   const { ruleIds } = await prompt<{ ruleIds: string[] }>([
     {
       name: 'ruleIds',
