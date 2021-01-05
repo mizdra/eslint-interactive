@@ -28,9 +28,6 @@ jobs:
       - name: yarn run check
         run: yarn run check
 
-      - name: yarn run test
-        run: yarn run test
-
       - name: yarn run build
         run: yarn run build
 
