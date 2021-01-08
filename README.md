@@ -19,12 +19,12 @@ TODO
 ## Usage
 
 ```bash
-$ npx @mizdra/eslint-interactive [file.js] [dir]
+$ npx -p eslint -p @mizdra/eslint-interactive eslint-interactive [file.js] [dir]
 
 $ # Examples
-$ npx @mizdra/eslint-interactive src
-$ npx @mizdra/eslint-interactive src test
-$ npx @mizdra/eslint-interactive 'src/**/*.{ts,tsx,vue}'
+$ npx -p eslint -p @mizdra/eslint-interactive eslint-interactive src
+$ npx -p eslint -p @mizdra/eslint-interactive eslint-interactive src test
+$ npx -p eslint -p @mizdra/eslint-interactive eslint-interactive 'src/**/*.{ts,tsx,vue}'
 ```
 
 ## Future Work
@@ -53,7 +53,7 @@ $ # Wait for passing CI...
 $ git switch master
 $ git pull
 $ yarn version
-$ rm -rf dist && npm run build
+$ rm -rf dist && yarn run build
 $ npm publish
 $ git push --follow-tags
 ```
