@@ -42,7 +42,7 @@ export class CachedESLint {
 
   async showErrorAndWarningMessages(results: ESLint.LintResult[], ruleIds: string[]): Promise<void> {
     const eslint = new ESLint(this.defaultOptions);
-    const formatter = await eslint.loadFormatter('stylish');
+    const formatter = await eslint.loadFormatter('codeframe');
     const resultText = formatter.format(filterResultsByRuleId(results, ruleIds));
     await pager(resultText);
   }
