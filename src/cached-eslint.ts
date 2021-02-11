@@ -15,6 +15,7 @@ function filterResultsByRuleId(results: ESLint.LintResult[], ruleIds: string[]):
 
 type CachedESLintOptions = {
   rulePaths?: string[];
+  extensions?: string[];
 };
 
 export class CachedESLint {
@@ -30,6 +31,7 @@ export class CachedESLint {
       cache: true,
       cacheLocation: join(tmpdir(), `eslint-interactive--${Date.now()}-${Math.random()}`),
       rulePaths: options.rulePaths,
+      extensions: options.extensions,
     };
   }
 
