@@ -11,12 +11,21 @@ export type Options = {
 };
 
 export async function run(options: Options) {
-  const argv = yargs(options.argv.slice(2)).argv;
+  const argv = yargs(options.argv.slice(2)).option('ext', {
+    type: 'array',
+    describe: 'Specify JavaScript file extensions',
+  }).argv;
   // NOTE: convert `string` type because yargs convert `'10'` (`string` type) into `10` (`number` type)
   // and `lintFiles` only accepts `string[]`.
   const patterns = argv._.map((pattern) => pattern.toString());
+  const extensions = argv.ext
+    ?.map((extension) => extension.toString())
+    // map '.js,.ts' into ['.js', '.ts']
+    .flatMap((extension) => extension.split(','));
 
-  const eslint = new CachedESLint(patterns);
+  const eslint = new CachedESLint(patterns, {
+    extensions: extensions,
+  });
 
   // eslint-disable-next-line no-constant-condition
   while (true) {
