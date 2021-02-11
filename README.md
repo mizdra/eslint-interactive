@@ -16,22 +16,40 @@ TODO
 
 TODO
 
+## Installation
+
+```bash
+$ npm i -g eslint @mizdra/eslint-interactive
+$ eslint-interactive --help
+
+$ # or npx
+$ npx -p eslint -p @mizdra/eslint-interactive eslint-interactive --help
+```
+
 ## Usage
 
 ```bash
-$ npx -p eslint -p @mizdra/eslint-interactive eslint-interactive [file.js] [dir]
+$ # Show help
+$ eslint-interactive --help
+eslint-interactive [file.js] [dir]
+
+Options:
+  --help     Show help                                                 [boolean]
+  --version  Show version number                                       [boolean]
+  --ruledir  Use additional rules from this directory                    [array]
+  --ext      Specify JavaScript file extensions                          [array]
+
 
 $ # Examples
-$ npx -p eslint -p @mizdra/eslint-interactive eslint-interactive src
-$ npx -p eslint -p @mizdra/eslint-interactive eslint-interactive src test
-$ npx -p eslint -p @mizdra/eslint-interactive eslint-interactive 'src/**/*.{ts,tsx,vue}'
+$ eslint-interactive src
+$ eslint-interactive src test
+$ eslint-interactive 'src/**/*.{ts,tsx,vue}'
+$ eslint-interactive src --ext .ts,.tsx,.vue
+$ eslint-interactive src --ruledir ./rules
 ```
 
 ## Future Work
 
-- [ ] Support `-c, --config path::String` option
-- [ ] Support `--ext [String]` option
-- [ ] Support `--rulesdir` option
 - [ ] Support `--no-pager` option
 - [ ] Print the url of rule's documentation
 
