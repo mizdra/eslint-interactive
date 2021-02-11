@@ -12,6 +12,7 @@ export type Options = {
 
 export async function run(options: Options) {
   const argv = yargs(options.argv.slice(2))
+    .usage('$0 [file.js] [dir]')
     .option('ruledir', {
       type: 'array',
       describe: 'Use additional rules from this directory',
