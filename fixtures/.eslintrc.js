@@ -7,4 +7,7 @@ module.exports = {
   env: {
     node: true,
   },
+  rules: {
+    'ban-exponentiation-operator': 2,
+  },
 };
