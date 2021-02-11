@@ -13,18 +13,23 @@ function filterResultsByRuleId(results: ESLint.LintResult[], ruleIds: string[]):
   });
 }
 
+type CachedESLintOptions = {
+  rulePaths?: string[];
+};
+
 export class CachedESLint {
   readonly patterns: string[];
   readonly ruleNameToRuleModule: Map<string, Rule.RuleModule>;
   readonly defaultOptions: ESLint.Options;
 
-  constructor(patterns: string[]) {
+  constructor(patterns: string[], options: CachedESLintOptions) {
     this.patterns = patterns;
     const linter = new Linter();
     this.ruleNameToRuleModule = linter.getRules();
     this.defaultOptions = {
       cache: true,
       cacheLocation: join(tmpdir(), `eslint-interactive--${Date.now()}-${Math.random()}`),
+      rulePaths: options.rulePaths,
     };
   }
 
