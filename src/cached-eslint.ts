@@ -23,15 +23,15 @@ export class CachedESLint {
   readonly ruleNameToRuleModule: Map<string, Rule.RuleModule>;
   readonly defaultOptions: ESLint.Options;
 
-  constructor(patterns: string[], options: CachedESLintOptions) {
+  constructor(patterns: string[], options?: CachedESLintOptions) {
     this.patterns = patterns;
     const linter = new Linter();
     this.ruleNameToRuleModule = linter.getRules();
     this.defaultOptions = {
       cache: true,
       cacheLocation: join(tmpdir(), `eslint-interactive--${Date.now()}-${Math.random()}`),
-      rulePaths: options.rulePaths,
-      extensions: options.extensions,
+      rulePaths: options?.rulePaths,
+      extensions: options?.extensions,
     };
   }
 
