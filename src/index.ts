@@ -70,6 +70,11 @@ export async function run(options: Options) {
           await eslint.fix(selectedRuleIds);
           fixingSpinner.succeed(chalk.bold('Fixing was successful.'));
           break selectRule;
+        } else if (action === 'disable') {
+          const fixingSpinner = ora('Disabling...').start();
+          await eslint.disable(results, selectedRuleIds);
+          fixingSpinner.succeed(chalk.bold('Disabling was successful.'));
+          break selectRule;
         }
       }
     }

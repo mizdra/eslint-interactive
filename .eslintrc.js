@@ -9,6 +9,9 @@ module.exports = {
     '@mizdra/mizdra/+typescript',
     '@mizdra/mizdra/+prettier',
   ],
+  parserOptions: {
+    ecmaVersion: 2021,
+  },
   env: {
     node: true,
   },

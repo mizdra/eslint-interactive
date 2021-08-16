@@ -24,6 +24,7 @@ export async function promptToInputAction(): Promise<Action> {
       choices: [
         { name: 'showMessages', message: 'Show error/warning messages' },
         { name: 'fix', message: 'Fix error/warning' },
+        { name: 'disable', message: 'Disable error/warning for with `// eslint-disable-next-line`' },
         { name: 'reselectRules', message: 'Reselect rules' },
       ],
     },

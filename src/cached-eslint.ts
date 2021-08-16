@@ -13,6 +13,24 @@ function filterResultsByRuleId(results: ESLint.LintResult[], ruleIds: string[]):
   });
 }
 
+function createAddDisableCommentESLint(defaultOptions: ESLint.Options, results: ESLint.LintResult[]): ESLint {
+  const eslint = new ESLint({
+    ...defaultOptions,
+    overrideConfig: {
+      rules: {
+        // NOTE: add-disable-comment は disable comment を追加してくれる rule。
+        // オプションに修正したい message を詰めて渡すと、fix 時にその message を
+        // disable するコメントを追加してくれる
+        'add-disable-comment': [2, JSON.stringify(results)],
+      },
+    },
+    rulePaths: [...(defaultOptions.rulePaths ?? []), join(__dirname, '../local-rules')],
+    // NOTE: add-disable-comment に関するエラーだけ fix したいのでフィルタしている
+    fix: (message) => message.ruleId === 'add-disable-comment',
+  });
+  return eslint;
+}
+
 type CachedESLintOptions = {
   rulePaths?: string[];
   extensions?: string[];
@@ -59,7 +77,19 @@ export class CachedESLint {
       ...this.defaultOptions,
       fix: (message) => message.ruleId !== null && ruleIds.includes(message.ruleId),
     });
+
     const results = await eslint.lintFiles(this.patterns);
     await ESLint.outputFixes(results);
+  }
+
+  async disable(results: ESLint.LintResult[], ruleIds: string[]): Promise<void> {
+    const filteredResults = results.map((result) => {
+      const messages = result.messages.filter((message) => message.ruleId && ruleIds.includes(message.ruleId));
+      return { ...result, messages };
+    });
+
+    const eslint = createAddDisableCommentESLint(this.defaultOptions, filteredResults);
+    const newResults = await eslint.lintFiles(this.patterns);
+    await ESLint.outputFixes(newResults);
   }
 }
