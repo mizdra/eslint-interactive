@@ -7,6 +7,11 @@ module.exports = {
   env: {
     node: true,
   },
+  parserOptions: {
+    ecmaFeatures: {
+      jsx: true,
+    },
+  },
   rules: {
     'ban-exponentiation-operator': 2,
   },
