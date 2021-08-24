@@ -17,10 +17,12 @@ export async function run(options: Options) {
       type: 'array',
       describe: 'Use additional rules from this directory',
     })
+    .nargs('ruledir', 1)
     .option('ext', {
       type: 'array',
       describe: 'Specify JavaScript file extensions',
-    }).argv;
+    })
+    .nargs('ext', 1).argv;
   // NOTE: convert `string` type because yargs convert `'10'` (`string` type) into `10` (`number` type)
   // and `lintFiles` only accepts `string[]`.
   const patterns = argv._.map((pattern) => pattern.toString());

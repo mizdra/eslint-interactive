@@ -56,11 +56,11 @@ Options:
 
 
 $ # Examples
-$ eslint-interactive src
-$ eslint-interactive src test
-$ eslint-interactive 'src/**/*.{ts,tsx,vue}'
-$ eslint-interactive src --ext .ts,.tsx,.vue
-$ eslint-interactive src --ruledir ./rules
+$ eslint-interactive ./src
+$ eslint-interactive ./src ./test
+$ eslint-interactive './src/**/*.{ts,tsx,vue}'
+$ eslint-interactive ./src --ext .ts,.tsx,.vue
+$ eslint-interactive ./src --ruledir ./rules
 ```
 
 ## Future Work
