@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import ora from 'ora';
 import yargs from 'yargs/yargs';
-import { CachedESLint } from './cached-eslint';
+import { CachedESLint } from './eslint';
 import { promptToInputAction, promptToInputContinue, promptToInputRuleIds } from './prompt';
 import { unique } from './util/array';
 import { notEmpty } from './util/filter';
