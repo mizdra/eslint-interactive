@@ -37,9 +37,6 @@ function createAddDisableCommentESLint(defaultOptions: ESLint.Options, results: 
     ...defaultOptions,
     overrideConfig: {
       rules: {
-        // NOTE: add-disable-comment は disable comment を追加してくれる rule。
-        // disable comment を追加したい場所と disable したい ruleId の情報をオプションで渡すと、
-        // autofix で disable comment を追加してくれる。
         'add-disable-comment': [2, JSON.stringify(option)],
       },
     },
