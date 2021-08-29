@@ -1,20 +1,33 @@
-import { ESLint, Rule } from 'eslint';
+import { Rule } from 'eslint';
 // eslint-disable-next-line import/no-unresolved
 import type { Comment } from 'estree';
-import { groupBy, unique } from '../util/array';
-import { notEmpty } from '../util/filter';
 
 const ESLINT_DISABLE_COMMENT_HEADER = 'eslint-disable-next-line ';
 
-// NOTE: disable comment を追加してくれる rule。
-// オプションに修正したい message を詰めて渡すと、fix 時にその message を
-// disable するコメントを追加してくれる。
+// disable comment を追加してくれる rule。
+// disable comment を追加したい場所と disable したい ruleId の情報をオプションで渡すと、
+// autofix で disable comment を追加してくれる。
 //
-// 様々なスーパーハックを駆使して成り立っている、このライブラリの観光名所。
+// NOTE: 様々なスーパーハックを駆使して成り立っている、このライブラリの観光名所。
 // 作りも粗く、いくつかのエッジケースで正しくコメントを追加できない問題がある。
 // しかしユースケースの大部分をカバーできるため、あえてこのような作りにしている。
+//
+// NOTE: ESLint の autofix ではなく、jscodeshift を使って disable comment を追加する
+// 方法もある (事例: https://github.com/amanda-mitchell/suppress-eslint-errors )。
+// jscodeshift は ESLint とは異なるパーサを用いてコードをパースする。そのため jscodeshift を使って
+// disable comment の追加をするには、jscodeshift 向けに別途利用するパーサを指定する必要があったり、
+// ESLint と jscodeshift のパーサの実装の違いによりパースが上手く行かない可能性がある。
+// そこで eslint-interactive では jscodeshift を使わず、ESLint の autofix で disable comment を
+// 追加することで、既にユーザが .eslintrc などで指定しているパーサをそのまま利用して上記問題を回避している。
 
 const filenameToIsAlreadyFixed = new Map<string, boolean>();
+
+export type DisableTarget = {
+  filename: string;
+  line: number;
+  ruleIds: string[];
+};
+export type Option = DisableTarget[];
 
 function findESLintDisableComment(commentsInFile: Comment[], line: number) {
   const commentsInPreviousLine = commentsInFile.filter((comment) => comment.loc?.start.line === line - 1);
@@ -44,8 +57,6 @@ function findESLintDisableComment(commentsInFile: Comment[], line: number) {
 /** @type {import('eslint').Rule.RuleModule} */
 module.exports = {
   create(context: Rule.RuleContext) {
-    const results = JSON.parse(context.options[0]) as ESLint.LintResult[];
-
     const filename = context.getFilename();
 
     // 🤯🤯🤯 THIS IS SUPER HACK!!! 🤯🤯🤯
@@ -60,11 +71,15 @@ module.exports = {
       return {};
     }
 
-    const result = results.find((result) => result.filePath === filename);
-    if (!result) return {};
+    const targets = JSON.parse(context.options[0]) as Option;
+    const targetsInFile = targets.filter((target) => target.filename === filename);
+    if (targetsInFile.length === 0) return {};
 
-    /** @type {Map<number, import('eslint').Linter.LintMessage[]>} */
-    const messagesByLine = groupBy(result.messages, (message) => message.line);
+    // 🤯🤯🤯 THIS IS SUPER HACK!!! 🤯🤯🤯
+    // 1つ message を修正する度に、disable comment が 1 行追加されて、message に格納されている位置情報と、本来修正するべきコードの位置が
+    // 1行ずれてしまう。そこで、ファイルの後ろ側の行の message から修正していくことで、message の位置情報と本来修正するべきコードの
+    // 位置情報がずれないようにしている。
+    const sortedTargetsInFile = targetsInFile.sort((a, b) => b.line - a.line);
 
     const sourceCode = context.getSourceCode();
     const commentsInFile = sourceCode.getAllComments();
@@ -72,18 +87,12 @@ module.exports = {
     return {
       // eslint-disable-next-line @typescript-eslint/naming-convention
       Program: () => {
-        // 🤯🤯🤯 THIS IS SUPER HACK!!! 🤯🤯🤯
-        // 1つ message を修正する度に、disable comment が 1 行追加されて、message に格納されている位置情報と、本来修正するべきコードの位置が
-        // 1行ずれてしまう。そこで、ファイルの後ろ側の行の message から修正していくことで、message の位置情報と本来修正するべきコードの
-        // 位置情報がずれないようにしている。
-        const entries = Array.from(messagesByLine.entries()).reverse();
-        for (const [line, messages] of entries) {
-          const ruleIds = unique(messages.map((message) => message.ruleId).filter(notEmpty));
+        for (const { line, ruleIds } of sortedTargetsInFile) {
           context.report({
             loc: {
               // エラー位置の指定が必須なので、仕方なく設定する。
               // どうせユーザにはエラーメッセージを見せることはないので、適当に設定しておく。
-              line: line,
+              line,
               column: 0,
             },
             message: `add-disable-comment for ${ruleIds.join(', ')}`,

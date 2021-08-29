@@ -3,6 +3,9 @@ import { join } from 'path';
 import { ESLint, Linter, Rule } from 'eslint';
 import pager from 'node-pager';
 import { format } from './formatter';
+import { DisableTarget, Option } from './rules/add-disable-comment';
+import { groupBy } from './util/array';
+import { notEmpty } from './util/filter';
 
 function filterResultsByRuleId(results: ESLint.LintResult[], ruleIds: string[]): ESLint.LintResult[] {
   return results.map((result) => {
@@ -13,15 +16,28 @@ function filterResultsByRuleId(results: ESLint.LintResult[], ruleIds: string[]):
   });
 }
 
+function generateAddDisableCommentOption(results: ESLint.LintResult[]): Option {
+  const targets: DisableTarget[] = [];
+  for (const result of results) {
+    const messagesByLine = groupBy(result.messages, (message) => message.line);
+    for (const [line, messages] of messagesByLine) {
+      targets.push({
+        filename: result.filePath,
+        line,
+        ruleIds: messages.map((message) => message.ruleId).filter(notEmpty),
+      });
+    }
+  }
+  return targets;
+}
+
 function createAddDisableCommentESLint(defaultOptions: ESLint.Options, results: ESLint.LintResult[]): ESLint {
+  const option = generateAddDisableCommentOption(results);
   const eslint = new ESLint({
     ...defaultOptions,
     overrideConfig: {
       rules: {
-        // NOTE: add-disable-comment は disable comment を追加してくれる rule。
-        // オプションに修正したい message を詰めて渡すと、fix 時にその message を
-        // disable するコメントを追加してくれる
-        'add-disable-comment': [2, JSON.stringify(results)],
+        'add-disable-comment': [2, JSON.stringify(option)],
       },
     },
     rulePaths: [...(defaultOptions.rulePaths ?? []), join(__dirname, './rules')],
