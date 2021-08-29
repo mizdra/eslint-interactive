@@ -54,8 +54,7 @@ function findESLintDisableComment(commentsInFile: Comment[], line: number) {
   return { disabledRules, disableRuleListEnd };
 }
 
-/** @type {import('eslint').Rule.RuleModule} */
-module.exports = {
+const rule = {
   create(context: Rule.RuleContext) {
     const filename = context.getFilename();
 
@@ -130,3 +129,7 @@ module.exports = {
     }
   },
 };
+
+module.exports = rule; // for ESLint's Node.js API
+// eslint-disable-next-line import/no-default-export
+export default rule; // for test
