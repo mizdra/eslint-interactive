@@ -89,46 +89,46 @@ const rule: Rule.RuleModule = {
     return {
       // eslint-disable-next-line @typescript-eslint/naming-convention
       Program: () => {
-        for (const { line, ruleIds } of sortedTargetsInFile) {
-          context.report({
-            loc: {
-              // エラー位置の指定が必須なので、仕方なく設定する。
-              // どうせユーザにはエラーメッセージを見せることはないので、適当に設定しておく。
-              line,
-              column: 0,
-            },
-            message: `add-disable-comment for ${ruleIds.join(', ')}`,
-            fix: createFix(line, ruleIds),
-          });
-        }
+        context.report({
+          loc: {
+            // エラー位置の指定が必須なので、仕方なく設定する。
+            // どうせユーザにはエラーメッセージを見せることはないので、適当に設定しておく。
+            line: 0,
+            column: 0,
+          },
+          message: `add-disable-comment`,
+          fix: (fixer) => {
+            const results: Rule.Fix[] = [];
+            for (const { line, ruleIds } of sortedTargetsInFile) {
+              const result = addDisableComment(fixer, line, ruleIds);
+              if (result) results.push(result);
+            }
+            return results;
+          },
+        });
         filenameToIsAlreadyFixed.set(filename, true);
       },
     };
 
-    function createFix(line: number, ruleIds: string[]): (fixer: Rule.RuleFixer) => Rule.Fix | null {
-      return (fixer) => {
-        const disableComment = findESLintDisableComment(commentsInFile, line);
+    function addDisableComment(fixer: Rule.RuleFixer, line: number, ruleIds: string[]): Rule.Fix | null {
+      const disableComment = findESLintDisableComment(commentsInFile, line);
 
-        if (!disableComment) {
-          const headNodeIndex = sourceCode.getIndexFromLoc({ line: line, column: 0 });
-          const headNode = sourceCode.getNodeByRangeIndex(headNodeIndex);
-          if (headNode === null) return null; // なんか null になることがあるらしいので、null になったら例外ケースとして無視する
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          if ((headNode.type as any) === 'JSXText') {
-            return fixer.insertTextBeforeRange(
-              [headNodeIndex, 0],
-              `{/* eslint-disable-next-line ${ruleIds.join(', ')} */}\n`,
-            );
-          } else {
-            return fixer.insertTextBeforeRange(
-              [headNodeIndex, 0],
-              `// eslint-disable-next-line ${ruleIds.join(', ')}\n`,
-            );
-          }
+      if (!disableComment) {
+        const headNodeIndex = sourceCode.getIndexFromLoc({ line: line, column: 0 });
+        const headNode = sourceCode.getNodeByRangeIndex(headNodeIndex);
+        if (headNode === null) return null; // なんか null になることがあるらしいので、null になったら例外ケースとして無視する
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        if ((headNode.type as any) === 'JSXText') {
+          return fixer.insertTextBeforeRange(
+            [headNodeIndex, 0],
+            `{/* eslint-disable-next-line ${ruleIds.join(', ')} */}\n`,
+          );
         } else {
-          return fixer.insertTextBeforeRange([disableComment.disableRuleListEnd, 0], `, ${ruleIds.join(', ')}`);
+          return fixer.insertTextBeforeRange([headNodeIndex, 0], `// eslint-disable-next-line ${ruleIds.join(', ')}\n`);
         }
-      };
+      } else {
+        return fixer.insertTextBeforeRange([disableComment.disableRuleListEnd, 0], `, ${ruleIds.join(', ')}`);
+      }
     }
   },
 };
