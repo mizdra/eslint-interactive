@@ -54,7 +54,10 @@ function findESLintDisableComment(commentsInFile: Comment[], line: number) {
   return { disabledRules, disableRuleListEnd };
 }
 
-const rule = {
+const rule: Rule.RuleModule = {
+  meta: {
+    fixable: 'code',
+  },
   create(context: Rule.RuleContext) {
     const filename = context.getFilename();
 
