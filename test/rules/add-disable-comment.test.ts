@@ -10,7 +10,7 @@ function validCase(args: { code: string[]; option: Option }): RuleTester.ValidTe
   return {
     code: args.code.join('\n'),
     filename: TARGET_FILENAME,
-    options: [JSON.stringify(args.option)],
+    options: [args.option],
   };
 }
 
@@ -20,7 +20,7 @@ function invalidCase(args: { code: string[]; output: string[]; option: Option })
     output: args.output.join('\n'),
     errors: [{ message: 'add-disable-comment' }],
     filename: TARGET_FILENAME,
-    options: [JSON.stringify(args.option)],
+    options: [args.option],
   };
 }
 

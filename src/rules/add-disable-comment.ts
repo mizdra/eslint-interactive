@@ -73,7 +73,7 @@ const rule: Rule.RuleModule = {
       return {};
     }
 
-    const targets = JSON.parse(context.options[0]) as Option;
+    const targets = context.options[0] as Option;
     const targetsInFile = targets.filter((target) => target.filename === filename);
     if (targetsInFile.length === 0) return {};
 
