@@ -24,7 +24,7 @@ function createAddDisableCommentESLint(defaultOptions: ESLint.Options, results: 
         'add-disable-comment': [2, JSON.stringify(results)],
       },
     },
-    rulePaths: [...(defaultOptions.rulePaths ?? []), join(__dirname, '../local-rules')],
+    rulePaths: [...(defaultOptions.rulePaths ?? []), join(__dirname, './rules')],
     // NOTE: add-disable-comment に関するエラーだけ fix したいのでフィルタしている
     fix: (message) => message.ruleId === 'add-disable-comment',
   });

@@ -1,4 +1,8 @@
-// @ts-check
+import { ESLint, Rule } from 'eslint';
+// eslint-disable-next-line import/no-unresolved
+import type { Comment } from 'estree';
+import { groupBy, unique } from '../util/array';
+import { notEmpty } from '../util/filter';
 
 const ESLINT_DISABLE_COMMENT_HEADER = 'eslint-disable-next-line ';
 
@@ -10,32 +14,10 @@ const ESLINT_DISABLE_COMMENT_HEADER = 'eslint-disable-next-line ';
 // 作りも粗く、いくつかのエッジケースで正しくコメントを追加できない問題がある。
 // しかしユースケースの大部分をカバーできるため、あえてこのような作りにしている。
 
-/** @type {Map<string, boolean>} */
-const filenameToIsAlreadyFixed = new Map();
+const filenameToIsAlreadyFixed = new Map<string, boolean>();
 
-function unique(array) {
-  return [...new Set(array)];
-}
-
-function groupBy(array, toKey) {
-  const map = new Map();
-
-  for (const item of array) {
-    const key = toKey(item);
-    const oldValue = map.get(key);
-    const newValue = oldValue ? [...oldValue, item] : [item];
-    map.set(key, newValue);
-  }
-
-  return map;
-}
-
-/**
- * @param commentsInFile {import('estree').Comment[]}
- * @param line {number}
- */
-function findESLintDisableComment(commentsInFile, line) {
-  const commentsInPreviousLine = commentsInFile.filter((comment) => comment.loc.start.line === line - 1);
+function findESLintDisableComment(commentsInFile: Comment[], line: number) {
+  const commentsInPreviousLine = commentsInFile.filter((comment) => comment.loc?.start.line === line - 1);
   const eslintDisableComment = commentsInPreviousLine.find((comment) => {
     const text = comment.value.trim();
     return text.startsWith(ESLINT_DISABLE_COMMENT_HEADER);
@@ -54,15 +36,15 @@ function findESLintDisableComment(commentsInFile, line) {
   const commentTextTrailingSpaceLength =
     eslintDisableComment.value.length - eslintDisableComment.value.trimEnd().length;
   const commentFooterLength = eslintDisableComment.type === 'Block' ? 2 : 0; // '*/' の長さ
-  const disableRuleListEnd = eslintDisableComment.range[1] - commentFooterLength - commentTextTrailingSpaceLength;
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const disableRuleListEnd = eslintDisableComment.range![1] - commentFooterLength - commentTextTrailingSpaceLength;
   return { disabledRules, disableRuleListEnd };
 }
 
 /** @type {import('eslint').Rule.RuleModule} */
 module.exports = {
-  create(context) {
-    /** @type {import('eslint').ESLint.LintResult[]} */
-    const results = JSON.parse(context.options[0]);
+  create(context: Rule.RuleContext) {
+    const results = JSON.parse(context.options[0]) as ESLint.LintResult[];
 
     const filename = context.getFilename();
 
@@ -96,7 +78,7 @@ module.exports = {
         // 位置情報がずれないようにしている。
         const entries = Array.from(messagesByLine.entries()).reverse();
         for (const [line, messages] of entries) {
-          const ruleIds = unique(messages.map((message) => message.ruleId));
+          const ruleIds = unique(messages.map((message) => message.ruleId).filter(notEmpty));
           context.report({
             loc: {
               // エラー位置の指定が必須なので、仕方なく設定する。
@@ -112,21 +94,16 @@ module.exports = {
       },
     };
 
-    /**
-     * @param {number} line
-     * @param {string[]} ruleIds
-     * @returns {(fixer: import('eslint').Rule.RuleFixer) => import('eslint').Rule.Fix}
-     */
-    function createFix(line, ruleIds) {
+    function createFix(line: number, ruleIds: string[]): (fixer: Rule.RuleFixer) => Rule.Fix | null {
       return (fixer) => {
         const disableComment = findESLintDisableComment(commentsInFile, line);
 
         if (!disableComment) {
           const headNodeIndex = sourceCode.getIndexFromLoc({ line: line, column: 0 });
           const headNode = sourceCode.getNodeByRangeIndex(headNodeIndex);
-          if (headNode === null) return; // なんか null になることがあるらしいので、null になったら例外ケースとして無視する
-          // @ts-ignore
-          if (headNode.type === 'JSXText') {
+          if (headNode === null) return null; // なんか null になることがあるらしいので、null になったら例外ケースとして無視する
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          if ((headNode.type as any) === 'JSXText') {
             return fixer.insertTextBeforeRange(
               [headNodeIndex, 0],
               `{/* eslint-disable-next-line ${ruleIds.join(', ')} */}\n`,
