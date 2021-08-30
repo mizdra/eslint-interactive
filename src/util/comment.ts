@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-unresolved
 import type { Comment } from 'estree';
 
-type ESLintDisableComment = {
+export type ESLintDisableComment = {
   type: 'Block' | 'Line';
   ruleIds: string[];
   description?: string;
@@ -60,5 +60,25 @@ export function parseCommentAsESLintDisableComment(comment: Comment): ESLintDisa
       type: comment.type,
       ruleIds,
     };
+  }
+}
+
+/**
+ * `ESLintDisableComment` 型からコメントのテキスト表現を作成する
+ */
+export function createCommentNodeText({ type, ruleIds, description }: ESLintDisableComment): string {
+  const ruleList = ruleIds.join(', ');
+  if (type === 'Line') {
+    if (description === undefined) {
+      return `// eslint-disable-next-line ${ruleList}`;
+    } else {
+      return `// eslint-disable-next-line ${ruleList} -- ${description}`;
+    }
+  } else {
+    if (description === undefined) {
+      return `/* eslint-disable-next-line ${ruleList} */`;
+    } else {
+      return `/* eslint-disable-next-line ${ruleList} -- ${description} */`;
+    }
   }
 }
