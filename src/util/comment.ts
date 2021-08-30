@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/no-unresolved
 import type { Comment } from 'estree';
+import { unique } from './array';
 
 export type ESLintDisableComment = {
   type: 'Block' | 'Line';
@@ -67,7 +68,7 @@ export function parseCommentAsESLintDisableComment(comment: Comment): ESLintDisa
  * `ESLintDisableComment` 型からコメントのテキスト表現を作成する
  */
 export function createCommentNodeText({ type, ruleIds, description }: ESLintDisableComment): string {
-  const ruleList = ruleIds.join(', ');
+  const ruleList = unique(ruleIds).join(', ');
   if (type === 'Line') {
     if (description === undefined) {
       return `// eslint-disable-next-line ${ruleList}`;
