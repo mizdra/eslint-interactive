@@ -37,7 +37,7 @@ function createAddDisableCommentESLint(defaultOptions: ESLint.Options, results: 
     ...defaultOptions,
     overrideConfig: {
       rules: {
-        'add-disable-comment': [2, JSON.stringify(option)],
+        'add-disable-comment': [2, option],
       },
     },
     rulePaths: [...(defaultOptions.rulePaths ?? []), join(__dirname, './rules')],

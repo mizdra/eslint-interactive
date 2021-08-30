@@ -10,7 +10,7 @@ function validCase(args: { code: string[]; option: Option }): RuleTester.ValidTe
   return {
     code: args.code.join('\n'),
     filename: TARGET_FILENAME,
-    options: [JSON.stringify(args.option)],
+    options: [args.option],
   };
 }
 
@@ -20,7 +20,7 @@ function invalidCase(args: { code: string[]; output: string[]; option: Option })
     output: args.output.join('\n'),
     errors: [{ message: 'add-disable-comment' }],
     filename: TARGET_FILENAME,
-    options: [JSON.stringify(args.option)],
+    options: [args.option],
   };
 }
 
@@ -87,6 +87,9 @@ ruleTester.run('add-disable-comment', rule, {
         '  <span>text1</span>',
         '  {/* eslint-disable-next-line semi */}',
         '  <span>text2</span>',
+        '  {() => {',
+        '    val;',
+        '  }}',
         '</div>;',
       ],
       output: [
@@ -96,12 +99,45 @@ ruleTester.run('add-disable-comment', rule, {
         '  <span>text1</span>',
         '  {/* eslint-disable-next-line semi, c */}',
         '  <span>text2</span>',
+        '  {() => {',
+        '// eslint-disable-next-line d',
+        '    val;',
+        '  }}',
         '</div>;',
       ],
       option: [
         { filename: TARGET_FILENAME, line: 1, ruleIds: ['a'] },
         { filename: TARGET_FILENAME, line: 2, ruleIds: ['b'] },
         { filename: TARGET_FILENAME, line: 4, ruleIds: ['c'] },
+        { filename: TARGET_FILENAME, line: 6, ruleIds: ['d'] },
+      ],
+    }),
+    // disable comment のある行に disable comment 以外の Node があっても disable できる
+    invalidCase({
+      code: [
+        'val1; // eslint-disable-next-line semi',
+        'val2;',
+        'val3; /* eslint-disable-next-line semi */ val4;',
+        'val5;',
+        '/* a */ /* eslint-disable-next-line semi */ /* b */',
+        'val6;',
+      ],
+      output: [
+        '// eslint-disable-next-line a',
+        'val1; // eslint-disable-next-line semi, b',
+        'val2;',
+        '// eslint-disable-next-line c',
+        'val3; /* eslint-disable-next-line semi, d */ val4;',
+        'val5;',
+        '/* a */ /* eslint-disable-next-line semi, e */ /* b */',
+        'val6;',
+      ],
+      option: [
+        { filename: TARGET_FILENAME, line: 1, ruleIds: ['a'] },
+        { filename: TARGET_FILENAME, line: 2, ruleIds: ['b'] },
+        { filename: TARGET_FILENAME, line: 3, ruleIds: ['c'] },
+        { filename: TARGET_FILENAME, line: 4, ruleIds: ['d'] },
+        { filename: TARGET_FILENAME, line: 6, ruleIds: ['e'] },
       ],
     }),
     // `MAX_AUTOFIX_PASSES` より多い数の行を disable できる
