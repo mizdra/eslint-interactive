@@ -1,4 +1,4 @@
-import { parseCommentAsESLintDisableComment } from '../../src/util/comment';
+import { createCommentNodeText, parseCommentAsESLintDisableComment } from '../../src/util/comment';
 
 describe('parseCommentAsESLintDisableComment', () => {
   describe('disable comment の時', () => {
@@ -112,5 +112,24 @@ describe('parseCommentAsESLintDisableComment', () => {
         value: 'foo',
       }),
     ).toStrictEqual(null);
+  });
+});
+
+describe('createCommentNodeText', () => {
+  test('Line 形式のコメントが作成できる', () => {
+    expect(createCommentNodeText({ type: 'Line', ruleIds: ['a', 'b'] })).toMatchInlineSnapshot(
+      `"// eslint-disable-next-line a, b"`,
+    );
+    expect(createCommentNodeText({ type: 'Line', ruleIds: ['a', 'b'], description: 'foo' })).toMatchInlineSnapshot(
+      `"// eslint-disable-next-line a, b -- foo"`,
+    );
+  });
+  test('Block 形式のコメントが作成できる', () => {
+    expect(createCommentNodeText({ type: 'Block', ruleIds: ['a', 'b'] })).toMatchInlineSnapshot(
+      `"/* eslint-disable-next-line a, b */"`,
+    );
+    expect(createCommentNodeText({ type: 'Block', ruleIds: ['a', 'b'], description: 'foo' })).toMatchInlineSnapshot(
+      `"/* eslint-disable-next-line a, b -- foo */"`,
+    );
   });
 });
