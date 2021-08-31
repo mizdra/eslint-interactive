@@ -28,7 +28,7 @@ function generateAddDisableCommentOption(results: ESLint.LintResult[]): Option {
       });
     }
   }
-  return targets;
+  return { targets };
 }
 
 function createAddDisableCommentESLint(defaultOptions: ESLint.Options, results: ESLint.LintResult[]): ESLint {
