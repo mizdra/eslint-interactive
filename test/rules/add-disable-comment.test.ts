@@ -62,6 +62,18 @@ ruleTester.run('add-disable-comment', rule, {
       output: ['/* eslint-disable-next-line semi, a -- comment */', 'val;'],
       option: { targets: [{ filename: TARGET_FILENAME, line: 2, ruleIds: ['a'] }] },
     }),
+    // disable description を追加できる
+    invalidCase({
+      code: ['/* eslint-disable-next-line semi */', 'val;'],
+      output: ['/* eslint-disable-next-line semi, a -- comment */', 'val;'],
+      option: { targets: [{ filename: TARGET_FILENAME, line: 2, ruleIds: ['a'] }], description: 'comment' },
+    }),
+    // 既に disable description があるコメントに対しても disable description を追加できる
+    invalidCase({
+      code: ['/* eslint-disable-next-line semi -- foo */', 'val;'],
+      output: ['/* eslint-disable-next-line semi, a -- foo, bar */', 'val;'],
+      option: { targets: [{ filename: TARGET_FILENAME, line: 2, ruleIds: ['a'] }], description: 'bar' },
+    }),
     // 複数行を同時に disable できる
     invalidCase({
       code: ['val1;', 'val2;', '', 'val3;'],
