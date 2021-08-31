@@ -112,19 +112,31 @@ const rule: Rule.RuleModule = {
         if ((headNode.type as any) === 'JSXText') {
           return fixer.insertTextBeforeRange(
             [headNodeIndex, 0],
-            '{' + createCommentNodeText({ type: 'Block', ruleIds }) + '}\n',
+            '{' + createCommentNodeText({ type: 'Block', ruleIds, description: option.description }) + '}\n',
           );
         } else {
           return fixer.insertTextBeforeRange(
             [headNodeIndex, 0],
-            createCommentNodeText({ type: 'Line', ruleIds }) + '\n',
+            createCommentNodeText({ type: 'Line', ruleIds, description: option.description }) + '\n',
           );
         }
       } else {
         const { range, eslintDisableComment } = findResult;
+        const description =
+          eslintDisableComment.description !== undefined && option.description !== undefined
+            ? `${eslintDisableComment.description}, ${option.description}`
+            : eslintDisableComment.description !== undefined && option.description === undefined
+            ? eslintDisableComment.description
+            : eslintDisableComment.description === undefined && option.description !== undefined
+            ? option.description
+            : undefined;
         return fixer.replaceTextRange(
           range,
-          createCommentNodeText({ ...eslintDisableComment, ruleIds: [...eslintDisableComment.ruleIds, ...ruleIds] }),
+          createCommentNodeText({
+            type: eslintDisableComment.type,
+            ruleIds: [...eslintDisableComment.ruleIds, ...ruleIds],
+            description,
+          }),
         );
       }
     }

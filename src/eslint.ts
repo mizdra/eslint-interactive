@@ -16,7 +16,7 @@ function filterResultsByRuleId(results: ESLint.LintResult[], ruleIds: string[]):
   });
 }
 
-function generateAddDisableCommentOption(results: ESLint.LintResult[]): Option {
+function generateAddDisableCommentOption(results: ESLint.LintResult[], description?: string): Option {
   const targets: DisableTarget[] = [];
   for (const result of results) {
     const messagesByLine = groupBy(result.messages, (message) => message.line);
@@ -28,11 +28,15 @@ function generateAddDisableCommentOption(results: ESLint.LintResult[]): Option {
       });
     }
   }
-  return { targets };
+  return { targets, description };
 }
 
-function createAddDisableCommentESLint(defaultOptions: ESLint.Options, results: ESLint.LintResult[]): ESLint {
-  const option = generateAddDisableCommentOption(results);
+function createAddDisableCommentESLint(
+  defaultOptions: ESLint.Options,
+  results: ESLint.LintResult[],
+  description?: string,
+): ESLint {
+  const option = generateAddDisableCommentOption(results, description);
   const eslint = new ESLint({
     ...defaultOptions,
     overrideConfig: {
@@ -98,13 +102,13 @@ export class CachedESLint {
     await ESLint.outputFixes(results);
   }
 
-  async disable(results: ESLint.LintResult[], ruleIds: string[]): Promise<void> {
+  async disable(results: ESLint.LintResult[], ruleIds: string[], description?: string): Promise<void> {
     const filteredResults = results.map((result) => {
       const messages = result.messages.filter((message) => message.ruleId && ruleIds.includes(message.ruleId));
       return { ...result, messages };
     });
 
-    const eslint = createAddDisableCommentESLint(this.defaultOptions, filteredResults);
+    const eslint = createAddDisableCommentESLint(this.defaultOptions, filteredResults, description);
     const newResults = await eslint.lintFiles(this.patterns);
     await ESLint.outputFixes(newResults);
   }
