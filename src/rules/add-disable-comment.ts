@@ -1,8 +1,7 @@
 import { Rule } from 'eslint';
 // eslint-disable-next-line import/no-unresolved
 import type { Comment } from 'estree';
-
-const ESLINT_DISABLE_COMMENT_HEADER = 'eslint-disable-next-line ';
+import { createCommentNodeText, parseCommentAsESLintDisableComment } from '../util/comment';
 
 // disable comment を追加してくれる rule。
 // disable comment を追加したい場所と disable したい ruleId の情報をオプションで渡すと、
@@ -31,27 +30,19 @@ export type Option = DisableTarget[];
 
 function findESLintDisableComment(commentsInFile: Comment[], line: number) {
   const commentsInPreviousLine = commentsInFile.filter((comment) => comment.loc?.start.line === line - 1);
-  const eslintDisableComment = commentsInPreviousLine.find((comment) => {
-    const text = comment.value.trim();
-    return text.startsWith(ESLINT_DISABLE_COMMENT_HEADER);
-  });
-  if (!eslintDisableComment) return;
 
-  const disabledRules = eslintDisableComment.value
-    .trim()
-    .slice(ESLINT_DISABLE_COMMENT_HEADER.length)
-    // NOTE: ',' 区切りで無効化したいルールが複数記述されることがある
-    .split(',')
-    // NOTE: 'a,b, c,  d' のようなカンマの後に空白があるケースもパースできるように
-    .map((r) => r.trim());
-
-  // 無効化されるルールのリストの末尾のインデックスを計算する
-  const commentTextTrailingSpaceLength =
-    eslintDisableComment.value.length - eslintDisableComment.value.trimEnd().length;
-  const commentFooterLength = eslintDisableComment.type === 'Block' ? 2 : 0; // '*/' の長さ
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const disableRuleListEnd = eslintDisableComment.range![1] - commentFooterLength - commentTextTrailingSpaceLength;
-  return { disabledRules, disableRuleListEnd };
+  for (const comment of commentsInPreviousLine) {
+    const eslintDisableComment = parseCommentAsESLintDisableComment(comment);
+    // NOTE: コメントノードには必ず range があるはずだが、型上は optional なので、
+    // range がない場合は無視するようにしておく
+    if (eslintDisableComment && comment.range) {
+      return {
+        eslintDisableComment,
+        range: comment.range,
+      };
+    }
+  }
+  return null;
 }
 
 const rule: Rule.RuleModule = {
@@ -111,9 +102,9 @@ const rule: Rule.RuleModule = {
     };
 
     function addDisableComment(fixer: Rule.RuleFixer, line: number, ruleIds: string[]): Rule.Fix | null {
-      const disableComment = findESLintDisableComment(commentsInFile, line);
+      const findResult = findESLintDisableComment(commentsInFile, line);
 
-      if (!disableComment) {
+      if (!findResult) {
         const headNodeIndex = sourceCode.getIndexFromLoc({ line: line, column: 0 });
         const headNode = sourceCode.getNodeByRangeIndex(headNodeIndex);
         if (headNode === null) return null; // なんか null になることがあるらしいので、null になったら例外ケースとして無視する
@@ -121,13 +112,20 @@ const rule: Rule.RuleModule = {
         if ((headNode.type as any) === 'JSXText') {
           return fixer.insertTextBeforeRange(
             [headNodeIndex, 0],
-            `{/* eslint-disable-next-line ${ruleIds.join(', ')} */}\n`,
+            '{' + createCommentNodeText({ type: 'Block', ruleIds }) + '}\n',
           );
         } else {
-          return fixer.insertTextBeforeRange([headNodeIndex, 0], `// eslint-disable-next-line ${ruleIds.join(', ')}\n`);
+          return fixer.insertTextBeforeRange(
+            [headNodeIndex, 0],
+            createCommentNodeText({ type: 'Line', ruleIds }) + '\n',
+          );
         }
       } else {
-        return fixer.insertTextBeforeRange([disableComment.disableRuleListEnd, 0], `, ${ruleIds.join(', ')}`);
+        const { range, eslintDisableComment } = findResult;
+        return fixer.replaceTextRange(
+          range,
+          createCommentNodeText({ ...eslintDisableComment, ruleIds: [...eslintDisableComment.ruleIds, ...ruleIds] }),
+        );
       }
     }
   },
