@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import ora from 'ora';
 import yargs from 'yargs/yargs';
 import { CachedESLint } from './eslint';
-import { promptToInputAction, promptToInputContinue, promptToInputRuleIds } from './prompt';
+import { promptToInputAction, promptToInputContinue, promptToInputDescription, promptToInputRuleIds } from './prompt';
 import { unique } from './util/array';
 import { notEmpty } from './util/filter';
 
@@ -73,8 +73,9 @@ export async function run(options: Options) {
           fixingSpinner.succeed(chalk.bold('Fixing was successful.'));
           break selectRule;
         } else if (action === 'disable') {
+          const description = await promptToInputDescription();
           const fixingSpinner = ora('Disabling...').start();
-          await eslint.disable(results, selectedRuleIds);
+          await eslint.disable(results, selectedRuleIds, description);
           fixingSpinner.succeed(chalk.bold('Disabling was successful.'));
           break selectRule;
         }

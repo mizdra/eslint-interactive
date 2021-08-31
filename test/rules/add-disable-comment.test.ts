@@ -30,37 +30,49 @@ ruleTester.run('add-disable-comment', rule, {
     invalidCase({
       code: ['val;'],
       output: ['// eslint-disable-next-line a', 'val;'],
-      option: [{ filename: TARGET_FILENAME, line: 1, ruleIds: ['a'] }],
+      option: { targets: [{ filename: TARGET_FILENAME, line: 1, ruleIds: ['a'] }] },
     }),
     // 同一行にて複数の rule を同時に disable できる
     invalidCase({
       code: ['val;'],
       output: ['// eslint-disable-next-line a, b', 'val;'],
-      option: [{ filename: TARGET_FILENAME, line: 1, ruleIds: ['a', 'b'] }],
+      option: { targets: [{ filename: TARGET_FILENAME, line: 1, ruleIds: ['a', 'b'] }] },
     }),
     // 既に disable comment が付いている場合は、末尾に足す
     invalidCase({
       code: ['// eslint-disable-next-line semi', 'val;'],
       output: ['// eslint-disable-next-line semi, a', 'val;'],
-      option: [{ filename: TARGET_FILENAME, line: 2, ruleIds: ['a'] }],
+      option: { targets: [{ filename: TARGET_FILENAME, line: 2, ruleIds: ['a'] }] },
     }),
     // 既に disable されている場合は何もしない
     invalidCase({
       code: ['// eslint-disable-next-line semi', 'val;'],
       output: ['// eslint-disable-next-line semi', 'val;'],
-      option: [{ filename: TARGET_FILENAME, line: 2, ruleIds: ['semi'] }],
+      option: { targets: [{ filename: TARGET_FILENAME, line: 2, ruleIds: ['semi'] }] },
     }),
     // `/* ... */` スタイルであっても disable できる
     invalidCase({
       code: ['/* eslint-disable-next-line semi */', 'val;'],
       output: ['/* eslint-disable-next-line semi, a */', 'val;'],
-      option: [{ filename: TARGET_FILENAME, line: 2, ruleIds: ['a'] }],
+      option: { targets: [{ filename: TARGET_FILENAME, line: 2, ruleIds: ['a'] }] },
     }),
     // disable description があっても disable できる
     invalidCase({
       code: ['/* eslint-disable-next-line semi -- comment */', 'val;'],
       output: ['/* eslint-disable-next-line semi, a -- comment */', 'val;'],
-      option: [{ filename: TARGET_FILENAME, line: 2, ruleIds: ['a'] }],
+      option: { targets: [{ filename: TARGET_FILENAME, line: 2, ruleIds: ['a'] }] },
+    }),
+    // disable description を追加できる
+    invalidCase({
+      code: ['/* eslint-disable-next-line semi */', 'val;'],
+      output: ['/* eslint-disable-next-line semi, a -- comment */', 'val;'],
+      option: { targets: [{ filename: TARGET_FILENAME, line: 2, ruleIds: ['a'] }], description: 'comment' },
+    }),
+    // 既に disable description があるコメントに対しても disable description を追加できる
+    invalidCase({
+      code: ['/* eslint-disable-next-line semi -- foo */', 'val;'],
+      output: ['/* eslint-disable-next-line semi, a -- foo, bar */', 'val;'],
+      option: { targets: [{ filename: TARGET_FILENAME, line: 2, ruleIds: ['a'] }], description: 'bar' },
     }),
     // 複数行を同時に disable できる
     invalidCase({
@@ -74,11 +86,13 @@ ruleTester.run('add-disable-comment', rule, {
         '// eslint-disable-next-line c',
         'val3;',
       ],
-      option: [
-        { filename: TARGET_FILENAME, line: 1, ruleIds: ['a'] },
-        { filename: TARGET_FILENAME, line: 2, ruleIds: ['b'] },
-        { filename: TARGET_FILENAME, line: 4, ruleIds: ['c'] },
-      ],
+      option: {
+        targets: [
+          { filename: TARGET_FILENAME, line: 1, ruleIds: ['a'] },
+          { filename: TARGET_FILENAME, line: 2, ruleIds: ['b'] },
+          { filename: TARGET_FILENAME, line: 4, ruleIds: ['c'] },
+        ],
+      },
     }),
     // JSX に対しても disable できる
     invalidCase({
@@ -105,12 +119,14 @@ ruleTester.run('add-disable-comment', rule, {
         '  }}',
         '</div>;',
       ],
-      option: [
-        { filename: TARGET_FILENAME, line: 1, ruleIds: ['a'] },
-        { filename: TARGET_FILENAME, line: 2, ruleIds: ['b'] },
-        { filename: TARGET_FILENAME, line: 4, ruleIds: ['c'] },
-        { filename: TARGET_FILENAME, line: 6, ruleIds: ['d'] },
-      ],
+      option: {
+        targets: [
+          { filename: TARGET_FILENAME, line: 1, ruleIds: ['a'] },
+          { filename: TARGET_FILENAME, line: 2, ruleIds: ['b'] },
+          { filename: TARGET_FILENAME, line: 4, ruleIds: ['c'] },
+          { filename: TARGET_FILENAME, line: 6, ruleIds: ['d'] },
+        ],
+      },
     }),
     // disable comment のある行に disable comment 以外の Node があっても disable できる
     invalidCase({
@@ -132,13 +148,15 @@ ruleTester.run('add-disable-comment', rule, {
         '/* a */ /* eslint-disable-next-line semi, e */ /* b */',
         'val6;',
       ],
-      option: [
-        { filename: TARGET_FILENAME, line: 1, ruleIds: ['a'] },
-        { filename: TARGET_FILENAME, line: 2, ruleIds: ['b'] },
-        { filename: TARGET_FILENAME, line: 3, ruleIds: ['c'] },
-        { filename: TARGET_FILENAME, line: 4, ruleIds: ['d'] },
-        { filename: TARGET_FILENAME, line: 6, ruleIds: ['e'] },
-      ],
+      option: {
+        targets: [
+          { filename: TARGET_FILENAME, line: 1, ruleIds: ['a'] },
+          { filename: TARGET_FILENAME, line: 2, ruleIds: ['b'] },
+          { filename: TARGET_FILENAME, line: 3, ruleIds: ['c'] },
+          { filename: TARGET_FILENAME, line: 4, ruleIds: ['d'] },
+          { filename: TARGET_FILENAME, line: 6, ruleIds: ['e'] },
+        ],
+      },
     }),
     // `MAX_AUTOFIX_PASSES` より多い数の行を disable できる
     // ref: https://github.com/eslint/eslint/blob/81c60f4a8725738f191580646562d1dca7eee933/lib/linter/linter.js#L42
@@ -183,27 +201,29 @@ ruleTester.run('add-disable-comment', rule, {
         '// eslint-disable-next-line l',
         'val12;',
       ],
-      option: [
-        { filename: TARGET_FILENAME, line: 1, ruleIds: ['a'] },
-        { filename: TARGET_FILENAME, line: 2, ruleIds: ['b'] },
-        { filename: TARGET_FILENAME, line: 3, ruleIds: ['c'] },
-        { filename: TARGET_FILENAME, line: 4, ruleIds: ['d'] },
-        { filename: TARGET_FILENAME, line: 5, ruleIds: ['e'] },
-        { filename: TARGET_FILENAME, line: 6, ruleIds: ['f'] },
-        { filename: TARGET_FILENAME, line: 7, ruleIds: ['g'] },
-        { filename: TARGET_FILENAME, line: 8, ruleIds: ['h'] },
-        { filename: TARGET_FILENAME, line: 9, ruleIds: ['i'] },
-        { filename: TARGET_FILENAME, line: 10, ruleIds: ['j'] },
-        { filename: TARGET_FILENAME, line: 11, ruleIds: ['k'] },
-        { filename: TARGET_FILENAME, line: 12, ruleIds: ['l'] },
-      ],
+      option: {
+        targets: [
+          { filename: TARGET_FILENAME, line: 1, ruleIds: ['a'] },
+          { filename: TARGET_FILENAME, line: 2, ruleIds: ['b'] },
+          { filename: TARGET_FILENAME, line: 3, ruleIds: ['c'] },
+          { filename: TARGET_FILENAME, line: 4, ruleIds: ['d'] },
+          { filename: TARGET_FILENAME, line: 5, ruleIds: ['e'] },
+          { filename: TARGET_FILENAME, line: 6, ruleIds: ['f'] },
+          { filename: TARGET_FILENAME, line: 7, ruleIds: ['g'] },
+          { filename: TARGET_FILENAME, line: 8, ruleIds: ['h'] },
+          { filename: TARGET_FILENAME, line: 9, ruleIds: ['i'] },
+          { filename: TARGET_FILENAME, line: 10, ruleIds: ['j'] },
+          { filename: TARGET_FILENAME, line: 11, ruleIds: ['k'] },
+          { filename: TARGET_FILENAME, line: 12, ruleIds: ['l'] },
+        ],
+      },
     }),
   ],
   valid: [
     // 他のファイル向けの disable は無視される
     validCase({
       code: ['val;'],
-      option: [{ filename: OTHER_FILENAME, line: 1, ruleIds: ['a'] }],
+      option: { targets: [{ filename: OTHER_FILENAME, line: 1, ruleIds: ['a'] }] },
     }),
   ],
 });

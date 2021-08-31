@@ -32,6 +32,19 @@ export async function promptToInputAction(): Promise<Action> {
   return action;
 }
 
+export async function promptToInputDescription(): Promise<string | undefined> {
+  const { description } = await prompt<{
+    description: string;
+  }>([
+    {
+      name: 'description',
+      type: 'input',
+      message: 'Leave a code comment with your reason for disabling (Optional)',
+    },
+  ]);
+  return description === '' ? undefined : description;
+}
+
 export async function promptToInputContinue(): Promise<boolean> {
   const { isContinue } = await prompt<{ isContinue: boolean }>([
     {

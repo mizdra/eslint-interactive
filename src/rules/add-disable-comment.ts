@@ -26,7 +26,7 @@ export type DisableTarget = {
   line: number;
   ruleIds: string[];
 };
-export type Option = DisableTarget[];
+export type Option = { targets: DisableTarget[]; description?: string };
 
 function findESLintDisableComment(commentsInFile: Comment[], line: number) {
   const commentsInPreviousLine = commentsInFile.filter((comment) => comment.loc?.start.line === line - 1);
@@ -64,8 +64,8 @@ const rule: Rule.RuleModule = {
       return {};
     }
 
-    const targets = context.options[0] as Option;
-    const targetsInFile = targets.filter((target) => target.filename === filename);
+    const option = context.options[0] as Option;
+    const targetsInFile = option.targets.filter((target) => target.filename === filename);
     if (targetsInFile.length === 0) return {};
 
     // 🤯🤯🤯 THIS IS SUPER HACK!!! 🤯🤯🤯
@@ -112,19 +112,31 @@ const rule: Rule.RuleModule = {
         if ((headNode.type as any) === 'JSXText') {
           return fixer.insertTextBeforeRange(
             [headNodeIndex, 0],
-            '{' + createCommentNodeText({ type: 'Block', ruleIds }) + '}\n',
+            '{' + createCommentNodeText({ type: 'Block', ruleIds, description: option.description }) + '}\n',
           );
         } else {
           return fixer.insertTextBeforeRange(
             [headNodeIndex, 0],
-            createCommentNodeText({ type: 'Line', ruleIds }) + '\n',
+            createCommentNodeText({ type: 'Line', ruleIds, description: option.description }) + '\n',
           );
         }
       } else {
         const { range, eslintDisableComment } = findResult;
+        const description =
+          eslintDisableComment.description !== undefined && option.description !== undefined
+            ? `${eslintDisableComment.description}, ${option.description}`
+            : eslintDisableComment.description !== undefined && option.description === undefined
+            ? eslintDisableComment.description
+            : eslintDisableComment.description === undefined && option.description !== undefined
+            ? option.description
+            : undefined;
         return fixer.replaceTextRange(
           range,
-          createCommentNodeText({ ...eslintDisableComment, ruleIds: [...eslintDisableComment.ruleIds, ...ruleIds] }),
+          createCommentNodeText({
+            type: eslintDisableComment.type,
+            ruleIds: [...eslintDisableComment.ruleIds, ...ruleIds],
+            description,
+          }),
         );
       }
     }
