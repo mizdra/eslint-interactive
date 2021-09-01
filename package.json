@@ -16,6 +16,7 @@
     "check:eslint": "eslint src test",
     "test": "jest --colors"
   },
+  "prettier": "@mizdra/prettier-config-mizdra",
   "devDependencies": {
     "@jest/types": "^27.1.0",
     "@mizdra/eslint-config-mizdra": "^0.7.0",
