@@ -6,11 +6,12 @@ module.exports = {
   displayName: 'test',
   preset: 'ts-jest',
   testMatch: ['<rootDir>/test/**/*.test.ts?(x)'],
-  collectCoverageFrom: [
-    '<rootDir>/src/**/*.{ts,tsx}',
-    '!**/*.d.ts',
-    '!<rootDir>/src/util/**/*',
-  ],
+  // ESLint v8 では `pkg.exports` を利用したモジュールに依存しているが、jest は `pkg.exports` を解釈できないため、
+  // そのままだと jest がコケてしまう。そこで `moduleNameMapper` を使って無理やりモジュール名を解決している。
+  moduleNameMapper: {
+    '@eslint/eslintrc/universal': '@eslint/eslintrc/dist/eslintrc-universal.cjs',
+  },
+  collectCoverageFrom: ['<rootDir>/src/**/*.{ts,tsx}', '!**/*.d.ts', '!<rootDir>/src/util/**/*'],
   globals: {
     'ts-jest': {
       tsconfig: 'tsconfig.test.json',
