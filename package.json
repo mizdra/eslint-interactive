@@ -13,8 +13,8 @@
     "check:tsc": "run-s -c check:tsc:*",
     "check:tsc:src": "tsc -p tsconfig.src.json --noEmit",
     "check:tsc:test": "tsc -p tsconfig.test.json --noEmit",
-    "check:eslint": "eslint src test",
-    "test": "jest --colors"
+    "check:eslint": "eslint .",
+    "test": "jest"
   },
   "prettier": "@mizdra/prettier-config-mizdra",
   "renovate": "github>mizdra/renovate-config-mizdra",
