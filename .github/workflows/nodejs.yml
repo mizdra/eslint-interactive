@@ -58,7 +58,6 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Change ESLint version
-        if: steps.cache.outputs.cache-hit != 'true'
         run: yarn add -D eslint@${{ matrix.eslint }}
 
       - name: yarn run test
