@@ -69,7 +69,6 @@
     "eslint"
   ],
   "files": [
-    "local-rules",
     "src",
     "dist"
   ]
