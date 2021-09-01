@@ -14,6 +14,7 @@
     "lint:tsc:src": "tsc -p tsconfig.src.json --noEmit",
     "lint:tsc:test": "tsc -p tsconfig.test.json --noEmit",
     "lint:eslint": "eslint .",
+    "lint:prettier": "prettier --check .",
     "test": "jest"
   },
   "prettier": "@mizdra/prettier-config-mizdra",
