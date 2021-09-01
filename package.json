@@ -23,6 +23,7 @@
     "@types/cli-table": "^0.3.0",
     "@types/eslint": "^7.2.6",
     "@types/estree": "^0.0.50",
+    "@types/jest": "^27.0.1",
     "@types/node": "^14.14.10",
     "@types/terminal-link": "^1.2.0",
     "@types/yargs": "^15.0.12",
