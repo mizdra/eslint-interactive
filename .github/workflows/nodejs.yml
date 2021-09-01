@@ -25,8 +25,8 @@ jobs:
       - name: yarn install --frozen-lockfile
         run: yarn install --frozen-lockfile
 
-      - name: yarn run check
-        run: yarn run check
+      - name: yarn run lint
+        run: yarn run lint
 
       - name: yarn run build
         run: yarn run build

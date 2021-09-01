@@ -9,11 +9,11 @@
   "scripts": {
     "build": "tsc -p tsconfig.src.json",
     "dev": "tsc-watch -p tsconfig.src.json --onSuccess 'bin/eslint-interactive fixtures --ruledir fixtures/rules --ext .js,jsx,.mjs'",
-    "check": "run-s -c check:*",
-    "check:tsc": "run-s -c check:tsc:*",
-    "check:tsc:src": "tsc -p tsconfig.src.json --noEmit",
-    "check:tsc:test": "tsc -p tsconfig.test.json --noEmit",
-    "check:eslint": "eslint .",
+    "lint": "run-s -c lint:*",
+    "lint:tsc": "run-s -c lint:tsc:*",
+    "lint:tsc:src": "tsc -p tsconfig.src.json --noEmit",
+    "lint:tsc:test": "tsc -p tsconfig.test.json --noEmit",
+    "lint:eslint": "eslint .",
     "test": "jest"
   },
   "prettier": "@mizdra/prettier-config-mizdra",

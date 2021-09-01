@@ -74,7 +74,7 @@ $ eslint-interactive ./src --ruledir ./rules
 
 - `yarn run build`: Build for production
 - `yarn run dev`: Run for development
-- `yarn run check`: Try static-checking
+- `yarn run lint`: Try static-checking
 - `yarn run test`: Run tests
 
 ## For Maintainers
