@@ -21,7 +21,7 @@
   "renovate": "github>mizdra/renovate-config-mizdra",
   "devDependencies": {
     "@jest/types": "^27.1.0",
-    "@mizdra/eslint-config-mizdra": "^0.9.0",
+    "@mizdra/eslint-config-mizdra": "^1.0.0",
     "@mizdra/prettier-config-mizdra": "^0.3.0",
     "@types/cli-table": "^0.3.0",
     "@types/eslint": "^7.2.6",

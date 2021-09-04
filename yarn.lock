@@ -503,10 +503,10 @@
     "@types/yargs" "^16.0.0"
     chalk "^4.0.0"
 
-"@mizdra/eslint-config-mizdra@^0.9.0":
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/@mizdra/eslint-config-mizdra/-/eslint-config-mizdra-0.9.0.tgz#3305651b45e86e895d0371c8be56d16c8b2282df"
-  integrity sha512-7TIiTIdP1EXA9gxh5LfxYwotLJOiaZCuVNhbJ+qSa0LTcxlgZoR80uK+rveO0m0SUwUiLECQ9PX+T2P1dSIgXg==
+"@mizdra/eslint-config-mizdra@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@mizdra/eslint-config-mizdra/-/eslint-config-mizdra-1.0.0.tgz#9382ff72510aecc4cb6ac19f6e8d30a773cd0a11"
+  integrity sha512-9E769NQJTWy/zJcDCtrj3RqsSCFcCd2cE6746+S7IcUzPZSYiDgN3rDniR6PBE74dfqZmOA8iZRYQHSDbKKpKA==
 
 "@mizdra/prettier-config-mizdra@^0.3.0":
   version "0.3.0"
