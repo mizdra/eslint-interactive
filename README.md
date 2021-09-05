@@ -29,14 +29,6 @@ Also, You can perform the following actions for each rule:
 - Apply auto-fix
 - Add disable comment (`// eslint-disable-next-line <rule-name>`)
 
-## What's the difference between [eslint-nibble](https://github.com/IanVS/eslint-nibble)?
-
-A tool similar to `eslint-interactive` is [eslint-nibble](https://github.com/IanVS/eslint-nibble). Both tools solve the same problem, but `eslint-interactive` has some features that `eslint-nibble` does not have. For example, `eslint-interactive` prints the number of fixable problems per rule, while `eslint-nibble` does not. Also, `eslint-interactive` has various tricks to speed up the cycle of auto-fixing per-rule, but `eslint-nibble` auto-fixes once and terminates the process every time, so it is not as fast as `eslint-interactive`.
-
-I think these features are very important to solve the aforementioned problem. At first, I thought of implementing these features in `eslint-nibble`, but it required a major rewrite of the code, so I implemented it as a new tool `eslint-interactive`. Although `eslint-interactive` is a tool independent of `eslint-nibble`, it is influenced by the ideas of `eslint-nibble` and inherits some of its code. That's why you can find the names of [@IanVS](https://github.com/IanVS) and others in [the license of `eslint-interactive`](https://github.com/mizdra/eslint-interactive/blob/master/LICENSE).
-
-Thanks, [@IanVS](https://github.com/IanVS).
-
 ## Installation
 
 ```bash
@@ -68,6 +60,24 @@ $ eslint-interactive './src/**/*.{ts,tsx,vue}'
 $ eslint-interactive ./src --ext .ts,.tsx,.vue
 $ eslint-interactive ./src --ruledir ./rules
 ```
+
+## Differences from related works
+
+### [eslint-nibble](https://github.com/IanVS/eslint-nibble)
+
+A tool similar to `eslint-interactive` is [eslint-nibble](https://github.com/IanVS/eslint-nibble). Both tools solve the same problem, but `eslint-interactive` has some features that `eslint-nibble` does not have. For example, `eslint-interactive` prints the number of fixable problems per rule, while `eslint-nibble` does not. Also, `eslint-interactive` has various tricks to speed up the cycle of auto-fixing per-rule, but `eslint-nibble` auto-fixes once and terminates the process every time, so it is not as fast as `eslint-interactive`.
+
+I think these features are very important to solve the aforementioned problem. At first, I thought of implementing these features in `eslint-nibble`, but it required a major rewrite of the code, so I implemented it as a new tool `eslint-interactive`. Although `eslint-interactive` is a tool independent of `eslint-nibble`, it is influenced by the ideas of `eslint-nibble` and inherits some of its code. That's why you can find the names of [@IanVS](https://github.com/IanVS) and others in [the license of `eslint-interactive`](https://github.com/mizdra/eslint-interactive/blob/master/LICENSE).
+
+Thanks, [@IanVS](https://github.com/IanVS).
+
+### [suppress-eslint-errors](https://github.com/amanda-mitchell/suppress-eslint-errors)
+
+[suppress-eslint-errors](https://github.com/amanda-mitchell/suppress-eslint-errors) is an excellent tool to add comments for disable mechanically. Just like `eslint-interactive`, it allows you to add disable comments for each rule and leave the purpose of disable as a comment. There is no functional difference between the two, but there is a difference in the API used to insert the comments.
+
+`suppress-eslint-errors` uses [`jscodeshift`](https://github.com/facebook/jscodeshift) to insert comments. `jscodeshift` modifies the file in parallel, so `suppress-eslint-errors` has the advantage of being able to insert comments faster. However, `jscodeshift` cannot reuse the AST of ESLint, so you need to reparse the code in `jscodeshift`. This means that you have to pass `jscodeshift` the information it needs to parse your code (parser type, parser options). In fact, `suppress-eslint-errors` requires `--extensions` and `--parser` command line option. Normally, users specify the parsing options in `.eslintrc`, so passing these options may seem cumbersome. Also, due to the difference in the way ESLint and `jscodeshift` parse, it may not be possible to insert comments correctly.
+
+On the other hand, `eslint-interactive` uses [`ESLint.outputFixes`](https://eslint.org/docs/developer-guide/nodejs-api#-eslintoutputfixesresults) to insert comments. It uses ESLint's API to do everything from parsing the code to inserting the comments, so it works as expected in many cases. Also, `eslint-interactive` will parse the code using the parsing options specified in `.eslintrc`. Therefore, comments can be inserted without any additional command line options. By the way, comment insertion is slower than `suppress-eslint-errors` because, unlike `suppress-eslint-errors`, it cannot modify files in parallel. However, this limitation may be improved when ESLint supports parallel processing in the near future.
 
 ## For Contributors
 
