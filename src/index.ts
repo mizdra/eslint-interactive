@@ -70,7 +70,7 @@ export async function run(options: Options) {
 
         if (action === 'reselectRules') continue selectRule;
 
-        if (action === 'showMessages') {
+        if (action === 'displayMessages') {
           const displayMode = await promptToInputDisplayMode();
           await eslint.showProblems(displayMode, results, selectedRuleIds);
           continue selectAction;

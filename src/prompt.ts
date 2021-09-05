@@ -22,7 +22,7 @@ export async function promptToInputAction(): Promise<Action> {
       type: 'select',
       message: 'Which action do you want to do?',
       choices: [
-        { name: 'showMessages', message: 'Show problem messages' },
+        { name: 'displayMessages', message: 'Display problem messages' },
         { name: 'fix', message: 'Fix problems' },
         { name: 'disable', message: 'Disable problems for with `// eslint-disable-next-line`' },
         { name: 'reselectRules', message: 'Reselect rules' },
