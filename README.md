@@ -31,7 +31,7 @@ Also, You can perform the following actions for each rule:
 
 ## Installation
 
-```bash
+```console
 $ npm i -g eslint @mizdra/eslint-interactive
 $ eslint-interactive --help
 
@@ -41,7 +41,7 @@ $ npx -p eslint -p @mizdra/eslint-interactive eslint-interactive --help
 
 ## Usage
 
-```bash
+```console
 $ # Show help
 $ eslint-interactive --help
 eslint-interactive [file.js] [dir]
@@ -51,6 +51,8 @@ Options:
   --version  Show version number                                       [boolean]
   --ruledir  Use additional rules from this directory                    [array]
   --ext      Specify JavaScript file extensions                          [array]
+  --format   Specify the format to be used for the `Display problem messages`
+             action                              [string] [default: "codeframe"]
 
 
 $ # Examples
