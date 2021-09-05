@@ -1,12 +1,12 @@
 import { prompt } from 'enquirer';
-import { Action } from './types';
+import { Action, DisplayMode } from './types';
 
 export async function promptToInputRuleIds(ruleIdsInResults: string[]): Promise<string[]> {
   const { ruleIds } = await prompt<{ ruleIds: string[] }>([
     {
       name: 'ruleIds',
       type: 'multiselect',
-      message: 'Which rule(s) would you like to apply action?',
+      message: 'Which rules would you like to apply action?',
       choices: ruleIdsInResults,
     },
   ]);
@@ -20,16 +20,33 @@ export async function promptToInputAction(): Promise<Action> {
     {
       name: 'action',
       type: 'select',
-      message: 'Which action do you want to apply?',
+      message: 'Which action do you want to do?',
       choices: [
-        { name: 'showMessages', message: 'Show problems' },
+        { name: 'displayMessages', message: 'Display problem messages' },
         { name: 'fix', message: 'Fix problems' },
-        { name: 'disable', message: 'Disable problems for with `// eslint-disable-next-line`' },
+        { name: 'disable', message: 'Disable problems with `// eslint-disable-next-line`' },
         { name: 'reselectRules', message: 'Reselect rules' },
       ],
     },
   ]);
   return action;
+}
+
+export async function promptToInputDisplayMode(): Promise<DisplayMode> {
+  const { displayMode } = await prompt<{
+    displayMode: DisplayMode;
+  }>([
+    {
+      name: 'displayMode',
+      type: 'select',
+      message: 'What format do you want to display the problem message in?',
+      choices: [
+        { name: 'withPager', message: 'Display with pager' },
+        { name: 'withoutPager', message: 'Display without pager' },
+      ],
+    },
+  ]);
+  return displayMode;
 }
 
 export async function promptToInputDescription(): Promise<string | undefined> {
