@@ -21,11 +21,17 @@ In such the above situation, I think two things are important:
   - Depending on the rule, auto-fix may affect the behavior of the code, so auto-fix should be done with care.
   - Therefore, it is desirable to provide a way to auto-fix in smaller units than `eslint --fix`.
 
-So, I created a tool called `eslint-interactive` which wraps ESLint. This tool groups all problems by rule and outputs the number of problems per rule in a formatted format. In addition to the breakdown of problems per rule, it also outputs the number of fixable problems and other hints to help developers fix problems. You can also specify a number of rules to display raw ESLint problem messages or to auto-fix.
+So, I created a tool called `eslint-interactive` which wraps ESLint. This tool groups all problems by rule and outputs formatted number of problems per rule. In addition to the breakdown of problems per rule, it also outputs the number of fixable problems and other hints to help developers fix problems.
+
+Also, You can perform the following actions for each rule:
+
+- Display raw ESLint problem messages
+- Apply auto-fix
+- Add disable comment (`// eslint-disable-next-line <rule-name>`)
 
 ## What's the difference between [eslint-nibble](https://github.com/IanVS/eslint-nibble)?
 
-A tool similar to `eslint-interactive` is [eslint-nibble](https://github.com/IanVS/eslint-nibble). Both tools solve the same problem, but `eslint-interactive` has some features that `eslint-nibble` does not have. For example, `eslint-interactive` prints the number of fixable problems per rule, while `eslint-nibble` does not. Also, `eslint-interactive` has various tricks to speed up the cycle of auto-fixing per-rule, but `eslint-nibble` auto-fixes once and terminates the process every time, so it is not as fast as `eslint- interactive`.
+A tool similar to `eslint-interactive` is [eslint-nibble](https://github.com/IanVS/eslint-nibble). Both tools solve the same problem, but `eslint-interactive` has some features that `eslint-nibble` does not have. For example, `eslint-interactive` prints the number of fixable problems per rule, while `eslint-nibble` does not. Also, `eslint-interactive` has various tricks to speed up the cycle of auto-fixing per-rule, but `eslint-nibble` auto-fixes once and terminates the process every time, so it is not as fast as `eslint-interactive`.
 
 I think these features are very important to solve the aforementioned problem. At first, I thought of implementing these features in `eslint-nibble`, but it required a major rewrite of the code, so I implemented it as a new tool `eslint-interactive`. Although `eslint-interactive` is a tool independent of `eslint-nibble`, it is influenced by the ideas of `eslint-nibble` and inherits some of its code. That's why you can find the names of [@IanVS](https://github.com/IanVS) and others in [the license of `eslint-interactive`](https://github.com/mizdra/eslint-interactive/blob/master/LICENSE).
 
