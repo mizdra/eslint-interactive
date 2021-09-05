@@ -6,7 +6,7 @@ export async function promptToInputRuleIds(ruleIdsInResults: string[]): Promise<
     {
       name: 'ruleIds',
       type: 'multiselect',
-      message: 'Which rule(s) would you like to apply action?',
+      message: 'Which rules would you like to apply action?',
       choices: ruleIdsInResults,
     },
   ]);
@@ -24,7 +24,7 @@ export async function promptToInputAction(): Promise<Action> {
       choices: [
         { name: 'displayMessages', message: 'Display problem messages' },
         { name: 'fix', message: 'Fix problems' },
-        { name: 'disable', message: 'Disable problems for with `// eslint-disable-next-line`' },
+        { name: 'disable', message: 'Disable problems with `// eslint-disable-next-line`' },
         { name: 'reselectRules', message: 'Reselect rules' },
       ],
     },
