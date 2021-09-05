@@ -63,11 +63,6 @@ $ eslint-interactive ./src --ext .ts,.tsx,.vue
 $ eslint-interactive ./src --ruledir ./rules
 ```
 
-## Future Work
-
-- [ ] Support `--no-pager` option
-- [ ] Print the url of rule's documentation
-
 ## For Contributors
 
 ### How to dev
