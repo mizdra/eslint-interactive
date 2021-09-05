@@ -1,6 +1,10 @@
 import chalk from 'chalk';
 import { ESLint } from 'eslint';
-import { ERROR_COLOR, WARNING_COLOR } from './colors';
+import { ERROR_COLOR, FAILED_COLOR, WARNING_COLOR } from './colors';
+
+function pluralize(word: string, count: number): string {
+  return count > 1 ? `${word}s` : word;
+}
 
 export const formatByFiles: ESLint.Formatter['format'] = (results) => {
   let errorCount = 0;
@@ -21,17 +25,24 @@ export const formatByFiles: ESLint.Formatter['format'] = (results) => {
   });
 
   const fileCount = passCount + failureCount;
+  const problemCount = errorCount + warningCount;
 
-  const summaryLineArray = [
-    chalk.bold(`${fileCount} file(s) checked.`),
-    chalk.bold(`${passCount} passed.`),
-    chalk.bold(`${failureCount} failed.`),
-  ];
+  let summary = '';
+  summary += `- ${fileCount} ${pluralize('file', fileCount)}`;
+  summary += ' (';
+  summary += `${passCount} ${pluralize('file', passCount)} passed`;
+  summary += ', ';
+  summary += chalk[FAILED_COLOR](`${failureCount} ${pluralize('file', failureCount)} failed`);
+  summary += ') checked.\n';
 
-  if (warningCount || errorCount) {
-    summaryLineArray.push(chalk[ERROR_COLOR].bold(`${errorCount} file(s)`));
-    summaryLineArray.push(chalk[WARNING_COLOR].bold(`${warningCount} file(s).`));
+  if (problemCount > 0) {
+    summary += `- ${problemCount} ${pluralize('problem', problemCount)}`;
+    summary += ' (';
+    summary += chalk[ERROR_COLOR](`${errorCount} ${pluralize('error', errorCount)}`);
+    summary += ', ';
+    summary += chalk[WARNING_COLOR](`${warningCount} ${pluralize('warning', warningCount)}`);
+    summary += ') found.';
   }
 
-  return summaryLineArray.join('  ');
+  return chalk.bold(summary);
 };

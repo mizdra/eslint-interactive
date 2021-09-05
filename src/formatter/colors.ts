@@ -1,4 +1,7 @@
 /* istanbul ignore file */
 
-export const ERROR_COLOR = 'red' as const;
-export const WARNING_COLOR = 'yellow' as const;
+import { Color } from 'chalk';
+
+export const FAILED_COLOR: typeof Color = 'redBright';
+export const ERROR_COLOR: typeof Color = 'red';
+export const WARNING_COLOR: typeof Color = 'yellow';
