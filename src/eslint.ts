@@ -4,6 +4,7 @@ import { ESLint, Linter, Rule } from 'eslint';
 import pager from 'node-pager';
 import { format } from './formatter';
 import { DisableTarget, Option } from './rules/add-disable-comment';
+import { DisplayMode } from './types';
 import { groupBy } from './util/array';
 import { notEmpty } from './util/filter';
 
@@ -85,11 +86,15 @@ export class CachedESLint {
     console.log(resultText);
   }
 
-  async showProblems(results: ESLint.LintResult[], ruleIds: string[]): Promise<void> {
+  async showProblems(displayMode: DisplayMode, results: ESLint.LintResult[], ruleIds: string[]): Promise<void> {
     const eslint = new ESLint(this.defaultOptions);
     const formatter = await eslint.loadFormatter('codeframe');
     const resultText = formatter.format(filterResultsByRuleId(results, ruleIds));
-    await pager(resultText);
+    if (displayMode === 'withPager') {
+      await pager(resultText);
+    } else {
+      console.log(resultText);
+    }
   }
 
   async fix(ruleIds: string[]): Promise<void> {

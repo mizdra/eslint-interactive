@@ -2,7 +2,13 @@ import chalk from 'chalk';
 import ora from 'ora';
 import yargs from 'yargs/yargs';
 import { CachedESLint } from './eslint';
-import { promptToInputAction, promptToInputContinue, promptToInputDescription, promptToInputRuleIds } from './prompt';
+import {
+  promptToInputAction,
+  promptToInputContinue,
+  promptToInputDescription,
+  promptToInputDisplayMode,
+  promptToInputRuleIds,
+} from './prompt';
 import { unique } from './util/array';
 import { notEmpty } from './util/filter';
 
@@ -65,7 +71,8 @@ export async function run(options: Options) {
         if (action === 'reselectRules') continue selectRule;
 
         if (action === 'showMessages') {
-          await eslint.showProblems(results, selectedRuleIds);
+          const displayMode = await promptToInputDisplayMode();
+          await eslint.showProblems(displayMode, results, selectedRuleIds);
           continue selectAction;
         } else if (action === 'fix') {
           const fixingSpinner = ora('Fixing...').start();
