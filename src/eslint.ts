@@ -86,9 +86,14 @@ export class CachedESLint {
     console.log(resultText);
   }
 
-  async showProblems(displayMode: DisplayMode, results: ESLint.LintResult[], ruleIds: string[]): Promise<void> {
+  async showProblems(
+    formatterName: string,
+    displayMode: DisplayMode,
+    results: ESLint.LintResult[],
+    ruleIds: string[],
+  ): Promise<void> {
     const eslint = new ESLint(this.defaultOptions);
-    const formatter = await eslint.loadFormatter('codeframe');
+    const formatter = await eslint.loadFormatter(formatterName);
     const resultText = formatter.format(filterResultsByRuleId(results, ruleIds));
     if (displayMode === 'withPager') {
       await pager(resultText);

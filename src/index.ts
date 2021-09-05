@@ -28,7 +28,12 @@ export async function run(options: Options) {
       type: 'array',
       describe: 'Specify JavaScript file extensions',
     })
-    .nargs('ext', 1).argv;
+    .nargs('ext', 1)
+    .option('format', {
+      type: 'string',
+      describe: 'Specify the format to be used for the `Display problem messages` action',
+      default: 'codeframe',
+    }).argv;
   // NOTE: convert `string` type because yargs convert `'10'` (`string` type) into `10` (`number` type)
   // and `lintFiles` only accepts `string[]`.
   const patterns = argv._.map((pattern) => pattern.toString());
@@ -37,6 +42,7 @@ export async function run(options: Options) {
     ?.map((extension) => extension.toString())
     // map '.js,.ts' into ['.js', '.ts']
     .flatMap((extension) => extension.split(','));
+  const formatterName = argv.format;
 
   const eslint = new CachedESLint(patterns, { rulePaths, extensions });
 
@@ -72,7 +78,7 @@ export async function run(options: Options) {
 
         if (action === 'displayMessages') {
           const displayMode = await promptToInputDisplayMode();
-          await eslint.showProblems(displayMode, results, selectedRuleIds);
+          await eslint.showProblems(formatterName, displayMode, results, selectedRuleIds);
           continue selectAction;
         } else if (action === 'fix') {
           const fixingSpinner = ora('Fixing...').start();
