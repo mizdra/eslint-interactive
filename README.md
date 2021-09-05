@@ -10,11 +10,11 @@ The CLI tool to run `eslint --fix` for each rule
 
 ## Motivation
 
-The default ESLint output contains a lot of useful information for developers, such as the source of the error and hints for fixing it. While this works for many use cases, it does not work well in situations where many problems (called _warnings_ or _errors_ in ESLint) are reported. For example, when introducing ESLint into a project, or when making big changes to the `.eslintrc` of a project. In these situations, the output of ESLint can be quite large, making it difficult for developers to analyze the output. It is also difficult for the developer to fix problems because many types of problems are mixed up in the output.
+The default ESLint output contains a lot of useful messages for developers, such as the source of the error and hints for fixing it. While this works for many use cases, it does not work well in situations where many messages are reported. For example, when introducing ESLint into a project, or when making big changes to the `.eslintrc` of a project. In these situations, the output of ESLint can be quite large, making it difficult for developers to analyze the output. It is also difficult for the developer to fix messages mechanically, because messages of many rules are mixed up in the output.
 
-In such an error-prone situation, I think two things are important:
+In such the above situation, I think two things are important:
 
-- Show a summary of all problems so that the whole picture can be easily understood
+- Show a summary of all problems (called _"warnings"_ or _"errors"_ in ESLint) so that the whole picture can be easily understood
   - Showing the details of each problem will confuse developers.
 - Provide an efficient way to fix many problems
   - `eslint --fix` is one of the best ways to fix problems efficiently, but it auto-fixes all rule problems at once.
