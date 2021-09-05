@@ -85,7 +85,7 @@ export class CachedESLint {
     console.log(resultText);
   }
 
-  async showErrorAndWarningMessages(results: ESLint.LintResult[], ruleIds: string[]): Promise<void> {
+  async showProblems(results: ESLint.LintResult[], ruleIds: string[]): Promise<void> {
     const eslint = new ESLint(this.defaultOptions);
     const formatter = await eslint.loadFormatter('codeframe');
     const resultText = formatter.format(filterResultsByRuleId(results, ruleIds));

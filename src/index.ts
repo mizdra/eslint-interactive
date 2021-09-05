@@ -65,7 +65,7 @@ export async function run(options: Options) {
         if (action === 'reselectRules') continue selectRule;
 
         if (action === 'showMessages') {
-          await eslint.showErrorAndWarningMessages(results, selectedRuleIds);
+          await eslint.showProblems(results, selectedRuleIds);
           continue selectAction;
         } else if (action === 'fix') {
           const fixingSpinner = ora('Fixing...').start();
