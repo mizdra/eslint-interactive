@@ -25,6 +25,7 @@ export async function promptToInputAction(): Promise<Action> {
         { name: 'displayMessages', message: 'Display problem messages' },
         { name: 'fix', message: 'Fix problems' },
         { name: 'disable', message: 'Disable problems with `// eslint-disable-next-line`' },
+        { name: 'applySuggestion', message: 'Apply suggestion (experimental, only for experts)' },
         { name: 'reselectRules', message: 'Reselect rules' },
       ],
     },
@@ -72,4 +73,16 @@ export async function promptToInputContinue(): Promise<boolean> {
     },
   ]);
   return isContinue;
+}
+
+export async function promptToInputReuseFilterScript(): Promise<boolean> {
+  const { reuseFilterScript } = await prompt<{ reuseFilterScript: boolean }>([
+    {
+      name: 'reuseFilterScript',
+      type: 'confirm',
+      message: 'Do you want to reuse a previously edited filter script?',
+      initial: true,
+    },
+  ]);
+  return reuseFilterScript;
 }
