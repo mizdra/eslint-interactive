@@ -31,3 +31,14 @@ export function fakeLintResult(arg?: Partial<ESLint.LintResult>): ESLint.LintRes
     ...arg,
   };
 }
+
+export function fakeSuggestion(): Linter.LintSuggestion {
+  return {
+    desc: 'description',
+    fix: fakeFix(),
+  };
+}
+
+export function fakeSuggestions(): Linter.LintSuggestion[] {
+  return [fakeSuggestion(), fakeSuggestion()];
+}

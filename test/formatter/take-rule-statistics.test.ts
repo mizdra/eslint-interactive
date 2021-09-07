@@ -1,7 +1,7 @@
 import { ESLint } from 'eslint';
 import { takeRuleStatistics } from '../../src/formatter/take-rule-statistics';
 import { RuleStatistic } from '../../src/types';
-import { fakeLintResult, fakeLintMessage, fakeFix } from '../test-util/eslint';
+import { fakeLintResult, fakeLintMessage, fakeFix, fakeSuggestions } from '../test-util/eslint';
 
 describe('takeRuleStatistics', () => {
   test('aggregates errors and warnings for each rule', () => {
@@ -21,6 +21,8 @@ describe('takeRuleStatistics', () => {
         fixableErrorCount: 0,
         warningCount: 0,
         fixableWarningCount: 0,
+        suggestApplicableErrorCount: 0,
+        suggestApplicableWarningCount: 0,
       },
       {
         ruleId: 'rule-b',
@@ -28,6 +30,8 @@ describe('takeRuleStatistics', () => {
         fixableErrorCount: 0,
         warningCount: 0,
         fixableWarningCount: 0,
+        suggestApplicableErrorCount: 0,
+        suggestApplicableWarningCount: 0,
       },
     ]);
   });
@@ -50,6 +54,8 @@ describe('takeRuleStatistics', () => {
         fixableErrorCount: 0,
         warningCount: 0,
         fixableWarningCount: 0,
+        suggestApplicableErrorCount: 0,
+        suggestApplicableWarningCount: 0,
       },
     ]);
   });
@@ -80,6 +86,40 @@ describe('takeRuleStatistics', () => {
         fixableErrorCount: 2,
         warningCount: 3,
         fixableWarningCount: 1,
+        suggestApplicableErrorCount: 0,
+        suggestApplicableWarningCount: 0,
+      },
+    ]);
+  });
+  test('calculates the cumulative total of errors and warnings or suggest-applicable ones separately', () => {
+    const results: ESLint.LintResult[] = [
+      fakeLintResult({
+        messages: [
+          fakeLintMessage({ ruleId: 'rule-a', severity: 2 }),
+          fakeLintMessage({ ruleId: 'rule-a', severity: 2 }),
+          fakeLintMessage({ ruleId: 'rule-a', severity: 2 }),
+          fakeLintMessage({ ruleId: 'rule-a', severity: 2 }),
+          fakeLintMessage({ ruleId: 'rule-a', severity: 1 }),
+          fakeLintMessage({ ruleId: 'rule-a', severity: 1 }),
+        ],
+      }),
+      fakeLintResult({
+        messages: [
+          fakeLintMessage({ ruleId: 'rule-a', severity: 2, suggestions: fakeSuggestions() }),
+          fakeLintMessage({ ruleId: 'rule-a', severity: 2, suggestions: fakeSuggestions() }),
+          fakeLintMessage({ ruleId: 'rule-a', severity: 1, suggestions: fakeSuggestions() }),
+        ],
+      }),
+    ];
+    expect(takeRuleStatistics(results)).toEqual([
+      {
+        ruleId: 'rule-a',
+        errorCount: 6,
+        fixableErrorCount: 0,
+        warningCount: 3,
+        fixableWarningCount: 0,
+        suggestApplicableErrorCount: 2,
+        suggestApplicableWarningCount: 1,
       },
     ]);
   });
@@ -96,6 +136,8 @@ describe('takeRuleStatistics', () => {
         fixableErrorCount: 0,
         warningCount: 0,
         fixableWarningCount: 0,
+        suggestApplicableErrorCount: 0,
+        suggestApplicableWarningCount: 0,
       },
     ]);
   });

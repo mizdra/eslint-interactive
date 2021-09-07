@@ -7,4 +7,6 @@ export type RuleStatistic = {
   warningCount: number;
   fixableErrorCount: number;
   fixableWarningCount: number;
+  suggestApplicableErrorCount: number;
+  suggestApplicableWarningCount: number;
 };
