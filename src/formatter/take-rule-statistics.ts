@@ -8,14 +8,18 @@ function takeRuleStatistic(ruleId: string, messages: Linter.LintMessage[]): Rule
   let warningCount = 0;
   let fixableErrorCount = 0;
   let fixableWarningCount = 0;
+  let suggestApplicableErrorCount = 0;
+  let suggestApplicableWarningCount = 0;
 
   for (const message of messages) {
     if (message.severity === 2) {
       errorCount++;
-      if (message.fix !== undefined) fixableErrorCount++;
+      if (message.fix) fixableErrorCount++;
+      if (message.suggestions && message.suggestions.length > 0) suggestApplicableErrorCount++;
     } else if (message.severity === 1) {
       warningCount++;
-      if (message.fix !== undefined) fixableWarningCount++;
+      if (message.fix) fixableWarningCount++;
+      if (message.suggestions && message.suggestions.length > 0) suggestApplicableWarningCount++;
     }
   }
 
@@ -25,6 +29,8 @@ function takeRuleStatistic(ruleId: string, messages: Linter.LintMessage[]): Rule
     warningCount,
     fixableErrorCount,
     fixableWarningCount,
+    suggestApplicableErrorCount,
+    suggestApplicableWarningCount,
   };
 }
 
