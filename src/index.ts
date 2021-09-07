@@ -1,6 +1,7 @@
 import chalk from 'chalk';
 import ora from 'ora';
 import yargs from 'yargs/yargs';
+import { doApplySuggestionAction } from './actions';
 import { CachedESLint } from './eslint';
 import {
   promptToInputAction,
@@ -90,6 +91,9 @@ export async function run(options: Options) {
           const fixingSpinner = ora('Disabling...').start();
           await eslint.disable(results, selectedRuleIds, description);
           fixingSpinner.succeed(chalk.bold('Disabling was successful.'));
+          break selectRule;
+        } else if (action === 'applySuggestion') {
+          await doApplySuggestionAction(eslint, results, selectedRuleIds);
           break selectRule;
         }
       }

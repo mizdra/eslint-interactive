@@ -1,4 +1,4 @@
-export type Action = 'displayMessages' | 'fix' | 'reselectRules';
+export type Action = 'displayMessages' | 'fix' | 'disable' | 'applySuggestion' | 'reselectRules';
 export type DisplayMode = 'withPager' | 'withoutPager';
 
 export type RuleStatistic = {

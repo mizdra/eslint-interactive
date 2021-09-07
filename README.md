@@ -28,6 +28,7 @@ Also, You can perform the following actions for each rule:
 - Display raw ESLint problem messages
 - Apply auto-fix
 - Add disable comment (`// eslint-disable-next-line <rule-name>`)
+- Apply suggestion
 
 ## Installation
 

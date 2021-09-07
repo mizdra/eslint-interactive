@@ -4,6 +4,7 @@ import { ESLint, Linter, Rule } from 'eslint';
 import pager from 'node-pager';
 import { format } from './formatter';
 import { DisableTarget, Option } from './rules/add-disable-comment';
+import { ApplySuggestionOption } from './rules/apply-suggestion';
 import { DisplayMode } from './types';
 import { groupBy } from './util/array';
 import { notEmpty } from './util/filter';
@@ -45,9 +46,29 @@ function createAddDisableCommentESLint(
         'add-disable-comment': [2, option],
       },
     },
-    rulePaths: [...(defaultOptions.rulePaths ?? []), join(__dirname, './rules')],
+    rulePaths: [...(defaultOptions.rulePaths ?? []), join(__dirname, 'rules')],
     // NOTE: add-disable-comment に関するエラーだけ fix したいのでフィルタしている
     fix: (message) => message.ruleId === 'add-disable-comment',
+  });
+  return eslint;
+}
+
+function createApplySuggestionESLint(
+  defaultOptions: ESLint.Options,
+  results: ESLint.LintResult[],
+  ruleIds: string[],
+  filterScript: string,
+): ESLint {
+  const eslint = new ESLint({
+    ...defaultOptions,
+    overrideConfig: {
+      rules: {
+        'apply-suggestion': [2, { results, ruleIds, filterScript } as ApplySuggestionOption],
+      },
+    },
+    rulePaths: [...(defaultOptions.rulePaths ?? []), join(__dirname, 'rules')],
+    // NOTE: apply-suggestion に関するエラーだけ fix したいのでフィルタしている
+    fix: (message) => message.ruleId === 'apply-suggestion',
   });
   return eslint;
 }
@@ -119,6 +140,12 @@ export class CachedESLint {
     });
 
     const eslint = createAddDisableCommentESLint(this.defaultOptions, filteredResults, description);
+    const newResults = await eslint.lintFiles(this.patterns);
+    await ESLint.outputFixes(newResults);
+  }
+
+  async applySuggestion(results: ESLint.LintResult[], ruleIds: string[], filterScript: string): Promise<void> {
+    const eslint = createApplySuggestionESLint(this.defaultOptions, results, ruleIds, filterScript);
     const newResults = await eslint.lintFiles(this.patterns);
     await ESLint.outputFixes(newResults);
   }
