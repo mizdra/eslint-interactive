@@ -47,7 +47,7 @@
     "enquirer": "^2.3.6",
     "node-pager": "^0.3.5",
     "ora": "^5.1.0",
-    "source-map-support": "^0.5.19",
+    "source-map-support": "^0.5.20",
     "terminal-link": "^2.1.1",
     "yargs": "^16.2.0"
   },
