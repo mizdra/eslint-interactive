@@ -45,7 +45,7 @@
   "dependencies": {
     "cli-table": "^0.3.4",
     "enquirer": "^2.3.6",
-    "node-pager": "^0.3.4",
+    "node-pager": "^0.3.5",
     "ora": "^5.1.0",
     "source-map-support": "^0.5.19",
     "terminal-link": "^2.1.1",
