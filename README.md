@@ -70,7 +70,7 @@ $ eslint-interactive ./src --ruledir ./rules
 
 A tool similar to `eslint-interactive` is [eslint-nibble](https://github.com/IanVS/eslint-nibble). Both tools solve the same problem, but `eslint-interactive` has some features that `eslint-nibble` does not have. For example, `eslint-interactive` prints the number of fixable problems per rule, while `eslint-nibble` does not. Also, `eslint-interactive` has various tricks to speed up the cycle of auto-fixing per-rule, but `eslint-nibble` auto-fixes once and terminates the process every time, so it is not as fast as `eslint-interactive`.
 
-I think these features are very important to solve the aforementioned problem. At first, I thought of implementing these features in `eslint-nibble`, but it required a major rewrite of the code, so I implemented it as a new tool `eslint-interactive`. Although `eslint-interactive` is a tool independent of `eslint-nibble`, it is influenced by the ideas of `eslint-nibble` and inherits some of its code. That's why you can find the names of [@IanVS](https://github.com/IanVS) and others in [the license of `eslint-interactive`](https://github.com/mizdra/eslint-interactive/blob/master/LICENSE).
+I think these features are very important to solve the aforementioned problem. At first, I thought of implementing these features in `eslint-nibble`, but it required a major rewrite of the code, so I implemented it as a new tool `eslint-interactive`. Although `eslint-interactive` is a tool independent of `eslint-nibble`, it is influenced by the ideas of `eslint-nibble` and inherits some of its code. That's why you can find the names of [@IanVS](https://github.com/IanVS) and others in [the license of `eslint-interactive`](https://github.com/mizdra/eslint-interactive/blob/main/LICENSE).
 
 Thanks, [@IanVS](https://github.com/IanVS).
 
@@ -97,7 +97,7 @@ On the other hand, `eslint-interactive` uses [`ESLint.outputFixes`](https://esli
 
 ```console
 $ # Wait for passing CI...
-$ git switch master
+$ git switch main
 $ git pull
 $ yarn version
 $ rm -rf dist && yarn run build
