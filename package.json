@@ -45,6 +45,7 @@
   "dependencies": {
     "cli-table": "^0.3.6",
     "enquirer": "^2.3.6",
+    "eslint-formatter-codeframe": "^7.32.1",
     "node-pager": "^0.3.5",
     "ora": "^5.1.0",
     "source-map-support": "^0.5.20",
