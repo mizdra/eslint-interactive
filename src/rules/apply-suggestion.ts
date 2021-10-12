@@ -83,6 +83,7 @@ const rule: Rule.RuleModule = {
           fix: (fixer) => {
             const fixes: Rule.Fix[] = [];
             for (const message of messages) {
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
               const suggestion = getApplicableSuggestion(message, result, eval(option.filterScript));
               if (suggestion) fixes.push(applySuggestion(fixer, suggestion));
             }
