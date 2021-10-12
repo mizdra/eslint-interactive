@@ -35,7 +35,7 @@ jobs:
     strategy:
       matrix:
         node: [14, 16]
-        eslint: [7, '8.0.0-rc.0']
+        eslint: [7, 8]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
