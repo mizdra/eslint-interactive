@@ -1,4 +1,5 @@
-import { access, readFile, writeFile } from 'fs/promises';
+import { access, mkdir, readFile, writeFile } from 'fs/promises';
+import { dirname } from 'path';
 import chalk from 'chalk';
 import { ESLint } from 'eslint';
 import ora from 'ora';
@@ -26,6 +27,8 @@ export async function doApplySuggestionAction(
       await writeFile(filterScriptFilePath, exampleScript);
     }
   } else {
+    // ディレクトリがない可能性を考慮して作成しておく
+    await mkdir(dirname(filterScriptFilePath), { recursive: true });
     await writeFile(filterScriptFilePath, exampleScript);
   }
   console.log('Opening editor...');
