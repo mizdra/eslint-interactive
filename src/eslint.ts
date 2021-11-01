@@ -103,7 +103,11 @@ export class CachedESLint {
   }
 
   printResults(results: ESLint.LintResult[]): void {
-    const resultText = format(results);
+    const eslint = new ESLint(this.defaultOptions);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const rulesMeta: ESLint.LintResultData['rulesMeta'] = (eslint as any).getRulesMetaForResults?.(results);
+
+    const resultText = format(results, { rulesMeta });
     console.log(resultText);
   }
 
