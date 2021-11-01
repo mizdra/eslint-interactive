@@ -7,6 +7,7 @@ import { DisableTarget, Option } from './rules/add-disable-comment';
 import { ApplySuggestionOption } from './rules/apply-suggestion';
 import { DisplayMode } from './types';
 import { groupBy } from './util/array';
+import { scanUsedPluginsFromResults } from './util/eslint';
 import { notEmpty } from './util/filter';
 
 function filterResultsByRuleId(results: ESLint.LintResult[], ruleIds: string[]): ESLint.LintResult[] {
@@ -72,7 +73,6 @@ function createApplySuggestionESLint(
   });
   return eslint;
 }
-
 type CachedESLintOptions = {
   rulePaths?: string[];
   extensions?: string[];
@@ -103,8 +103,14 @@ export class CachedESLint {
   }
 
   printResults(results: ESLint.LintResult[]): void {
+    // get used plugins from `results`
+    const plugins = scanUsedPluginsFromResults(results);
+
     // get `rulesMeta` from `results`
-    const eslint = new ESLint(this.defaultOptions);
+    const eslint = new ESLint({
+      ...this.defaultOptions,
+      overrideConfig: { plugins },
+    });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const rulesMeta: ESLint.LintResultData['rulesMeta'] = (eslint as any).getRulesMetaForResults?.(results);
 
