@@ -24,6 +24,7 @@ export function fakeLintResult(arg?: Partial<ESLint.LintResult>): ESLint.LintRes
     filePath: '',
     messages: [],
     errorCount: 0,
+    fatalErrorCount: 0,
     warningCount: 0,
     fixableErrorCount: 0,
     fixableWarningCount: 0,
