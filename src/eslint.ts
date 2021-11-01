@@ -103,6 +103,7 @@ export class CachedESLint {
   }
 
   printResults(results: ESLint.LintResult[]): void {
+    // get `rulesMeta` from `results`
     const eslint = new ESLint(this.defaultOptions);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const rulesMeta: ESLint.LintResultData['rulesMeta'] = (eslint as any).getRulesMetaForResults?.(results);
