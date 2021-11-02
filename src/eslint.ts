@@ -112,9 +112,9 @@ export class CachedESLint {
       overrideConfig: { plugins },
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const rulesMeta: ESLint.LintResultData['rulesMeta'] = (eslint as any).getRulesMetaForResults?.(results);
+    const rulesMeta: ESLint.LintResultData['rulesMeta'] | undefined = (eslint as any).getRulesMetaForResults?.(results);
 
-    const resultText = format(results, { rulesMeta });
+    const resultText = format(results, { rulesMeta: rulesMeta ?? {} });
     console.log(resultText);
   }
 
