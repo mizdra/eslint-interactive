@@ -24,12 +24,12 @@ function filterSuggestions(suggestions, message, result) {
   // example:
   if (message.ruleId === 'no-unsafe-negation') {
     return suggestions.find((suggestion) => suggestion.desc.startsWith('Wrap negation'));
-  } else if (message.ruleId === 'no-nonoctal-decimal-escape') {
+  } else if (message.ruleId === 'no-useless-escape') {
     if (result.filePath.endsWith('.mjs')) {
-      // ref: https://github.com/eslint/eslint/blob/f966fe6286b6f668812f5155b79d4ee2a8b584b3/lib/rules/no-nonoctal-decimal-escape.js#L125
-      return suggestions.find((suggestion) => suggestion.messageId === 'escapeBackslash');
+      // ref: https://github.com/eslint/eslint/blob/99b1fca0e61902f0d69aea4b4cdbf75d37ea20c4/lib/rules/no-useless-escape.js#L125
+      return suggestions.find((suggestion) => suggestion.messageId === 'removeEscape');
     } else {
-      return suggestions.find((suggestion) => suggestion.messageId === 'refactor');
+      return suggestions.find((suggestion) => suggestion.messageId === 'escapeBackslash');
     }
   } else {
     // apply first suggestion
