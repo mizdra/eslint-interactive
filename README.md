@@ -48,12 +48,12 @@ $ eslint-interactive --help
 eslint-interactive [file.js] [dir]
 
 Options:
-  --help     Show help                                                 [boolean]
-  --version  Show version number                                       [boolean]
-  --ruledir  Use additional rules from this directory                    [array]
-  --ext      Specify JavaScript file extensions                          [array]
-  --format   Specify the format to be used for the `Display problem messages`
-             action                              [string] [default: "codeframe"]
+  --help      Show help                                                [boolean]
+  --version   Show version number                                      [boolean]
+  --rulesdir  Use additional rules from this directory                   [array]
+  --ext       Specify JavaScript file extensions                         [array]
+  --format    Specify the format to be used for the `Display problem messages`
+              action                             [string] [default: "codeframe"]
 
 
 $ # Examples
@@ -61,7 +61,7 @@ $ eslint-interactive ./src
 $ eslint-interactive ./src ./test
 $ eslint-interactive './src/**/*.{ts,tsx,vue}'
 $ eslint-interactive ./src --ext .ts,.tsx,.vue
-$ eslint-interactive ./src --ruledir ./rules
+$ eslint-interactive ./src --rulesdir ./rules
 ```
 
 ## Differences from related works

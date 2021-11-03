@@ -20,11 +20,11 @@ export type Options = {
 export async function run(options: Options) {
   const argv = yargs(options.argv.slice(2))
     .usage('$0 [file.js] [dir]')
-    .option('ruledir', {
+    .option('rulesdir', {
       type: 'array',
       describe: 'Use additional rules from this directory',
     })
-    .nargs('ruledir', 1)
+    .nargs('rulesdir', 1)
     .option('ext', {
       type: 'array',
       describe: 'Specify JavaScript file extensions',
@@ -38,7 +38,7 @@ export async function run(options: Options) {
   // NOTE: convert `string` type because yargs convert `'10'` (`string` type) into `10` (`number` type)
   // and `lintFiles` only accepts `string[]`.
   const patterns = argv._.map((pattern) => pattern.toString());
-  const rulePaths = argv.ruledir?.map((rulePath) => rulePath.toString());
+  const rulePaths = argv.rulesdir?.map((rulePath) => rulePath.toString());
   const extensions = argv.ext
     ?.map((extension) => extension.toString())
     // map '.js,.ts' into ['.js', '.ts']
