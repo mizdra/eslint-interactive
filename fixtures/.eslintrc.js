@@ -14,7 +14,7 @@ module.exports = {
   },
   rules: {
     'ban-exponentiation-operator': 2,
-    'no-nonoctal-decimal-escape': 2,
+    'no-useless-escape': 2,
     'no-unsafe-negation': 2,
   },
 };
