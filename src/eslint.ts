@@ -7,6 +7,7 @@ import { DisableTarget, Option } from './rules/add-disable-comment';
 import { ApplySuggestionOption } from './rules/apply-suggestion';
 import { DisplayMode } from './types';
 import { groupBy } from './util/array';
+import { scanUsedPluginsFromResults } from './util/eslint';
 import { notEmpty } from './util/filter';
 
 function filterResultsByRuleId(results: ESLint.LintResult[], ruleIds: string[]): ESLint.LintResult[] {
@@ -72,7 +73,6 @@ function createApplySuggestionESLint(
   });
   return eslint;
 }
-
 type CachedESLintOptions = {
   rulePaths?: string[];
   extensions?: string[];
@@ -103,7 +103,19 @@ export class CachedESLint {
   }
 
   printResults(results: ESLint.LintResult[]): void {
-    const resultText = format(results);
+    // get used plugins from `results`
+    const plugins = scanUsedPluginsFromResults(results);
+
+    // get `rulesMeta` from `results`
+    const eslint = new ESLint({
+      ...this.defaultOptions,
+      overrideConfig: { plugins },
+    });
+    // NOTE: `getRulesMetaForResults` is a feature added in ESLint 7.29.0.
+    // Therefore, the function may not exist in versions lower than 7.29.0.
+    const rulesMeta: ESLint.LintResultData['rulesMeta'] = eslint.getRulesMetaForResults?.(results) ?? {};
+
+    const resultText = format(results, { rulesMeta: rulesMeta });
     console.log(resultText);
   }
 
