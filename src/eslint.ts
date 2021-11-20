@@ -113,9 +113,9 @@ export class CachedESLint {
     });
     // NOTE: `getRulesMetaForResults` is a feature added in ESLint 7.29.0.
     // Therefore, the function may not exist in versions lower than 7.29.0.
-    const rulesMeta: ESLint.LintResultData['rulesMeta'] | undefined = eslint.getRulesMetaForResults?.(results);
+    const rulesMeta: ESLint.LintResultData['rulesMeta'] = eslint.getRulesMetaForResults?.(results) ?? {};
 
-    const resultText = format(results, { rulesMeta: rulesMeta ?? {} });
+    const resultText = format(results, { rulesMeta: rulesMeta });
     console.log(resultText);
   }
 
