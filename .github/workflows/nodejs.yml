@@ -19,8 +19,8 @@ jobs:
         id: cache
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: ${{ runner.OS }}-yarn-
+          key: build-${{ runner.os }}-${{ matrix.node }}-yarn-${{ hashFiles('**/yarn.lock') }}-${{ matrix.eslint }}
+          restore-keys: build-${{ runner.OS }}-${{ matrix.node }}-yarn-
 
       - name: yarn install --frozen-lockfile
         run: yarn install --frozen-lockfile
@@ -51,8 +51,8 @@ jobs:
         id: cache
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: test-${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: test-${{ runner.OS }}-yarn-
+          key: test-${{ runner.os }}-${{ matrix.node }}-yarn-${{ hashFiles('**/yarn.lock') }}-${{ matrix.eslint }}
+          restore-keys: test-${{ runner.OS }}-${{ matrix.node }}-yarn-
 
       - name: yarn install --frozen-lockfile
         run: yarn install --frozen-lockfile
