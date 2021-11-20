@@ -111,8 +111,9 @@ export class CachedESLint {
       ...this.defaultOptions,
       overrideConfig: { plugins },
     });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const rulesMeta: ESLint.LintResultData['rulesMeta'] | undefined = (eslint as any).getRulesMetaForResults?.(results);
+    // NOTE: `getRulesMetaForResults` is a feature added in ESLint 7.29.0.
+    // Therefore, the function may not exist in versions lower than 7.29.0.
+    const rulesMeta: ESLint.LintResultData['rulesMeta'] | undefined = eslint.getRulesMetaForResults?.(results);
 
     const resultText = format(results, { rulesMeta: rulesMeta ?? {} });
     console.log(resultText);
