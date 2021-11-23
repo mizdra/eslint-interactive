@@ -1,14 +1,10 @@
-import chalk from 'chalk';
-import ora from 'ora';
 import yargs from 'yargs/yargs';
-import { doApplySuggestionAction } from './actions/apply-suggestion';
-import { doDisableAction } from './actions/disable';
-import { doDisplayMessagesAction } from './actions/display-messages';
-import { doFixAction } from './actions/fix';
 import { CachedESLint } from './eslint';
-import { promptToInputAction, promptToInputContinue, promptToInputRuleIds } from './prompt';
-import { unique } from './util/array';
-import { notEmpty } from './util/filter';
+import { selectAction } from './scenes/select-action';
+import { selectRuleIds } from './scenes/select-rule-ids';
+import { selectToContinue } from './scenes/select-to-continue';
+import { showLintResults } from './scenes/show-lint-results';
+import { NextScene } from './types';
 
 export type Options = {
   argv: string[];
@@ -44,57 +40,16 @@ export async function run(options: Options) {
 
   const eslint = new CachedESLint(patterns, { rulePaths, extensions });
 
-  // eslint-disable-next-line no-constant-condition
-  while (true) {
-    const lintingSpinner = ora('Linting...').start();
-    const results = await eslint.lint();
-    const ruleIdsInResults = unique(
-      results
-        .flatMap((result) => result.messages)
-        .flatMap((message) => message.ruleId)
-        .filter(notEmpty),
-    );
-
-    if (ruleIdsInResults.length === 0) {
-      lintingSpinner.succeed(chalk.bold('No error found.'));
-      break;
+  let nextScene: NextScene = { name: 'showLintResults' };
+  while (nextScene.name !== 'exit') {
+    if (nextScene.name === 'showLintResults') {
+      nextScene = await showLintResults(eslint);
+    } else if (nextScene.name === 'selectRuleIds') {
+      nextScene = await selectRuleIds(eslint, formatterName, nextScene.args);
+    } else if (nextScene.name === 'selectAction') {
+      nextScene = await selectAction(eslint, formatterName, nextScene.args);
+    } else if (nextScene.name === 'selectToContinue') {
+      nextScene = await selectToContinue();
     }
-    lintingSpinner.succeed(chalk.bold('Found errors.'));
-    console.log();
-
-    eslint.printResults(results);
-
-    // eslint-disable-next-line no-constant-condition
-    selectRule: while (true) {
-      const selectedRuleIds = await promptToInputRuleIds(ruleIdsInResults);
-
-      // eslint-disable-next-line no-constant-condition
-      selectAction: while (true) {
-        const action = await promptToInputAction();
-
-        if (action === 'reselectRules') continue selectRule;
-
-        if (action === 'displayMessages') {
-          await doDisplayMessagesAction(eslint, formatterName, results, selectedRuleIds);
-          continue selectAction;
-        } else if (action === 'fix') {
-          await doFixAction(eslint, selectedRuleIds);
-          break selectRule;
-        } else if (action === 'disable') {
-          await doDisableAction(eslint, results, selectedRuleIds);
-          break selectRule;
-        } else if (action === 'applySuggestion') {
-          await doApplySuggestionAction(eslint, results, selectedRuleIds);
-          break selectRule;
-        }
-      }
-    }
-    console.log();
-
-    const isContinue = await promptToInputContinue();
-    if (!isContinue) break;
-    console.log();
-    console.log('─'.repeat(process.stdout.columns));
-    console.log();
   }
 }
