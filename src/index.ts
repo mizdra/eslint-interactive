@@ -1,15 +1,12 @@
 import chalk from 'chalk';
 import ora from 'ora';
 import yargs from 'yargs/yargs';
-import { doApplySuggestionAction } from './actions';
+import { doApplySuggestionAction } from './actions/apply-suggestion';
+import { doDisableAction } from './actions/disable';
+import { doDisplayMessagesAction } from './actions/display-messages';
+import { doFixAction } from './actions/fix';
 import { CachedESLint } from './eslint';
-import {
-  promptToInputAction,
-  promptToInputContinue,
-  promptToInputDescription,
-  promptToInputDisplayMode,
-  promptToInputRuleIds,
-} from './prompt';
+import { promptToInputAction, promptToInputContinue, promptToInputRuleIds } from './prompt';
 import { unique } from './util/array';
 import { notEmpty } from './util/filter';
 
@@ -78,19 +75,13 @@ export async function run(options: Options) {
         if (action === 'reselectRules') continue selectRule;
 
         if (action === 'displayMessages') {
-          const displayMode = await promptToInputDisplayMode();
-          await eslint.showProblems(formatterName, displayMode, results, selectedRuleIds);
+          await doDisplayMessagesAction(eslint, formatterName, results, selectedRuleIds);
           continue selectAction;
         } else if (action === 'fix') {
-          const fixingSpinner = ora('Fixing...').start();
-          await eslint.fix(selectedRuleIds);
-          fixingSpinner.succeed(chalk.bold('Fixing was successful.'));
+          await doFixAction(eslint, selectedRuleIds);
           break selectRule;
         } else if (action === 'disable') {
-          const description = await promptToInputDescription();
-          const fixingSpinner = ora('Disabling...').start();
-          await eslint.disable(results, selectedRuleIds, description);
-          fixingSpinner.succeed(chalk.bold('Disabling was successful.'));
+          await doDisableAction(eslint, results, selectedRuleIds);
           break selectRule;
         } else if (action === 'applySuggestion') {
           await doApplySuggestionAction(eslint, results, selectedRuleIds);
