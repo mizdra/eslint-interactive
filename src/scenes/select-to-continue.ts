@@ -1,5 +1,5 @@
 import { ESLint } from 'eslint';
-import { promptToInputContinue } from '../prompt';
+import { promptToInputContinue } from '../cli/prompt';
 import { NextScene } from '../types';
 
 export type SelectRuleIdsArgs = {

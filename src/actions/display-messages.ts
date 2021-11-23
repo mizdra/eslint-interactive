@@ -1,6 +1,6 @@
 import { ESLint } from 'eslint';
+import { promptToInputDisplayMode } from '../cli/prompt';
 import { CachedESLint } from '../eslint';
-import { promptToInputDisplayMode } from '../prompt';
 
 export async function doDisplayMessagesAction(
   eslint: CachedESLint,

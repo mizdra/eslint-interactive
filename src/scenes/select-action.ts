@@ -3,8 +3,8 @@ import { doApplySuggestionAction } from '../actions/apply-suggestion';
 import { doDisableAction } from '../actions/disable';
 import { doDisplayMessagesAction } from '../actions/display-messages';
 import { doFixAction } from '../actions/fix';
+import { promptToInputAction } from '../cli/prompt';
 import { CachedESLint } from '../eslint';
-import { promptToInputAction } from '../prompt';
 import { NextScene } from '../types';
 import { unreachable } from '../util/type-check';
 

@@ -1,5 +1,5 @@
 import { prompt } from 'enquirer';
-import { Action, DisplayMode } from './types';
+import { Action, DisplayMode } from '../types';
 
 export async function promptToInputRuleIds(ruleIdsInResults: string[]): Promise<string[]> {
   const { ruleIds } = await prompt<{ ruleIds: string[] }>([

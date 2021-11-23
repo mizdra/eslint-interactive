@@ -1,6 +1,6 @@
 import { ESLint } from 'eslint';
+import { promptToInputRuleIds } from '../cli/prompt';
 import { CachedESLint } from '../eslint';
-import { promptToInputRuleIds } from '../prompt';
 import { NextScene } from '../types';
 import { selectAction } from './select-action';
 

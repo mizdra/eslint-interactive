@@ -3,13 +3,13 @@ import { dirname } from 'path';
 import chalk from 'chalk';
 import { ESLint } from 'eslint';
 import ora from 'ora';
+import { promptToInputReuseFilterScript } from '../cli/prompt';
 import { CachedESLint } from '../eslint';
 import {
   editFileWithEditor,
   generateExampleFilterScriptFilePath,
   generateFilterScriptFilePath,
 } from '../filter-script-util';
-import { promptToInputReuseFilterScript } from '../prompt';
 
 export async function doApplySuggestionAction(
   eslint: CachedESLint,
