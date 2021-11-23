@@ -1,55 +1,37 @@
+const mockFormatByFiles = jest.fn(() => 'formatByFiles');
+const mockFormatByRules = jest.fn(() => 'formatByRules');
+
 import { ESLint } from 'eslint';
-import stripAnsi from 'strip-ansi';
 import { format } from '../../src/formatter';
-import { fakeLintResult, fakeLintMessage, fakeFix, fakeSuggestions } from '../test-util/eslint';
+import { fakeLintResult, fakeLintMessage } from '../test-util/eslint';
+
+jest.mock('../../src/formatter/format-by-files', () => {
+  return {
+    ...jest.requireActual('../../src/formatter/format-by-files'),
+    formatByFiles: mockFormatByFiles,
+  };
+});
+jest.mock('../../src/formatter/format-by-rules', () => {
+  return {
+    ...jest.requireActual('../../src/formatter/format-by-rules'),
+    formatByRules: mockFormatByRules,
+  };
+});
 
 describe('format', () => {
-  test('outputs formatted text', () => {
+  test('call `formatByFiles` and `formatByRules`', () => {
     const results: ESLint.LintResult[] = [
       fakeLintResult({
-        messages: [
-          fakeLintMessage({ ruleId: 'rule-a', severity: 2 }),
-          fakeLintMessage({ ruleId: 'rule-a', severity: 2 }),
-          fakeLintMessage({ ruleId: 'rule-a', severity: 2, fix: fakeFix() }),
-          fakeLintMessage({ ruleId: 'rule-a', severity: 2, fix: fakeFix() }),
-          fakeLintMessage({ ruleId: 'rule-a', severity: 2, suggestions: fakeSuggestions() }),
-          fakeLintMessage({ ruleId: 'rule-a', severity: 2, suggestions: fakeSuggestions() }),
-          fakeLintMessage({ ruleId: 'rule-a', severity: 2, suggestions: fakeSuggestions() }),
-          fakeLintMessage({ ruleId: 'rule-a', severity: 2, suggestions: fakeSuggestions() }),
-          fakeLintMessage({ ruleId: 'rule-a', severity: 1 }),
-          fakeLintMessage({ ruleId: 'rule-a', severity: 1 }),
-          fakeLintMessage({ ruleId: 'rule-a', severity: 1, fix: fakeFix() }),
-          fakeLintMessage({ ruleId: 'rule-a', severity: 1, suggestions: fakeSuggestions() }),
-          fakeLintMessage({ ruleId: 'rule-a', severity: 1, suggestions: fakeSuggestions() }),
-          fakeLintMessage({ ruleId: 'rule-b', severity: 2 }),
-        ],
-      }),
-      fakeLintResult({
-        messages: [],
+        messages: [fakeLintMessage({ ruleId: 'rule-a', severity: 2 })],
       }),
     ];
-    const formattedText = format(results);
-    expect(stripAnsi(formattedText)).toMatchInlineSnapshot(`
-"- 2 files (1 file passed, 1 file failed) checked.
-
-┌────────┬────────────────────────────────────┬──────────────────────────────────────┐
-│ Rule   │ Error (fixable/suggest-applicable) │ Warning (fixable/suggest-applicable) │
-├────────┼────────────────────────────────────┼──────────────────────────────────────┤
-│ rule-a │ 8 (2/4)                            │ 5 (1/2)                              │
-├────────┼────────────────────────────────────┼──────────────────────────────────────┤
-│ rule-b │ 1 (0/0)                            │ 0 (0/0)                              │
-└────────┴────────────────────────────────────┴──────────────────────────────────────┘"
-`);
+    const data: ESLint.LintResultData = { rulesMeta: {} };
+    const formattedText = format(results, data);
     expect(formattedText).toMatchInlineSnapshot(`
-"[1m- 2 files (1 file passed, [91m1 file failed[39m) checked.[22m
-[1m[22m
-┌────────┬────────────────────────────────────┬──────────────────────────────────────┐
-│ Rule   │ Error (fixable/suggest-applicable) │ Warning (fixable/suggest-applicable) │
-├────────┼────────────────────────────────────┼──────────────────────────────────────┤
-│ rule-a │ [31m[1m8 (2/4)[22m[39m                            │ [33m[1m5 (1/2)[22m[39m                              │
-├────────┼────────────────────────────────────┼──────────────────────────────────────┤
-│ rule-b │ [31m[1m1 (0/0)[22m[39m                            │ 0 (0/0)                              │
-└────────┴────────────────────────────────────┴──────────────────────────────────────┘"
+"formatByFiles
+formatByRules"
 `);
+    expect(mockFormatByFiles).toBeCalledWith(results);
+    expect(mockFormatByRules).toBeCalledWith(results, data);
   });
 });

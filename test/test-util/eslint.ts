@@ -33,10 +33,11 @@ export function fakeLintResult(arg?: Partial<ESLint.LintResult>): ESLint.LintRes
   };
 }
 
-export function fakeSuggestion(): Linter.LintSuggestion {
+export function fakeSuggestion(arg?: Partial<Linter.LintSuggestion>): Linter.LintSuggestion {
   return {
     desc: 'description',
     fix: fakeFix(),
+    ...arg,
   };
 }
 

@@ -1,0 +1,35 @@
+{
+  "suggestions": [{ "desc": "description", "fix": { "range": [0, 9], "text": "e += 1" } }],
+  "message": {
+    "column": 0,
+    "line": 0,
+    "ruleId": "a",
+    "message": "message",
+    "severity": 2,
+    "suggestions": [{ "desc": "description", "fix": { "range": [0, 9], "text": "e += 1" } }]
+  },
+  "result": {
+    "filePath": "file.js",
+    "messages": [
+      {
+        "column": 0,
+        "line": 0,
+        "ruleId": "a",
+        "message": "message",
+        "severity": 2,
+        "suggestions": [
+          {
+            "desc": "description",
+            "fix": { "range": [0, 9], "text": "e += 1" }
+          }
+        ]
+      }
+    ],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  }
+}
