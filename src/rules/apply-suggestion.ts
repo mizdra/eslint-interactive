@@ -1,4 +1,5 @@
 import { Rule, Linter, ESLint } from 'eslint';
+import { notEmpty } from '../util/filter';
 
 export type ApplySuggestionOption = { results: ESLint.LintResult[]; ruleIds: string[]; filterScript: string };
 
@@ -69,6 +70,11 @@ const rule: Rule.RuleModule = {
       .sort((a, b) => b.line - a.line || b.column - a.column);
     if (messages.length === 0) return {};
 
+    const filter: SuggestionFilter = eval(option.filterScript);
+
+    const suggestions = messages.map((message) => getApplicableSuggestion(message, result, filter)).filter(notEmpty);
+    if (suggestions.length === 0) return {};
+
     return {
       // eslint-disable-next-line @typescript-eslint/naming-convention
       Program: () => {
@@ -81,12 +87,7 @@ const rule: Rule.RuleModule = {
           },
           message: `apply-suggestion`,
           fix: (fixer) => {
-            const fixes: Rule.Fix[] = [];
-            for (const message of messages) {
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-              const suggestion = getApplicableSuggestion(message, result, eval(option.filterScript));
-              if (suggestion) fixes.push(applySuggestion(fixer, suggestion));
-            }
+            const fixes: Rule.Fix[] = suggestions.map((suggestion) => applySuggestion(fixer, suggestion));
             return fixes;
           },
         });
