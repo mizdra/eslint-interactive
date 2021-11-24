@@ -1,6 +1,6 @@
 import { ESLint } from 'eslint';
 import { promptToInputRuleIds } from '../cli/prompt';
-import { CachedESLint } from '../eslint';
+import { ESLintProxy } from '../eslint-proxy';
 import { NextScene } from '../types';
 import { selectAction } from './select-action';
 
@@ -10,7 +10,7 @@ export type SelectRuleIdsArgs = {
 };
 
 export async function selectRuleIds(
-  eslint: CachedESLint,
+  eslint: ESLintProxy,
   { results, ruleIdsInResults }: SelectRuleIdsArgs,
 ): Promise<NextScene> {
   const selectedRuleIds = await promptToInputRuleIds(ruleIdsInResults);

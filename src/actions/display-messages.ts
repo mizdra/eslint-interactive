@@ -1,9 +1,9 @@
 import { ESLint } from 'eslint';
 import { promptToInputDisplayMode } from '../cli/prompt';
-import { CachedESLint } from '../eslint';
+import { ESLintProxy } from '../eslint-proxy';
 
 export async function doDisplayMessagesAction(
-  eslint: CachedESLint,
+  eslint: ESLintProxy,
   results: ESLint.LintResult[],
   selectedRuleIds: string[],
 ) {

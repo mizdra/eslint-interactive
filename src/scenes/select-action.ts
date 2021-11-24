@@ -4,7 +4,7 @@ import { doDisableAction } from '../actions/disable';
 import { doDisplayMessagesAction } from '../actions/display-messages';
 import { doFixAction } from '../actions/fix';
 import { promptToInputAction } from '../cli/prompt';
-import { CachedESLint } from '../eslint';
+import { ESLintProxy } from '../eslint-proxy';
 import { NextScene } from '../types';
 import { unreachable } from '../util/type-check';
 
@@ -15,7 +15,7 @@ export type SelectActionArgs = {
 };
 
 export async function selectAction(
-  eslint: CachedESLint,
+  eslint: ESLintProxy,
   { results, ruleIdsInResults, selectedRuleIds }: SelectActionArgs,
 ): Promise<NextScene> {
   const action = await promptToInputAction();

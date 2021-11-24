@@ -5,7 +5,7 @@ import pager from 'node-pager';
 import { format } from './formatter';
 import { DisableTarget, Option } from './rules/add-disable-comment';
 import { ApplySuggestionOption } from './rules/apply-suggestion';
-import { DisplayMode } from './types';
+import { Config, DisplayMode } from './types';
 import { groupBy } from './util/array';
 import { scanUsedPluginsFromResults } from './util/eslint';
 import { notEmpty } from './util/filter';
@@ -74,27 +74,21 @@ function createApplySuggestionESLint(
   return eslint;
 }
 
-export type Config = {
-  patterns: string[];
-  rulePaths: string[] | undefined;
-  extensions: string[] | undefined;
-  formatterName: string;
-};
-
-export class CachedESLint {
-  readonly patterns: string[];
-  readonly baseOptions: ESLint.Options;
-  readonly formatterName: string | undefined;
+export class ESLintProxy {
+  readonly config: Config;
 
   constructor(config: Config) {
-    this.patterns = config.patterns;
-    this.baseOptions = {
+    this.config = config;
+  }
+
+  /** The base options of ESLint */
+  get baseOptions(): ESLint.Options {
+    return {
       cache: true,
       cacheLocation: join(tmpdir(), `eslint-interactive--${Date.now()}-${Math.random()}`),
-      rulePaths: config.rulePaths,
-      extensions: config.extensions,
+      rulePaths: this.config.rulePaths,
+      extensions: this.config.extensions,
     };
-    this.formatterName = config.formatterName;
   }
 
   /**
@@ -103,8 +97,7 @@ export class CachedESLint {
    */
   async lint(): Promise<ESLint.LintResult[]> {
     const eslint = new ESLint(this.baseOptions);
-    const results = await eslint.lintFiles(this.patterns);
-
+    const results = await eslint.lintFiles(this.config.patterns);
     return results;
   }
 
@@ -137,7 +130,7 @@ export class CachedESLint {
    */
   async printProblemDetails(displayMode: DisplayMode, results: ESLint.LintResult[], ruleIds: string[]): Promise<void> {
     const eslint = new ESLint(this.baseOptions);
-    const formatter = await eslint.loadFormatter(this.formatterName);
+    const formatter = await eslint.loadFormatter(this.config.formatterName);
     const resultText = formatter.format(filterResultsByRuleId(results, ruleIds));
     if (displayMode === 'withPager') {
       await pager(resultText);
@@ -155,8 +148,7 @@ export class CachedESLint {
       ...this.baseOptions,
       fix: (message) => message.ruleId !== null && ruleIds.includes(message.ruleId),
     });
-
-    const results = await eslint.lintFiles(this.patterns);
+    const results = await eslint.lintFiles(this.config.patterns);
     await ESLint.outputFixes(results);
   }
 
@@ -173,7 +165,7 @@ export class CachedESLint {
     });
 
     const eslint = createAddDisableCommentESLint(this.baseOptions, filteredResults, description);
-    const newResults = await eslint.lintFiles(this.patterns);
+    const newResults = await eslint.lintFiles(this.config.patterns);
     await ESLint.outputFixes(newResults);
   }
 
@@ -185,7 +177,7 @@ export class CachedESLint {
    * */
   async applySuggestions(results: ESLint.LintResult[], ruleIds: string[], filterScript: string): Promise<void> {
     const eslint = createApplySuggestionESLint(this.baseOptions, results, ruleIds, filterScript);
-    const newResults = await eslint.lintFiles(this.patterns);
+    const newResults = await eslint.lintFiles(this.config.patterns);
     await ESLint.outputFixes(newResults);
   }
 }

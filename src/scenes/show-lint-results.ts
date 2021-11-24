@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import { ESLint } from 'eslint';
 import ora from 'ora';
-import { CachedESLint } from '../eslint';
+import { ESLintProxy } from '../eslint-proxy';
 import { NextScene } from '../types';
 import { unique } from '../util/array';
 import { notEmpty } from '../util/filter';
@@ -11,7 +11,7 @@ export type SelectRuleIdsArgs = {
   ruleIdsInResults: string[];
 };
 
-export async function showLintResults(eslint: CachedESLint): Promise<NextScene> {
+export async function showLintResults(eslint: ESLintProxy): Promise<NextScene> {
   const lintingSpinner = ora('Linting...').start();
   const results = await eslint.lint();
   const ruleIdsInResults = unique(
