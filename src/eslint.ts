@@ -1,6 +1,6 @@
 import { tmpdir } from 'os';
 import { join } from 'path';
-import { ESLint, Linter, Rule } from 'eslint';
+import { ESLint } from 'eslint';
 import pager from 'node-pager';
 import { format } from './formatter';
 import { DisableTarget, Option } from './rules/add-disable-comment';
@@ -81,14 +81,11 @@ type CachedESLintOptions = {
 
 export class CachedESLint {
   readonly patterns: string[];
-  readonly ruleNameToRuleModule: Map<string, Rule.RuleModule>;
   readonly defaultOptions: ESLint.Options;
   readonly formatterName: string | undefined;
 
   constructor(patterns: string[], options?: CachedESLintOptions) {
     this.patterns = patterns;
-    const linter = new Linter();
-    this.ruleNameToRuleModule = linter.getRules();
     this.defaultOptions = {
       cache: true,
       cacheLocation: join(tmpdir(), `eslint-interactive--${Date.now()}-${Math.random()}`),
