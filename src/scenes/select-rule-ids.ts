@@ -11,9 +11,8 @@ export type SelectRuleIdsArgs = {
 
 export async function selectRuleIds(
   eslint: CachedESLint,
-  formatterName: string,
   { results, ruleIdsInResults }: SelectRuleIdsArgs,
 ): Promise<NextScene> {
   const selectedRuleIds = await promptToInputRuleIds(ruleIdsInResults);
-  return await selectAction(eslint, formatterName, { results, ruleIdsInResults, selectedRuleIds });
+  return await selectAction(eslint, { results, ruleIdsInResults, selectedRuleIds });
 }

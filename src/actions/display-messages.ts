@@ -4,10 +4,9 @@ import { CachedESLint } from '../eslint';
 
 export async function doDisplayMessagesAction(
   eslint: CachedESLint,
-  formatterName: string,
   results: ESLint.LintResult[],
   selectedRuleIds: string[],
 ) {
   const displayMode = await promptToInputDisplayMode();
-  await eslint.showProblems(formatterName, displayMode, results, selectedRuleIds);
+  await eslint.showProblems(displayMode, results, selectedRuleIds);
 }

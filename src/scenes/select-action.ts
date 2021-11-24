@@ -16,7 +16,6 @@ export type SelectActionArgs = {
 
 export async function selectAction(
   eslint: CachedESLint,
-  formatterName: string,
   { results, ruleIdsInResults, selectedRuleIds }: SelectActionArgs,
 ): Promise<NextScene> {
   const action = await promptToInputAction();
@@ -24,7 +23,7 @@ export async function selectAction(
   if (action === 'reselectRules') return { name: 'selectRuleIds', args: { results, ruleIdsInResults } };
 
   if (action === 'displayMessages') {
-    await doDisplayMessagesAction(eslint, formatterName, results, selectedRuleIds);
+    await doDisplayMessagesAction(eslint, results, selectedRuleIds);
     return { name: 'selectAction', args: { results, ruleIdsInResults, selectedRuleIds } };
   } else if (action === 'fix') {
     await doFixAction(eslint, selectedRuleIds);

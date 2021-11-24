@@ -76,12 +76,14 @@ function createApplySuggestionESLint(
 type CachedESLintOptions = {
   rulePaths?: string[];
   extensions?: string[];
+  formatterName?: string;
 };
 
 export class CachedESLint {
   readonly patterns: string[];
   readonly ruleNameToRuleModule: Map<string, Rule.RuleModule>;
   readonly defaultOptions: ESLint.Options;
+  readonly formatterName: string | undefined;
 
   constructor(patterns: string[], options?: CachedESLintOptions) {
     this.patterns = patterns;
@@ -93,6 +95,7 @@ export class CachedESLint {
       rulePaths: options?.rulePaths,
       extensions: options?.extensions,
     };
+    this.formatterName = options?.formatterName;
   }
 
   async lint(): Promise<ESLint.LintResult[]> {
@@ -119,14 +122,9 @@ export class CachedESLint {
     console.log(resultText);
   }
 
-  async showProblems(
-    formatterName: string,
-    displayMode: DisplayMode,
-    results: ESLint.LintResult[],
-    ruleIds: string[],
-  ): Promise<void> {
+  async showProblems(displayMode: DisplayMode, results: ESLint.LintResult[], ruleIds: string[]): Promise<void> {
     const eslint = new ESLint(this.defaultOptions);
-    const formatter = await eslint.loadFormatter(formatterName);
+    const formatter = await eslint.loadFormatter(this.formatterName);
     const resultText = formatter.format(filterResultsByRuleId(results, ruleIds));
     if (displayMode === 'withPager') {
       await pager(resultText);
