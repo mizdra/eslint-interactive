@@ -1,5 +1,5 @@
 import yargs from 'yargs';
-import { Config } from '../eslint';
+import { Config } from '../types';
 
 export function parseArgv(argv: string[]): Config {
   const parsedArgv = yargs(argv.slice(2))

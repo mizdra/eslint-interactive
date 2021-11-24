@@ -34,6 +34,6 @@ export async function doApplySuggestionAction(
   console.log('Opening editor...');
   const filterScript = await editFileWithEditor(filterScriptFilePath);
   const fixingSpinner = ora('Applying suggestion...').start();
-  await eslint.applySuggestion(results, selectedRuleIds, filterScript);
+  await eslint.applySuggestions(results, selectedRuleIds, filterScript);
   fixingSpinner.succeed(chalk.bold('Applying suggestion was successful.'));
 }

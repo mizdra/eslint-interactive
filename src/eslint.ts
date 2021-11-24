@@ -83,12 +83,12 @@ export type Config = {
 
 export class CachedESLint {
   readonly patterns: string[];
-  readonly defaultOptions: ESLint.Options;
+  readonly baseOptions: ESLint.Options;
   readonly formatterName: string | undefined;
 
   constructor(config: Config) {
     this.patterns = config.patterns;
-    this.defaultOptions = {
+    this.baseOptions = {
       cache: true,
       cacheLocation: join(tmpdir(), `eslint-interactive--${Date.now()}-${Math.random()}`),
       rulePaths: config.rulePaths,
@@ -97,20 +97,28 @@ export class CachedESLint {
     this.formatterName = config.formatterName;
   }
 
+  /**
+   * Lint project.
+   * @returns The results of linting
+   */
   async lint(): Promise<ESLint.LintResult[]> {
-    const eslint = new ESLint(this.defaultOptions);
+    const eslint = new ESLint(this.baseOptions);
     const results = await eslint.lintFiles(this.patterns);
 
     return results;
   }
 
-  printResults(results: ESLint.LintResult[]): void {
+  /**
+   * Print summary of problems.
+   * @param results The lint results of the project to print summary
+   */
+  printProblemSummary(results: ESLint.LintResult[]): void {
     // get used plugins from `results`
     const plugins = scanUsedPluginsFromResults(results);
 
     // get `rulesMeta` from `results`
     const eslint = new ESLint({
-      ...this.defaultOptions,
+      ...this.baseOptions,
       overrideConfig: { plugins },
     });
     // NOTE: `getRulesMetaForResults` is a feature added in ESLint 7.29.0.
@@ -121,8 +129,14 @@ export class CachedESLint {
     console.log(resultText);
   }
 
-  async showProblems(displayMode: DisplayMode, results: ESLint.LintResult[], ruleIds: string[]): Promise<void> {
-    const eslint = new ESLint(this.defaultOptions);
+  /**
+   * Print details of problems.
+   * @param displayMode How to display a problem
+   * @param results The lint results of the project to print summary
+   * @param ruleIds The rule ids to print details
+   */
+  async printProblemDetails(displayMode: DisplayMode, results: ESLint.LintResult[], ruleIds: string[]): Promise<void> {
+    const eslint = new ESLint(this.baseOptions);
     const formatter = await eslint.loadFormatter(this.formatterName);
     const resultText = formatter.format(filterResultsByRuleId(results, ruleIds));
     if (displayMode === 'withPager') {
@@ -132,9 +146,13 @@ export class CachedESLint {
     }
   }
 
-  async fix(ruleIds: string[]): Promise<void> {
+  /**
+   * Fix problems.
+   * @param ruleIds The rule ids to fix problems
+   */
+  async fixProblems(ruleIds: string[]): Promise<void> {
     const eslint = new ESLint({
-      ...this.defaultOptions,
+      ...this.baseOptions,
       fix: (message) => message.ruleId !== null && ruleIds.includes(message.ruleId),
     });
 
@@ -142,19 +160,31 @@ export class CachedESLint {
     await ESLint.outputFixes(results);
   }
 
-  async disable(results: ESLint.LintResult[], ruleIds: string[], description?: string): Promise<void> {
+  /**
+   * Add disable comments.
+   * @param results The lint results of the project to add disable comments
+   * @param ruleIds The rule ids to add disable comments
+   * @param description The description of the disable comments
+   */
+  async addDisableComments(results: ESLint.LintResult[], ruleIds: string[], description?: string): Promise<void> {
     const filteredResults = results.map((result) => {
       const messages = result.messages.filter((message) => message.ruleId && ruleIds.includes(message.ruleId));
       return { ...result, messages };
     });
 
-    const eslint = createAddDisableCommentESLint(this.defaultOptions, filteredResults, description);
+    const eslint = createAddDisableCommentESLint(this.baseOptions, filteredResults, description);
     const newResults = await eslint.lintFiles(this.patterns);
     await ESLint.outputFixes(newResults);
   }
 
-  async applySuggestion(results: ESLint.LintResult[], ruleIds: string[], filterScript: string): Promise<void> {
-    const eslint = createApplySuggestionESLint(this.defaultOptions, results, ruleIds, filterScript);
+  /**
+   * Apply suggestions.
+   * @param results The lint results of the project to apply suggestions
+   * @param ruleIds The rule ids to apply suggestions
+   * @param filterScript The script to filter suggestions
+   * */
+  async applySuggestions(results: ESLint.LintResult[], ruleIds: string[], filterScript: string): Promise<void> {
+    const eslint = createApplySuggestionESLint(this.baseOptions, results, ruleIds, filterScript);
     const newResults = await eslint.lintFiles(this.patterns);
     await ESLint.outputFixes(newResults);
   }

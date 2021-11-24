@@ -20,3 +20,11 @@ export type NextScene =
   | { name: 'selectAction'; args: SelectActionArgs }
   | { name: 'selectToContinue' }
   | { name: 'exit' };
+
+/** The config of eslint-interactive */
+export type Config = {
+  patterns: string[];
+  rulePaths: string[] | undefined;
+  extensions: string[] | undefined;
+  formatterName: string;
+};

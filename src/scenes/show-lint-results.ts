@@ -27,6 +27,6 @@ export async function showLintResults(eslint: CachedESLint): Promise<NextScene> 
   }
   lintingSpinner.succeed(chalk.bold('Found errors.'));
   console.log();
-  eslint.printResults(results);
+  eslint.printProblemSummary(results);
   return { name: 'selectRuleIds', args: { results, ruleIdsInResults } };
 }

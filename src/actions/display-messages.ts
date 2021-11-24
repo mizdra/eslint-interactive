@@ -8,5 +8,5 @@ export async function doDisplayMessagesAction(
   selectedRuleIds: string[],
 ) {
   const displayMode = await promptToInputDisplayMode();
-  await eslint.showProblems(displayMode, results, selectedRuleIds);
+  await eslint.printProblemDetails(displayMode, results, selectedRuleIds);
 }
