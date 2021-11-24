@@ -11,8 +11,8 @@ export type Options = {
 };
 
 export async function run(options: Options) {
-  const { patterns, rulePaths, extensions, formatterName } = parseArgv(options.argv);
-  const eslint = new CachedESLint(patterns, { rulePaths, extensions, formatterName });
+  const config = parseArgv(options.argv);
+  const eslint = new CachedESLint(config);
 
   let nextScene: NextScene = { name: 'showLintResults' };
   while (nextScene.name !== 'exit') {

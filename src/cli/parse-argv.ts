@@ -1,13 +1,7 @@
 import yargs from 'yargs';
+import { Config } from '../eslint';
 
-export type Options = {
-  patterns: string[];
-  rulePaths: string[] | undefined;
-  extensions: string[] | undefined;
-  formatterName: string;
-};
-
-export function parseArgv(argv: string[]): Options {
+export function parseArgv(argv: string[]): Config {
   const parsedArgv = yargs(argv.slice(2))
     .usage('$0 [file.js] [dir]')
     .option('rulesdir', {

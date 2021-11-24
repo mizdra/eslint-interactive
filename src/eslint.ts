@@ -73,10 +73,12 @@ function createApplySuggestionESLint(
   });
   return eslint;
 }
-type CachedESLintOptions = {
-  rulePaths?: string[];
-  extensions?: string[];
-  formatterName?: string;
+
+export type Config = {
+  patterns: string[];
+  rulePaths: string[] | undefined;
+  extensions: string[] | undefined;
+  formatterName: string;
 };
 
 export class CachedESLint {
@@ -84,15 +86,15 @@ export class CachedESLint {
   readonly defaultOptions: ESLint.Options;
   readonly formatterName: string | undefined;
 
-  constructor(patterns: string[], options?: CachedESLintOptions) {
-    this.patterns = patterns;
+  constructor(config: Config) {
+    this.patterns = config.patterns;
     this.defaultOptions = {
       cache: true,
       cacheLocation: join(tmpdir(), `eslint-interactive--${Date.now()}-${Math.random()}`),
-      rulePaths: options?.rulePaths,
-      extensions: options?.extensions,
+      rulePaths: config.rulePaths,
+      extensions: config.extensions,
     };
-    this.formatterName = options?.formatterName;
+    this.formatterName = config.formatterName;
   }
 
   async lint(): Promise<ESLint.LintResult[]> {
