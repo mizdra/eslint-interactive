@@ -9,7 +9,7 @@ import {
   editFileWithEditor,
   generateExampleFilterScriptFilePath,
   generateFilterScriptFilePath,
-} from '../filter-script-util';
+} from '../util/filter-script';
 
 export async function doApplySuggestionAction(
   eslint: ESLintProxy,
