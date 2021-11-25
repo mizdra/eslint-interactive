@@ -1,5 +1,5 @@
 import { ESLint } from 'eslint';
-import { doApplySuggestionsAction } from '../actions/apply-suggestion';
+import { doApplySuggestionsAction } from '../actions/apply-suggestions';
 import { doDisableAction } from '../actions/disable';
 import { doDisplayMessagesAction } from '../actions/display-messages';
 import { doFixAction } from '../actions/fix';
