@@ -1,7 +1,7 @@
 import { ESLint } from 'eslint';
 import type { Comment } from 'estree';
 import { unique } from './array';
-import { notEmpty } from './filter';
+import { notEmpty } from './type-check';
 
 /** `results` 内で使われているプラグインの名前のリストを洗い出して返す */
 export function scanUsedPluginsFromResults(results: ESLint.LintResult[]): string[] {

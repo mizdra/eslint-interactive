@@ -1,4 +1,4 @@
-import { notEmpty } from '../../src/util/filter';
+import { notEmpty } from '../../src/util/type-check';
 
 test('notEmpty', () => {
   expect(notEmpty('')).toStrictEqual(true);

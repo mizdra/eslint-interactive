@@ -1,5 +1,5 @@
 import { Rule, Linter, ESLint } from 'eslint';
-import { notEmpty } from '../util/filter';
+import { notEmpty } from '../util/type-check';
 
 export type ApplySuggestionsOption = { results: ESLint.LintResult[]; ruleIds: string[]; filterScript: string };
 

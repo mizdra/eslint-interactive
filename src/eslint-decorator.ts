@@ -8,7 +8,7 @@ import { ApplySuggestionsOption } from './rules/apply-suggestions';
 import { Config, DisplayMode } from './types';
 import { groupBy } from './util/array';
 import { scanUsedPluginsFromResults } from './util/eslint';
-import { notEmpty } from './util/filter';
+import { notEmpty } from './util/type-check';
 
 function filterResultsByRuleId(results: ESLint.LintResult[], ruleIds: string[]): ESLint.LintResult[] {
   return results.map((result) => {

@@ -3,7 +3,7 @@ import ora from 'ora';
 import { ESLintDecorator } from '../eslint-decorator';
 import { NextScene } from '../types';
 import { unique } from '../util/array';
-import { notEmpty } from '../util/filter';
+import { notEmpty } from '../util/type-check';
 
 /**
  * Run the scene where the lint results will be printed.
