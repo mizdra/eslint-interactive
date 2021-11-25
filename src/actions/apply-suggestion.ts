@@ -11,7 +11,7 @@ import {
   generateFilterScriptFilePath,
 } from '../util/filter-script';
 
-export async function doApplySuggestionAction(
+export async function doApplySuggestionsAction(
   eslint: ESLintProxy,
   results: ESLint.LintResult[],
   selectedRuleIds: string[],

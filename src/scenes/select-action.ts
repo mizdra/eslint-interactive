@@ -1,5 +1,5 @@
 import { ESLint } from 'eslint';
-import { doApplySuggestionAction } from '../actions/apply-suggestion';
+import { doApplySuggestionsAction } from '../actions/apply-suggestions';
 import { doDisableAction } from '../actions/disable';
 import { doDisplayMessagesAction } from '../actions/display-messages';
 import { doFixAction } from '../actions/fix';
@@ -31,8 +31,8 @@ export async function selectAction(
   } else if (action === 'disable') {
     await doDisableAction(eslint, results, selectedRuleIds);
     return { name: 'selectToContinue' };
-  } else if (action === 'applySuggestion') {
-    await doApplySuggestionAction(eslint, results, selectedRuleIds);
+  } else if (action === 'ApplySuggestions') {
+    await doApplySuggestionsAction(eslint, results, selectedRuleIds);
     return { name: 'selectToContinue' };
   }
   return unreachable();

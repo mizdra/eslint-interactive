@@ -4,7 +4,7 @@ import { ESLint } from 'eslint';
 import pager from 'node-pager';
 import { format } from './formatter';
 import { DisableTarget, AddDisableCommentOption } from './rules/add-disable-comment';
-import { ApplySuggestionOption } from './rules/apply-suggestion';
+import { ApplySuggestionsOption } from './rules/apply-suggestions';
 import { Config, DisplayMode } from './types';
 import { groupBy } from './util/array';
 import { scanUsedPluginsFromResults } from './util/eslint';
@@ -54,7 +54,7 @@ function createAddDisableCommentESLint(
   return eslint;
 }
 
-function createApplySuggestionESLint(
+function createApplySuggestionsESLint(
   defaultOptions: ESLint.Options,
   results: ESLint.LintResult[],
   ruleIds: string[],
@@ -64,12 +64,12 @@ function createApplySuggestionESLint(
     ...defaultOptions,
     overrideConfig: {
       rules: {
-        'apply-suggestion': [2, { results, ruleIds, filterScript } as ApplySuggestionOption],
+        'apply-suggestions': [2, { results, ruleIds, filterScript } as ApplySuggestionsOption],
       },
     },
     rulePaths: [...(defaultOptions.rulePaths ?? []), join(__dirname, 'rules')],
-    // NOTE: apply-suggestion に関するエラーだけ fix したいのでフィルタしている
-    fix: (message) => message.ruleId === 'apply-suggestion',
+    // NOTE: apply-suggestions に関するエラーだけ fix したいのでフィルタしている
+    fix: (message) => message.ruleId === 'apply-suggestions',
   });
   return eslint;
 }
@@ -176,7 +176,7 @@ export class ESLintProxy {
    * @param filterScript The script to filter suggestions
    * */
   async applySuggestions(results: ESLint.LintResult[], ruleIds: string[], filterScript: string): Promise<void> {
-    const eslint = createApplySuggestionESLint(this.baseOptions, results, ruleIds, filterScript);
+    const eslint = createApplySuggestionsESLint(this.baseOptions, results, ruleIds, filterScript);
     const newResults = await eslint.lintFiles(this.config.patterns);
     await ESLint.outputFixes(newResults);
   }
