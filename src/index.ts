@@ -10,6 +10,9 @@ export type Options = {
   argv: string[];
 };
 
+/**
+ * Run eslint-interactive.
+ */
 export async function run(options: Options) {
   const config = parseArgv(options.argv);
   const eslint = new ESLintProxy(config);

@@ -1,5 +1,5 @@
 import { ESLint } from 'eslint';
-import { doApplySuggestionsAction } from '../actions/apply-suggestions';
+import { doApplySuggestionsAction } from '../actions/apply-suggestion';
 import { doDisableAction } from '../actions/disable';
 import { doDisplayMessagesAction } from '../actions/display-messages';
 import { doFixAction } from '../actions/fix';
@@ -9,11 +9,17 @@ import { NextScene } from '../types';
 import { unreachable } from '../util/type-check';
 
 export type SelectActionArgs = {
+  /** The lint results of the project */
   results: ESLint.LintResult[];
+  /** The rule ids that are in the `results`. */
   ruleIdsInResults: string[];
+  /** The rule ids to perform the action. */
   selectedRuleIds: string[];
 };
 
+/**
+ * Run the scene where a user select the action to be performed for the problems of selected rules.
+ */
 export async function selectAction(
   eslint: ESLintProxy,
   { results, ruleIdsInResults, selectedRuleIds }: SelectActionArgs,

@@ -1,6 +1,7 @@
 import yargs from 'yargs';
 import { Config } from '../types';
 
+/** Parse argv into the config object of eslint-interactive */
 export function parseArgv(argv: string[]): Config {
   const parsedArgv = yargs(argv.slice(2))
     .usage('$0 [file.js] [dir]')

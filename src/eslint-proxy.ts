@@ -74,6 +74,10 @@ function createApplySuggestionsESLint(
   return eslint;
 }
 
+/**
+ * The core of eslint-interactive.
+ * It uses ESLint's Node.js API to output a summary of problems, fix problems, apply suggestions, etc.
+ */
 export class ESLintProxy {
   readonly config: Config;
 

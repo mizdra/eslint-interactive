@@ -1,12 +1,9 @@
-import { ESLint } from 'eslint';
 import { promptToInputContinue } from '../cli/prompt';
 import { NextScene } from '../types';
 
-export type SelectRuleIdsArgs = {
-  results: ESLint.LintResult[];
-  ruleIdsInResults: string[];
-};
-
+/**
+ * Run the scene where a user select to continue running the program or not.
+ */
 export async function selectToContinue(): Promise<NextScene> {
   console.log();
   const isContinue = await promptToInputContinue();
