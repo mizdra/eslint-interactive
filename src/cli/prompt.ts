@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 import { prompt } from 'enquirer';
 import { Action, DisplayMode } from '../types';
 
