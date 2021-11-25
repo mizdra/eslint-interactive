@@ -1,7 +1,7 @@
 import { Rule } from 'eslint';
 // eslint-disable-next-line import/no-unresolved
 import type { Comment } from 'estree';
-import { createCommentNodeText, parseCommentAsESLintDisableComment } from '../util/comment';
+import { createCommentNodeText, parseCommentAsESLintDisableComment } from '../util/eslint';
 
 // disable comment を追加してくれる rule。
 // disable comment を追加したい場所と disable したい ruleId の情報をオプションで渡すと、
