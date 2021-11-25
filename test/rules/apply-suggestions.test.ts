@@ -1,5 +1,5 @@
 import { RuleTester } from 'eslint';
-import rule, { ApplySuggestionOption } from '../../src/rules/apply-suggestion';
+import rule, { ApplySuggestionsOption } from '../../src/rules/apply-suggestions';
 import { fakeLintMessage, fakeLintResult, fakeSuggestion } from '../test-util/eslint';
 import filterScriptArgumentExample from './filter-script-arguments-example.json';
 
@@ -8,7 +8,7 @@ const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2020, ecmaFeat
 const TARGET_FILENAME = 'file.js';
 const OTHER_FILENAME = 'other.js';
 
-function validCase(args: { code: string[]; option: ApplySuggestionOption }): RuleTester.ValidTestCase {
+function validCase(args: { code: string[]; option: ApplySuggestionsOption }): RuleTester.ValidTestCase {
   return {
     code: args.code.join('\n'),
     filename: TARGET_FILENAME,
@@ -19,18 +19,18 @@ function validCase(args: { code: string[]; option: ApplySuggestionOption }): Rul
 function invalidCase(args: {
   code: string[];
   output: string[];
-  option: ApplySuggestionOption;
+  option: ApplySuggestionsOption;
 }): RuleTester.InvalidTestCase {
   return {
     code: args.code.join('\n'),
     output: args.output.join('\n'),
-    errors: [{ message: 'apply-suggestion' }],
+    errors: [{ message: 'apply-suggestions' }],
     filename: TARGET_FILENAME,
     options: [args.option],
   };
 }
 
-ruleTester.run('apply-suggestion', rule, {
+ruleTester.run('apply-suggestions', rule, {
   valid: [
     // 他のルールの suggestion は無視される
     validCase({

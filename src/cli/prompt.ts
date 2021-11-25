@@ -1,6 +1,11 @@
 import { prompt } from 'enquirer';
-import { Action, DisplayMode } from './types';
+import { Action, DisplayMode } from '../types';
 
+/**
+ * Ask the user for the rule ids to which they want to apply the action.
+ * @param ruleIdsInResults The rule ids that are in the lint results.
+ * @returns The rule ids
+ */
 export async function promptToInputRuleIds(ruleIdsInResults: string[]): Promise<string[]> {
   const { ruleIds } = await prompt<{ ruleIds: string[] }>([
     {
@@ -13,6 +18,10 @@ export async function promptToInputRuleIds(ruleIdsInResults: string[]): Promise<
   return ruleIds;
 }
 
+/**
+ * Ask the user what action they want to perform.
+ * @returns The action name
+ */
 export async function promptToInputAction(): Promise<Action> {
   const { action } = await prompt<{
     action: Action;
@@ -25,7 +34,7 @@ export async function promptToInputAction(): Promise<Action> {
         { name: 'displayMessages', message: 'Display problem messages' },
         { name: 'fix', message: 'Fix problems' },
         { name: 'disable', message: 'Disable problems with `// eslint-disable-next-line`' },
-        { name: 'applySuggestion', message: 'Apply suggestion (experimental, only for experts)' },
+        { name: 'ApplySuggestions', message: 'Apply suggestion (experimental, only for experts)' },
         { name: 'reselectRules', message: 'Reselect rules' },
       ],
     },
@@ -33,6 +42,10 @@ export async function promptToInputAction(): Promise<Action> {
   return action;
 }
 
+/**
+ * Ask the user how to display the lint results.
+ * @returns How to display
+ */
 export async function promptToInputDisplayMode(): Promise<DisplayMode> {
   const { displayMode } = await prompt<{
     displayMode: DisplayMode;
@@ -50,6 +63,10 @@ export async function promptToInputDisplayMode(): Promise<DisplayMode> {
   return displayMode;
 }
 
+/**
+ * Ask the user a description to leave in disable comment.
+ * @returns The description
+ */
 export async function promptToInputDescription(): Promise<string | undefined> {
   const { description } = await prompt<{
     description: string;
@@ -63,6 +80,10 @@ export async function promptToInputDescription(): Promise<string | undefined> {
   return description === '' ? undefined : description;
 }
 
+/**
+ * Ask the user continue running the program or not
+ * @returns If it continues, `true`, if not, `false`.
+ */
 export async function promptToInputContinue(): Promise<boolean> {
   const { isContinue } = await prompt<{ isContinue: boolean }>([
     {
@@ -75,6 +96,10 @@ export async function promptToInputContinue(): Promise<boolean> {
   return isContinue;
 }
 
+/**
+ * Ask the user if they want to reuse the filter script.
+ * @returns If it reuses, `true`, if not, `false`.
+ */
 export async function promptToInputReuseFilterScript(): Promise<boolean> {
   const { reuseFilterScript } = await prompt<{ reuseFilterScript: boolean }>([
     {

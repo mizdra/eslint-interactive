@@ -3,16 +3,16 @@ import { dirname } from 'path';
 import chalk from 'chalk';
 import { ESLint } from 'eslint';
 import ora from 'ora';
-import { CachedESLint } from './eslint';
+import { promptToInputReuseFilterScript } from '../cli/prompt';
+import { ESLintDecorator } from '../eslint-decorator';
 import {
   editFileWithEditor,
   generateExampleFilterScriptFilePath,
   generateFilterScriptFilePath,
-} from './filter-script-util';
-import { promptToInputReuseFilterScript } from './prompt';
+} from '../util/filter-script';
 
-export async function doApplySuggestionAction(
-  eslint: CachedESLint,
+export async function doApplySuggestionsAction(
+  eslint: ESLintDecorator,
   results: ESLint.LintResult[],
   selectedRuleIds: string[],
 ): Promise<void> {
@@ -34,6 +34,6 @@ export async function doApplySuggestionAction(
   console.log('Opening editor...');
   const filterScript = await editFileWithEditor(filterScriptFilePath);
   const fixingSpinner = ora('Applying suggestion...').start();
-  await eslint.applySuggestion(results, selectedRuleIds, filterScript);
+  await eslint.applySuggestions(results, selectedRuleIds, filterScript);
   fixingSpinner.succeed(chalk.bold('Applying suggestion was successful.'));
 }

@@ -1,12 +1,12 @@
 import { RuleTester } from 'eslint';
-import rule, { Option } from '../../src/rules/add-disable-comment';
+import rule, { AddDisableCommentOption } from '../../src/rules/add-disable-comment';
 
 const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2020, ecmaFeatures: { jsx: true } } });
 
 const TARGET_FILENAME = 'file.js';
 const OTHER_FILENAME = 'other.js';
 
-function validCase(args: { code: string[]; option: Option }): RuleTester.ValidTestCase {
+function validCase(args: { code: string[]; option: AddDisableCommentOption }): RuleTester.ValidTestCase {
   return {
     code: args.code.join('\n'),
     filename: TARGET_FILENAME,
@@ -14,7 +14,11 @@ function validCase(args: { code: string[]; option: Option }): RuleTester.ValidTe
   };
 }
 
-function invalidCase(args: { code: string[]; output: string[]; option: Option }): RuleTester.InvalidTestCase {
+function invalidCase(args: {
+  code: string[];
+  output: string[];
+  option: AddDisableCommentOption;
+}): RuleTester.InvalidTestCase {
   return {
     code: args.code.join('\n'),
     output: args.output.join('\n'),

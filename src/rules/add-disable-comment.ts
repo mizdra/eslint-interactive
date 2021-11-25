@@ -26,7 +26,7 @@ export type DisableTarget = {
   line: number;
   ruleIds: string[];
 };
-export type Option = { targets: DisableTarget[]; description?: string };
+export type AddDisableCommentOption = { targets: DisableTarget[]; description?: string };
 
 function findESLintDisableComment(commentsInFile: Comment[], line: number) {
   const commentsInPreviousLine = commentsInFile.filter((comment) => comment.loc?.start.line === line - 1);
@@ -64,7 +64,7 @@ const rule: Rule.RuleModule = {
       return {};
     }
 
-    const option = context.options[0] as Option;
+    const option = context.options[0] as AddDisableCommentOption;
     const targetsInFile = option.targets.filter((target) => target.filename === filename);
     if (targetsInFile.length === 0) return {};
 

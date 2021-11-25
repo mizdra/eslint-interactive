@@ -1,7 +1,7 @@
 import { Rule, Linter, ESLint } from 'eslint';
 import { notEmpty } from '../util/filter';
 
-export type ApplySuggestionOption = { results: ESLint.LintResult[]; ruleIds: string[]; filterScript: string };
+export type ApplySuggestionsOption = { results: ESLint.LintResult[]; ruleIds: string[]; filterScript: string };
 
 type SuggestionFilter = (
   suggestions: Linter.LintSuggestion[],
@@ -28,7 +28,7 @@ function getApplicableSuggestion(
   return suggestion;
 }
 
-function applySuggestion(fixer: Rule.RuleFixer, suggestion: Linter.LintSuggestion): Rule.Fix {
+function ApplySuggestions(fixer: Rule.RuleFixer, suggestion: Linter.LintSuggestion): Rule.Fix {
   return fixer.replaceTextRange(suggestion.fix.range, suggestion.fix.text);
 }
 
@@ -41,7 +41,7 @@ const rule: Rule.RuleModule = {
   create(context: Rule.RuleContext) {
     const filename = context.getFilename();
 
-    const option = context.options[0] as ApplySuggestionOption;
+    const option = context.options[0] as ApplySuggestionsOption;
 
     // 🤯🤯🤯 THIS IS SUPER HACK!!! 🤯🤯🤯
     // fix するとコードが変わり、また別の lint エラーが発生する可能性があるため、eslint は `context.report` で
@@ -85,9 +85,9 @@ const rule: Rule.RuleModule = {
             line: 0,
             column: 0,
           },
-          message: `apply-suggestion`,
+          message: `apply-suggestions`,
           fix: (fixer) => {
-            const fixes: Rule.Fix[] = suggestions.map((suggestion) => applySuggestion(fixer, suggestion));
+            const fixes: Rule.Fix[] = suggestions.map((suggestion) => ApplySuggestions(fixer, suggestion));
             return fixes;
           },
         });
