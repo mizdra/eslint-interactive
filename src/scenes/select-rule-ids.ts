@@ -1,6 +1,6 @@
 import { ESLint } from 'eslint';
 import { promptToInputRuleIds } from '../cli/prompt';
-import { ESLintProxy } from '../eslint-proxy';
+import { ESLintDecorator } from '../eslint-decorator';
 import { NextScene } from '../types';
 import { selectAction } from './select-action';
 
@@ -15,7 +15,7 @@ export type SelectRuleIdsArgs = {
  * Run the scene where a user select rule ids.
  */
 export async function selectRuleIds(
-  eslint: ESLintProxy,
+  eslint: ESLintDecorator,
   { results, ruleIdsInResults }: SelectRuleIdsArgs,
 ): Promise<NextScene> {
   const selectedRuleIds = await promptToInputRuleIds(ruleIdsInResults);

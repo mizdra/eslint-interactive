@@ -1,5 +1,5 @@
 import { parseArgv } from './cli/parse-argv';
-import { ESLintProxy } from './eslint-proxy';
+import { ESLintDecorator } from './eslint-decorator';
 import { selectAction } from './scenes/select-action';
 import { selectRuleIds } from './scenes/select-rule-ids';
 import { selectToContinue } from './scenes/select-to-continue';
@@ -15,7 +15,7 @@ export type Options = {
  */
 export async function run(options: Options) {
   const config = parseArgv(options.argv);
-  const eslint = new ESLintProxy(config);
+  const eslint = new ESLintDecorator(config);
 
   let nextScene: NextScene = { name: 'showLintResults' };
   while (nextScene.name !== 'exit') {

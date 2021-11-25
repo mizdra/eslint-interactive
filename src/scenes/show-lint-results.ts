@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 import ora from 'ora';
-import { ESLintProxy } from '../eslint-proxy';
+import { ESLintDecorator } from '../eslint-decorator';
 import { NextScene } from '../types';
 import { unique } from '../util/array';
 import { notEmpty } from '../util/filter';
@@ -8,7 +8,7 @@ import { notEmpty } from '../util/filter';
 /**
  * Run the scene where the lint results will be printed.
  */
-export async function showLintResults(eslint: ESLintProxy): Promise<NextScene> {
+export async function showLintResults(eslint: ESLintDecorator): Promise<NextScene> {
   const lintingSpinner = ora('Linting...').start();
   const results = await eslint.lint();
   const ruleIdsInResults = unique(

@@ -2,9 +2,13 @@ import chalk from 'chalk';
 import { ESLint } from 'eslint';
 import ora from 'ora';
 import { promptToInputDescription } from '../cli/prompt';
-import { ESLintProxy } from '../eslint-proxy';
+import { ESLintDecorator } from '../eslint-decorator';
 
-export async function doDisableAction(eslint: ESLintProxy, results: ESLint.LintResult[], selectedRuleIds: string[]) {
+export async function doDisableAction(
+  eslint: ESLintDecorator,
+  results: ESLint.LintResult[],
+  selectedRuleIds: string[],
+) {
   const description = await promptToInputDescription();
   const fixingSpinner = ora('Disabling...').start();
   await eslint.addDisableComments(results, selectedRuleIds, description);

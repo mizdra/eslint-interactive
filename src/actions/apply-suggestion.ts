@@ -4,7 +4,7 @@ import chalk from 'chalk';
 import { ESLint } from 'eslint';
 import ora from 'ora';
 import { promptToInputReuseFilterScript } from '../cli/prompt';
-import { ESLintProxy } from '../eslint-proxy';
+import { ESLintDecorator } from '../eslint-decorator';
 import {
   editFileWithEditor,
   generateExampleFilterScriptFilePath,
@@ -12,7 +12,7 @@ import {
 } from '../util/filter-script';
 
 export async function doApplySuggestionsAction(
-  eslint: ESLintProxy,
+  eslint: ESLintDecorator,
   results: ESLint.LintResult[],
   selectedRuleIds: string[],
 ): Promise<void> {

@@ -1,8 +1,8 @@
 import chalk from 'chalk';
 import ora from 'ora';
-import { ESLintProxy } from '../eslint-proxy';
+import { ESLintDecorator } from '../eslint-decorator';
 
-export async function doFixAction(eslint: ESLintProxy, selectedRuleIds: string[]) {
+export async function doFixAction(eslint: ESLintDecorator, selectedRuleIds: string[]) {
   const fixingSpinner = ora('Fixing...').start();
   await eslint.fixProblems(selectedRuleIds);
   fixingSpinner.succeed(chalk.bold('Fixing was successful.'));
