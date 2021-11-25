@@ -3,7 +3,7 @@ import { join } from 'path';
 import { ESLint } from 'eslint';
 import pager from 'node-pager';
 import { format } from './formatter';
-import { DisableTarget, Option } from './rules/add-disable-comment';
+import { DisableTarget, AddDisableCommentOption } from './rules/add-disable-comment';
 import { ApplySuggestionOption } from './rules/apply-suggestion';
 import { Config, DisplayMode } from './types';
 import { groupBy } from './util/array';
@@ -19,7 +19,7 @@ function filterResultsByRuleId(results: ESLint.LintResult[], ruleIds: string[]):
   });
 }
 
-function generateAddDisableCommentOption(results: ESLint.LintResult[], description?: string): Option {
+function generateAddDisableCommentOption(results: ESLint.LintResult[], description?: string): AddDisableCommentOption {
   const targets: DisableTarget[] = [];
   for (const result of results) {
     const messagesByLine = groupBy(result.messages, (message) => message.line);
