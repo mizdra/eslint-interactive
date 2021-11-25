@@ -11,7 +11,7 @@ module.exports = {
   moduleNameMapper: {
     '@eslint/eslintrc/universal': '@eslint/eslintrc/dist/eslintrc-universal.cjs',
   },
-  collectCoverageFrom: ['<rootDir>/src/**/*.{ts,tsx}', '!**/*.d.ts', '!<rootDir>/src/util/**/*'],
+  collectCoverageFrom: ['<rootDir>/src/**/*.{ts,tsx}', '!**/*.d.ts'],
   globals: {
     'ts-jest': {
       tsconfig: 'tsconfig.test.json',
