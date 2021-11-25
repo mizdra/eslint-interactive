@@ -30,5 +30,5 @@ export function generateFilterScriptFilePath(ruleIds: string[]): string {
 }
 
 export function generateExampleFilterScriptFilePath(): string {
-  return join(__dirname, '..', 'static', 'example-filter-script.js');
+  return join(__dirname, '..', '..', 'static', 'example-filter-script.js');
 }
