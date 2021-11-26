@@ -36,12 +36,15 @@ function takeRuleStatistic(ruleId: string, messages: Linter.LintMessage[]): Rule
 
 /** ルールごとのエラー/警告の件数などの統計を取る */
 export function takeRuleStatistics(results: ESLint.LintResult[]): RuleStatistic[] {
-  const messages = results.flatMap((result) => result.messages);
+  const messages = results.flatMap((result) => result.messages).filter((message) => message.ruleId !== null);
 
-  // NOTE: ruleId が null の可能性もあるので、ちゃんと考慮する
-  const ruleIdToMessages = groupBy(messages, (message) => message.ruleId ?? 'null');
+  const ruleIdToMessages = groupBy(messages, (message) => message.ruleId);
 
-  return [...ruleIdToMessages.entries()].map(([ruleId, messages]) => {
-    return takeRuleStatistic(ruleId, messages);
-  });
+  const ruleStatistics: RuleStatistic[] = [];
+  for (const [ruleId, messages] of ruleIdToMessages) {
+    // NOTE: Exclude problems with a null `ruleId`.
+    // ref: ref: https://github.com/eslint/eslint/blob/f1b7499a5162d3be918328ce496eb80692353a5a/docs/developer-guide/nodejs-api.md?plain=1#L372
+    if (ruleId !== null) ruleStatistics.push(takeRuleStatistic(ruleId, messages));
+  }
+  return ruleStatistics;
 }
