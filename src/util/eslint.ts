@@ -20,6 +20,20 @@ export function scanUsedPluginsFromResults(results: ESLint.LintResult[]): string
   return unique(plugins);
 }
 
+/**
+ * Filters and returns only the result for a specific rule.
+ * @param results The results of linting.
+ * @param ruleIds The rule ids to filter.
+ */
+export function filterResultsByRuleId(results: ESLint.LintResult[], ruleIds: (string | null)[]): ESLint.LintResult[] {
+  return results.map((result) => {
+    return {
+      ...result,
+      messages: result.messages.filter((message) => ruleIds.includes(message.ruleId)),
+    };
+  });
+}
+
 export type ESLintDisableComment = {
   type: 'Block' | 'Line';
   ruleIds: string[];
