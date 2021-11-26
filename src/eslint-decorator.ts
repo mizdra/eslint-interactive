@@ -7,17 +7,8 @@ import { DisableTarget, AddDisableCommentOption } from './rules/add-disable-comm
 import { ApplySuggestionsOption } from './rules/apply-suggestions';
 import { Config, DisplayMode } from './types';
 import { groupBy } from './util/array';
-import { scanUsedPluginsFromResults } from './util/eslint';
+import { filterResultsByRuleId, scanUsedPluginsFromResults } from './util/eslint';
 import { notEmpty } from './util/type-check';
-
-function filterResultsByRuleId(results: ESLint.LintResult[], ruleIds: string[]): ESLint.LintResult[] {
-  return results.map((result) => {
-    return {
-      ...result,
-      messages: result.messages.filter((message) => message.ruleId !== null && ruleIds.includes(message.ruleId)),
-    };
-  });
-}
 
 function generateAddDisableCommentOption(results: ESLint.LintResult[], description?: string): AddDisableCommentOption {
   const targets: DisableTarget[] = [];
@@ -132,7 +123,11 @@ export class ESLintDecorator {
    * @param results The lint results of the project to print summary
    * @param ruleIds The rule ids to print details
    */
-  async printProblemDetails(displayMode: DisplayMode, results: ESLint.LintResult[], ruleIds: string[]): Promise<void> {
+  async printProblemDetails(
+    displayMode: DisplayMode,
+    results: ESLint.LintResult[],
+    ruleIds: (string | null)[],
+  ): Promise<void> {
     const eslint = new ESLint(this.baseOptions);
     const formatter = await eslint.loadFormatter(this.config.formatterName);
     const resultText = formatter.format(filterResultsByRuleId(results, ruleIds));

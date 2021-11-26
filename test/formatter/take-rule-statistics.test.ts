@@ -123,22 +123,12 @@ describe('takeRuleStatistics', () => {
       },
     ]);
   });
-  test('aggregates errors and warnings that are without a `ruleId`', () => {
+  test('ignore errors and warnings that are without a `ruleId`', () => {
     const results: ESLint.LintResult[] = [
       fakeLintResult({
-        messages: [fakeLintMessage({ ruleId: null, severity: 2 }), fakeLintMessage({ ruleId: undefined, severity: 2 })],
+        messages: [fakeLintMessage({ ruleId: null, severity: 2 })],
       }),
     ];
-    expect(takeRuleStatistics(results)).toEqual([
-      {
-        ruleId: 'null',
-        errorCount: 2,
-        fixableErrorCount: 0,
-        warningCount: 0,
-        fixableWarningCount: 0,
-        suggestApplicableErrorCount: 0,
-        suggestApplicableWarningCount: 0,
-      },
-    ]);
+    expect(takeRuleStatistics(results)).toEqual([]);
   });
 });
