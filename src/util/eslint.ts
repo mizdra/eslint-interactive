@@ -39,7 +39,7 @@ export type ESLintDisableComment = {
  *                                            descriptionHeader  |
  *                                                               description
  */
-export function parseCommentAsESLintDisableComment(comment: Comment): ESLintDisableComment | null {
+export function parseESLintDisableComment(comment: Comment): ESLintDisableComment | null {
   // text: header + spaces + ruleList + spaces (+ descriptionHeader + spaces + description)
   let text = comment.value.trim();
 

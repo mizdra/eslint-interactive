@@ -1,7 +1,7 @@
 import { Rule } from 'eslint';
 // eslint-disable-next-line import/no-unresolved
 import type { Comment } from 'estree';
-import { createCommentNodeText, parseCommentAsESLintDisableComment } from '../util/eslint';
+import { createCommentNodeText, parseESLintDisableComment } from '../util/eslint';
 
 // disable comment を追加してくれる rule。
 // disable comment を追加したい場所と disable したい ruleId の情報をオプションで渡すと、
@@ -32,7 +32,7 @@ function findESLintDisableComment(commentsInFile: Comment[], line: number) {
   const commentsInPreviousLine = commentsInFile.filter((comment) => comment.loc?.start.line === line - 1);
 
   for (const comment of commentsInPreviousLine) {
-    const eslintDisableComment = parseCommentAsESLintDisableComment(comment);
+    const eslintDisableComment = parseESLintDisableComment(comment);
     // NOTE: コメントノードには必ず range があるはずだが、型上は optional なので、
     // range がない場合は無視するようにしておく
     if (eslintDisableComment && comment.range) {
