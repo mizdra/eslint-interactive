@@ -1,5 +1,10 @@
 import { ESLint } from 'eslint';
-import { scanUsedPluginsFromResults, toCommentText, parseDisableComment } from '../../src/util/eslint';
+import {
+  scanUsedPluginsFromResults,
+  toCommentText,
+  parseDisableComment,
+  filterResultsByRuleId,
+} from '../../src/util/eslint';
 import { fakeLintMessage, fakeLintResult } from '../test-util/eslint';
 
 const range: [number, number] = [0, 1];
@@ -190,5 +195,38 @@ describe('createCommentNodeText', () => {
     expect(
       toCommentText({ type: 'Line', scope: 'file', ruleIds: ['a', 'b'], description: 'foo' }),
     ).toMatchInlineSnapshot(`"// eslint-disable a, b -- foo"`);
+  });
+});
+
+describe('filterResultsByRuleId', () => {
+  test('returns the results with only messages with the specified rule ids', () => {
+    expect(
+      filterResultsByRuleId(
+        [
+          fakeLintResult({
+            messages: [
+              fakeLintMessage({ ruleId: 'a' }),
+              fakeLintMessage({ ruleId: 'b' }),
+              fakeLintMessage({ ruleId: 'c' }),
+            ],
+          }),
+          fakeLintResult({
+            messages: [
+              fakeLintMessage({ ruleId: 'a' }),
+              fakeLintMessage({ ruleId: 'b' }),
+              fakeLintMessage({ ruleId: 'c' }),
+            ],
+          }),
+        ],
+        ['a', 'b'],
+      ),
+    ).toStrictEqual([
+      fakeLintResult({
+        messages: [fakeLintMessage({ ruleId: 'a' }), fakeLintMessage({ ruleId: 'b' })],
+      }),
+      fakeLintResult({
+        messages: [fakeLintMessage({ ruleId: 'a' }), fakeLintMessage({ ruleId: 'b' })],
+      }),
+    ]);
   });
 });

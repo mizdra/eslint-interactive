@@ -90,3 +90,18 @@ export function toCommentText({ type, scope, ruleIds, description }: Omit<Disabl
     }
   }
 }
+
+/**
+ * Create the results with only messages with the specified rule ids.
+ * @param results The lint results.
+ * @param ruleIds The rule ids.
+ * @returns The results with only messages with the specified rule ids
+ */
+export function filterResultsByRuleId(results: ESLint.LintResult[], ruleIds: string[]): ESLint.LintResult[] {
+  return results.map((result) => {
+    return {
+      ...result,
+      messages: result.messages.filter((message) => message.ruleId !== null && ruleIds.includes(message.ruleId)),
+    };
+  });
+}

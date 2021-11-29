@@ -7,17 +7,8 @@ import { DisableTarget, AddDisableCommentOption } from './rules/add-disable-comm
 import { ApplySuggestionsOption } from './rules/apply-suggestions';
 import { Config, DisplayMode } from './types';
 import { groupBy } from './util/array';
-import { scanUsedPluginsFromResults } from './util/eslint';
+import { filterResultsByRuleId, scanUsedPluginsFromResults } from './util/eslint';
 import { notEmpty } from './util/type-check';
-
-function filterResultsByRuleId(results: ESLint.LintResult[], ruleIds: string[]): ESLint.LintResult[] {
-  return results.map((result) => {
-    return {
-      ...result,
-      messages: result.messages.filter((message) => message.ruleId !== null && ruleIds.includes(message.ruleId)),
-    };
-  });
-}
 
 function generateAddDisableCommentOption(results: ESLint.LintResult[], description?: string): AddDisableCommentOption {
   const targets: DisableTarget[] = [];
@@ -163,10 +154,7 @@ export class ESLintDecorator {
    * @param description The description of the disable comments
    */
   async addDisableComments(results: ESLint.LintResult[], ruleIds: string[], description?: string): Promise<void> {
-    const filteredResults = results.map((result) => {
-      const messages = result.messages.filter((message) => message.ruleId && ruleIds.includes(message.ruleId));
-      return { ...result, messages };
-    });
+    const filteredResults = filterResultsByRuleId(results, ruleIds);
 
     const eslint = createAddDisableCommentESLint(this.baseOptions, filteredResults, description);
     const newResults = await eslint.lintFiles(this.config.patterns);
