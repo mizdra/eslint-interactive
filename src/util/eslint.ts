@@ -28,6 +28,7 @@ export type ESLintDisableComment = {
   scope: 'next-line' | 'file';
   ruleIds: string[];
   description?: string;
+  range: [number, number];
 };
 
 /**
@@ -44,6 +45,10 @@ export type ESLintDisableComment = {
  *                                                               description
  */
 export function parseESLintDisableComment(comment: Comment): ESLintDisableComment | null {
+  // NOTE: コメントノードには必ず range があるはずだが、型上は optional なので、
+  // range がない場合はパースに失敗した扱いにする。
+  if (!comment.range) return null;
+
   const result = COMMENT_RE.exec(comment.value);
   if (!result) return null;
   if (!result.groups) return null;
@@ -61,13 +66,19 @@ export function parseESLintDisableComment(comment: Comment): ESLintDisableCommen
     ruleIds: ruleIds,
     // description is optional
     ...(description === '' || description === undefined ? {} : { description }),
+    range: comment.range,
   };
 }
 
 /**
  * `ESLintDisableComment` 型からコメントのテキスト表現を作成する
  */
-export function createCommentNodeText({ type, scope, ruleIds, description }: ESLintDisableComment): string {
+export function createCommentNodeText({
+  type,
+  scope,
+  ruleIds,
+  description,
+}: Omit<ESLintDisableComment, 'range'>): string {
   const header = scope === 'next-line' ? 'eslint-disable-next-line' : 'eslint-disable';
   const ruleList = unique(ruleIds).join(', ');
   if (type === 'Line') {
