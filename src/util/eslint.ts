@@ -105,3 +105,32 @@ export function filterResultsByRuleId(results: ESLint.LintResult[], ruleIds: str
     };
   });
 }
+
+/**
+ * push rule ids to the disable comment and return the new comment node.
+ * @param comment The comment node to be modified
+ * @param ruleIds The rule ids to be added
+ * @returns The new comment node
+ */
+export function pushRuleIdsToDisableComment(comment: DisableComment, ruleIds: string[]): DisableComment {
+  return {
+    ...comment,
+    ruleIds: unique([...comment.ruleIds, ...ruleIds]),
+  };
+}
+
+export function mergeRuleIdsAndDescription(
+  a: { ruleIds: string[]; description?: string },
+  b: { ruleIds: string[]; description?: string },
+): { ruleIds: string[]; description?: string } {
+  const ruleIds = [...a.ruleIds, ...b.ruleIds];
+  const description =
+    a.description !== undefined && b.description !== undefined
+      ? `${a.description}, ${b.description}`
+      : a.description !== undefined && b.description === undefined
+      ? a.description
+      : a.description === undefined && b.description !== undefined
+      ? b.description
+      : undefined;
+  return { ruleIds, description };
+}
