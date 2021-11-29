@@ -4,7 +4,7 @@ import { unique } from './array';
 import { notEmpty } from './type-check';
 
 const COMMENT_RE =
-  /^\s*(?<header>eslint-disable|eslint-disable-next-line)\s+(?<ruleList>[@a-z0-9\-_$/]+(?:\s*,\s*[@a-z0-9\-_$/]+)*)(?:\s+--\s+(?<description>.*\S?))?\s*$/u;
+  /^\s*(?<header>eslint-disable|eslint-disable-next-line)\s+(?<ruleList>[@a-z0-9\-_$/]*(?:\s*,\s*[@a-z0-9\-_$/]*)*(?:\s*,)?)(?:\s+--\s+(?<description>.*\S))?\s*$/u;
 
 /** `results` 内で使われているプラグインの名前のリストを洗い出して返す */
 export function scanUsedPluginsFromResults(results: ESLint.LintResult[]): string[] {
