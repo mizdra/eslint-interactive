@@ -109,6 +109,13 @@ describe('parseESLintDisableComment', () => {
         description: 'foo',
       });
     });
+    test('eslint-disable 形式のコメントもパースできる', () => {
+      expect(parseESLintDisableComment({ type: 'Line', value: ' eslint-disable a' })).toStrictEqual({
+        type: 'Line',
+        scope: 'file',
+        ruleIds: ['a'],
+      });
+    });
   });
   test('disable comment でない時', () => {
     expect(
