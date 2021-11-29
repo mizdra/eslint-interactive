@@ -1,7 +1,7 @@
 import { Rule } from 'eslint';
 // eslint-disable-next-line import/no-unresolved
 import type { Comment } from 'estree';
-import { createCommentNodeText, DisableComment, parseDisableComment } from '../util/eslint';
+import { toCommentText, DisableComment, parseDisableComment } from '../util/eslint';
 import { notEmpty } from '../util/type-check';
 
 // disable comment を追加してくれる rule。
@@ -102,14 +102,13 @@ const rule: Rule.RuleModule = {
           return fixer.insertTextBeforeRange(
             [headNodeIndex, 0],
             '{' +
-              createCommentNodeText({ type: 'Block', scope: 'next-line', ruleIds, description: option.description }) +
+              toCommentText({ type: 'Block', scope: 'next-line', ruleIds, description: option.description }) +
               '}\n',
           );
         } else {
           return fixer.insertTextBeforeRange(
             [headNodeIndex, 0],
-            createCommentNodeText({ type: 'Line', scope: 'next-line', ruleIds, description: option.description }) +
-              '\n',
+            toCommentText({ type: 'Line', scope: 'next-line', ruleIds, description: option.description }) + '\n',
           );
         }
       } else {
@@ -123,7 +122,7 @@ const rule: Rule.RuleModule = {
             : undefined;
         return fixer.replaceTextRange(
           disableComment.range,
-          createCommentNodeText({
+          toCommentText({
             type: disableComment.type,
             scope: 'next-line',
             ruleIds: [...disableComment.ruleIds, ...ruleIds],

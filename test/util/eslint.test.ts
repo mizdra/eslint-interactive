@@ -1,5 +1,5 @@
 import { ESLint } from 'eslint';
-import { scanUsedPluginsFromResults, createCommentNodeText, parseDisableComment } from '../../src/util/eslint';
+import { scanUsedPluginsFromResults, toCommentText, parseDisableComment } from '../../src/util/eslint';
 import { fakeLintMessage, fakeLintResult } from '../test-util/eslint';
 
 const range: [number, number] = [0, 1];
@@ -171,24 +171,24 @@ describe('parseDisableComment', () => {
 
 describe('createCommentNodeText', () => {
   test('Line 形式のコメントが作成できる', () => {
-    expect(createCommentNodeText({ type: 'Line', scope: 'next-line', ruleIds: ['a', 'b'] })).toMatchInlineSnapshot(
+    expect(toCommentText({ type: 'Line', scope: 'next-line', ruleIds: ['a', 'b'] })).toMatchInlineSnapshot(
       `"// eslint-disable-next-line a, b"`,
     );
     expect(
-      createCommentNodeText({ type: 'Line', scope: 'next-line', ruleIds: ['a', 'b'], description: 'foo' }),
+      toCommentText({ type: 'Line', scope: 'next-line', ruleIds: ['a', 'b'], description: 'foo' }),
     ).toMatchInlineSnapshot(`"// eslint-disable-next-line a, b -- foo"`);
   });
   test('Block 形式のコメントが作成できる', () => {
-    expect(createCommentNodeText({ type: 'Block', scope: 'next-line', ruleIds: ['a', 'b'] })).toMatchInlineSnapshot(
+    expect(toCommentText({ type: 'Block', scope: 'next-line', ruleIds: ['a', 'b'] })).toMatchInlineSnapshot(
       `"/* eslint-disable-next-line a, b */"`,
     );
     expect(
-      createCommentNodeText({ type: 'Block', scope: 'next-line', ruleIds: ['a', 'b'], description: 'foo' }),
+      toCommentText({ type: 'Block', scope: 'next-line', ruleIds: ['a', 'b'], description: 'foo' }),
     ).toMatchInlineSnapshot(`"/* eslint-disable-next-line a, b -- foo */"`);
   });
   test('file 全体に適用される disable コメントが作成できる', () => {
     expect(
-      createCommentNodeText({ type: 'Line', scope: 'file', ruleIds: ['a', 'b'], description: 'foo' }),
+      toCommentText({ type: 'Line', scope: 'file', ruleIds: ['a', 'b'], description: 'foo' }),
     ).toMatchInlineSnapshot(`"// eslint-disable a, b -- foo"`);
   });
 });

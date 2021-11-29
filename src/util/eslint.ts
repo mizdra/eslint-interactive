@@ -71,9 +71,9 @@ export function parseDisableComment(comment: Comment): DisableComment | undefine
 }
 
 /**
- * `DisableComment` 型からコメントのテキスト表現を作成する
+ * Convert `DisableComment` to comment text.
  */
-export function createCommentNodeText({ type, scope, ruleIds, description }: Omit<DisableComment, 'range'>): string {
+export function toCommentText({ type, scope, ruleIds, description }: Omit<DisableComment, 'range'>): string {
   const header = scope === 'next-line' ? 'eslint-disable-next-line' : 'eslint-disable';
   const ruleList = unique(ruleIds).join(', ');
   if (type === 'Line') {
