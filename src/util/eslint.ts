@@ -3,6 +3,9 @@ import type { Comment } from 'estree';
 import { unique } from './array';
 import { notEmpty } from './type-check';
 
+const COMMENT_RE =
+  /^\s*(?<header>eslint-disable|eslint-disable-next-line)\s+(?<ruleList>[@a-z0-9\-_$/]+(?:\s*,\s*[@a-z0-9\-_$/]+)*)(?:\s+--\s+(?<description>.*\S?))?\s*$/u;
+
 /** `results` 内で使われているプラグインの名前のリストを洗い出して返す */
 export function scanUsedPluginsFromResults(results: ESLint.LintResult[]): string[] {
   const plugins = results
@@ -22,6 +25,7 @@ export function scanUsedPluginsFromResults(results: ESLint.LintResult[]): string
 
 export type ESLintDisableComment = {
   type: 'Block' | 'Line';
+  scope: 'next-line' | 'file';
   ruleIds: string[];
   description?: string;
 };
@@ -40,64 +44,43 @@ export type ESLintDisableComment = {
  *                                                               description
  */
 export function parseESLintDisableComment(comment: Comment): ESLintDisableComment | null {
-  // text: header + spaces + ruleList + spaces (+ descriptionHeader + spaces + description)
-  let text = comment.value.trim();
+  const result = COMMENT_RE.exec(comment.value);
+  if (!result) return null;
+  if (!result.groups) return null;
 
-  const result1 = /^eslint-disable-next-line\s+/.exec(text);
-  if (result1 === null) return null;
-  // text: ruleList + spaces (+ descriptionHeader + spaces + description)
-  text = text.slice(result1[0].length);
-
-  // description があるかの確認を行う
-  const result2 = /\s--\s+(?<description>.*)/u.exec(text);
-  // result2.groups.description: description
-
-  let description: string | undefined = undefined;
-  if (result2 !== null) {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    description = result2.groups!.description;
-    // text: ruleList + spaces
-    text = text.slice(0, result2.index);
-  }
-  // text: ruleList
-  text = text.trimRight();
-
-  const ruleIds = text
+  const { header, ruleList, description } = result.groups;
+  const ruleIds = ruleList
     .split(',')
     .map((r) => r.trim())
     // 空文字は除外しておく
     .filter((ruleId) => ruleId !== '');
 
-  if (description) {
-    return {
-      type: comment.type,
-      ruleIds,
-      description,
-    };
-  } else {
-    return {
-      type: comment.type,
-      ruleIds,
-    };
-  }
+  return {
+    type: comment.type,
+    scope: header === 'eslint-disable-next-line' ? 'next-line' : 'file',
+    ruleIds: ruleIds,
+    // description is optional
+    ...(description === '' || description === undefined ? {} : { description }),
+  };
 }
 
 /**
  * `ESLintDisableComment` 型からコメントのテキスト表現を作成する
  */
-export function createCommentNodeText({ type, ruleIds, description }: ESLintDisableComment): string {
+export function createCommentNodeText({ type, scope, ruleIds, description }: ESLintDisableComment): string {
+  const header = scope === 'next-line' ? 'eslint-disable-next-line' : 'eslint-disable';
   const ruleList = unique(ruleIds).join(', ');
   if (type === 'Line') {
     if (description === undefined) {
-      return `// eslint-disable-next-line ${ruleList}`;
+      return `// ${header} ${ruleList}`;
     } else {
-      return `// eslint-disable-next-line ${ruleList} -- ${description}`;
+      return `// ${header} ${ruleList} -- ${description}`;
     }
   } else {
     if (description === undefined) {
-      return `/* eslint-disable-next-line ${ruleList} */`;
+      return `/* ${header} ${ruleList} */`;
     } else {
-      return `/* eslint-disable-next-line ${ruleList} -- ${description} */`;
+      return `/* ${header} ${ruleList} -- ${description} */`;
     }
   }
 }

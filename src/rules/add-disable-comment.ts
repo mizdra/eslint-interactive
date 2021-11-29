@@ -112,12 +112,15 @@ const rule: Rule.RuleModule = {
         if ((headNode.type as any) === 'JSXText') {
           return fixer.insertTextBeforeRange(
             [headNodeIndex, 0],
-            '{' + createCommentNodeText({ type: 'Block', ruleIds, description: option.description }) + '}\n',
+            '{' +
+              createCommentNodeText({ type: 'Block', scope: 'next-line', ruleIds, description: option.description }) +
+              '}\n',
           );
         } else {
           return fixer.insertTextBeforeRange(
             [headNodeIndex, 0],
-            createCommentNodeText({ type: 'Line', ruleIds, description: option.description }) + '\n',
+            createCommentNodeText({ type: 'Line', scope: 'next-line', ruleIds, description: option.description }) +
+              '\n',
           );
         }
       } else {
@@ -134,6 +137,7 @@ const rule: Rule.RuleModule = {
           range,
           createCommentNodeText({
             type: eslintDisableComment.type,
+            scope: 'next-line',
             ruleIds: [...eslintDisableComment.ruleIds, ...ruleIds],
             description,
           }),

@@ -21,38 +21,46 @@ describe('parseESLintDisableComment', () => {
     test('basic', () => {
       expect(parseESLintDisableComment({ type: 'Line', value: ' eslint-disable-next-line a' })).toStrictEqual({
         type: 'Line',
+        scope: 'next-line',
         ruleIds: ['a'],
       });
       expect(parseESLintDisableComment({ type: 'Block', value: ' eslint-disable-next-line a ' })).toStrictEqual({
         type: 'Block',
+        scope: 'next-line',
         ruleIds: ['a'],
       });
     });
     test('先頭や末尾の空白は省略できる', () => {
       expect(parseESLintDisableComment({ type: 'Line', value: 'eslint-disable-next-line a' })).toStrictEqual({
         type: 'Line',
+        scope: 'next-line',
         ruleIds: ['a'],
       });
       expect(parseESLintDisableComment({ type: 'Block', value: 'eslint-disable-next-line a' })).toStrictEqual({
         type: 'Block',
+        scope: 'next-line',
         ruleIds: ['a'],
       });
     });
     test('複数の ruleId をパースできる', () => {
       expect(parseESLintDisableComment({ type: 'Line', value: ' eslint-disable-next-line a, b, c' })).toStrictEqual({
         type: 'Line',
+        scope: 'next-line',
         ruleIds: ['a', 'b', 'c'],
       });
       expect(parseESLintDisableComment({ type: 'Line', value: ' eslint-disable-next-line a,b,c' })).toStrictEqual({
         type: 'Line',
+        scope: 'next-line',
         ruleIds: ['a', 'b', 'c'],
       });
       expect(parseESLintDisableComment({ type: 'Line', value: ' eslint-disable-next-line a, b, c,' })).toStrictEqual({
         type: 'Line',
+        scope: 'next-line',
         ruleIds: ['a', 'b', 'c'],
       });
       expect(parseESLintDisableComment({ type: 'Line', value: ' eslint-disable-next-line a, b,, c' })).toStrictEqual({
         type: 'Line',
+        scope: 'next-line',
         ruleIds: ['a', 'b', 'c'],
       });
     });
@@ -61,17 +69,20 @@ describe('parseESLintDisableComment', () => {
         parseESLintDisableComment({ type: 'Line', value: ' eslint-disable-next-line a -- foo bar' }),
       ).toStrictEqual({
         type: 'Line',
+        scope: 'next-line',
         ruleIds: ['a'],
         description: 'foo bar',
       });
       expect(parseESLintDisableComment({ type: 'Line', value: ' eslint-disable-next-line a --  foo ' })).toStrictEqual({
         type: 'Line',
+        scope: 'next-line',
         ruleIds: ['a'],
         description: 'foo',
       });
       expect(parseESLintDisableComment({ type: 'Line', value: ' eslint-disable-next-line a -- b -- c' })).toStrictEqual(
         {
           type: 'Line',
+          scope: 'next-line',
           ruleIds: ['a'],
           description: 'b -- c',
         },
@@ -80,6 +91,7 @@ describe('parseESLintDisableComment', () => {
         parseESLintDisableComment({ type: 'Line', value: ' eslint-disable-next-line a , - , b -- c' }),
       ).toStrictEqual({
         type: 'Line',
+        scope: 'next-line',
         ruleIds: ['a', '-', 'b'],
         description: 'c',
       });
@@ -92,6 +104,7 @@ describe('parseESLintDisableComment', () => {
         }),
       ).toStrictEqual({
         type: 'Line',
+        scope: 'next-line',
         ruleIds: ['a', 'b'],
         description: 'foo',
       });
@@ -121,19 +134,24 @@ describe('parseESLintDisableComment', () => {
 
 describe('createCommentNodeText', () => {
   test('Line 形式のコメントが作成できる', () => {
-    expect(createCommentNodeText({ type: 'Line', ruleIds: ['a', 'b'] })).toMatchInlineSnapshot(
+    expect(createCommentNodeText({ type: 'Line', scope: 'next-line', ruleIds: ['a', 'b'] })).toMatchInlineSnapshot(
       `"// eslint-disable-next-line a, b"`,
     );
-    expect(createCommentNodeText({ type: 'Line', ruleIds: ['a', 'b'], description: 'foo' })).toMatchInlineSnapshot(
-      `"// eslint-disable-next-line a, b -- foo"`,
-    );
+    expect(
+      createCommentNodeText({ type: 'Line', scope: 'next-line', ruleIds: ['a', 'b'], description: 'foo' }),
+    ).toMatchInlineSnapshot(`"// eslint-disable-next-line a, b -- foo"`);
   });
   test('Block 形式のコメントが作成できる', () => {
-    expect(createCommentNodeText({ type: 'Block', ruleIds: ['a', 'b'] })).toMatchInlineSnapshot(
+    expect(createCommentNodeText({ type: 'Block', scope: 'next-line', ruleIds: ['a', 'b'] })).toMatchInlineSnapshot(
       `"/* eslint-disable-next-line a, b */"`,
     );
-    expect(createCommentNodeText({ type: 'Block', ruleIds: ['a', 'b'], description: 'foo' })).toMatchInlineSnapshot(
-      `"/* eslint-disable-next-line a, b -- foo */"`,
-    );
+    expect(
+      createCommentNodeText({ type: 'Block', scope: 'next-line', ruleIds: ['a', 'b'], description: 'foo' }),
+    ).toMatchInlineSnapshot(`"/* eslint-disable-next-line a, b -- foo */"`);
+  });
+  test('file 全体に適用される disable コメントが作成できる', () => {
+    expect(
+      createCommentNodeText({ type: 'Line', scope: 'file', ruleIds: ['a', 'b'], description: 'foo' }),
+    ).toMatchInlineSnapshot(`"// eslint-disable a, b -- foo"`);
   });
 });
