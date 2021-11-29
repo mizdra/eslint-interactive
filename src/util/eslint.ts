@@ -23,7 +23,7 @@ export function scanUsedPluginsFromResults(results: ESLint.LintResult[]): string
   return unique(plugins);
 }
 
-export type ESLintDisableComment = {
+export type DisableComment = {
   type: 'Block' | 'Line';
   scope: 'next-line' | 'file';
   ruleIds: string[];
@@ -44,7 +44,7 @@ export type ESLintDisableComment = {
  *                                            descriptionHeader  |
  *                                                               description
  */
-export function parseESLintDisableComment(comment: Comment): ESLintDisableComment | undefined {
+export function parseDisableComment(comment: Comment): DisableComment | undefined {
   // NOTE: コメントノードには必ず range があるはずだが、型上は optional なので、
   // range がない場合はパースに失敗した扱いにする。
   if (!comment.range) return undefined;
@@ -71,14 +71,9 @@ export function parseESLintDisableComment(comment: Comment): ESLintDisableCommen
 }
 
 /**
- * `ESLintDisableComment` 型からコメントのテキスト表現を作成する
+ * `DisableComment` 型からコメントのテキスト表現を作成する
  */
-export function createCommentNodeText({
-  type,
-  scope,
-  ruleIds,
-  description,
-}: Omit<ESLintDisableComment, 'range'>): string {
+export function createCommentNodeText({ type, scope, ruleIds, description }: Omit<DisableComment, 'range'>): string {
   const header = scope === 'next-line' ? 'eslint-disable-next-line' : 'eslint-disable';
   const ruleList = unique(ruleIds).join(', ');
   if (type === 'Line') {

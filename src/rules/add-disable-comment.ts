@@ -1,7 +1,7 @@
 import { Rule } from 'eslint';
 // eslint-disable-next-line import/no-unresolved
 import type { Comment } from 'estree';
-import { createCommentNodeText, ESLintDisableComment, parseESLintDisableComment } from '../util/eslint';
+import { createCommentNodeText, DisableComment, parseDisableComment } from '../util/eslint';
 import { notEmpty } from '../util/type-check';
 
 // disable comment を追加してくれる rule。
@@ -29,9 +29,9 @@ export type DisableTarget = {
 };
 export type AddDisableCommentOption = { targets: DisableTarget[]; description?: string };
 
-function findESLintDisableComment(commentsInFile: Comment[], line: number): ESLintDisableComment | undefined {
+function findDisableComment(commentsInFile: Comment[], line: number): DisableComment | undefined {
   const commentsInPreviousLine = commentsInFile.filter((comment) => comment.loc?.start.line === line - 1);
-  return commentsInPreviousLine.map((comment) => parseESLintDisableComment(comment)).find(notEmpty);
+  return commentsInPreviousLine.map((comment) => parseDisableComment(comment)).find(notEmpty);
 }
 
 const rule: Rule.RuleModule = {
@@ -91,9 +91,9 @@ const rule: Rule.RuleModule = {
     };
 
     function addDisableComment(fixer: Rule.RuleFixer, line: number, ruleIds: string[]): Rule.Fix | null {
-      const eslintDisableComment = findESLintDisableComment(commentsInFile, line);
+      const disableComment = findDisableComment(commentsInFile, line);
 
-      if (!eslintDisableComment) {
+      if (!disableComment) {
         const headNodeIndex = sourceCode.getIndexFromLoc({ line: line, column: 0 });
         const headNode = sourceCode.getNodeByRangeIndex(headNodeIndex);
         if (headNode === null) return null; // なんか null になることがあるらしいので、null になったら例外ケースとして無視する
@@ -114,19 +114,19 @@ const rule: Rule.RuleModule = {
         }
       } else {
         const description =
-          eslintDisableComment.description !== undefined && option.description !== undefined
-            ? `${eslintDisableComment.description}, ${option.description}`
-            : eslintDisableComment.description !== undefined && option.description === undefined
-            ? eslintDisableComment.description
-            : eslintDisableComment.description === undefined && option.description !== undefined
+          disableComment.description !== undefined && option.description !== undefined
+            ? `${disableComment.description}, ${option.description}`
+            : disableComment.description !== undefined && option.description === undefined
+            ? disableComment.description
+            : disableComment.description === undefined && option.description !== undefined
             ? option.description
             : undefined;
         return fixer.replaceTextRange(
-          eslintDisableComment.range,
+          disableComment.range,
           createCommentNodeText({
-            type: eslintDisableComment.type,
+            type: disableComment.type,
             scope: 'next-line',
-            ruleIds: [...eslintDisableComment.ruleIds, ...ruleIds],
+            ruleIds: [...disableComment.ruleIds, ...ruleIds],
             description,
           }),
         );
