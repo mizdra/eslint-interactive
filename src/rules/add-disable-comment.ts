@@ -2,6 +2,7 @@ import { Rule } from 'eslint';
 // eslint-disable-next-line import/no-unresolved
 import type { Comment } from 'estree';
 import { createCommentNodeText, ESLintDisableComment, parseESLintDisableComment } from '../util/eslint';
+import { notEmpty } from '../util/type-check';
 
 // disable comment を追加してくれる rule。
 // disable comment を追加したい場所と disable したい ruleId の情報をオプションで渡すと、
@@ -28,14 +29,9 @@ export type DisableTarget = {
 };
 export type AddDisableCommentOption = { targets: DisableTarget[]; description?: string };
 
-function findESLintDisableComment(commentsInFile: Comment[], line: number): ESLintDisableComment | null {
+function findESLintDisableComment(commentsInFile: Comment[], line: number): ESLintDisableComment | undefined {
   const commentsInPreviousLine = commentsInFile.filter((comment) => comment.loc?.start.line === line - 1);
-
-  for (const comment of commentsInPreviousLine) {
-    const eslintDisableComment = parseESLintDisableComment(comment);
-    if (eslintDisableComment) return eslintDisableComment;
-  }
-  return null;
+  return commentsInPreviousLine.map((comment) => parseESLintDisableComment(comment)).find(notEmpty);
 }
 
 const rule: Rule.RuleModule = {

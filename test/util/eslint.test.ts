@@ -151,21 +151,21 @@ describe('parseESLintDisableComment', () => {
         value: 'eslint-disable-next-line',
         range,
       }),
-    ).toStrictEqual(null);
+    ).toStrictEqual(undefined);
     expect(
       parseESLintDisableComment({
         type: 'Line',
         value: 'eslint-disable-next-linea',
         range,
       }),
-    ).toStrictEqual(null);
+    ).toStrictEqual(undefined);
     expect(
       parseESLintDisableComment({
         type: 'Line',
         value: 'foo',
         range,
       }),
-    ).toStrictEqual(null);
+    ).toStrictEqual(undefined);
   });
   test('range が無い時', () => {
     expect(
@@ -173,7 +173,7 @@ describe('parseESLintDisableComment', () => {
         type: 'Line',
         value: 'eslint-disable-next-line a',
       }),
-    ).toStrictEqual(null);
+    ).toStrictEqual(undefined);
   });
 });
 

@@ -44,14 +44,14 @@ export type ESLintDisableComment = {
  *                                            descriptionHeader  |
  *                                                               description
  */
-export function parseESLintDisableComment(comment: Comment): ESLintDisableComment | null {
+export function parseESLintDisableComment(comment: Comment): ESLintDisableComment | undefined {
   // NOTE: コメントノードには必ず range があるはずだが、型上は optional なので、
   // range がない場合はパースに失敗した扱いにする。
-  if (!comment.range) return null;
+  if (!comment.range) return undefined;
 
   const result = COMMENT_RE.exec(comment.value);
-  if (!result) return null;
-  if (!result.groups) return null;
+  if (!result) return undefined;
+  if (!result.groups) return undefined;
 
   const { header, ruleList, description } = result.groups;
   const ruleIds = ruleList
