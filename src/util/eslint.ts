@@ -60,6 +60,10 @@ export function parseDisableComment(comment: Comment): DisableComment | undefine
     // 空文字は除外しておく
     .filter((ruleId) => ruleId !== '');
 
+  const scope = header === 'eslint-disable-next-line' ? 'next-line' : 'file';
+  // file scope comment must be block-style.
+  if (scope === 'file' && comment.type === 'Line') return undefined;
+
   return {
     type: comment.type,
     scope: header === 'eslint-disable-next-line' ? 'next-line' : 'file',

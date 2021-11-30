@@ -133,8 +133,8 @@ describe('parseDisableComment', () => {
       });
     });
     test('eslint-disable 形式のコメントもパースできる', () => {
-      expect(parseDisableComment({ type: 'Line', value: ' eslint-disable a', range })).toStrictEqual({
-        type: 'Line',
+      expect(parseDisableComment({ type: 'Block', value: ' eslint-disable a', range })).toStrictEqual({
+        type: 'Block',
         scope: 'file',
         ruleIds: ['a'],
         range,
@@ -163,6 +163,8 @@ describe('parseDisableComment', () => {
         range,
       }),
     ).toStrictEqual(undefined);
+    // file scope comment must be block-style.
+    expect(parseDisableComment({ type: 'Line', value: ' eslint-disable a', range })).toStrictEqual(undefined);
   });
   test('range が無い時', () => {
     expect(
