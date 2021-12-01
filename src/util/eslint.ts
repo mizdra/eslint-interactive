@@ -125,6 +125,12 @@ export function pushRuleIdsToDisableComment(comment: DisableComment, ruleIds: st
   };
 }
 
+/**
+ * Merge the ruleIds and description of the disable comments.
+ * @param a The ruleIds and description of first disable comment
+ * @param b The ruleIds and description of second disable comment
+ * @returns The ruleIds and description of merged disable comment
+ */
 export function mergeRuleIdsAndDescription(
   a: { ruleIds: string[]; description?: string },
   b: { ruleIds: string[]; description?: string },
