@@ -135,7 +135,7 @@ export function mergeRuleIdsAndDescription(
   a: { ruleIds: string[]; description?: string },
   b: { ruleIds: string[]; description?: string },
 ): { ruleIds: string[]; description?: string } {
-  const ruleIds = [...a.ruleIds, ...b.ruleIds];
+  const ruleIds = unique([...a.ruleIds, ...b.ruleIds]);
   const description =
     a.description !== undefined && b.description !== undefined
       ? `${a.description}, ${b.description}`
@@ -144,6 +144,7 @@ export function mergeRuleIdsAndDescription(
       : a.description === undefined && b.description !== undefined
       ? b.description
       : undefined;
+  if (description === undefined) return { ruleIds };
   return { ruleIds, description };
 }
 
