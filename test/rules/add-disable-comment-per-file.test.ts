@@ -165,6 +165,24 @@ ruleTester.run('add-disable-comment-per-file', rule, {
         ruleIds: ['a'],
       },
     }),
+    // `eslint-disable` has precedence over `/* @jsxImportSource xxx */`
+    invalidCase({
+      code: ['/* @jsxImportSource @emotion/react */', 'val;'],
+      output: ['/* eslint-disable a */', '/* @jsxImportSource @emotion/react */', 'val;'],
+      option: {
+        results: [
+          fakeLintResult({
+            filePath: TARGET_FILENAME,
+            messages: [
+              fakeLintMessage({
+                ruleId: 'a',
+              }),
+            ],
+          }),
+        ],
+        ruleIds: ['a'],
+      },
+    }),
     // The shebang has precedence over `eslint-disable`
     invalidCase({
       code: ['#!/usr/bin/env node', 'val;'],
