@@ -35,8 +35,8 @@ export async function promptToInputAction(): Promise<Action> {
       choices: [
         { name: 'displayMessages', message: 'Display problem messages' },
         { name: 'fix', message: 'Fix problems' },
-        { name: 'disable', message: 'Disable problems with `// eslint-disable-next-line`' },
-        { name: 'disablePerFile', message: 'Disable problems with `// eslint-disable`' },
+        { name: 'disable', message: 'Disable problems per line' },
+        { name: 'disablePerFile', message: 'Disable problems per file' },
         { name: 'ApplySuggestions', message: 'Apply suggestion (experimental, only for experts)' },
         { name: 'reselectRules', message: 'Reselect rules' },
       ],
