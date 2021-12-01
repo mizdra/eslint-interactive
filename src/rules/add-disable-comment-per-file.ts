@@ -1,4 +1,4 @@
-import { AST, ESLint, Rule, SourceCode } from 'eslint';
+import { ESLint, Rule, SourceCode } from 'eslint';
 import type { Comment } from 'estree';
 import { unique } from '../util/array';
 import {
@@ -7,16 +7,9 @@ import {
   parseDisableComment,
   filterResultsByRuleId,
   mergeRuleIdsAndDescription,
+  findShebang,
 } from '../util/eslint';
 import { notEmpty } from '../util/type-check';
-
-const SHEBANG_PATTERN = /^#!.+?\r?\n/u;
-
-function findShebang(sourceCodeText: string): { range: AST.Range } | null {
-  const result = SHEBANG_PATTERN.exec(sourceCodeText);
-  if (!result) return null;
-  return { range: [0, result[0].length] };
-}
 
 const filenameToIsAlreadyFixed = new Map<string, boolean>();
 

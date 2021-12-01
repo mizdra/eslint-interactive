@@ -1,10 +1,12 @@
-import { ESLint } from 'eslint';
+import { AST, ESLint } from 'eslint';
 import type { Comment } from 'estree';
 import { unique } from './array';
 import { notEmpty } from './type-check';
 
 const COMMENT_RE =
   /^\s*(?<header>eslint-disable|eslint-disable-next-line)\s+(?<ruleList>[@a-z0-9\-_$/]*(?:\s*,\s*[@a-z0-9\-_$/]*)*(?:\s*,)?)(?:\s+--\s+(?<description>.*\S))?\s*$/u;
+
+const SHEBANG_PATTERN = /^#!.+?\r?\n/u;
 
 /** `results` 内で使われているプラグインの名前のリストを洗い出して返す */
 export function scanUsedPluginsFromResults(results: ESLint.LintResult[]): string[] {
@@ -137,4 +139,15 @@ export function mergeRuleIdsAndDescription(
       ? b.description
       : undefined;
   return { ruleIds, description };
+}
+
+/**
+ * Find shebang from the first line of the file.
+ * @param sourceCodeText The source code text of the file.
+ * @returns The information of shebang. If the file does not have shebang, return null.
+ */
+export function findShebang(sourceCodeText: string): { range: AST.Range } | null {
+  const result = SHEBANG_PATTERN.exec(sourceCodeText);
+  if (!result) return null;
+  return { range: [0, result[0].length] };
 }
