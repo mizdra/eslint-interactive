@@ -3,9 +3,9 @@ import {
   scanUsedPluginsFromResults,
   toCommentText,
   parseDisableComment,
-  filterResultsByRuleId,
   mergeRuleIdsAndDescription,
   findShebang,
+  filterResultsByRuleId,
 } from '../../src/util/eslint';
 import { fakeLintMessage, fakeLintResult } from '../test-util/eslint';
 
@@ -25,7 +25,33 @@ test('scanUsedPluginsFromResults', () => {
   expect(scanUsedPluginsFromResults(results)).toStrictEqual(['plugin', '@scoped/plugin']);
 });
 
-describe('parseDisableComment', () => {
+test('filterResultsByRuleId', () => {
+  const results: ESLint.LintResult[] = [
+    fakeLintResult({
+      messages: [
+        fakeLintMessage({ ruleId: 'a' }),
+        fakeLintMessage({ ruleId: 'a' }),
+        fakeLintMessage({ ruleId: 'b' }),
+        fakeLintMessage({ ruleId: null }),
+      ],
+    }),
+    fakeLintResult({
+      messages: [fakeLintMessage({ ruleId: 'a' })],
+    }),
+  ];
+  const actual = filterResultsByRuleId(results, ['a', null]);
+  const expected: ESLint.LintResult[] = [
+    fakeLintResult({
+      messages: [fakeLintMessage({ ruleId: 'a' }), fakeLintMessage({ ruleId: 'a' }), fakeLintMessage({ ruleId: null })],
+    }),
+    fakeLintResult({
+      messages: [fakeLintMessage({ ruleId: 'a' })],
+    }),
+  ];
+  expect(actual).toStrictEqual(expected);
+});
+
+describe('parseCommentAsESLintDisableComment', () => {
   describe('disable comment の時', () => {
     test('basic', () => {
       expect(parseDisableComment({ type: 'Line', value: ' eslint-disable-next-line a', range })).toStrictEqual({

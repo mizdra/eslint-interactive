@@ -103,11 +103,11 @@ export function toCommentText({ type, scope, ruleIds, description }: Omit<Disabl
  * @param ruleIds The rule ids.
  * @returns The results with only messages with the specified rule ids
  */
-export function filterResultsByRuleId(results: ESLint.LintResult[], ruleIds: string[]): ESLint.LintResult[] {
+export function filterResultsByRuleId(results: ESLint.LintResult[], ruleIds: (string | null)[]): ESLint.LintResult[] {
   return results.map((result) => {
     return {
       ...result,
-      messages: result.messages.filter((message) => message.ruleId !== null && ruleIds.includes(message.ruleId)),
+      messages: result.messages.filter((message) => ruleIds.includes(message.ruleId)),
     };
   });
 }

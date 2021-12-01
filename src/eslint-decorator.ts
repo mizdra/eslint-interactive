@@ -144,7 +144,11 @@ export class ESLintDecorator {
    * @param results The lint results of the project to print summary
    * @param ruleIds The rule ids to print details
    */
-  async printProblemDetails(displayMode: DisplayMode, results: ESLint.LintResult[], ruleIds: string[]): Promise<void> {
+  async printProblemDetails(
+    displayMode: DisplayMode,
+    results: ESLint.LintResult[],
+    ruleIds: (string | null)[],
+  ): Promise<void> {
     const eslint = new ESLint(this.baseOptions);
     const formatter = await eslint.loadFormatter(this.config.formatterName);
     const resultText = formatter.format(filterResultsByRuleId(results, ruleIds));
