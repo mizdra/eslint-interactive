@@ -4,7 +4,7 @@ import { SelectRuleIdsArgs } from './scenes/select-rule-ids';
 /**
  * The type that indicates what to do with the problems of selected rules.
  */
-export type Action = 'displayMessages' | 'fix' | 'disable' | 'ApplySuggestions' | 'reselectRules';
+export type Action = 'displayMessages' | 'fix' | 'disable' | 'disablePerFile' | 'ApplySuggestions' | 'reselectRules';
 
 /**
  * The type representing how to display the lint results.

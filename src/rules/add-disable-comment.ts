@@ -1,7 +1,7 @@
 import { Rule } from 'eslint';
 // eslint-disable-next-line import/no-unresolved
 import type { Comment } from 'estree';
-import { createCommentNodeText, parseCommentAsESLintDisableComment } from '../util/eslint';
+import { toCommentText, DisableComment, parseDisableComment } from '../util/eslint';
 
 // disable comment を追加してくれる rule。
 // disable comment を追加したい場所と disable したい ruleId の情報をオプションで渡すと、
@@ -28,21 +28,11 @@ export type DisableTarget = {
 };
 export type AddDisableCommentOption = { targets: DisableTarget[]; description?: string };
 
-function findESLintDisableComment(commentsInFile: Comment[], line: number) {
+function findDisableComment(commentsInFile: Comment[], line: number): DisableComment | undefined {
   const commentsInPreviousLine = commentsInFile.filter((comment) => comment.loc?.start.line === line - 1);
-
-  for (const comment of commentsInPreviousLine) {
-    const eslintDisableComment = parseCommentAsESLintDisableComment(comment);
-    // NOTE: コメントノードには必ず range があるはずだが、型上は optional なので、
-    // range がない場合は無視するようにしておく
-    if (eslintDisableComment && comment.range) {
-      return {
-        eslintDisableComment,
-        range: comment.range,
-      };
-    }
-  }
-  return null;
+  return commentsInPreviousLine
+    .map((comment) => parseDisableComment(comment))
+    .find((comment) => comment?.scope === 'next-line');
 }
 
 const rule: Rule.RuleModule = {
@@ -102,9 +92,9 @@ const rule: Rule.RuleModule = {
     };
 
     function addDisableComment(fixer: Rule.RuleFixer, line: number, ruleIds: string[]): Rule.Fix | null {
-      const findResult = findESLintDisableComment(commentsInFile, line);
+      const disableComment = findDisableComment(commentsInFile, line);
 
-      if (!findResult) {
+      if (!disableComment) {
         const headNodeIndex = sourceCode.getIndexFromLoc({ line: line, column: 0 });
         const headNode = sourceCode.getNodeByRangeIndex(headNodeIndex);
         if (headNode === null) return null; // なんか null になることがあるらしいので、null になったら例外ケースとして無視する
@@ -112,29 +102,31 @@ const rule: Rule.RuleModule = {
         if ((headNode.type as any) === 'JSXText') {
           return fixer.insertTextBeforeRange(
             [headNodeIndex, 0],
-            '{' + createCommentNodeText({ type: 'Block', ruleIds, description: option.description }) + '}\n',
+            '{' +
+              toCommentText({ type: 'Block', scope: 'next-line', ruleIds, description: option.description }) +
+              '}\n',
           );
         } else {
           return fixer.insertTextBeforeRange(
             [headNodeIndex, 0],
-            createCommentNodeText({ type: 'Line', ruleIds, description: option.description }) + '\n',
+            toCommentText({ type: 'Line', scope: 'next-line', ruleIds, description: option.description }) + '\n',
           );
         }
       } else {
-        const { range, eslintDisableComment } = findResult;
         const description =
-          eslintDisableComment.description !== undefined && option.description !== undefined
-            ? `${eslintDisableComment.description}, ${option.description}`
-            : eslintDisableComment.description !== undefined && option.description === undefined
-            ? eslintDisableComment.description
-            : eslintDisableComment.description === undefined && option.description !== undefined
+          disableComment.description !== undefined && option.description !== undefined
+            ? `${disableComment.description}, ${option.description}`
+            : disableComment.description !== undefined && option.description === undefined
+            ? disableComment.description
+            : disableComment.description === undefined && option.description !== undefined
             ? option.description
             : undefined;
         return fixer.replaceTextRange(
-          range,
-          createCommentNodeText({
-            type: eslintDisableComment.type,
-            ruleIds: [...eslintDisableComment.ruleIds, ...ruleIds],
+          disableComment.range,
+          toCommentText({
+            type: disableComment.type,
+            scope: 'next-line',
+            ruleIds: [...disableComment.ruleIds, ...ruleIds],
             description,
           }),
         );
