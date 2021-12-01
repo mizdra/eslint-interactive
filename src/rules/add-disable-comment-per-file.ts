@@ -1,4 +1,4 @@
-import { ESLint, Rule, SourceCode } from 'eslint';
+import { AST, ESLint, Rule, SourceCode } from 'eslint';
 import type { Comment } from 'estree';
 import { unique } from '../util/array';
 import {
@@ -9,6 +9,14 @@ import {
   mergeRuleIdsAndDescription,
 } from '../util/eslint';
 import { notEmpty } from '../util/type-check';
+
+const SHEBANG_PATTERN = /^#!.+?\r?\n/u;
+
+function findShebang(sourceCodeText: string): { range: AST.Range } | null {
+  const result = SHEBANG_PATTERN.exec(sourceCodeText);
+  if (!result) return null;
+  return { range: [0, result[0].length] };
+}
 
 const filenameToIsAlreadyFixed = new Map<string, boolean>();
 
@@ -36,7 +44,10 @@ function generateFix(sourceCode: SourceCode, result: ESLint.LintResult, descript
     return { range: disableCommentPerFile.range, text };
   } else {
     const text = toCommentText({ type: 'Block', scope: 'file', ruleIds: ruleIdsToDisable, description }) + '\n';
-    return { range: [0, 0], text };
+
+    const shebang = findShebang(sourceCode.text);
+    // if shebang exists, insert comment after shebang
+    return { range: shebang ? [shebang.range[1], shebang.range[1]] : [0, 0], text };
   }
 }
 
