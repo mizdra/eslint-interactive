@@ -79,7 +79,7 @@ const rule: Rule.RuleModule = {
             line: 0,
             column: 0,
           },
-          message: `add-disable-comment-per-line`,
+          message: `add-disable-comment-per-file`,
           fix: () => fix,
         });
         filenameToIsAlreadyFixed.set(filename, true);
