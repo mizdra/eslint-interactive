@@ -4,6 +4,8 @@ import {
   toCommentText,
   parseDisableComment,
   filterResultsByRuleId,
+  mergeRuleIdsAndDescription,
+  findShebang,
 } from '../../src/util/eslint';
 import { fakeLintMessage, fakeLintResult } from '../test-util/eslint';
 
@@ -230,5 +232,54 @@ describe('filterResultsByRuleId', () => {
         messages: [fakeLintMessage({ ruleId: 'a' }), fakeLintMessage({ ruleId: 'b' })],
       }),
     ]);
+  });
+});
+
+describe('mergeRuleIdsAndDescription', () => {
+  test('merges the ruleIds and description of the disable comments', () => {
+    expect(
+      mergeRuleIdsAndDescription(
+        { ruleIds: ['a', 'b'], description: 'foo' },
+        { ruleIds: ['b', 'c'], description: 'bar' },
+      ),
+    ).toStrictEqual({ ruleIds: ['a', 'b', 'c'], description: 'foo, bar' });
+  });
+  test('The description is optional', () => {
+    expect(mergeRuleIdsAndDescription({ ruleIds: ['a', 'b'] }, { ruleIds: ['b', 'c'] })).toStrictEqual({
+      ruleIds: ['a', 'b', 'c'],
+    });
+  });
+  test('can merge the comment without description with the comment with description', () => {
+    expect(
+      mergeRuleIdsAndDescription({ ruleIds: ['a', 'b'], description: 'foo' }, { ruleIds: ['b', 'c'] }),
+    ).toStrictEqual({
+      ruleIds: ['a', 'b', 'c'],
+      description: 'foo',
+    });
+    expect(
+      mergeRuleIdsAndDescription({ ruleIds: ['a', 'b'] }, { ruleIds: ['b', 'c'], description: 'bar' }),
+    ).toStrictEqual({
+      ruleIds: ['a', 'b', 'c'],
+      description: 'bar',
+    });
+  });
+});
+
+describe('findShebang', () => {
+  test('find shebang from the first line of the file', () => {
+    expect(findShebang('#!/bin/node\nval;')).toStrictEqual({
+      range: [0, '#!/bin/node\n'.length],
+    });
+    expect(findShebang('#!/usr/bin/env node\nval;')).toStrictEqual({
+      range: [0, '#!/usr/bin/env node\n'.length],
+    });
+  });
+  test('returns null if the file does not have shebang', () => {
+    expect(findShebang('val;')).toStrictEqual(null);
+  });
+  test('can find the shebang containing CRLF', () => {
+    expect(findShebang('#!/bin/node\r\nval')).toStrictEqual({
+      range: [0, '#!/bin/node\r\n'.length],
+    });
   });
 });
