@@ -6,7 +6,7 @@ import { format } from './formatter';
 import { DisableTarget, AddDisableCommentOption } from './rules/add-disable-comment';
 import { AddDisableCommentPerFileOption } from './rules/add-disable-comment-per-file';
 import { ApplySuggestionsOption } from './rules/apply-suggestions';
-import { Config, DisplayMode } from './types';
+import { Config, DisplayMode, Transform } from './types';
 import { groupBy } from './util/array';
 import { filterResultsByRuleId, scanUsedPluginsFromResults } from './util/eslint';
 import { notEmpty } from './util/type-check';
@@ -198,6 +198,21 @@ export class ESLintDecorator {
     description?: string,
   ): Promise<void> {
     const eslint = createAddDisableCommentPerFileESLint(this.baseOptions, results, ruleIds, description);
+    const newResults = await eslint.lintFiles(this.config.patterns);
+    await ESLint.outputFixes(newResults);
+  }
+
+  async transform(transform: Transform) {
+    const eslint = new ESLint({
+      ...this.baseOptions,
+      overrideConfig: {
+        rules: {
+          transform: [2, transform],
+        },
+      },
+      rulePaths: [...(this.baseOptions.rulePaths ?? []), join(__dirname, 'rules')],
+      fix: true,
+    });
     const newResults = await eslint.lintFiles(this.config.patterns);
     await ESLint.outputFixes(newResults);
   }

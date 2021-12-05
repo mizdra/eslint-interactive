@@ -113,6 +113,19 @@ export function filterResultsByRuleId(results: ESLint.LintResult[], ruleIds: (st
 }
 
 /**
+ * Create the result with only messages with the specified rule ids.
+ * @param result The lint result.
+ * @param ruleIds The rule ids.
+ * @returns The results with only messages with the specified rule ids
+ */
+export function filterResultByRuleId(result: ESLint.LintResult, ruleIds: (string | null)[]): ESLint.LintResult {
+  return {
+    ...result,
+    messages: result.messages.filter((message) => ruleIds.includes(message.ruleId)),
+  };
+}
+
+/**
  * push rule ids to the disable comment and return the new comment node.
  * @param comment The comment node to be modified
  * @param ruleIds The rule ids to be added

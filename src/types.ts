@@ -1,5 +1,7 @@
+import { SourceCode } from 'eslint';
 import { SelectActionArgs } from './scenes/select-action';
 import { SelectRuleIdsArgs } from './scenes/select-rule-ids';
+import { TransformToAddDisableCommentPerFileArgs } from './transforms/add-disable-comment-per-file';
 
 /**
  * The type that indicates what to do with the problems of selected rules.
@@ -45,3 +47,13 @@ export type Config = {
   extensions: string[] | undefined;
   formatterName: string;
 };
+
+/**
+ * The type representing the transform to do.
+ */
+export type Transform = { name: 'disablePerFile'; args: TransformToAddDisableCommentPerFileArgs };
+
+/**
+ * The type representing the additional information for the transform.
+ */
+export type TransformContext = { filename: string; sourceCode: SourceCode };
