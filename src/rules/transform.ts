@@ -1,10 +1,14 @@
-import { Rule } from 'eslint';
+import { ESLint, Rule } from 'eslint';
 import { createTransformToAddDisableCommentPerFile } from '../transforms/add-disable-comment-per-file';
 import { Transform, TransformContext } from '../types';
 
 const filenameToIsAlreadyFixed = new Map<string, boolean>();
 
-export type ApplyFixRuleOption = Transform;
+export type TransformRuleOption = {
+  ruleIds: string[];
+  results: ESLint.LintResult[];
+  transform: Transform;
+};
 
 const rule: Rule.RuleModule = {
   meta: {
@@ -25,12 +29,21 @@ const rule: Rule.RuleModule = {
       return {};
     }
 
-    const fixToApply = context.options[0] as ApplyFixRuleOption;
+    const { transform, results, ruleIds } = context.options[0] as TransformRuleOption;
 
-    const transformContext: TransformContext = { filename: context.getFilename(), sourceCode: context.getSourceCode() };
+    const result = results.find((result) => result.filePath === filename);
+    if (!result) return {};
+    const messages = result.messages.filter((message) => message.ruleId && ruleIds.includes(message.ruleId));
+
+    const transformContext: TransformContext = {
+      filename: context.getFilename(),
+      sourceCode: context.getSourceCode(),
+      messages,
+      ruleIds,
+    };
     let fixes: Rule.Fix[] = [];
-    if (fixToApply.name === 'disablePerFile') {
-      fixes = createTransformToAddDisableCommentPerFile(transformContext, fixToApply.args);
+    if (transform.name === 'disablePerFile') {
+      fixes = createTransformToAddDisableCommentPerFile(transformContext, transform.args);
     }
 
     if (fixes.length === 0) return {};

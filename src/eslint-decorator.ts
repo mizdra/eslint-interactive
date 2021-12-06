@@ -5,6 +5,7 @@ import pager from 'node-pager';
 import { format } from './formatter';
 import { DisableTarget, AddDisableCommentOption } from './rules/add-disable-comment';
 import { ApplySuggestionsOption } from './rules/apply-suggestions';
+import { TransformRuleOption } from './rules/transform';
 import { Config, DisplayMode, Transform } from './types';
 import { groupBy } from './util/array';
 import { filterResultsByRuleId, scanUsedPluginsFromResults } from './util/eslint';
@@ -176,19 +177,19 @@ export class ESLintDecorator {
     ruleIds: string[],
     description?: string,
   ): Promise<void> {
-    await this.transform({ name: 'disablePerFile', args: { results, ruleIds, description } });
+    await this.transform(results, ruleIds, { name: 'disablePerFile', args: { description } });
   }
 
   /**
    * Transform source codes.
    * @param transform The transform information to do.
    */
-  private async transform(transform: Transform) {
+  private async transform(results: ESLint.LintResult[], ruleIds: string[], transform: Transform) {
     const eslint = new ESLint({
       ...this.baseOptions,
       overrideConfig: {
         rules: {
-          transform: [2, transform],
+          transform: [2, { results, ruleIds, transform } as TransformRuleOption],
         },
       },
       rulePaths: [...(this.baseOptions.rulePaths ?? []), join(__dirname, 'rules')],

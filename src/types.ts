@@ -1,4 +1,4 @@
-import { SourceCode } from 'eslint';
+import { Linter, Rule, SourceCode } from 'eslint';
 import { SelectActionArgs } from './scenes/select-action';
 import { SelectRuleIdsArgs } from './scenes/select-rule-ids';
 import { TransformToAddDisableCommentPerFileArgs } from './transforms/add-disable-comment-per-file';
@@ -56,4 +56,14 @@ export type Transform = { name: 'disablePerFile'; args: TransformToAddDisableCom
 /**
  * The type representing the additional information for the transform.
  */
-export type TransformContext = { filename: string; sourceCode: SourceCode };
+export type TransformContext = {
+  filename: string;
+  sourceCode: SourceCode;
+  messages: Linter.LintMessage[];
+  ruleIds: string[];
+};
+
+/**
+ * The type representing the transform function.
+ */
+export type TransformFunction<T> = (context: TransformContext, args: T) => Rule.Fix[];

@@ -1,4 +1,4 @@
-import { ESLint, Rule } from 'eslint';
+import { Rule } from 'eslint';
 import type { Comment } from 'estree';
 import { TransformContext } from '../types';
 import { unique } from '../util/array';
@@ -12,8 +12,6 @@ import {
 import { notEmpty } from '../util/type-check';
 
 export type TransformToAddDisableCommentPerFileArgs = {
-  results: ESLint.LintResult[];
-  ruleIds: string[];
   description?: string;
 };
 
@@ -21,15 +19,8 @@ function findDisableCommentPerFile(commentsInFile: Comment[]): DisableComment | 
   return commentsInFile.map(parseDisableComment).find((comment) => comment?.scope === 'file');
 }
 
-function generateFix(
-  context: TransformContext,
-  result: ESLint.LintResult,
-  ruleIds: string[],
-  description?: string,
-): Rule.Fix | null {
-  const messagesToFix = result.messages.filter((message) => message.ruleId && ruleIds.includes(message.ruleId));
-
-  const ruleIdsToDisable = unique(messagesToFix.map((message) => message.ruleId).filter(notEmpty));
+function generateFix(context: TransformContext, description?: string): Rule.Fix | null {
+  const ruleIdsToDisable = unique(context.messages.map((message) => message.ruleId).filter(notEmpty));
   if (ruleIdsToDisable.length === 0) return null;
 
   const commentsInFile = context.sourceCode.getAllComments();
@@ -60,8 +51,6 @@ export function createTransformToAddDisableCommentPerFile(
   context: TransformContext,
   args: TransformToAddDisableCommentPerFileArgs,
 ): Rule.Fix[] {
-  const result = args.results.find((result) => result.filePath === context.filename);
-  if (!result) return [];
-  const fix = generateFix(context, result, args.ruleIds, args.description);
+  const fix = generateFix(context, args.description);
   return fix ? [fix] : [];
 }
