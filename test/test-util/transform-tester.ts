@@ -20,10 +20,6 @@ type TestCase<T> = {
    */
   code: string | string[];
   /**
-   * The rule ids to be lint.
-   */
-  ruleIdsToLint: string[];
-  /**
    * The rule ids to transform.
    */
   ruleIdsToTransform: string[];
@@ -44,7 +40,7 @@ function createTransformContext<T>(
   const messages = linter.verify(
     code,
     {
-      rules: Object.fromEntries(testCase.ruleIdsToLint.map((ruleId) => [ruleId, 'error'])),
+      rules: Object.fromEntries(testCase.ruleIdsToTransform.map((ruleId) => [ruleId, 'error'])),
       ...defaultLinterConfig,
     },
     { filename },

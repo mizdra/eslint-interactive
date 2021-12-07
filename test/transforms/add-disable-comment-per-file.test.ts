@@ -12,7 +12,6 @@ describe('add-disable-comment-per-file', () => {
     expect(
       tester.test({
         code: 'var val',
-        ruleIdsToLint: ['semi', 'no-var'],
         ruleIdsToTransform: ['semi'],
       }),
     ).toMatchInlineSnapshot(`
@@ -24,7 +23,6 @@ describe('add-disable-comment-per-file', () => {
     expect(
       tester.test({
         code: 'var val',
-        ruleIdsToLint: ['semi', 'no-var'],
         ruleIdsToTransform: ['semi', 'no-var'],
       }),
     ).toMatchInlineSnapshot(`
@@ -36,7 +34,6 @@ describe('add-disable-comment-per-file', () => {
     expect(
       tester.test({
         code: ['/* eslint-disable semi */', 'var val'],
-        ruleIdsToLint: ['no-var'],
         ruleIdsToTransform: ['no-var'],
       }),
     ).toMatchInlineSnapshot(`
@@ -48,7 +45,6 @@ describe('add-disable-comment-per-file', () => {
     expect(
       tester.test({
         code: ['/* eslint-disable semi -- comment */', 'var val'],
-        ruleIdsToLint: ['no-var'],
         ruleIdsToTransform: ['no-var'],
       }),
     ).toMatchInlineSnapshot(`
@@ -60,7 +56,6 @@ describe('add-disable-comment-per-file', () => {
     expect(
       tester.test({
         code: ['/* eslint-disable semi */', 'var val'],
-        ruleIdsToLint: ['no-var'],
         ruleIdsToTransform: ['no-var'],
         args: { description: 'comment' },
       }),
@@ -73,7 +68,6 @@ describe('add-disable-comment-per-file', () => {
     expect(
       tester.test({
         code: ['/* eslint-disable semi -- foo */', 'var val'],
-        ruleIdsToLint: ['no-var'],
         ruleIdsToTransform: ['no-var'],
         args: { description: 'bar' },
       }),
@@ -86,7 +80,6 @@ describe('add-disable-comment-per-file', () => {
     expect(
       tester.test({
         code: ['// @ts-check', 'var val'],
-        ruleIdsToLint: ['no-var'],
         ruleIdsToTransform: ['no-var'],
       }),
     ).toMatchInlineSnapshot(`
@@ -99,7 +92,6 @@ describe('add-disable-comment-per-file', () => {
     expect(
       tester.test({
         code: ['/* @jsxImportSource @emotion/react */', 'var val'],
-        ruleIdsToLint: ['no-var'],
         ruleIdsToTransform: ['no-var'],
       }),
     ).toMatchInlineSnapshot(`
@@ -112,7 +104,6 @@ describe('add-disable-comment-per-file', () => {
     expect(
       tester.test({
         code: ['#!/usr/bin/env node', 'var val'],
-        ruleIdsToLint: ['no-var'],
         ruleIdsToTransform: ['no-var'],
       }),
     ).toMatchInlineSnapshot(`
