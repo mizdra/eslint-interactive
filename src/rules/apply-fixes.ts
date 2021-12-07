@@ -1,5 +1,9 @@
 import { Rule } from 'eslint';
 
+/**
+ * @file The rule to apply to `Rule.Fix`.
+ */
+
 const filenameToIsAlreadyFixed = new Map<string, boolean>();
 
 export type ApplyFixesRuleOption = Rule.Fix[];

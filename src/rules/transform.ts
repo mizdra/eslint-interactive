@@ -2,6 +2,20 @@ import { ESLint, Rule } from 'eslint';
 import { createTransformToAddDisableCommentPerFile } from '../transforms/add-disable-comment-per-file';
 import { Transform, TransformContext } from '../types';
 
+/**
+ * @file The rule to do the transform.
+ * The transform function returns the `Rule.Fix` that describes how to fix the code.
+ * To apply the fix to your code, you need to use ESLint's API to apply the `Rule.Fix`.
+ *
+ * However, there is no dedicated API in ESLint to apply `Rule.Fix` (there is an internal API
+ * called `SourceCodeFixer`,but it is not exposed to the public). For now, the only way
+ * to apply `Rule.Fix` is to report a fixable problem from a rule and fix it
+ * with `ESLint.outputFixes`.
+ *
+ * This module is a rule that executes a transform function and converts the return value
+ * to a fixable problem.
+ */
+
 const filenameToIsAlreadyFixed = new Map<string, boolean>();
 
 export type TransformRuleOption = {
