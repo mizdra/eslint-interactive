@@ -2,7 +2,7 @@ import { Rule } from 'eslint';
 
 const filenameToIsAlreadyFixed = new Map<string, boolean>();
 
-export type VerifyAndFixRuleOption = Rule.Fix[];
+export type ApplyFixesRuleOption = Rule.Fix[];
 
 const rule: Rule.RuleModule = {
   meta: {
@@ -23,7 +23,7 @@ const rule: Rule.RuleModule = {
       return {};
     }
 
-    const fixes = context.options[0] as VerifyAndFixRuleOption;
+    const fixes = context.options[0] as ApplyFixesRuleOption;
 
     if (fixes.length === 0) return {};
 

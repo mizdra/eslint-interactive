@@ -1,11 +1,11 @@
 import { Linter } from 'eslint';
-import rule from '../../src/rules/verify-and-fix';
+import rule from '../../src/rules/apply-fixes';
 import { TransformContext, TransformFunction } from '../../src/types';
 
 const DEFAULT_FILENAME = 'test.js';
 
 const linter = new Linter();
-linter.defineRule('verify-and-fix', rule);
+linter.defineRule('apply-fixes', rule);
 
 type TestCase<T> = {
   filename?: string;
@@ -60,7 +60,7 @@ export class TransformerTester<T> {
       code,
       {
         rules: {
-          'verify-and-fix': [2, fixes],
+          'apply-fixes': [2, fixes],
         },
         ...this.defaultLinterConfig,
       },
