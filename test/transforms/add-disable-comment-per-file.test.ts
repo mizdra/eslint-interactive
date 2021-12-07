@@ -1,7 +1,7 @@
 import { createTransformToAddDisableCommentPerFile } from '../../src/transforms/add-disable-comment-per-file';
-import { TransformerTester } from '../test-util/transformer-tester';
+import { TransformTester } from '../test-util/transform-tester';
 
-const tester = new TransformerTester(
+const tester = new TransformTester(
   createTransformToAddDisableCommentPerFile,
   {},
   { parserOptions: { ecmaVersion: 2020, ecmaFeatures: { jsx: true } } },

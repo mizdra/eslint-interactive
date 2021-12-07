@@ -42,7 +42,10 @@ function createTransformContext<T>(
   };
 }
 
-export class TransformerTester<T> {
+/**
+ * The test utility for the transform.
+ */
+export class TransformTester<T> {
   private transformFunction: TransformFunction<T>;
   private defaultArgs: T;
   private defaultLinterConfig: Linter.Config;
