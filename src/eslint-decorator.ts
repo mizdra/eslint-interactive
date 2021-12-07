@@ -4,9 +4,9 @@ import { ESLint } from 'eslint';
 import pager from 'node-pager';
 import { format } from './formatter';
 import { DisableTarget, AddDisableCommentOption } from './rules/add-disable-comment';
-import { AddDisableCommentPerFileOption } from './rules/add-disable-comment-per-file';
 import { ApplySuggestionsOption } from './rules/apply-suggestions';
-import { Config, DisplayMode } from './types';
+import { TransformRuleOption } from './rules/transform';
+import { Config, DisplayMode, Transform } from './types';
 import { groupBy } from './util/array';
 import { filterResultsByRuleId, scanUsedPluginsFromResults } from './util/eslint';
 import { notEmpty } from './util/type-check';
@@ -42,26 +42,6 @@ function createAddDisableCommentESLint(
     rulePaths: [...(defaultOptions.rulePaths ?? []), join(__dirname, 'rules')],
     // NOTE: add-disable-comment に関するエラーだけ fix したいのでフィルタしている
     fix: (message) => message.ruleId === 'add-disable-comment',
-  });
-  return eslint;
-}
-
-function createAddDisableCommentPerFileESLint(
-  defaultOptions: ESLint.Options,
-  results: ESLint.LintResult[],
-  ruleIds: string[],
-  description?: string,
-): ESLint {
-  const eslint = new ESLint({
-    ...defaultOptions,
-    overrideConfig: {
-      rules: {
-        'add-disable-comment-per-file': [2, { results, ruleIds, description } as AddDisableCommentPerFileOption],
-      },
-    },
-    rulePaths: [...(defaultOptions.rulePaths ?? []), join(__dirname, 'rules')],
-    // NOTE: add-disable-comment-per-file に関するエラーだけ fix したいのでフィルタしている
-    fix: (message) => message.ruleId === 'add-disable-comment-per-file',
   });
   return eslint;
 }
@@ -197,7 +177,24 @@ export class ESLintDecorator {
     ruleIds: string[],
     description?: string,
   ): Promise<void> {
-    const eslint = createAddDisableCommentPerFileESLint(this.baseOptions, results, ruleIds, description);
+    await this.transform(results, ruleIds, { name: 'disablePerFile', args: { description } });
+  }
+
+  /**
+   * Transform source codes.
+   * @param transform The transform information to do.
+   */
+  private async transform(results: ESLint.LintResult[], ruleIds: string[], transform: Transform) {
+    const eslint = new ESLint({
+      ...this.baseOptions,
+      overrideConfig: {
+        rules: {
+          transform: [2, { results, ruleIds, transform } as TransformRuleOption],
+        },
+      },
+      rulePaths: [...(this.baseOptions.rulePaths ?? []), join(__dirname, 'rules')],
+      fix: true,
+    });
     const newResults = await eslint.lintFiles(this.config.patterns);
     await ESLint.outputFixes(newResults);
   }
