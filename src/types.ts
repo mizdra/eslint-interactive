@@ -2,6 +2,7 @@ import { Linter, Rule, SourceCode } from 'eslint';
 import { SelectActionArgs } from './scenes/select-action';
 import { SelectRuleIdsArgs } from './scenes/select-rule-ids';
 import { TransformToAddDisableCommentPerFileArgs } from './transforms/add-disable-comment-per-file';
+import { TransformToAddDisableCommentPerLineArgs } from './transforms/add-disable-comment-per-line';
 
 /**
  * The type that indicates what to do with the problems of selected rules.
@@ -51,7 +52,9 @@ export type Config = {
 /**
  * The type representing the transform to do.
  */
-export type Transform = { name: 'disablePerFile'; args: TransformToAddDisableCommentPerFileArgs };
+export type Transform =
+  | { name: 'disablePerLine'; args: TransformToAddDisableCommentPerLineArgs }
+  | { name: 'disablePerFile'; args: TransformToAddDisableCommentPerFileArgs };
 
 /**
  * The type representing the additional information for the transform.

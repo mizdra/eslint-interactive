@@ -3,48 +3,10 @@ import { join } from 'path';
 import { ESLint } from 'eslint';
 import pager from 'node-pager';
 import { format } from './formatter';
-import { DisableTarget, AddDisableCommentOption } from './rules/add-disable-comment';
 import { ApplySuggestionsOption } from './rules/apply-suggestions';
 import { TransformRuleOption } from './rules/transform';
 import { Config, DisplayMode, Transform } from './types';
-import { groupBy } from './util/array';
 import { filterResultsByRuleId, scanUsedPluginsFromResults } from './util/eslint';
-import { notEmpty } from './util/type-check';
-
-function generateAddDisableCommentOption(results: ESLint.LintResult[], description?: string): AddDisableCommentOption {
-  const targets: DisableTarget[] = [];
-  for (const result of results) {
-    const messagesByLine = groupBy(result.messages, (message) => message.line);
-    for (const [line, messages] of messagesByLine) {
-      targets.push({
-        filename: result.filePath,
-        line,
-        ruleIds: messages.map((message) => message.ruleId).filter(notEmpty),
-      });
-    }
-  }
-  return { targets, description };
-}
-
-function createAddDisableCommentESLint(
-  defaultOptions: ESLint.Options,
-  results: ESLint.LintResult[],
-  description?: string,
-): ESLint {
-  const option = generateAddDisableCommentOption(results, description);
-  const eslint = new ESLint({
-    ...defaultOptions,
-    overrideConfig: {
-      rules: {
-        'add-disable-comment': [2, option],
-      },
-    },
-    rulePaths: [...(defaultOptions.rulePaths ?? []), join(__dirname, 'rules')],
-    // NOTE: add-disable-comment に関するエラーだけ fix したいのでフィルタしている
-    fix: (message) => message.ruleId === 'add-disable-comment',
-  });
-  return eslint;
-}
 
 function createApplySuggestionsESLint(
   defaultOptions: ESLint.Options,
@@ -153,17 +115,13 @@ export class ESLintDecorator {
   }
 
   /**
-   * Add disable comments.
+   * Add disable comments per line.
    * @param results The lint results of the project to add disable comments
    * @param ruleIds The rule ids to add disable comments
    * @param description The description of the disable comments
    */
   async addDisableComments(results: ESLint.LintResult[], ruleIds: string[], description?: string): Promise<void> {
-    const filteredResults = filterResultsByRuleId(results, ruleIds);
-
-    const eslint = createAddDisableCommentESLint(this.baseOptions, filteredResults, description);
-    const newResults = await eslint.lintFiles(this.config.patterns);
-    await ESLint.outputFixes(newResults);
+    await this.transform(results, ruleIds, { name: 'disablePerLine', args: { description } });
   }
 
   /**
