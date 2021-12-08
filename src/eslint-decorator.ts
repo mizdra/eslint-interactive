@@ -151,7 +151,8 @@ export class ESLintDecorator {
         },
       },
       rulePaths: [...(this.baseOptions.rulePaths ?? []), join(__dirname, 'rules')],
-      fix: true,
+      // NOTE: Only fix the `transform` rule problems.
+      fix: (message) => message.ruleId === 'transform',
     });
     const newResults = await eslint.lintFiles(this.config.patterns);
     await ESLint.outputFixes(newResults);
