@@ -100,7 +100,7 @@ export class ESLintDecorator {
    * @param ruleIds The rule ids to add disable comments
    * @param description The description of the disable comments
    */
-  async addDisableComments(results: ESLint.LintResult[], ruleIds: string[], description?: string): Promise<void> {
+  async disablePerLine(results: ESLint.LintResult[], ruleIds: string[], description?: string): Promise<void> {
     await this.transform(results, ruleIds, { name: 'disablePerLine', args: { description } });
   }
 

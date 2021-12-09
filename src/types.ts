@@ -1,14 +1,20 @@
 import { Linter, Rule, SourceCode } from 'eslint';
 import { SelectActionArgs } from './scenes/select-action';
 import { SelectRuleIdsArgs } from './scenes/select-rule-ids';
-import { TransformToAddDisableCommentPerLineArgs } from './transforms/add-disable-comment-per-line';
 import { TransformToApplySuggestionsArgs } from './transforms/apply-suggestions';
 import { TransformToDisablePerFileArgs } from './transforms/disable-per-file';
+import { TransformToDisablePerLineArgs } from './transforms/disable-per-line';
 
 /**
  * The type that indicates what to do with the problems of selected rules.
  */
-export type Action = 'displayMessages' | 'fix' | 'disable' | 'disablePerFile' | 'ApplySuggestions' | 'reselectRules';
+export type Action =
+  | 'displayMessages'
+  | 'fix'
+  | 'disablePerLine'
+  | 'disablePerFile'
+  | 'ApplySuggestions'
+  | 'reselectRules';
 
 /**
  * The type representing how to display the lint results.
@@ -54,7 +60,7 @@ export type Config = {
  * The type representing the transform to do.
  */
 export type Transform =
-  | { name: 'disablePerLine'; args: TransformToAddDisableCommentPerLineArgs }
+  | { name: 'disablePerLine'; args: TransformToDisablePerLineArgs }
   | { name: 'disablePerFile'; args: TransformToDisablePerFileArgs }
   | { name: 'applySuggestions'; args: TransformToApplySuggestionsArgs };
 

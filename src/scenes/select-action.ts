@@ -1,7 +1,7 @@
 import { ESLint } from 'eslint';
 import { doApplySuggestionsAction } from '../actions/apply-suggestions';
-import { doDisableAction } from '../actions/disable';
 import { doDisablePerFileAction } from '../actions/disable-per-file';
+import { doDisablePerLineAction } from '../actions/disable-per-line';
 import { doDisplayMessagesAction } from '../actions/display-messages';
 import { doFixAction } from '../actions/fix';
 import { promptToInputAction } from '../cli/prompt';
@@ -35,8 +35,8 @@ export async function selectAction(
   } else if (action === 'fix') {
     await doFixAction(eslint, selectedRuleIds);
     return { name: 'selectToContinue' };
-  } else if (action === 'disable') {
-    await doDisableAction(eslint, results, selectedRuleIds);
+  } else if (action === 'disablePerLine') {
+    await doDisablePerLineAction(eslint, results, selectedRuleIds);
     return { name: 'selectToContinue' };
   } else if (action === 'disablePerFile') {
     await doDisablePerFileAction(eslint, results, selectedRuleIds);
