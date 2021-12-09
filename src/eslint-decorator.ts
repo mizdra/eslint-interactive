@@ -3,30 +3,10 @@ import { join } from 'path';
 import { ESLint } from 'eslint';
 import pager from 'node-pager';
 import { format } from './formatter';
-import { ApplySuggestionsOption } from './rules/apply-suggestions';
 import { TransformRuleOption } from './rules/transform';
+import { SuggestionFilter } from './transforms/apply-suggestions';
 import { Config, DisplayMode, Transform } from './types';
 import { filterResultsByRuleId, scanUsedPluginsFromResults } from './util/eslint';
-
-function createApplySuggestionsESLint(
-  defaultOptions: ESLint.Options,
-  results: ESLint.LintResult[],
-  ruleIds: string[],
-  filterScript: string,
-): ESLint {
-  const eslint = new ESLint({
-    ...defaultOptions,
-    overrideConfig: {
-      rules: {
-        'apply-suggestions': [2, { results, ruleIds, filterScript } as ApplySuggestionsOption],
-      },
-    },
-    rulePaths: [...(defaultOptions.rulePaths ?? []), join(__dirname, 'rules')],
-    // NOTE: apply-suggestions に関するエラーだけ fix したいのでフィルタしている
-    fix: (message) => message.ruleId === 'apply-suggestions',
-  });
-  return eslint;
-}
 
 /**
  * The core of eslint-interactive.
@@ -139,6 +119,16 @@ export class ESLintDecorator {
   }
 
   /**
+   * Apply suggestions.
+   * @param results The lint results of the project to apply suggestions
+   * @param ruleIds The rule ids to apply suggestions
+   * @param filter The script to filter suggestions
+   * */
+  async applySuggestions(results: ESLint.LintResult[], ruleIds: string[], filter: SuggestionFilter): Promise<void> {
+    await this.transform(results, ruleIds, { name: 'applySuggestions', args: { filter } });
+  }
+
+  /**
    * Transform source codes.
    * @param transform The transform information to do.
    */
@@ -154,18 +144,6 @@ export class ESLintDecorator {
       // NOTE: Only fix the `transform` rule problems.
       fix: (message) => message.ruleId === 'transform',
     });
-    const newResults = await eslint.lintFiles(this.config.patterns);
-    await ESLint.outputFixes(newResults);
-  }
-
-  /**
-   * Apply suggestions.
-   * @param results The lint results of the project to apply suggestions
-   * @param ruleIds The rule ids to apply suggestions
-   * @param filterScript The script to filter suggestions
-   * */
-  async applySuggestions(results: ESLint.LintResult[], ruleIds: string[], filterScript: string): Promise<void> {
-    const eslint = createApplySuggestionsESLint(this.baseOptions, results, ruleIds, filterScript);
     const newResults = await eslint.lintFiles(this.config.patterns);
     await ESLint.outputFixes(newResults);
   }
