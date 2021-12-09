@@ -4,7 +4,7 @@ import chalk from 'chalk';
 import { ESLint } from 'eslint';
 import ora from 'ora';
 import { promptToInputReuseFilterScript } from '../cli/prompt';
-import { ESLintDecorator } from '../eslint-decorator';
+import { Core } from '../core';
 import { SuggestionFilter } from '../transforms/apply-suggestions';
 import {
   editFileWithEditor,
@@ -13,7 +13,7 @@ import {
 } from '../util/filter-script';
 
 export async function doApplySuggestionsAction(
-  eslint: ESLintDecorator,
+  core: Core,
   results: ESLint.LintResult[],
   selectedRuleIds: string[],
 ): Promise<void> {
@@ -37,6 +37,6 @@ export async function doApplySuggestionsAction(
   const filterScript = await editFileWithEditor(filterScriptFilePath);
   const filter = eval(filterScript) as SuggestionFilter;
   const fixingSpinner = ora('Applying suggestion...').start();
-  await eslint.applySuggestions(results, selectedRuleIds, filter);
+  await core.applySuggestions(results, selectedRuleIds, filter);
   fixingSpinner.succeed(chalk.bold('Applying suggestion was successful.'));
 }

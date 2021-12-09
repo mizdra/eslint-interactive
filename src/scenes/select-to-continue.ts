@@ -11,5 +11,5 @@ export async function selectToContinue(): Promise<NextScene> {
   console.log();
   console.log('─'.repeat(process.stdout.columns));
   console.log();
-  return { name: 'showLintResults' };
+  return { name: 'lint' };
 }

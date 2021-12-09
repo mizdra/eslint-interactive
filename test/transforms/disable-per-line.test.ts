@@ -1,13 +1,13 @@
-import { createTransformToAddDisableCommentPerLine } from '../../src/transforms/add-disable-comment-per-line';
+import { createTransformToDisablePerLine } from '../../src/transforms/disable-per-line';
 import { TransformTester } from '../test-util/transform-tester';
 
 const tester = new TransformTester(
-  createTransformToAddDisableCommentPerLine,
+  createTransformToDisablePerLine,
   {},
   { parserOptions: { ecmaVersion: 2020, ecmaFeatures: { jsx: true } } },
 );
 
-describe('add-disable-comment-per-line', () => {
+describe('disable-per-line', () => {
   test('basic', () => {
     expect(
       tester.test({

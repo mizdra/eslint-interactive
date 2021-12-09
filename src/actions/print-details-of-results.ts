@@ -1,12 +1,12 @@
 import { ESLint } from 'eslint';
 import { promptToInputDisplayMode } from '../cli/prompt';
-import { ESLintDecorator } from '../eslint-decorator';
+import { Core } from '../core';
 
-export async function doDisplayMessagesAction(
-  eslint: ESLintDecorator,
+export async function doPrintDetailsOfResultsAction(
+  core: Core,
   results: ESLint.LintResult[],
   selectedRuleIds: string[],
 ) {
   const displayMode = await promptToInputDisplayMode();
-  await eslint.printProblemDetails(displayMode, results, selectedRuleIds);
+  await core.printDetailsOfResults(results, selectedRuleIds, displayMode);
 }

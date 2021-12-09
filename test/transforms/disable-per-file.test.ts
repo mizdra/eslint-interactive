@@ -1,13 +1,13 @@
-import { createTransformToAddDisableCommentPerFile } from '../../src/transforms/add-disable-comment-per-file';
+import { createTransformToDisablePerFile } from '../../src/transforms/disable-per-file';
 import { TransformTester } from '../test-util/transform-tester';
 
 const tester = new TransformTester(
-  createTransformToAddDisableCommentPerFile,
+  createTransformToDisablePerFile,
   {},
   { parserOptions: { ecmaVersion: 2020, ecmaFeatures: { jsx: true } } },
 );
 
-describe('add-disable-comment-per-file', () => {
+describe('disable-per-file', () => {
   test('basic', () => {
     expect(
       tester.test({

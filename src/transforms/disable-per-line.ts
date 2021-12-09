@@ -5,7 +5,7 @@ import { groupBy, unique } from '../util/array';
 import { DisableComment, mergeRuleIdsAndDescription, parseDisableComment, toCommentText } from '../util/eslint';
 import { notEmpty } from '../util/type-check';
 
-export type TransformToAddDisableCommentPerLineArgs = {
+export type TransformToDisablePerLineArgs = {
   description?: string;
 };
 
@@ -60,9 +60,9 @@ function generateFixPerLine(
 /**
  * Create transform to add disable comment per line.
  */
-export function createTransformToAddDisableCommentPerLine(
+export function createTransformToDisablePerLine(
   context: TransformContext,
-  args: TransformToAddDisableCommentPerLineArgs,
+  args: TransformToDisablePerLineArgs,
 ): Rule.Fix[] {
   const lineToMessages = groupBy(context.messages, (message) => message.line);
   const fixes = [];

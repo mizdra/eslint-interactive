@@ -12,7 +12,7 @@ import { filterResultsByRuleId, scanUsedPluginsFromResults } from './util/eslint
  * The core of eslint-interactive.
  * It uses ESLint's Node.js API to output a summary of problems, fix problems, apply suggestions, etc.
  */
-export class ESLintDecorator {
+export class Core {
   readonly config: Config;
 
   constructor(config: Config) {
@@ -40,10 +40,10 @@ export class ESLintDecorator {
   }
 
   /**
-   * Print summary of problems.
+   * Print summary of lint results.
    * @param results The lint results of the project to print summary
    */
-  printProblemSummary(results: ESLint.LintResult[]): void {
+  printSummaryOfResults(results: ESLint.LintResult[]): void {
     // get used plugins from `results`
     const plugins = scanUsedPluginsFromResults(results);
 
@@ -61,15 +61,15 @@ export class ESLintDecorator {
   }
 
   /**
-   * Print details of problems.
+   * Print details of lint results.
    * @param displayMode How to display a problem
    * @param results The lint results of the project to print summary
    * @param ruleIds The rule ids to print details
    */
-  async printProblemDetails(
-    displayMode: DisplayMode,
+  async printDetailsOfResults(
     results: ESLint.LintResult[],
     ruleIds: (string | null)[],
+    displayMode: DisplayMode,
   ): Promise<void> {
     const eslint = new ESLint(this.baseOptions);
     const formatter = await eslint.loadFormatter(this.config.formatterName);
@@ -82,10 +82,10 @@ export class ESLintDecorator {
   }
 
   /**
-   * Fix problems.
-   * @param ruleIds The rule ids to fix problems
+   * Run `eslint --fix`.
+   * @param ruleIds The rule ids to fix
    */
-  async fixProblems(ruleIds: string[]): Promise<void> {
+  async fix(ruleIds: string[]): Promise<void> {
     const eslint = new ESLint({
       ...this.baseOptions,
       fix: (message) => message.ruleId !== null && ruleIds.includes(message.ruleId),
@@ -100,7 +100,7 @@ export class ESLintDecorator {
    * @param ruleIds The rule ids to add disable comments
    * @param description The description of the disable comments
    */
-  async addDisableComments(results: ESLint.LintResult[], ruleIds: string[], description?: string): Promise<void> {
+  async disablePerLine(results: ESLint.LintResult[], ruleIds: string[], description?: string): Promise<void> {
     await this.transform(results, ruleIds, { name: 'disablePerLine', args: { description } });
   }
 
@@ -110,11 +110,7 @@ export class ESLintDecorator {
    * @param ruleIds The rule ids to add disable comments
    * @param description The description of the disable comments
    */
-  async addDisableCommentsPerFile(
-    results: ESLint.LintResult[],
-    ruleIds: string[],
-    description?: string,
-  ): Promise<void> {
+  async disablePerFile(results: ESLint.LintResult[], ruleIds: string[], description?: string): Promise<void> {
     await this.transform(results, ruleIds, { name: 'disablePerFile', args: { description } });
   }
 
