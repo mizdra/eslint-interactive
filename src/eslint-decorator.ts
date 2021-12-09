@@ -82,10 +82,10 @@ export class ESLintDecorator {
   }
 
   /**
-   * Fix problems.
-   * @param ruleIds The rule ids to fix problems
+   * Run `eslint --fix`.
+   * @param ruleIds The rule ids to fix
    */
-  async fixProblems(ruleIds: string[]): Promise<void> {
+  async fix(ruleIds: string[]): Promise<void> {
     const eslint = new ESLint({
       ...this.baseOptions,
       fix: (message) => message.ruleId !== null && ruleIds.includes(message.ruleId),
