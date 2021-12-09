@@ -7,24 +7,21 @@ export type SuggestionFilter = (
 ) => Linter.LintSuggestion | null | undefined;
 
 export type TransformToApplySuggestionsArgs = {
-  suggestionFilter: SuggestionFilter;
+  filter: SuggestionFilter;
 };
 
-function getApplicableSuggestion(
-  message: Linter.LintMessage,
-  suggestionFilter: SuggestionFilter,
-): Linter.LintSuggestion | null {
+function getApplicableSuggestion(message: Linter.LintMessage, filter: SuggestionFilter): Linter.LintSuggestion | null {
   if (!message.suggestions || message.suggestions.length === 0) return null;
-  const suggestion = suggestionFilter(message.suggestions, message);
+  const suggestion = filter(message.suggestions, message);
   return suggestion ?? null;
 }
 
 function generateFixPerMessage(
   _context: TransformContext,
-  suggestionFilter: SuggestionFilter,
+  filter: SuggestionFilter,
   message: Linter.LintMessage,
 ): Rule.Fix | null {
-  const suggestion = getApplicableSuggestion(message, suggestionFilter);
+  const suggestion = getApplicableSuggestion(message, filter);
   if (!suggestion) return null;
   return suggestion.fix;
 }
@@ -38,7 +35,7 @@ export function createTransformToApplySuggestions(
 ): Rule.Fix[] {
   const fixes = [];
   for (const message of context.messages) {
-    const fix = generateFixPerMessage(context, args.suggestionFilter, message);
+    const fix = generateFixPerMessage(context, args.filter, message);
     if (fix) fixes.push(fix);
   }
   return fixes;
