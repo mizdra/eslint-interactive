@@ -8,5 +8,5 @@ export async function doPrintDetailsOfResultsAction(
   selectedRuleIds: string[],
 ) {
   const displayMode = await promptToInputDisplayMode();
-  await eslint.printDetailsOfResults(displayMode, results, selectedRuleIds);
+  await eslint.printDetailsOfResults(results, selectedRuleIds, displayMode);
 }

@@ -67,9 +67,9 @@ export class ESLintDecorator {
    * @param ruleIds The rule ids to print details
    */
   async printDetailsOfResults(
-    displayMode: DisplayMode,
     results: ESLint.LintResult[],
     ruleIds: (string | null)[],
+    displayMode: DisplayMode,
   ): Promise<void> {
     const eslint = new ESLint(this.baseOptions);
     const formatter = await eslint.loadFormatter(this.config.formatterName);

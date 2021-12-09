@@ -35,7 +35,7 @@ export async function lint(eslint: ESLintDecorator): Promise<NextScene> {
         'The problems cannot be fixed by eslint-interactive. Check the details of the problems below and fix them.\n',
       ),
     );
-    await eslint.printDetailsOfResults('withoutPager', results, [null]);
+    await eslint.printDetailsOfResults(results, [null], 'withoutPager');
     console.log(chalk.bold.redBright('<<<<<<<<<< WARNING END\n'));
   }
   return { name: 'selectRuleIds', args: { results, ruleIdsInResults } };
