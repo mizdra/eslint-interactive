@@ -2,8 +2,8 @@ import { ESLint } from 'eslint';
 import { doApplySuggestionsAction } from '../actions/apply-suggestions';
 import { doDisablePerFileAction } from '../actions/disable-per-file';
 import { doDisablePerLineAction } from '../actions/disable-per-line';
-import { doDisplayMessagesAction } from '../actions/display-messages';
 import { doFixAction } from '../actions/fix';
+import { doPrintDetailsOfResultsAction } from '../actions/print-details-of-results';
 import { promptToInputAction } from '../cli/prompt';
 import { ESLintDecorator } from '../eslint-decorator';
 import { NextScene } from '../types';
@@ -29,8 +29,8 @@ export async function selectAction(
 
   if (action === 'reselectRules') return { name: 'selectRuleIds', args: { results, ruleIdsInResults } };
 
-  if (action === 'displayMessages') {
-    await doDisplayMessagesAction(eslint, results, selectedRuleIds);
+  if (action === 'printDetailsOfResults') {
+    await doPrintDetailsOfResultsAction(eslint, results, selectedRuleIds);
     return { name: 'selectAction', args: { results, ruleIdsInResults, selectedRuleIds } };
   } else if (action === 'fix') {
     await doFixAction(eslint, selectedRuleIds);

@@ -9,7 +9,7 @@ import { TransformToDisablePerLineArgs } from './transforms/disable-per-line';
  * The type that indicates what to do with the problems of selected rules.
  */
 export type Action =
-  | 'displayMessages'
+  | 'printDetailsOfResults'
   | 'fix'
   | 'disablePerLine'
   | 'disablePerFile'
@@ -42,7 +42,7 @@ export type RuleStatistic = {
  * Indicates which scene to jump to next.
  */
 export type NextScene =
-  | { name: 'showLintResults' }
+  | { name: 'lint' }
   | { name: 'selectRuleIds'; args: SelectRuleIdsArgs }
   | { name: 'selectAction'; args: SelectActionArgs }
   | { name: 'selectToContinue' }

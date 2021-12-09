@@ -40,10 +40,10 @@ export class ESLintDecorator {
   }
 
   /**
-   * Print summary of problems.
+   * Print summary of lint results.
    * @param results The lint results of the project to print summary
    */
-  printProblemSummary(results: ESLint.LintResult[]): void {
+  printSummaryOfResults(results: ESLint.LintResult[]): void {
     // get used plugins from `results`
     const plugins = scanUsedPluginsFromResults(results);
 
@@ -61,12 +61,12 @@ export class ESLintDecorator {
   }
 
   /**
-   * Print details of problems.
+   * Print details of lint results.
    * @param displayMode How to display a problem
    * @param results The lint results of the project to print summary
    * @param ruleIds The rule ids to print details
    */
-  async printProblemDetails(
+  async printDetailsOfResults(
     displayMode: DisplayMode,
     results: ESLint.LintResult[],
     ruleIds: (string | null)[],

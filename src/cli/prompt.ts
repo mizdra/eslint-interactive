@@ -33,7 +33,7 @@ export async function promptToInputAction(): Promise<Action> {
       type: 'select',
       message: 'Which action do you want to do?',
       choices: [
-        { name: 'displayMessages', message: 'Display problem messages' },
+        { name: 'printDetailsOfResults', message: 'Display problem messages' },
         { name: 'fix', message: 'Fix problems' },
         { name: 'disablePerLine', message: 'Disable problems per line' },
         { name: 'disablePerFile', message: 'Disable problems per file' },
