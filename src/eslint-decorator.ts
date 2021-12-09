@@ -119,6 +119,17 @@ export class ESLintDecorator {
   }
 
   /**
+   * Apply suggestions.
+   * @param results The lint results of the project to apply suggestions
+   * @param ruleIds The rule ids to apply suggestions
+   * @param filterScript The script to filter suggestions
+   * */
+  async applySuggestions(results: ESLint.LintResult[], ruleIds: string[], filterScript: string): Promise<void> {
+    const filter = eval(filterScript) as SuggestionFilter;
+    await this.transform(results, ruleIds, { name: 'applySuggestions', args: { filter } });
+  }
+
+  /**
    * Transform source codes.
    * @param transform The transform information to do.
    */
@@ -136,16 +147,5 @@ export class ESLintDecorator {
     });
     const newResults = await eslint.lintFiles(this.config.patterns);
     await ESLint.outputFixes(newResults);
-  }
-
-  /**
-   * Apply suggestions.
-   * @param results The lint results of the project to apply suggestions
-   * @param ruleIds The rule ids to apply suggestions
-   * @param filterScript The script to filter suggestions
-   * */
-  async applySuggestions(results: ESLint.LintResult[], ruleIds: string[], filterScript: string): Promise<void> {
-    const filter = eval(filterScript) as SuggestionFilter;
-    await this.transform(results, ruleIds, { name: 'applySuggestions', args: { filter } });
   }
 }
