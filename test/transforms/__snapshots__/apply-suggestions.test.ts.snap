@@ -1,0 +1,80 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`apply-suggestions filter には suggestions, message が渡ってくる 1`] = `
+"'{
+  \\"suggestions\\": [
+    {
+      \\"desc\\": \\"Use \`val += 1\` instead.\\",
+      \\"fix\\": {
+        \\"range\\": [
+          0,
+          9
+        ],
+        \\"text\\": \\"a += 1\\"
+      }
+    },
+    {
+      \\"desc\\": \\"Use \`val++\` instead.\\",
+      \\"fix\\": {
+        \\"range\\": [
+          0,
+          9
+        ],
+        \\"text\\": \\"a++\\"
+      }
+    },
+    {
+      \\"desc\\": \\"Use \`++val\` instead.\\",
+      \\"fix\\": {
+        \\"range\\": [
+          0,
+          9
+        ],
+        \\"text\\": \\"++a\\"
+      }
+    }
+  ],
+  \\"message\\": {
+    \\"ruleId\\": \\"prefer-addition-shorthand\\",
+    \\"severity\\": 2,
+    \\"message\\": \\"The addition method is redundant.\\",
+    \\"line\\": 1,
+    \\"column\\": 1,
+    \\"nodeType\\": \\"AssignmentExpression\\",
+    \\"endLine\\": 1,
+    \\"endColumn\\": 10,
+    \\"suggestions\\": [
+      {
+        \\"desc\\": \\"Use \`val += 1\` instead.\\",
+        \\"fix\\": {
+          \\"range\\": [
+            0,
+            9
+          ],
+          \\"text\\": \\"a += 1\\"
+        }
+      },
+      {
+        \\"desc\\": \\"Use \`val++\` instead.\\",
+        \\"fix\\": {
+          \\"range\\": [
+            0,
+            9
+          ],
+          \\"text\\": \\"a++\\"
+        }
+      },
+      {
+        \\"desc\\": \\"Use \`++val\` instead.\\",
+        \\"fix\\": {
+          \\"range\\": [
+            0,
+            9
+          ],
+          \\"text\\": \\"++a\\"
+        }
+      }
+    ]
+  }
+}';"
+`;
