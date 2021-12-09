@@ -122,7 +122,7 @@ export class ESLintDecorator {
    * Apply suggestions.
    * @param results The lint results of the project to apply suggestions
    * @param ruleIds The rule ids to apply suggestions
-   * @param filterScript The script to filter suggestions
+   * @param filter The script to filter suggestions
    * */
   async applySuggestions(results: ESLint.LintResult[], ruleIds: string[], filter: SuggestionFilter): Promise<void> {
     await this.transform(results, ruleIds, { name: 'applySuggestions', args: { filter } });
