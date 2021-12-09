@@ -22,7 +22,10 @@ module.exports = {
       parserOptions: {
         project: ['./tsconfig.src.json', './tsconfig.test.json'],
       },
-      rules: {},
+      rules: {
+        // ts-ignore は覚悟のある時にしか使わないので、いちいち lint error にする必要もない
+        '@typescript-eslint/ban-ts-comment': 'off',
+      },
     },
     // for test
     {

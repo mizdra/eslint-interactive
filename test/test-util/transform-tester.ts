@@ -1,11 +1,13 @@
 import { Linter } from 'eslint';
-import rule from '../../src/rules/apply-fixes';
 import { TransformContext, TransformFunction } from '../../src/types';
+import applyFixesRule from './rules/apply-fixes';
+import preferAdditionShorthand from './rules/prefer-addition-shorthand';
 
 const DEFAULT_FILENAME = 'test.js';
 
 const linter = new Linter();
-linter.defineRule('apply-fixes', rule);
+linter.defineRule('apply-fixes', applyFixesRule);
+linter.defineRule('prefer-addition-shorthand', preferAdditionShorthand);
 
 /**
  * The type representing the test case.
