@@ -11,7 +11,7 @@ import {
 } from '../util/eslint';
 import { notEmpty } from '../util/type-check';
 
-export type TransformToAddDisableCommentPerFileArgs = {
+export type TransformToDisablePerFileArgs = {
   description?: string;
 };
 
@@ -47,9 +47,9 @@ function generateFix(context: TransformContext, description?: string): Rule.Fix 
 /**
  * Create transform to add disable comment per file.
  */
-export function createTransformToAddDisableCommentPerFile(
+export function createTransformToDisablePerFile(
   context: TransformContext,
-  args: TransformToAddDisableCommentPerFileArgs,
+  args: TransformToDisablePerFileArgs,
 ): Rule.Fix[] {
   const fix = generateFix(context, args.description);
   return fix ? [fix] : [];

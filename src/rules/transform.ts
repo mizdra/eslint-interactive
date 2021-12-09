@@ -1,7 +1,7 @@
 import { ESLint, Rule } from 'eslint';
-import { createTransformToAddDisableCommentPerFile } from '../transforms/add-disable-comment-per-file';
 import { createTransformToAddDisableCommentPerLine } from '../transforms/add-disable-comment-per-line';
 import { createTransformToApplySuggestions } from '../transforms/apply-suggestions';
+import { createTransformToDisablePerFile } from '../transforms/disable-per-file';
 import { Transform, TransformContext } from '../types';
 
 /**
@@ -62,7 +62,7 @@ const rule: Rule.RuleModule = {
     if (transform.name === 'disablePerLine') {
       fixes = createTransformToAddDisableCommentPerLine(transformContext, transform.args);
     } else if (transform.name === 'disablePerFile') {
-      fixes = createTransformToAddDisableCommentPerFile(transformContext, transform.args);
+      fixes = createTransformToDisablePerFile(transformContext, transform.args);
     } else if (transform.name === 'applySuggestions') {
       fixes = createTransformToApplySuggestions(transformContext, transform.args);
     } else {

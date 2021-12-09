@@ -11,6 +11,6 @@ export async function doDisablePerFileAction(
 ) {
   const description = await promptToInputDescription();
   const fixingSpinner = ora('Disabling...').start();
-  await eslint.addDisableCommentsPerFile(results, selectedRuleIds, description);
+  await eslint.disablePerFile(results, selectedRuleIds, description);
   fixingSpinner.succeed(chalk.bold('Disabling was successful.'));
 }

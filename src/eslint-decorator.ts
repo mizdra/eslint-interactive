@@ -110,11 +110,7 @@ export class ESLintDecorator {
    * @param ruleIds The rule ids to add disable comments
    * @param description The description of the disable comments
    */
-  async addDisableCommentsPerFile(
-    results: ESLint.LintResult[],
-    ruleIds: string[],
-    description?: string,
-  ): Promise<void> {
+  async disablePerFile(results: ESLint.LintResult[], ruleIds: string[], description?: string): Promise<void> {
     await this.transform(results, ruleIds, { name: 'disablePerFile', args: { description } });
   }
 
