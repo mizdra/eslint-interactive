@@ -25,12 +25,14 @@ function fixableMaker(message, node) {
   if (!node) return null;
   if (!node.range) return null;
 
-  if (message.ruleId === 'no-unused-vars') {
+  if (message.ruleId === 'no-unused-vars' || message.ruleId === '@typescript-eslint/no-unused-vars') {
+    // Add underscores to the head of unused variable names.
+    // target codes: https://astexplorer.net/#/gist/e33d44d2e69a733766abbc9706fd3ed5/169a615afba7b0d5c88e87894db93fc7346250d2
+
     if (node.type !== 'Identifier') return null;
-    // Add underscores to unused variables
     return {
-      range: node.range,
-      text: '_' + node.name,
+      range: [node.range[0], node.range[0]],
+      text: '_',
     };
   } else {
     return null;
