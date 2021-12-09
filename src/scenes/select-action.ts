@@ -41,7 +41,7 @@ export async function selectAction(
   } else if (action === 'disablePerFile') {
     await doDisablePerFileAction(eslint, results, selectedRuleIds);
     return { name: 'selectToContinue' };
-  } else if (action === 'ApplySuggestions') {
+  } else if (action === 'applySuggestions') {
     await doApplySuggestionsAction(eslint, results, selectedRuleIds);
     return { name: 'selectToContinue' };
   }

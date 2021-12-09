@@ -37,7 +37,7 @@ export async function promptToInputAction(): Promise<Action> {
         { name: 'fix', message: 'Fix problems' },
         { name: 'disablePerLine', message: 'Disable problems per line' },
         { name: 'disablePerFile', message: 'Disable problems per file' },
-        { name: 'ApplySuggestions', message: 'Apply suggestion (experimental, only for experts)' },
+        { name: 'applySuggestions', message: 'Apply suggestion (experimental, only for experts)' },
         { name: 'reselectRules', message: 'Reselect rules' },
       ],
     },
