@@ -1,6 +1,6 @@
 import { Linter } from 'eslint';
-import rule from '../../src/rules/apply-fixes';
 import { TransformContext, TransformFunction } from '../../src/types';
+import rule from './rules/apply-fixes';
 
 const DEFAULT_FILENAME = 'test.js';
 
