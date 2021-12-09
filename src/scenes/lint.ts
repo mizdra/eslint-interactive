@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 import ora from 'ora';
-import { ESLintDecorator } from '../eslint-decorator';
+import { Core } from '../core';
 import { NextScene } from '../types';
 import { unique } from '../util/array';
 import { notEmpty } from '../util/type-check';
@@ -8,9 +8,9 @@ import { notEmpty } from '../util/type-check';
 /**
  * Run the scene to lint.
  */
-export async function lint(eslint: ESLintDecorator): Promise<NextScene> {
+export async function lint(core: Core): Promise<NextScene> {
   const lintingSpinner = ora('Linting...').start();
-  const results = await eslint.lint();
+  const results = await core.lint();
   const ruleIdsInResults = unique(
     results
       .flatMap((result) => result.messages)
@@ -24,7 +24,7 @@ export async function lint(eslint: ESLintDecorator): Promise<NextScene> {
   }
   lintingSpinner.succeed(chalk.bold('Found errors.'));
   console.log();
-  eslint.printSummaryOfResults(results);
+  core.printSummaryOfResults(results);
 
   const hasESLintCoreProblems = results.flatMap((result) => result.messages).some((message) => message.ruleId === null);
   if (hasESLintCoreProblems) {
@@ -35,7 +35,7 @@ export async function lint(eslint: ESLintDecorator): Promise<NextScene> {
         'The problems cannot be fixed by eslint-interactive. Check the details of the problems below and fix them.\n',
       ),
     );
-    await eslint.printDetailsOfResults(results, [null], 'withoutPager');
+    await core.printDetailsOfResults(results, [null], 'withoutPager');
     console.log(chalk.bold.redBright('<<<<<<<<<< WARNING END\n'));
   }
   return { name: 'selectRuleIds', args: { results, ruleIdsInResults } };

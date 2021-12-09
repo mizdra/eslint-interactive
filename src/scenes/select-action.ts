@@ -5,7 +5,7 @@ import { doDisablePerLineAction } from '../actions/disable-per-line';
 import { doFixAction } from '../actions/fix';
 import { doPrintDetailsOfResultsAction } from '../actions/print-details-of-results';
 import { promptToInputAction } from '../cli/prompt';
-import { ESLintDecorator } from '../eslint-decorator';
+import { Core } from '../core';
 import { NextScene } from '../types';
 import { unreachable } from '../util/type-check';
 
@@ -22,7 +22,7 @@ export type SelectActionArgs = {
  * Run the scene where a user select the action to be performed for the problems of selected rules.
  */
 export async function selectAction(
-  eslint: ESLintDecorator,
+  core: Core,
   { results, ruleIdsInResults, selectedRuleIds }: SelectActionArgs,
 ): Promise<NextScene> {
   const action = await promptToInputAction();
@@ -30,19 +30,19 @@ export async function selectAction(
   if (action === 'reselectRules') return { name: 'selectRuleIds', args: { results, ruleIdsInResults } };
 
   if (action === 'printDetailsOfResults') {
-    await doPrintDetailsOfResultsAction(eslint, results, selectedRuleIds);
+    await doPrintDetailsOfResultsAction(core, results, selectedRuleIds);
     return { name: 'selectAction', args: { results, ruleIdsInResults, selectedRuleIds } };
   } else if (action === 'fix') {
-    await doFixAction(eslint, selectedRuleIds);
+    await doFixAction(core, selectedRuleIds);
     return { name: 'selectToContinue' };
   } else if (action === 'disablePerLine') {
-    await doDisablePerLineAction(eslint, results, selectedRuleIds);
+    await doDisablePerLineAction(core, results, selectedRuleIds);
     return { name: 'selectToContinue' };
   } else if (action === 'disablePerFile') {
-    await doDisablePerFileAction(eslint, results, selectedRuleIds);
+    await doDisablePerFileAction(core, results, selectedRuleIds);
     return { name: 'selectToContinue' };
   } else if (action === 'applySuggestions') {
-    await doApplySuggestionsAction(eslint, results, selectedRuleIds);
+    await doApplySuggestionsAction(core, results, selectedRuleIds);
     return { name: 'selectToContinue' };
   }
   return unreachable();

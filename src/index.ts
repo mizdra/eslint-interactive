@@ -1,5 +1,5 @@
 import { parseArgv } from './cli/parse-argv';
-import { ESLintDecorator } from './eslint-decorator';
+import { Core } from './core';
 import { lint } from './scenes/lint';
 import { selectAction } from './scenes/select-action';
 import { selectRuleIds } from './scenes/select-rule-ids';
@@ -15,16 +15,16 @@ export type Options = {
  */
 export async function run(options: Options) {
   const config = parseArgv(options.argv);
-  const eslint = new ESLintDecorator(config);
+  const core = new Core(config);
 
   let nextScene: NextScene = { name: 'lint' };
   while (nextScene.name !== 'exit') {
     if (nextScene.name === 'lint') {
-      nextScene = await lint(eslint);
+      nextScene = await lint(core);
     } else if (nextScene.name === 'selectRuleIds') {
-      nextScene = await selectRuleIds(eslint, nextScene.args);
+      nextScene = await selectRuleIds(core, nextScene.args);
     } else if (nextScene.name === 'selectAction') {
-      nextScene = await selectAction(eslint, nextScene.args);
+      nextScene = await selectAction(core, nextScene.args);
     } else if (nextScene.name === 'selectToContinue') {
       nextScene = await selectToContinue();
     }
