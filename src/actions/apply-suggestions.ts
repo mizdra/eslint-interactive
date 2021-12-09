@@ -5,6 +5,7 @@ import { ESLint } from 'eslint';
 import ora from 'ora';
 import { promptToInputReuseFilterScript } from '../cli/prompt';
 import { ESLintDecorator } from '../eslint-decorator';
+import { SuggestionFilter } from '../transforms/apply-suggestions';
 import {
   editFileWithEditor,
   generateExampleFilterScriptFilePath,
@@ -32,8 +33,10 @@ export async function doApplySuggestionsAction(
     await writeFile(filterScriptFilePath, exampleScript);
   }
   console.log('Opening editor...');
+
   const filterScript = await editFileWithEditor(filterScriptFilePath);
+  const filter = eval(filterScript) as SuggestionFilter;
   const fixingSpinner = ora('Applying suggestion...').start();
-  await eslint.applySuggestions(results, selectedRuleIds, filterScript);
+  await eslint.applySuggestions(results, selectedRuleIds, filter);
   fixingSpinner.succeed(chalk.bold('Applying suggestion was successful.'));
 }

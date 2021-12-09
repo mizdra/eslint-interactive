@@ -124,8 +124,7 @@ export class ESLintDecorator {
    * @param ruleIds The rule ids to apply suggestions
    * @param filterScript The script to filter suggestions
    * */
-  async applySuggestions(results: ESLint.LintResult[], ruleIds: string[], filterScript: string): Promise<void> {
-    const filter = eval(filterScript) as SuggestionFilter;
+  async applySuggestions(results: ESLint.LintResult[], ruleIds: string[], filter: SuggestionFilter): Promise<void> {
     await this.transform(results, ruleIds, { name: 'applySuggestions', args: { filter } });
   }
 
