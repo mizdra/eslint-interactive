@@ -1,6 +1,7 @@
 import { ESLint, Rule } from 'eslint';
 import { createTransformToAddDisableCommentPerFile } from '../transforms/add-disable-comment-per-file';
 import { createTransformToAddDisableCommentPerLine } from '../transforms/add-disable-comment-per-line';
+import { createTransformToApplySuggestions } from '../transforms/apply-suggestions';
 import { Transform, TransformContext } from '../types';
 
 /**
@@ -62,6 +63,8 @@ const rule: Rule.RuleModule = {
       fixes = createTransformToAddDisableCommentPerLine(transformContext, transform.args);
     } else if (transform.name === 'disablePerFile') {
       fixes = createTransformToAddDisableCommentPerFile(transformContext, transform.args);
+    } else if (transform.name === 'applySuggestions') {
+      fixes = createTransformToApplySuggestions(transformContext, transform.args);
     } else {
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions, @typescript-eslint/no-explicit-any
       throw new Error(`Unknown transform: ${(transform as any).name}`);

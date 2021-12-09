@@ -3,6 +3,7 @@ import { SelectActionArgs } from './scenes/select-action';
 import { SelectRuleIdsArgs } from './scenes/select-rule-ids';
 import { TransformToAddDisableCommentPerFileArgs } from './transforms/add-disable-comment-per-file';
 import { TransformToAddDisableCommentPerLineArgs } from './transforms/add-disable-comment-per-line';
+import { TransformToApplySuggestionsArgs } from './transforms/apply-suggestions';
 
 /**
  * The type that indicates what to do with the problems of selected rules.
@@ -54,7 +55,8 @@ export type Config = {
  */
 export type Transform =
   | { name: 'disablePerLine'; args: TransformToAddDisableCommentPerLineArgs }
-  | { name: 'disablePerFile'; args: TransformToAddDisableCommentPerFileArgs };
+  | { name: 'disablePerFile'; args: TransformToAddDisableCommentPerFileArgs }
+  | { name: 'applySuggestions'; args: TransformToApplySuggestionsArgs };
 
 /**
  * The type representing the additional information for the transform.
