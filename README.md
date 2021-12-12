@@ -33,18 +33,22 @@ Also, You can perform the following actions for each rule:
 ## Installation
 
 ```console
-$ npm i -g eslint @mizdra/eslint-interactive
-$ eslint-interactive --help
+$ # For npm
+$ npm i -D @mizdra/eslint-interactive
+$ npx eslint-interactive --help
 
-$ # or npx
-$ npx -p eslint -p @mizdra/eslint-interactive eslint-interactive --help
+$ # For yarn
+$ yarn add @mizdra/eslint-interactive
+$ yarn eslint-interactive --help
 ```
+
+NOTE: The globally installed eslint-interactive is not officially supported because some features do not work. It is recommended to install eslint-interactive locally. See [#77](https://github.com/mizdra/eslint-interactive/issues/77).
 
 ## Usage
 
 ```console
 $ # Show help
-$ eslint-interactive --help
+$ npx eslint-interactive --help
 eslint-interactive [file.js] [dir]
 
 Options:
@@ -57,11 +61,11 @@ Options:
 
 
 $ # Examples
-$ eslint-interactive ./src
-$ eslint-interactive ./src ./test
-$ eslint-interactive './src/**/*.{ts,tsx,vue}'
-$ eslint-interactive ./src --ext .ts,.tsx,.vue
-$ eslint-interactive ./src --rulesdir ./rules
+$ npx eslint-interactive ./src
+$ npx eslint-interactive ./src ./test
+$ npx eslint-interactive './src/**/*.{ts,tsx,vue}'
+$ npx eslint-interactive ./src --ext .ts,.tsx,.vue
+$ npx eslint-interactive ./src --rulesdir ./rules
 ```
 
 ## Differences from related works
