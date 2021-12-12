@@ -6,5 +6,6 @@
   },
   "eslint.options": {
     "rulePaths": ["fixtures/rules"]
-  }
+  },
+  "jest.jestCommandLine": "yarn run test"
 }
