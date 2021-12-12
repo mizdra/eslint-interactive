@@ -44,7 +44,7 @@
     "typescript": "^4.1.2"
   },
   "dependencies": {
-    "cli-table": "^0.3.9",
+    "cli-table": "^0.3.11",
     "enquirer": "^2.3.6",
     "eslint-formatter-codeframe": "^7.32.1",
     "is-installed-globally": "^0.4.0",
