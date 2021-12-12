@@ -6,5 +6,12 @@
   },
   "eslint.options": {
     "rulePaths": ["fixtures/rules"]
-  }
+  },
+  "jest.jestCommandLine": "yarn run test",
+  // VSCode の起動時に自動で jest のテストを走らせないように。
+  // VSCode 起動時は色々な拡張機能の初期化処理が走っているので、
+  // あまりカジュアルに起動時に処理を実行したくない、という狙いがある。
+  // *.ts ファイルが変更されたら jest のテストが自動実行がされる点は変わらないので、
+  // これで開発体験が損なわれることはないはず。
+  "jest.autoRun": { "watch": true }
 }
