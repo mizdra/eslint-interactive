@@ -2,11 +2,11 @@ import { tmpdir } from 'os';
 import { join } from 'path';
 import { ESLint } from 'eslint';
 import pager from 'node-pager';
-import { format } from './formatter';
-import { TransformRuleOption } from './rules/transform';
-import { SuggestionFilter } from './transforms/apply-suggestions';
-import { Config, DisplayMode, Transform } from './types';
-import { filterResultsByRuleId, scanUsedPluginsFromResults } from './util/eslint';
+import { format } from './formatter/index.js';
+import { TransformRuleOption } from './rules/transform.js';
+import { SuggestionFilter } from './transforms/apply-suggestions.js';
+import { Config, DisplayMode, Transform } from './types.js';
+import { filterResultsByRuleId, scanUsedPluginsFromResults } from './util/eslint.js';
 
 /**
  * The core of eslint-interactive.

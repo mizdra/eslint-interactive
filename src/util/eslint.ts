@@ -1,7 +1,7 @@
 import { AST, ESLint } from 'eslint';
 import type { Comment } from 'estree';
-import { unique } from './array';
-import { notEmpty } from './type-check';
+import { unique } from './array.js';
+import { notEmpty } from './type-check.js';
 
 const COMMENT_RE =
   /^\s*(?<header>eslint-disable|eslint-disable-next-line)\s+(?<ruleList>[@a-z0-9\-_$/]*(?:\s*,\s*[@a-z0-9\-_$/]*)*(?:\s*,)?)(?:\s+--\s+(?<description>.*\S))?\s*$/u;

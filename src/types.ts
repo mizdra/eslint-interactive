@@ -1,9 +1,9 @@
 import { Linter, Rule, SourceCode } from 'eslint';
-import { SelectActionArgs } from './scenes/select-action';
-import { SelectRuleIdsArgs } from './scenes/select-rule-ids';
-import { TransformToApplySuggestionsArgs } from './transforms/apply-suggestions';
-import { TransformToDisablePerFileArgs } from './transforms/disable-per-file';
-import { TransformToDisablePerLineArgs } from './transforms/disable-per-line';
+import { SelectActionArgs } from './scenes/select-action.js';
+import { SelectRuleIdsArgs } from './scenes/select-rule-ids.js';
+import { TransformToApplySuggestionsArgs } from './transforms/apply-suggestions.js';
+import { TransformToDisablePerFileArgs } from './transforms/disable-per-file.js';
+import { TransformToDisablePerLineArgs } from './transforms/disable-per-line.js';
 
 /**
  * The type that indicates what to do with the problems of selected rules.

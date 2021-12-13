@@ -1,4 +1,4 @@
-import { notEmpty } from '../../src/util/type-check';
+import { notEmpty } from '../../src/util/type-check.js';
 
 test('notEmpty', () => {
   expect(notEmpty('')).toStrictEqual(true);

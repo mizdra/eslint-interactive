@@ -1,13 +1,13 @@
 import { ESLint } from 'eslint';
-import { doApplySuggestionsAction } from '../actions/apply-suggestions';
-import { doDisablePerFileAction } from '../actions/disable-per-file';
-import { doDisablePerLineAction } from '../actions/disable-per-line';
-import { doFixAction } from '../actions/fix';
-import { doPrintDetailsOfResultsAction } from '../actions/print-details-of-results';
-import { promptToInputAction } from '../cli/prompt';
-import { Core } from '../core';
-import { NextScene } from '../types';
-import { unreachable } from '../util/type-check';
+import { doApplySuggestionsAction } from '../actions/apply-suggestions.js';
+import { doDisablePerFileAction } from '../actions/disable-per-file.js';
+import { doDisablePerLineAction } from '../actions/disable-per-line.js';
+import { doFixAction } from '../actions/fix.js';
+import { doPrintDetailsOfResultsAction } from '../actions/print-details-of-results.js';
+import { promptToInputAction } from '../cli/prompt.js';
+import { Core } from '../core.js';
+import { NextScene } from '../types.js';
+import { unreachable } from '../util/type-check.js';
 
 export type SelectActionArgs = {
   /** The lint results of the project */

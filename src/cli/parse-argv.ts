@@ -1,5 +1,5 @@
 import yargs from 'yargs';
-import { Config } from '../types';
+import { Config } from '../types.js';
 
 /** Parse argv into the config object of eslint-interactive */
 export function parseArgv(argv: string[]): Config {

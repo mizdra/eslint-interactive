@@ -3,14 +3,14 @@ import { dirname } from 'path';
 import chalk from 'chalk';
 import { ESLint } from 'eslint';
 import ora from 'ora';
-import { promptToInputReuseFilterScript } from '../cli/prompt';
-import { Core } from '../core';
-import { SuggestionFilter } from '../transforms/apply-suggestions';
+import { promptToInputReuseFilterScript } from '../cli/prompt.js';
+import { Core } from '../core.js';
+import { SuggestionFilter } from '../transforms/apply-suggestions.js';
 import {
   editFileWithEditor,
   generateExampleFilterScriptFilePath,
   generateFilterScriptFilePath,
-} from '../util/filter-script';
+} from '../util/filter-script.js';
 
 export async function doApplySuggestionsAction(
   core: Core,

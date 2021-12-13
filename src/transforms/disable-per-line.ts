@@ -1,9 +1,9 @@
 import { Linter, Rule } from 'eslint';
 import type { Comment } from 'estree';
-import { TransformContext } from '../types';
-import { groupBy, unique } from '../util/array';
-import { DisableComment, mergeRuleIdsAndDescription, parseDisableComment, toCommentText } from '../util/eslint';
-import { notEmpty } from '../util/type-check';
+import { TransformContext } from '../types.js';
+import { groupBy, unique } from '../util/array.js';
+import { DisableComment, mergeRuleIdsAndDescription, parseDisableComment, toCommentText } from '../util/eslint.js';
+import { notEmpty } from '../util/type-check.js';
 
 export type TransformToDisablePerLineArgs = {
   description?: string;

@@ -1,12 +1,12 @@
 import chalk from 'chalk';
 import isInstalledGlobally from 'is-installed-globally';
-import { parseArgv } from './cli/parse-argv';
-import { Core } from './core';
-import { lint } from './scenes/lint';
-import { selectAction } from './scenes/select-action';
-import { selectRuleIds } from './scenes/select-rule-ids';
-import { selectToContinue } from './scenes/select-to-continue';
-import { NextScene } from './types';
+import { parseArgv } from './cli/parse-argv.js';
+import { Core } from './core.js';
+import { lint } from './scenes/lint.js';
+import { selectAction } from './scenes/select-action.js';
+import { selectRuleIds } from './scenes/select-rule-ids.js';
+import { selectToContinue } from './scenes/select-to-continue.js';
+import { NextScene } from './types.js';
 
 export type Options = {
   argv: string[];

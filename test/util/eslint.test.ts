@@ -6,8 +6,8 @@ import {
   mergeRuleIdsAndDescription,
   findShebang,
   filterResultsByRuleId,
-} from '../../src/util/eslint';
-import { fakeLintMessage, fakeLintResult } from '../test-util/eslint';
+} from '../../src/util/eslint.js';
+import { fakeLintMessage, fakeLintResult } from '../test-util/eslint.js';
 
 const range: [number, number] = [0, 1];
 
