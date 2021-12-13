@@ -4,15 +4,18 @@ const mockFormatByRules = jest.fn(() => 'formatByRules');
 import { ESLint } from 'eslint';
 import { format } from '../../src/formatter/index.js';
 import { fakeLintResult, fakeLintMessage } from '../test-util/eslint.js';
+import { jest } from '@jest/globals';
 
 jest.mock('../../src/formatter/format-by-files', () => {
   return {
+    // @ts-ignore
     ...jest.requireActual('../../src/formatter/format-by-files'),
     formatByFiles: mockFormatByFiles,
   };
 });
 jest.mock('../../src/formatter/format-by-rules', () => {
   return {
+    // @ts-ignore
     ...jest.requireActual('../../src/formatter/format-by-rules'),
     formatByRules: mockFormatByRules,
   };
