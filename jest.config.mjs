@@ -2,7 +2,7 @@
 
 /** @typedef {import('ts-jest/dist/types')} */
 /** @type {import('@jest/types').Config.InitialOptions} */
-module.exports = {
+export default {
   displayName: 'test',
   preset: 'ts-jest/presets/default-esm',
   testMatch: ['<rootDir>/test/**/*.test.ts?(x)'],
