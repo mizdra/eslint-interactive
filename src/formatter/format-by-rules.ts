@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import Table from 'cli-table';
+import Table = require('cli-table');
 import { ESLint } from 'eslint';
 import terminalLink from 'terminal-link';
 import { ERROR_COLOR, WARNING_COLOR } from './colors.js';
