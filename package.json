@@ -16,7 +16,7 @@
     "lint:tsc:test": "tsc -p tsconfig.test.json --noEmit",
     "lint:eslint": "eslint --ignore-pattern '/fixtures' .",
     "lint:prettier": "prettier --check .",
-    "test": "jest --colors"
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest --colors"
   },
   "prettier": "@mizdra/prettier-config-mizdra",
   "renovate": "github>mizdra/renovate-config-mizdra",
