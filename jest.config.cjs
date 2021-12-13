@@ -17,6 +17,8 @@ module.exports = {
     // Map `./**/xxx.js` to `./**/xxx` (for ESM)
     '^(\\.{1,2}/.*)\\.js$': '$1',
   },
+  // do not transform `import` statements (for ESM)
+  transform: {},
   collectCoverageFrom: ['<rootDir>/src/**/*.{ts,tsx}', '!**/*.d.ts'],
   globals: {
     'ts-jest': {
