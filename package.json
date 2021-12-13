@@ -45,7 +45,7 @@
     "typescript": "^4.6.0-dev.20211213"
   },
   "dependencies": {
-    "chalk": "^4.1.0",
+    "chalk": "^5.0.0",
     "cli-table": "^0.3.11",
     "enquirer": "^2.3.6",
     "eslint-formatter-codeframe": "^7.32.1",
