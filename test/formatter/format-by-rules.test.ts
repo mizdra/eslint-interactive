@@ -1,4 +1,3 @@
-/* eslint-disable no-irregular-whitespace */
 import { ESLint } from 'eslint';
 import stripAnsi from 'strip-ansi';
 import { formatByRules } from '../../src/formatter/format-by-rules.js';
