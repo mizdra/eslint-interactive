@@ -25,6 +25,8 @@ module.exports = {
       rules: {
         // ts-ignore は覚悟のある時にしか使わないので、いちいち lint error にする必要もない
         '@typescript-eslint/ban-ts-comment': 'off',
+        // ESM 対応していないので一時的に off にしておく
+        'import/no-unresolved': 'off',
       },
     },
     // for test
