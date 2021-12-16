@@ -1,5 +1,6 @@
 import { tmpdir } from 'os';
-import { join } from 'path';
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
 import { ESLint } from 'eslint';
 import pager from 'node-pager';
 import { format } from './formatter/index.js';
@@ -136,7 +137,7 @@ export class Core {
           transform: [2, { results, ruleIds, transform } as TransformRuleOption],
         },
       },
-      rulePaths: [...(this.baseOptions.rulePaths ?? []), join(__dirname, 'rules')],
+      rulePaths: [...(this.baseOptions.rulePaths ?? []), join(dirname(fileURLToPath(import.meta.url)), 'rules')],
       // NOTE: Only fix the `transform` rule problems.
       fix: (message) => message.ruleId === 'transform',
     });
