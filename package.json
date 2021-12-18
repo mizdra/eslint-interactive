@@ -26,6 +26,7 @@
     "@mizdra/eslint-config-mizdra": "^1.0.0",
     "@mizdra/prettier-config-mizdra": "^0.4.0",
     "@types/cli-table": "^0.3.0",
+    "@types/deasync": "^0.1.2",
     "@types/eslint": "^8.2.0",
     "@types/estree": "^0.0.50",
     "@types/jest": "^27.0.3",
@@ -49,6 +50,7 @@
   "dependencies": {
     "chalk": "^5.0.0",
     "cli-table": "^0.3.11",
+    "deasync": "^0.1.24",
     "enquirer": "^2.3.6",
     "eslint-formatter-codeframe": "^7.32.1",
     "is-installed-globally": "^0.4.0",
