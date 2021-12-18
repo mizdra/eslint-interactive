@@ -12,7 +12,11 @@ import { importSync } from '../util/module.cjs';
 const { createTransformToApplySuggestions } = importSync(() => import('../transforms/apply-suggestions.js'));
 const { createTransformToDisablePerFile } = importSync(() => import('../transforms/disable-per-file.js'));
 const { createTransformToDisablePerLine } = importSync(() => import('../transforms/disable-per-line.js'));
-const { Transform, TransformContext } = importSync(() => import('../types.js'));
+
+// The type cannot be dynamically imported. Here, we use any instead.
+// const { Transform, TransformContext } = importSync(() => import('../types.js'));
+type Transform = any;
+type TransformContext = any;
 
 /**
  * @file The rule to do the transform.
