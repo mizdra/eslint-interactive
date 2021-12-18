@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 import isInstalledGlobally = require('is-installed-globally');
 import { parseArgv } from './cli/parse-argv.js';
 import { Core } from './core.js';

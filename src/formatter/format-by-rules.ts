@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 import Table = require('cli-table');
 import { ESLint } from 'eslint';
 import terminalLink from 'terminal-link';
