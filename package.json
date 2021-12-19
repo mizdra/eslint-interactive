@@ -46,11 +46,13 @@
     "jest": "^27.1.0",
     "npm-run-all": "^4.1.5",
     "prettier": "2.4.1",
+    "strip-ansi": "^7.0.1",
     "ts-jest": "^27.0.5",
     "tsc-watch": "^4.2.9",
     "typescript": "^4.6.0-dev.20211219"
   },
   "dependencies": {
+    "chalk": "^5.0.0",
     "cli-table": "^0.3.11",
     "deasync": "^0.1.24",
     "enquirer": "^2.3.6",
