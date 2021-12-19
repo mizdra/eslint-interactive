@@ -18,7 +18,7 @@ module.exports = {
   overrides: [
     // for typescript
     {
-      files: ['*.ts', '*.tsx'],
+      files: ['*.ts', '*.tsx', '*.cts', '*.mts'],
       parserOptions: {
         project: ['./tsconfig.src.json', './tsconfig.test.json'],
       },
@@ -32,7 +32,7 @@ module.exports = {
     },
     // for test
     {
-      files: ['test/**/*.{ts,tsx}'],
+      files: ['test/**/*.{ts,tsx,cts,mts}'],
       env: {
         jest: true,
       },
