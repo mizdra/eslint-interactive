@@ -1,8 +1,18 @@
 import { ESLint, Rule } from 'eslint';
-import { createTransformToApplySuggestions } from '../transforms/apply-suggestions.js';
-import { createTransformToDisablePerFile } from '../transforms/disable-per-file.js';
-import { createTransformToDisablePerLine } from '../transforms/disable-per-line.js';
-import { createTransformToMakeFixableAndFix } from '../transforms/make-fixable-and-fix.js';
+const { importSync } = require('./util.js');
+
+// - eslint rule must be a cjs module
+//   - For this reason, `src/rule/transform` module extension is cjs
+// - Dynamic import is the only way to import esm from cjs
+//   - ref: https://redfin.engineering/node-modules-at-war-why-commonjs-and-es-modules-cant-get-along-9617135eeca1
+//   - Therefore, dynamic import of `transforms/*.ts` is required.
+// - However, the eslint rule has to be synchronous
+//   - Therefore, `await` cannot be used.
+// - So we use `deasync` to do dynamic import synchronously.
+const { createTransformToApplySuggestions } = importSync(() => import('../transforms/apply-suggestions.js'));
+const { createTransformToDisablePerFile } = importSync(() => import('../transforms/disable-per-file.js'));
+const { createTransformToDisablePerLine } = importSync(() => import('../transforms/disable-per-line.js'));
+const { createTransformToMakeFixableAndFix } = importSync(() => import('../transforms/make-fixable-and-fix.js'));
 import { Transform, TransformContext } from '../types.js';
 
 /**
