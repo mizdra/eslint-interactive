@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 
 import { prompt } from 'enquirer';
-import { Action, DisplayMode } from '../types';
+import { Action, DisplayMode } from '../types.js';
 
 /**
  * Ask the user for the rule ids to which they want to apply the action.

@@ -1,4 +1,4 @@
-import { parseArgv } from '../../src/cli/parse-argv';
+import { parseArgv } from '../../src/cli/parse-argv.js';
 
 const baseArgs = ['node', 'eslint-interactive'];
 

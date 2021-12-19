@@ -1,9 +1,9 @@
 import chalk from 'chalk';
 import ora from 'ora';
-import { Core } from '../core';
-import { NextScene } from '../types';
-import { unique } from '../util/array';
-import { notEmpty } from '../util/type-check';
+import { Core } from '../core.js';
+import { NextScene } from '../types.js';
+import { unique } from '../util/array.js';
+import { notEmpty } from '../util/type-check.js';
 
 /**
  * Run the scene to lint.

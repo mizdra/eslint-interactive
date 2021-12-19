@@ -2,8 +2,8 @@ import { Linter } from 'eslint';
 import {
   createTransformToApplySuggestions,
   TransformToApplySuggestionsArgs,
-} from '../../src/transforms/apply-suggestions';
-import { TransformTester } from '../test-util/transform-tester';
+} from '../../src/transforms/apply-suggestions.js';
+import { TransformTester } from '../test-util/transform-tester.js';
 
 const tester = new TransformTester<TransformToApplySuggestionsArgs>(
   createTransformToApplySuggestions,

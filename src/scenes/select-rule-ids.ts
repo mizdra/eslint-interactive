@@ -1,8 +1,8 @@
 import { ESLint } from 'eslint';
-import { promptToInputRuleIds } from '../cli/prompt';
-import { Core } from '../core';
-import { NextScene } from '../types';
-import { selectAction } from './select-action';
+import { promptToInputRuleIds } from '../cli/prompt.js';
+import { Core } from '../core.js';
+import { NextScene } from '../types.js';
+import { selectAction } from './select-action.js';
 
 export type SelectRuleIdsArgs = {
   /** The lint results of the project */

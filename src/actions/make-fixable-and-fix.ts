@@ -3,14 +3,14 @@ import { dirname } from 'path';
 import chalk from 'chalk';
 import { ESLint } from 'eslint';
 import ora from 'ora';
-import { promptToInputReuseScript } from '../cli/prompt';
-import { Core } from '../core';
-import { FixableMaker } from '../transforms/make-fixable-and-fix';
+import { promptToInputReuseScript } from '../cli/prompt.js';
+import { Core } from '../core.js';
+import { FixableMaker } from '../transforms/make-fixable-and-fix.js';
 import {
   editFileWithEditor,
   generateExampleFixableMakerScriptFilePath,
   generateFixableMakerScriptFilePath,
-} from '../util/filter-script';
+} from '../util/filter-script.js';
 
 export async function doMakeFixableAndFixAction(
   core: Core,

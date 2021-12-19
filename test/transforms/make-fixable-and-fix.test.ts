@@ -1,8 +1,8 @@
 import {
   createTransformToMakeFixableAndFix,
   TransformToMakeFixableAndFixArgs,
-} from '../../src/transforms/make-fixable-and-fix';
-import { TransformTester } from '../test-util/transform-tester';
+} from '../../src/transforms/make-fixable-and-fix.js';
+import { TransformTester } from '../test-util/transform-tester.js';
 
 const tester = new TransformTester<TransformToMakeFixableAndFixArgs>(
   createTransformToMakeFixableAndFix,

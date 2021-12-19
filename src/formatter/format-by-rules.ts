@@ -2,8 +2,8 @@ import chalk from 'chalk';
 import Table from 'cli-table';
 import { ESLint } from 'eslint';
 import terminalLink from 'terminal-link';
-import { ERROR_COLOR, WARNING_COLOR } from './colors';
-import { takeRuleStatistics } from './take-rule-statistics';
+import { ERROR_COLOR, WARNING_COLOR } from './colors.js';
+import { takeRuleStatistics } from './take-rule-statistics.js';
 
 export const formatByRules: ESLint.Formatter['format'] = (results, data) => {
   const ruleStatistics = takeRuleStatistics(results);

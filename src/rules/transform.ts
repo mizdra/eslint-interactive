@@ -1,9 +1,9 @@
 import { ESLint, Rule } from 'eslint';
-import { createTransformToApplySuggestions } from '../transforms/apply-suggestions';
-import { createTransformToDisablePerFile } from '../transforms/disable-per-file';
-import { createTransformToDisablePerLine } from '../transforms/disable-per-line';
-import { createTransformToMakeFixableAndFix } from '../transforms/make-fixable-and-fix';
-import { Transform, TransformContext } from '../types';
+import { createTransformToApplySuggestions } from '../transforms/apply-suggestions.js';
+import { createTransformToDisablePerFile } from '../transforms/disable-per-file.js';
+import { createTransformToDisablePerLine } from '../transforms/disable-per-line.js';
+import { createTransformToMakeFixableAndFix } from '../transforms/make-fixable-and-fix.js';
+import { Transform, TransformContext } from '../types.js';
 
 /**
  * @file The rule to do the transform.

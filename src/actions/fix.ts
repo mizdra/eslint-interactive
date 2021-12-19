@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 import ora from 'ora';
-import { Core } from '../core';
+import { Core } from '../core.js';
 
 export async function doFixAction(core: Core, selectedRuleIds: string[]) {
   const fixingSpinner = ora('Fixing...').start();

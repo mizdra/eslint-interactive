@@ -1,6 +1,6 @@
 import { ESLint } from 'eslint';
-import { promptToInputDisplayMode } from '../cli/prompt';
-import { Core } from '../core';
+import { promptToInputDisplayMode } from '../cli/prompt.js';
+import { Core } from '../core.js';
 
 export async function doPrintDetailsOfResultsAction(
   core: Core,
