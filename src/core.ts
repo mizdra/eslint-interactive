@@ -1,5 +1,5 @@
 import { tmpdir } from 'os';
-import { join } from 'path';
+import { dirname, join } from 'path';
 import { ESLint } from 'eslint';
 import pager from 'node-pager';
 import { format } from './formatter/index.js';
@@ -8,6 +8,7 @@ import { SuggestionFilter } from './transforms/apply-suggestions.js';
 import { FixableMaker } from './transforms/make-fixable-and-fix.js';
 import { Config, DisplayMode, Transform } from './types.js';
 import { filterResultsByRuleId, scanUsedPluginsFromResults } from './util/eslint.js';
+import { fileURLToPath } from 'url';
 
 /**
  * The core of eslint-interactive.
@@ -147,7 +148,7 @@ export class Core {
           transform: [2, { results, ruleIds, transform } as TransformRuleOption],
         },
       },
-      rulePaths: [...(this.baseOptions.rulePaths ?? []), join(__dirname, 'rules')],
+      rulePaths: [...(this.baseOptions.rulePaths ?? []), join(dirname(fileURLToPath(import.meta.url)), 'rules')],
       // NOTE: Only fix the `transform` rule problems.
       fix: (message) => message.ruleId === 'transform',
     });
