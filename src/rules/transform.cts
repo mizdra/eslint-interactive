@@ -1,5 +1,4 @@
 import { ESLint, Rule } from 'eslint';
-import { Transform, TransformContext } from '../types.js';
 // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
 const { importSync } = require('./util.js');
 
@@ -15,6 +14,11 @@ const { createTransformToApplySuggestions } = importSync(async () => import('../
 const { createTransformToDisablePerFile } = importSync(async () => import('../transforms/disable-per-file.js'));
 const { createTransformToDisablePerLine } = importSync(async () => import('../transforms/disable-per-line.js'));
 const { createTransformToMakeFixableAndFix } = importSync(async () => import('../transforms/make-fixable-and-fix.js'));
+
+// The type cannot be dynamically imported. Here, we use any instead.
+// const { Transform, TransformContext } = importSync(() => import('../types.js'));
+type Transform = any;
+type TransformContext = any;
 
 /**
  * @file The rule to do the transform.
