@@ -1,6 +1,5 @@
 import { ESLint, Rule } from 'eslint';
-// eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
-const { importSync } = require('./util.js');
+import { importSync } from '../util/module.cjs';
 
 // - eslint rule must be a cjs module
 //   - For this reason, `src/rule/transform` module extension is cjs
@@ -115,4 +114,4 @@ const rule: Rule.RuleModule = {
   },
 };
 
-module.exports = rule;
+export default rule;
