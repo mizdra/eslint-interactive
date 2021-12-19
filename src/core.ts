@@ -4,10 +4,9 @@ import { fileURLToPath } from 'url';
 import { ESLint } from 'eslint';
 import pager from 'node-pager';
 import { format } from './formatter/index.js';
-import { TransformRuleOption } from './rules/transform.cjs';
 import { SuggestionFilter } from './transforms/apply-suggestions.js';
 import { FixableMaker } from './transforms/make-fixable-and-fix.js';
-import { Config, DisplayMode, Transform } from './types.js';
+import { Config, DisplayMode, Transform, TransformRuleOption } from './types.js';
 import { filterResultsByRuleId, scanUsedPluginsFromResults } from './util/eslint.js';
 
 /**

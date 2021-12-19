@@ -1,4 +1,4 @@
-import { Linter, Rule, SourceCode } from 'eslint';
+import { ESLint, Linter, Rule, SourceCode } from 'eslint';
 import { SelectActionArgs } from './scenes/select-action.js';
 import { SelectRuleIdsArgs } from './scenes/select-rule-ids.js';
 import { TransformToApplySuggestionsArgs } from './transforms/apply-suggestions.js';
@@ -80,3 +80,9 @@ export type TransformContext = {
  * The type representing the transform function.
  */
 export type TransformFunction<T> = (context: TransformContext, args: T) => Rule.Fix[];
+
+export type TransformRuleOption = {
+  ruleIds: string[];
+  results: ESLint.LintResult[];
+  transform: Transform;
+};

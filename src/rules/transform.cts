@@ -36,7 +36,7 @@ type TransformContext = any;
 
 const filenameToIsAlreadyFixed = new Map<string, boolean>();
 
-export type TransformRuleOption = {
+type TransformRuleOption = {
   ruleIds: string[];
   results: ESLint.LintResult[];
   transform: Transform;
