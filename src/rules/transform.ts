@@ -84,7 +84,7 @@ const rule: Rule.RuleModule = {
       fixes = createTransformToMakeFixableAndFix(transformContext, transform.args);
     } else {
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions, @typescript-eslint/no-explicit-any
-      throw new Error(`Unknown transform: ${(transform as any).name}`);
+      throw new Error(`Unknown transform: ${transform.name}`);
     }
 
     if (fixes.length === 0) return {};
@@ -114,4 +114,4 @@ const rule: Rule.RuleModule = {
   },
 };
 
-export default rule;
+module.exports = rule;
