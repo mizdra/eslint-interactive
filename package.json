@@ -26,7 +26,7 @@
   "packageManager": "yarn@1.22.15",
   "devDependencies": {
     "@jest/types": "^27.4.2",
-    "@mizdra/eslint-config-mizdra": "^1.0.0",
+    "@mizdra/eslint-config-mizdra": "^1.1.0",
     "@mizdra/prettier-config-mizdra": "^0.4.0",
     "@types/cli-table": "^0.3.0",
     "@types/deasync": "^0.1.2",
