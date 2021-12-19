@@ -13,7 +13,7 @@
     "incremental": true, // ビルド結果をキャッシュするように
 
     /* Module Options */
-    // "module": "esnext", // 継承先で上書きする
+    "module": "es2020",
     "esModuleInterop": true, // CommonJS モジュールを `import _ from 'commonjs'` で import できるように
     "resolveJsonModule": true, // import した json の型を推論するように
     "moduleResolution": "node", // `node` にしないと `resolveJsonModule` が使えない
