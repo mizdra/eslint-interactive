@@ -16,7 +16,9 @@ const { createTransformToMakeFixableAndFix } = importSync(async () => import('..
 
 // The type cannot be dynamically imported. Here, we use any instead.
 // const { Transform, TransformContext } = importSync(() => import('../types.js'));
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Transform = any;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type TransformContext = any;
 
 /**
@@ -75,12 +77,16 @@ const rule: Rule.RuleModule = {
 
     let fixes: Rule.Fix[] = [];
     if (transform.name === 'disablePerLine') {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       fixes = createTransformToDisablePerLine(transformContext, transform.args);
     } else if (transform.name === 'disablePerFile') {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       fixes = createTransformToDisablePerFile(transformContext, transform.args);
     } else if (transform.name === 'applySuggestions') {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       fixes = createTransformToApplySuggestions(transformContext, transform.args);
     } else if (transform.name === 'makeFixableAndFix') {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       fixes = createTransformToMakeFixableAndFix(transformContext, transform.args);
     } else {
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions, @typescript-eslint/no-explicit-any
