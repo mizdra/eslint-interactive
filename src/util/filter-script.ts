@@ -29,6 +29,16 @@ export function generateFilterScriptFilePath(ruleIds: string[]): string {
   return filepath;
 }
 
+export function generateFixableMakerScriptFilePath(ruleIds: string[]): string {
+  const basename = ruleIds.join('_').replace(/[^\w-]/g, '') + '.js';
+  const filepath = join(tmpdir(), 'eslint-interactive', 'fixable-maker-script', basename);
+  return filepath;
+}
+
 export function generateExampleFilterScriptFilePath(): string {
   return join(__dirname, '..', '..', 'static', 'example-filter-script.js');
+}
+
+export function generateExampleFixableMakerScriptFilePath(): string {
+  return join(__dirname, '..', '..', 'static', 'example-fixable-maker-script.js');
 }

@@ -2,6 +2,7 @@ import { ESLint, Rule } from 'eslint';
 import { createTransformToApplySuggestions } from '../transforms/apply-suggestions';
 import { createTransformToDisablePerFile } from '../transforms/disable-per-file';
 import { createTransformToDisablePerLine } from '../transforms/disable-per-line';
+import { createTransformToMakeFixableAndFix } from '../transforms/make-fixable-and-fix';
 import { Transform, TransformContext } from '../types';
 
 /**
@@ -65,6 +66,8 @@ const rule: Rule.RuleModule = {
       fixes = createTransformToDisablePerFile(transformContext, transform.args);
     } else if (transform.name === 'applySuggestions') {
       fixes = createTransformToApplySuggestions(transformContext, transform.args);
+    } else if (transform.name === 'makeFixableAndFix') {
+      fixes = createTransformToMakeFixableAndFix(transformContext, transform.args);
     } else {
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions, @typescript-eslint/no-explicit-any
       throw new Error(`Unknown transform: ${(transform as any).name}`);

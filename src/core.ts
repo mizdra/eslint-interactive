@@ -5,6 +5,7 @@ import pager from 'node-pager';
 import { format } from './formatter';
 import { TransformRuleOption } from './rules/transform';
 import { SuggestionFilter } from './transforms/apply-suggestions';
+import { FixableMaker } from './transforms/make-fixable-and-fix';
 import { Config, DisplayMode, Transform } from './types';
 import { filterResultsByRuleId, scanUsedPluginsFromResults } from './util/eslint';
 
@@ -122,6 +123,16 @@ export class Core {
    * */
   async applySuggestions(results: ESLint.LintResult[], ruleIds: string[], filter: SuggestionFilter): Promise<void> {
     await this.transform(results, ruleIds, { name: 'applySuggestions', args: { filter } });
+  }
+
+  /**
+   * Make forcibly fixable and run `eslint --fix`.
+   * @param results The lint results of the project to apply suggestions
+   * @param ruleIds The rule ids to apply suggestions
+   * @param fixableMaker The function to make `Linter.LintMessage` forcibly fixable.
+   * */
+  async makeFixableAndFix(results: ESLint.LintResult[], ruleIds: string[], fixableMaker: FixableMaker): Promise<void> {
+    await this.transform(results, ruleIds, { name: 'makeFixableAndFix', args: { fixableMaker } });
   }
 
   /**

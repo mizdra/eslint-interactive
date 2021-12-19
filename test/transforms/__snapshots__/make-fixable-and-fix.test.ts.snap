@@ -1,0 +1,229 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`make-fixable-and-fix \`fixableMaker\` receives the message and node. 1`] = `
+Object {
+  "message": Object {
+    "column": 7,
+    "endColumn": 8,
+    "endLine": 1,
+    "line": 1,
+    "message": "'a' is assigned a value but never used.",
+    "messageId": "unusedVar",
+    "nodeType": "Identifier",
+    "ruleId": "no-unused-vars",
+    "severity": 2,
+  },
+  "node": Node {
+    "end": 7,
+    "loc": SourceLocation {
+      "end": Position {
+        "column": 7,
+        "line": 1,
+      },
+      "start": Position {
+        "column": 6,
+        "line": 1,
+      },
+    },
+    "name": "a",
+    "parent": Node {
+      "end": 11,
+      "id": [Circular],
+      "init": Node {
+        "end": 11,
+        "loc": SourceLocation {
+          "end": Position {
+            "column": 11,
+            "line": 1,
+          },
+          "start": Position {
+            "column": 10,
+            "line": 1,
+          },
+        },
+        "parent": [Circular],
+        "range": Array [
+          10,
+          11,
+        ],
+        "raw": "1",
+        "start": 10,
+        "type": "Literal",
+        "value": 1,
+      },
+      "loc": SourceLocation {
+        "end": Position {
+          "column": 11,
+          "line": 1,
+        },
+        "start": Position {
+          "column": 6,
+          "line": 1,
+        },
+      },
+      "parent": Node {
+        "declarations": Array [
+          [Circular],
+        ],
+        "end": 12,
+        "kind": "const",
+        "loc": SourceLocation {
+          "end": Position {
+            "column": 12,
+            "line": 1,
+          },
+          "start": Position {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "parent": Node {
+          "body": Array [
+            [Circular],
+          ],
+          "comments": Array [],
+          "end": 12,
+          "loc": SourceLocation {
+            "end": Position {
+              "column": 12,
+              "line": 1,
+            },
+            "start": Position {
+              "column": 0,
+              "line": 1,
+            },
+          },
+          "parent": null,
+          "range": Array [
+            0,
+            12,
+          ],
+          "sourceType": "script",
+          "start": 0,
+          "tokens": Array [
+            Token {
+              "end": 5,
+              "loc": SourceLocation {
+                "end": Position {
+                  "column": 5,
+                  "line": 1,
+                },
+                "start": Position {
+                  "column": 0,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                0,
+                5,
+              ],
+              "start": 0,
+              "type": "Keyword",
+              "value": "const",
+            },
+            Token {
+              "end": 7,
+              "loc": SourceLocation {
+                "end": Position {
+                  "column": 7,
+                  "line": 1,
+                },
+                "start": Position {
+                  "column": 6,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                6,
+                7,
+              ],
+              "start": 6,
+              "type": "Identifier",
+              "value": "a",
+            },
+            Token {
+              "end": 9,
+              "loc": SourceLocation {
+                "end": Position {
+                  "column": 9,
+                  "line": 1,
+                },
+                "start": Position {
+                  "column": 8,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                8,
+                9,
+              ],
+              "start": 8,
+              "type": "Punctuator",
+              "value": "=",
+            },
+            Token {
+              "end": 11,
+              "loc": SourceLocation {
+                "end": Position {
+                  "column": 11,
+                  "line": 1,
+                },
+                "start": Position {
+                  "column": 10,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                10,
+                11,
+              ],
+              "start": 10,
+              "type": "Numeric",
+              "value": "1",
+            },
+            Token {
+              "end": 12,
+              "loc": SourceLocation {
+                "end": Position {
+                  "column": 12,
+                  "line": 1,
+                },
+                "start": Position {
+                  "column": 11,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                11,
+                12,
+              ],
+              "start": 11,
+              "type": "Punctuator",
+              "value": ";",
+            },
+          ],
+          "type": "Program",
+        },
+        "range": Array [
+          0,
+          12,
+        ],
+        "start": 0,
+        "type": "VariableDeclaration",
+      },
+      "range": Array [
+        6,
+        11,
+      ],
+      "start": 6,
+      "type": "VariableDeclarator",
+    },
+    "range": Array [
+      6,
+      7,
+    ],
+    "start": 6,
+    "type": "Identifier",
+  },
+}
+`;

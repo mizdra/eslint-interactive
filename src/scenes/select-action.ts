@@ -3,6 +3,7 @@ import { doApplySuggestionsAction } from '../actions/apply-suggestions';
 import { doDisablePerFileAction } from '../actions/disable-per-file';
 import { doDisablePerLineAction } from '../actions/disable-per-line';
 import { doFixAction } from '../actions/fix';
+import { doMakeFixableAndFixAction } from '../actions/make-fixable-and-fix';
 import { doPrintDetailsOfResultsAction } from '../actions/print-details-of-results';
 import { promptToInputAction } from '../cli/prompt';
 import { Core } from '../core';
@@ -43,6 +44,9 @@ export async function selectAction(
     return { name: 'selectToContinue' };
   } else if (action === 'applySuggestions') {
     await doApplySuggestionsAction(core, results, selectedRuleIds);
+    return { name: 'selectToContinue' };
+  } else if (action === 'makeFixableAndFix') {
+    await doMakeFixableAndFixAction(core, results, selectedRuleIds);
     return { name: 'selectToContinue' };
   }
   return unreachable();

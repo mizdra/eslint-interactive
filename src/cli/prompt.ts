@@ -37,7 +37,11 @@ export async function promptToInputAction(): Promise<Action> {
         { name: 'fix', message: 'Run `eslint --fix`' },
         { name: 'disablePerLine', message: 'Disable per line' },
         { name: 'disablePerFile', message: 'Disable per file' },
-        { name: 'applySuggestions', message: 'Apply suggestions (experimental, only for experts)' },
+        { name: 'applySuggestions', message: 'Apply suggestions (experimental, for experts)' },
+        {
+          name: 'makeFixableAndFix',
+          message: 'Make forcibly fixable and run `eslint --fix` (experimental, for experts)',
+        },
         { name: 'reselectRules', message: 'Reselect rules' },
       ],
     },
@@ -113,4 +117,20 @@ export async function promptToInputReuseFilterScript(): Promise<boolean> {
     },
   ]);
   return reuseFilterScript;
+}
+
+/**
+ * Ask the user if they want to reuse the script.
+ * @returns If it reuses, `true`, if not, `false`.
+ */
+export async function promptToInputReuseScript(): Promise<boolean> {
+  const { reuseScript } = await prompt<{ reuseScript: boolean }>([
+    {
+      name: 'reuseScript',
+      type: 'confirm',
+      message: 'Do you want to reuse a previously edited script?',
+      initial: true,
+    },
+  ]);
+  return reuseScript;
 }

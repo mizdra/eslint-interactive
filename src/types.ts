@@ -4,6 +4,7 @@ import { SelectRuleIdsArgs } from './scenes/select-rule-ids';
 import { TransformToApplySuggestionsArgs } from './transforms/apply-suggestions';
 import { TransformToDisablePerFileArgs } from './transforms/disable-per-file';
 import { TransformToDisablePerLineArgs } from './transforms/disable-per-line';
+import { TransformToMakeFixableAndFixArgs } from './transforms/make-fixable-and-fix';
 
 /**
  * The type that indicates what to do with the problems of selected rules.
@@ -62,7 +63,8 @@ export type Config = {
 export type Transform =
   | { name: 'disablePerLine'; args: TransformToDisablePerLineArgs }
   | { name: 'disablePerFile'; args: TransformToDisablePerFileArgs }
-  | { name: 'applySuggestions'; args: TransformToApplySuggestionsArgs };
+  | { name: 'applySuggestions'; args: TransformToApplySuggestionsArgs }
+  | { name: 'makeFixableAndFix'; args: TransformToMakeFixableAndFixArgs };
 
 /**
  * The type representing the additional information for the transform.
