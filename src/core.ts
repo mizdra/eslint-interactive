@@ -1,5 +1,6 @@
 import { tmpdir } from 'os';
 import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
 import { ESLint } from 'eslint';
 import pager from 'node-pager';
 import { format } from './formatter/index.js';
@@ -8,7 +9,6 @@ import { SuggestionFilter } from './transforms/apply-suggestions.js';
 import { FixableMaker } from './transforms/make-fixable-and-fix.js';
 import { Config, DisplayMode, Transform } from './types.js';
 import { filterResultsByRuleId, scanUsedPluginsFromResults } from './util/eslint.js';
-import { fileURLToPath } from 'url';
 
 /**
  * The core of eslint-interactive.

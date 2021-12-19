@@ -1,4 +1,6 @@
 import { ESLint, Rule } from 'eslint';
+import { Transform, TransformContext } from '../types.js';
+// eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
 const { importSync } = require('./util.js');
 
 // - eslint rule must be a cjs module
@@ -9,11 +11,10 @@ const { importSync } = require('./util.js');
 // - However, the eslint rule has to be synchronous
 //   - Therefore, `await` cannot be used.
 // - So we use `deasync` to do dynamic import synchronously.
-const { createTransformToApplySuggestions } = importSync(() => import('../transforms/apply-suggestions.js'));
-const { createTransformToDisablePerFile } = importSync(() => import('../transforms/disable-per-file.js'));
-const { createTransformToDisablePerLine } = importSync(() => import('../transforms/disable-per-line.js'));
-const { createTransformToMakeFixableAndFix } = importSync(() => import('../transforms/make-fixable-and-fix.js'));
-import { Transform, TransformContext } from '../types.js';
+const { createTransformToApplySuggestions } = importSync(async () => import('../transforms/apply-suggestions.js'));
+const { createTransformToDisablePerFile } = importSync(async () => import('../transforms/disable-per-file.js'));
+const { createTransformToDisablePerLine } = importSync(async () => import('../transforms/disable-per-line.js'));
+const { createTransformToMakeFixableAndFix } = importSync(async () => import('../transforms/make-fixable-and-fix.js'));
 
 /**
  * @file The rule to do the transform.
