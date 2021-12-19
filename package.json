@@ -62,6 +62,7 @@
     "node-pager": "^0.3.6",
     "ora": "^6.0.1",
     "source-map-support": "^0.5.20",
+    "synckit": "^0.6.0",
     "terminal-link": "^3.0.0",
     "yargs": "^16.2.0"
   },
