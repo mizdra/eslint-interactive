@@ -8,8 +8,11 @@
   "private": false,
   "type": "module",
   "scripts": {
-    "build": "tsc -p tsconfig.src.json",
-    "dev": "tsc-watch -p tsconfig.src.json --onSuccess 'bin/eslint-interactive.js fixtures --rulesdir fixtures/rules --ext .js,jsx,.mjs'",
+    "build": "run-s build:*",
+    "build:tsc": "tsc -p tsconfig.src.json",
+    "build:copy-package-json": "rsync -a --prune-empty-dirs --include '*/' --include 'package.json' --exclude '*' src/ dist/",
+    "dev": "tsc-watch -p tsconfig.src.json --onSuccess 'yarn run run-s build:copy-package-json dev:start-bin'",
+    "dev:start-bin": "bin/eslint-interactive.js fixtures --rulesdir fixtures/rules --ext .js,jsx,.mjs",
     "lint": "run-s -c lint:*",
     "lint:tsc": "run-s -c lint:tsc:*",
     "lint:tsc:src": "tsc -p tsconfig.src.json --noEmit",
