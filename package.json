@@ -48,7 +48,7 @@
     "prettier": "2.4.1",
     "ts-jest": "^27.0.5",
     "tsc-watch": "^4.2.9",
-    "typescript": "^4.1.2"
+    "typescript": "^4.6.0-dev.20211219"
   },
   "dependencies": {
     "cli-table": "^0.3.11",
