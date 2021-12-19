@@ -1,6 +1,6 @@
 #!/usr/bin/env node -r source-map-support/register
 
-const { run } = require('../dist');
+import { run } from '../dist/index.js';
 
 run({
   argv: process.argv,
