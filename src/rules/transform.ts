@@ -110,6 +110,4 @@ const rule: Rule.RuleModule = {
   },
 };
 
-module.exports = rule; // for ESLint's Node.js API
-// eslint-disable-next-line import/no-default-export
-export default rule; // for test
+module.exports = rule;
