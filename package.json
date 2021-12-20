@@ -73,6 +73,7 @@
     "eslint"
   ],
   "files": [
+    "bin",
     "src",
     "dist",
     "static"
