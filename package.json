@@ -1,7 +1,7 @@
 {
   "name": "@mizdra/eslint-interactive",
   "description": "The CLI tool to run `eslint --fix` for each rule",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "repository": "https://github.com/mizdra/eslint-interactive.git",
   "author": "mizdra <pp.mizdra@gmail.com>",
   "license": "MIT",
@@ -48,8 +48,8 @@
     "cli-table": "^0.3.11",
     "enquirer": "^2.3.6",
     "eslint-formatter-codeframe": "^7.32.1",
-    "is-installed-globally": "^0.4.0",
     "estraverse": "^5.3.0",
+    "is-installed-globally": "^0.4.0",
     "node-pager": "^0.3.6",
     "ora": "^5.1.0",
     "source-map-support": "^0.5.20",
