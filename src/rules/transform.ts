@@ -9,10 +9,10 @@ import { importSync } from '../util/module.cjs';
 // - However, the eslint rule has to be synchronous
 //   - Therefore, `await` cannot be used.
 // - So we use `deasync` to do dynamic import synchronously.
-const { createTransformToApplySuggestions } = importSync(async () => import('../transforms/apply-suggestions.js'));
-const { createTransformToDisablePerFile } = importSync(async () => import('../transforms/disable-per-file.js'));
-const { createTransformToDisablePerLine } = importSync(async () => import('../transforms/disable-per-line.js'));
-const { createTransformToMakeFixableAndFix } = importSync(async () => import('../transforms/make-fixable-and-fix.js'));
+const { createTransformToApplySuggestions } = importSync('../transforms/apply-suggestions.js');
+const { createTransformToDisablePerFile } = importSync('../transforms/disable-per-file.js');
+const { createTransformToDisablePerLine } = importSync('../transforms/disable-per-line.js');
+const { createTransformToMakeFixableAndFix } = importSync('../transforms/make-fixable-and-fix.js');
 
 // The type cannot be dynamically imported. Here, we use any instead.
 // const { Transform, TransformContext } = importSync(() => import('../types.js'));
