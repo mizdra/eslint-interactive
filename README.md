@@ -38,7 +38,7 @@ $ npm i -D @mizdra/eslint-interactive
 $ npx eslint-interactive --help
 
 $ # For yarn
-$ yarn add @mizdra/eslint-interactive
+$ yarn add -D @mizdra/eslint-interactive
 $ yarn eslint-interactive --help
 ```
 
