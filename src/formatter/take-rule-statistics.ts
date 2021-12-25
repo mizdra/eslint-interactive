@@ -27,8 +27,10 @@ function takeRuleStatistic(ruleId: string, messages: Linter.LintMessage[]): Rule
     ruleId,
     errorCount,
     warningCount,
+    fixableCount: fixableErrorCount + fixableWarningCount,
     fixableErrorCount,
     fixableWarningCount,
+    suggestApplicableCount: suggestApplicableErrorCount + suggestApplicableWarningCount,
     suggestApplicableErrorCount,
     suggestApplicableWarningCount,
   };
