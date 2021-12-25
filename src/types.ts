@@ -35,9 +35,9 @@ export type RuleStatistic = {
   fixableCount: number;
   fixableErrorCount: number;
   fixableWarningCount: number;
-  suggestApplicableCount: number;
-  suggestApplicableErrorCount: number;
-  suggestApplicableWarningCount: number;
+  hasSuggestionsCount: number;
+  hasSuggestionsErrorCount: number;
+  hasSuggestionsWarningCount: number;
 };
 
 /**

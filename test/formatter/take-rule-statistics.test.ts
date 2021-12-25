@@ -22,9 +22,9 @@ describe('takeRuleStatistics', () => {
         warningCount: 0,
         fixableWarningCount: 0,
         fixableCount: 0,
-        suggestApplicableCount: 0,
-        suggestApplicableErrorCount: 0,
-        suggestApplicableWarningCount: 0,
+        hasSuggestionsCount: 0,
+        hasSuggestionsErrorCount: 0,
+        hasSuggestionsWarningCount: 0,
       },
       {
         ruleId: 'rule-b',
@@ -33,9 +33,9 @@ describe('takeRuleStatistics', () => {
         warningCount: 0,
         fixableWarningCount: 0,
         fixableCount: 0,
-        suggestApplicableCount: 0,
-        suggestApplicableErrorCount: 0,
-        suggestApplicableWarningCount: 0,
+        hasSuggestionsCount: 0,
+        hasSuggestionsErrorCount: 0,
+        hasSuggestionsWarningCount: 0,
       },
     ]);
   });
@@ -59,9 +59,9 @@ describe('takeRuleStatistics', () => {
         warningCount: 0,
         fixableWarningCount: 0,
         fixableCount: 0,
-        suggestApplicableCount: 0,
-        suggestApplicableErrorCount: 0,
-        suggestApplicableWarningCount: 0,
+        hasSuggestionsCount: 0,
+        hasSuggestionsErrorCount: 0,
+        hasSuggestionsWarningCount: 0,
       },
     ]);
   });
@@ -93,9 +93,9 @@ describe('takeRuleStatistics', () => {
         warningCount: 3,
         fixableWarningCount: 1,
         fixableCount: 3,
-        suggestApplicableCount: 0,
-        suggestApplicableErrorCount: 0,
-        suggestApplicableWarningCount: 0,
+        hasSuggestionsCount: 0,
+        hasSuggestionsErrorCount: 0,
+        hasSuggestionsWarningCount: 0,
       },
     ]);
   });
@@ -127,9 +127,9 @@ describe('takeRuleStatistics', () => {
         warningCount: 3,
         fixableWarningCount: 0,
         fixableCount: 0,
-        suggestApplicableCount: 3,
-        suggestApplicableErrorCount: 2,
-        suggestApplicableWarningCount: 1,
+        hasSuggestionsCount: 3,
+        hasSuggestionsErrorCount: 2,
+        hasSuggestionsWarningCount: 1,
       },
     ]);
   });
