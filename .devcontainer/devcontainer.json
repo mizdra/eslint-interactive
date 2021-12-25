@@ -1,0 +1,37 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.205.1/containers/typescript-node
+{
+  "name": "Node.js & TypeScript",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "args": {
+      "VARIANT": "hirsute"
+    }
+  },
+  // Mac では OS のファイルシステムと Docker の相性が悪く、Docker コンテナ内からのホストのファイルの読み書きが
+  // 非常に遅い。そこで、頻繁に読み書きされるディレクトリは named volume にして、コンテナ内で読み書きするようにする。
+  //
+  // NOTE: named volume にしてしまうとコンテナ側のファイルとホスト側のファイルで変更が同期されないため、
+  // node_modules や dist など、.gitignore で ignore されていて同期されなくても良いものだけ named volume にしている。
+  //
+  // ref: https://www.keisuke69.net/entry/2021/09/15/104532
+  "mounts": [
+    "source=eslint-interactive-yarn-cache,target=/usr/local/share/.cache/yarn,type=volume",
+    "source=eslint-interactive-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume",
+    "source=eslint-interactive-dist,target=${containerWorkspaceFolder}/dist,type=volume"
+  ],
+
+  // Set *default* container specific settings.json values on container create.
+  "settings": {},
+
+  "extensions": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode", "Orta.vscode-jest"],
+
+  // Run `yarn install` the moment after the container has finished starting, but before the extension starts loading.
+  "onCreateCommand": "yarn install",
+
+  "features": {
+    "git": "latest",
+    "github-cli": "latest",
+    "node": "16.13.1"
+  }
+}
