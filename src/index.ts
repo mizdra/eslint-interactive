@@ -1,5 +1,5 @@
-import chalk from 'chalk';
 import isInstalledGlobally from 'is-installed-globally';
+import { warn } from './cli/log';
 import { parseArgv } from './cli/parse-argv';
 import { Core } from './core';
 import { lint } from './scenes/lint';
@@ -17,12 +17,10 @@ export type Options = {
  */
 export async function run(options: Options) {
   if (isInstalledGlobally) {
-    console.log(
-      chalk.bold.yellowBright(
-        'WARNING: eslint-interactive is installed globally. ' +
-          'The globally installed eslint-interactive is not officially supported because some features do not work. ' +
-          'It is recommended to install eslint-interactive locally.\n',
-      ),
+    warn(
+      'eslint-interactive is installed globally. ' +
+        'The globally installed eslint-interactive is not officially supported because some features do not work. ' +
+        'It is recommended to install eslint-interactive locally.',
     );
   }
   const config = parseArgv(options.argv);
