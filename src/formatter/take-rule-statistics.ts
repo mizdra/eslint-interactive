@@ -6,20 +6,20 @@ import { groupBy } from '../util/array';
 function takeRuleStatistic(ruleId: string, messages: Linter.LintMessage[]): RuleStatistic {
   let errorCount = 0;
   let warningCount = 0;
-  let fixableErrorCount = 0;
-  let fixableWarningCount = 0;
-  let suggestApplicableErrorCount = 0;
-  let suggestApplicableWarningCount = 0;
+  let isFixableErrorCount = 0;
+  let isFixableWarningCount = 0;
+  let hasSuggestionsErrorCount = 0;
+  let hasSuggestionsWarningCount = 0;
 
   for (const message of messages) {
     if (message.severity === 2) {
       errorCount++;
-      if (message.fix) fixableErrorCount++;
-      if (message.suggestions && message.suggestions.length > 0) suggestApplicableErrorCount++;
+      if (message.fix) isFixableErrorCount++;
+      if (message.suggestions && message.suggestions.length > 0) hasSuggestionsErrorCount++;
     } else if (message.severity === 1) {
       warningCount++;
-      if (message.fix) fixableWarningCount++;
-      if (message.suggestions && message.suggestions.length > 0) suggestApplicableWarningCount++;
+      if (message.fix) isFixableWarningCount++;
+      if (message.suggestions && message.suggestions.length > 0) hasSuggestionsWarningCount++;
     }
   }
 
@@ -27,10 +27,12 @@ function takeRuleStatistic(ruleId: string, messages: Linter.LintMessage[]): Rule
     ruleId,
     errorCount,
     warningCount,
-    fixableErrorCount,
-    fixableWarningCount,
-    suggestApplicableErrorCount,
-    suggestApplicableWarningCount,
+    isFixableCount: isFixableErrorCount + isFixableWarningCount,
+    isFixableErrorCount: isFixableErrorCount,
+    isFixableWarningCount: isFixableWarningCount,
+    hasSuggestionsCount: hasSuggestionsErrorCount + hasSuggestionsWarningCount,
+    hasSuggestionsErrorCount,
+    hasSuggestionsWarningCount,
   };
 }
 

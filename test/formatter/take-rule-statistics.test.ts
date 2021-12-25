@@ -18,20 +18,24 @@ describe('takeRuleStatistics', () => {
       {
         ruleId: 'rule-a',
         errorCount: 2,
-        fixableErrorCount: 0,
         warningCount: 0,
-        fixableWarningCount: 0,
-        suggestApplicableErrorCount: 0,
-        suggestApplicableWarningCount: 0,
+        isFixableCount: 0,
+        isFixableErrorCount: 0,
+        isFixableWarningCount: 0,
+        hasSuggestionsCount: 0,
+        hasSuggestionsErrorCount: 0,
+        hasSuggestionsWarningCount: 0,
       },
       {
         ruleId: 'rule-b',
         errorCount: 1,
-        fixableErrorCount: 0,
         warningCount: 0,
-        fixableWarningCount: 0,
-        suggestApplicableErrorCount: 0,
-        suggestApplicableWarningCount: 0,
+        isFixableCount: 0,
+        isFixableErrorCount: 0,
+        isFixableWarningCount: 0,
+        hasSuggestionsCount: 0,
+        hasSuggestionsErrorCount: 0,
+        hasSuggestionsWarningCount: 0,
       },
     ]);
   });
@@ -51,15 +55,17 @@ describe('takeRuleStatistics', () => {
       {
         ruleId: 'rule-a',
         errorCount: 3,
-        fixableErrorCount: 0,
         warningCount: 0,
-        fixableWarningCount: 0,
-        suggestApplicableErrorCount: 0,
-        suggestApplicableWarningCount: 0,
+        isFixableCount: 0,
+        isFixableErrorCount: 0,
+        isFixableWarningCount: 0,
+        hasSuggestionsCount: 0,
+        hasSuggestionsErrorCount: 0,
+        hasSuggestionsWarningCount: 0,
       },
     ]);
   });
-  test('calculates the cumulative total of errors and warnings or fixable ones separately', () => {
+  test('calculates the cumulative total of errors and warnings or isFixable ones separately', () => {
     const results: ESLint.LintResult[] = [
       fakeLintResult({
         messages: [
@@ -83,11 +89,13 @@ describe('takeRuleStatistics', () => {
       {
         ruleId: 'rule-a',
         errorCount: 6,
-        fixableErrorCount: 2,
         warningCount: 3,
-        fixableWarningCount: 1,
-        suggestApplicableErrorCount: 0,
-        suggestApplicableWarningCount: 0,
+        isFixableCount: 3,
+        isFixableErrorCount: 2,
+        isFixableWarningCount: 1,
+        hasSuggestionsCount: 0,
+        hasSuggestionsErrorCount: 0,
+        hasSuggestionsWarningCount: 0,
       },
     ]);
   });
@@ -115,11 +123,13 @@ describe('takeRuleStatistics', () => {
       {
         ruleId: 'rule-a',
         errorCount: 6,
-        fixableErrorCount: 0,
         warningCount: 3,
-        fixableWarningCount: 0,
-        suggestApplicableErrorCount: 2,
-        suggestApplicableWarningCount: 1,
+        isFixableCount: 0,
+        isFixableErrorCount: 0,
+        isFixableWarningCount: 0,
+        hasSuggestionsCount: 3,
+        hasSuggestionsErrorCount: 2,
+        hasSuggestionsWarningCount: 1,
       },
     ]);
   });
