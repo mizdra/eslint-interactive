@@ -56,16 +56,16 @@ describe('takeRuleStatistics', () => {
         ruleId: 'rule-a',
         errorCount: 3,
         warningCount: 0,
-        fixableCount: 0,
-        fixableErrorCount: 0,
-        fixableWarningCount: 0,
+        isFixableCount: 0,
+        isFixableErrorCount: 0,
+        isFixableWarningCount: 0,
         hasSuggestionsCount: 0,
         hasSuggestionsErrorCount: 0,
         hasSuggestionsWarningCount: 0,
       },
     ]);
   });
-  test('calculates the cumulative total of errors and warnings or fixable ones separately', () => {
+  test('calculates the cumulative total of errors and warnings or isFixable ones separately', () => {
     const results: ESLint.LintResult[] = [
       fakeLintResult({
         messages: [
@@ -90,9 +90,9 @@ describe('takeRuleStatistics', () => {
         ruleId: 'rule-a',
         errorCount: 6,
         warningCount: 3,
-        fixableCount: 3,
-        fixableErrorCount: 2,
-        fixableWarningCount: 1,
+        isFixableCount: 3,
+        isFixableErrorCount: 2,
+        isFixableWarningCount: 1,
         hasSuggestionsCount: 0,
         hasSuggestionsErrorCount: 0,
         hasSuggestionsWarningCount: 0,
@@ -124,9 +124,9 @@ describe('takeRuleStatistics', () => {
         ruleId: 'rule-a',
         errorCount: 6,
         warningCount: 3,
-        fixableCount: 0,
-        fixableErrorCount: 0,
-        fixableWarningCount: 0,
+        isFixableCount: 0,
+        isFixableErrorCount: 0,
+        isFixableWarningCount: 0,
         hasSuggestionsCount: 3,
         hasSuggestionsErrorCount: 2,
         hasSuggestionsWarningCount: 1,
