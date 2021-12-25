@@ -16,7 +16,7 @@ export const formatByRules: ESLint.Formatter['format'] = (results, _data) => {
   });
 
   ruleStatistics.forEach((ruleStatistic) => {
-    const { ruleId, errorCount, warningCount, fixableCount, hasSuggestionsCount } = ruleStatistic;
+    const { ruleId, errorCount, warningCount, isFixableCount, hasSuggestionsCount } = ruleStatistic;
 
     // NOTE: Disable documentation links temporarily due to problems with cli-table.
     // ref: https://github.com/mizdra/eslint-interactive/issues/81
@@ -27,7 +27,7 @@ export const formatByRules: ESLint.Formatter['format'] = (results, _data) => {
       ruleCell,
       numCell(errorCount),
       numCell(warningCount),
-      numCell(fixableCount),
+      numCell(isFixableCount),
       numCell(hasSuggestionsCount),
     ]);
   });

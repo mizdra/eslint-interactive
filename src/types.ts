@@ -32,9 +32,9 @@ export type RuleStatistic = {
   ruleId: string;
   errorCount: number;
   warningCount: number;
-  fixableCount: number;
-  fixableErrorCount: number;
-  fixableWarningCount: number;
+  isFixableCount: number;
+  isFixableErrorCount: number;
+  isFixableWarningCount: number;
   hasSuggestionsCount: number;
   hasSuggestionsErrorCount: number;
   hasSuggestionsWarningCount: number;
