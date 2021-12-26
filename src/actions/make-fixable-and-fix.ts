@@ -5,16 +5,15 @@ import { Remote } from 'comlink';
 import { ESLint } from 'eslint';
 import ora from 'ora';
 import { promptToInputReuseScript } from '../cli/prompt';
-import { Core } from '../core';
-import { FixableMaker } from '../transforms/make-fixable-and-fix';
 import {
   editFileWithEditor,
   generateExampleFixableMakerScriptFilePath,
   generateFixableMakerScriptFilePath,
 } from '../util/filter-script';
+import { EnhancedCore } from '../worker';
 
 export async function doMakeFixableAndFixAction(
-  core: Remote<Core>,
+  core: Remote<EnhancedCore>,
   results: ESLint.LintResult[],
   selectedRuleIds: string[],
 ): Promise<void> {
@@ -36,8 +35,7 @@ export async function doMakeFixableAndFixAction(
   console.log('Opening editor...');
 
   const fixableMakerScript = await editFileWithEditor(fixableMakerScriptFilePath);
-  const fixableMaker = eval(fixableMakerScript) as FixableMaker;
   const fixingSpinner = ora('Making fixable and fixing...').start();
-  await core.makeFixableAndFix(results, selectedRuleIds, fixableMaker);
+  await core.makeFixableAndFix(results, selectedRuleIds, fixableMakerScript);
   fixingSpinner.succeed(chalk.bold('Making fixable and fixing was successful.'));
 }

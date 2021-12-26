@@ -2,15 +2,15 @@ import chalk from 'chalk';
 import { Remote } from 'comlink';
 import ora from 'ora';
 import { warn } from '../cli/log';
-import { Core } from '../core';
 import { NextScene } from '../types';
 import { unique } from '../util/array';
 import { notEmpty } from '../util/type-check';
+import { EnhancedCore } from '../worker';
 
 /**
  * Run the scene to lint.
  */
-export async function lint(core: Remote<Core>): Promise<NextScene> {
+export async function lint(core: Remote<EnhancedCore>): Promise<NextScene> {
   const lintingSpinner = ora('Linting...').start();
   const results = await core.lint();
   const ruleIdsInResults = unique(

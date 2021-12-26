@@ -7,9 +7,9 @@ import { doFixAction } from '../actions/fix';
 import { doMakeFixableAndFixAction } from '../actions/make-fixable-and-fix';
 import { doPrintDetailsOfResultsAction } from '../actions/print-details-of-results';
 import { promptToInputAction } from '../cli/prompt';
-import { Core } from '../core';
 import { NextScene } from '../types';
 import { unreachable } from '../util/type-check';
+import { EnhancedCore } from '../worker';
 
 export type SelectActionArgs = {
   /** The lint results of the project */
@@ -24,7 +24,7 @@ export type SelectActionArgs = {
  * Run the scene where a user select the action to be performed for the problems of selected rules.
  */
 export async function selectAction(
-  core: Remote<Core>,
+  core: Remote<EnhancedCore>,
   { results, ruleIdsInResults, selectedRuleIds }: SelectActionArgs,
 ): Promise<NextScene> {
   const action = await promptToInputAction();

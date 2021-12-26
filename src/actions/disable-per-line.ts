@@ -3,10 +3,10 @@ import { Remote } from 'comlink';
 import { ESLint } from 'eslint';
 import ora from 'ora';
 import { promptToInputDescription } from '../cli/prompt';
-import { Core } from '../core';
+import { EnhancedCore } from '../worker';
 
 export async function doDisablePerLineAction(
-  core: Remote<Core>,
+  core: Remote<EnhancedCore>,
   results: ESLint.LintResult[],
   selectedRuleIds: string[],
 ) {

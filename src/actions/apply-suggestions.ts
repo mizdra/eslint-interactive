@@ -5,16 +5,15 @@ import { Remote } from 'comlink';
 import { ESLint } from 'eslint';
 import ora from 'ora';
 import { promptToInputReuseFilterScript } from '../cli/prompt';
-import { Core } from '../core';
-import { SuggestionFilter } from '../transforms/apply-suggestions';
 import {
   editFileWithEditor,
   generateExampleFilterScriptFilePath,
   generateFilterScriptFilePath,
 } from '../util/filter-script';
+import { EnhancedCore } from '../worker';
 
 export async function doApplySuggestionsAction(
-  core: Remote<Core>,
+  core: Remote<EnhancedCore>,
   results: ESLint.LintResult[],
   selectedRuleIds: string[],
 ): Promise<void> {
@@ -36,8 +35,7 @@ export async function doApplySuggestionsAction(
   console.log('Opening editor...');
 
   const filterScript = await editFileWithEditor(filterScriptFilePath);
-  const filter = eval(filterScript) as SuggestionFilter;
   const fixingSpinner = ora('Applying suggestion...').start();
-  await core.applySuggestions(results, selectedRuleIds, filter);
+  await core.applySuggestions(results, selectedRuleIds, filterScript);
   fixingSpinner.succeed(chalk.bold('Applying suggestion was successful.'));
 }
