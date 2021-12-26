@@ -8,7 +8,7 @@ import { FixableMaker } from './transforms/make-fixable-and-fix';
 
 if (parentPort === null) throw new Error('This module must be started on a worker.');
 
-export class EnhancedCore extends Core {
+export class SerializableCore extends Core {
   async applySuggestions(
     results: ESLint.LintResult[],
     ruleIds: string[],
@@ -27,4 +27,4 @@ export class EnhancedCore extends Core {
   }
 }
 
-expose(EnhancedCore, nodeEndpoint(parentPort));
+expose(SerializableCore, nodeEndpoint(parentPort));

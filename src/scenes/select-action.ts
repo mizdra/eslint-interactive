@@ -9,7 +9,7 @@ import { doPrintDetailsOfResultsAction } from '../actions/print-details-of-resul
 import { promptToInputAction } from '../cli/prompt';
 import { NextScene } from '../types';
 import { unreachable } from '../util/type-check';
-import { EnhancedCore } from '../worker';
+import { SerializableCore } from '../worker';
 
 export type SelectActionArgs = {
   /** The lint results of the project */
@@ -24,7 +24,7 @@ export type SelectActionArgs = {
  * Run the scene where a user select the action to be performed for the problems of selected rules.
  */
 export async function selectAction(
-  core: Remote<EnhancedCore>,
+  core: Remote<SerializableCore>,
   { results, ruleIdsInResults, selectedRuleIds }: SelectActionArgs,
 ): Promise<NextScene> {
   const action = await promptToInputAction();

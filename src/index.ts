@@ -10,7 +10,7 @@ import { selectAction } from './scenes/select-action';
 import { selectRuleIds } from './scenes/select-rule-ids';
 import { selectToContinue } from './scenes/select-to-continue';
 import { NextScene } from './types';
-import { EnhancedCore } from './worker';
+import { SerializableCore } from './worker';
 
 export type Options = {
   argv: string[];
@@ -32,7 +32,7 @@ export async function run(options: Options) {
   // Directly executing the Core API will hog the main thread and halt the spinner.
   // So we wrap it with comlink and run it on the Worker.
   const worker = new Worker(join(__dirname, 'worker.js'));
-  const ProxiedCore = wrap<typeof EnhancedCore>(nodeEndpoint(worker));
+  const ProxiedCore = wrap<typeof SerializableCore>(nodeEndpoint(worker));
   const core = await new ProxiedCore(config);
 
   let nextScene: NextScene = { name: 'lint' };

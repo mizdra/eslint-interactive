@@ -10,10 +10,10 @@ import {
   generateExampleFilterScriptFilePath,
   generateFilterScriptFilePath,
 } from '../util/filter-script';
-import { EnhancedCore } from '../worker';
+import { SerializableCore } from '../worker';
 
 export async function doApplySuggestionsAction(
-  core: Remote<EnhancedCore>,
+  core: Remote<SerializableCore>,
   results: ESLint.LintResult[],
   selectedRuleIds: string[],
 ): Promise<void> {
