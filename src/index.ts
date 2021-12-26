@@ -1,3 +1,7 @@
+import { join } from 'path';
+import { Worker } from 'worker_threads';
+import { wrap } from 'comlink';
+import nodeEndpoint from 'comlink/dist/umd/node-adapter';
 import isInstalledGlobally from 'is-installed-globally';
 import { warn } from './cli/log';
 import { parseArgv } from './cli/parse-argv';
@@ -24,7 +28,12 @@ export async function run(options: Options) {
     );
   }
   const config = parseArgv(options.argv);
-  const core = new Core(config);
+
+  // Directly executing the Core API will hog the main thread and halt the spinner.
+  // So we wrap it with comlink and run it on the Worker.
+  const worker = new Worker(join(__dirname, 'worker.js'));
+  const ProxiedCore = wrap<typeof Core>(nodeEndpoint(worker));
+  const core = await new ProxiedCore(config);
 
   let nextScene: NextScene = { name: 'lint' };
   while (nextScene.name !== 'exit') {
