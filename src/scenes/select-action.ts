@@ -1,3 +1,4 @@
+import { Remote } from 'comlink';
 import { ESLint } from 'eslint';
 import { doApplySuggestionsAction } from '../actions/apply-suggestions';
 import { doDisablePerFileAction } from '../actions/disable-per-file';
@@ -23,7 +24,7 @@ export type SelectActionArgs = {
  * Run the scene where a user select the action to be performed for the problems of selected rules.
  */
 export async function selectAction(
-  core: Core,
+  core: Remote<Core>,
   { results, ruleIdsInResults, selectedRuleIds }: SelectActionArgs,
 ): Promise<NextScene> {
   const action = await promptToInputAction();

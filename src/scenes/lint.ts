@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+import { Remote } from 'comlink';
 import ora from 'ora';
 import { warn } from '../cli/log';
 import { Core } from '../core';
@@ -9,7 +10,7 @@ import { notEmpty } from '../util/type-check';
 /**
  * Run the scene to lint.
  */
-export async function lint(core: Core): Promise<NextScene> {
+export async function lint(core: Remote<Core>): Promise<NextScene> {
   const lintingSpinner = ora('Linting...').start();
   const results = await core.lint();
   const ruleIdsInResults = unique(
@@ -25,7 +26,7 @@ export async function lint(core: Core): Promise<NextScene> {
   }
   lintingSpinner.succeed(chalk.bold('Found errors.'));
   console.log();
-  core.printSummaryOfResults(results);
+  await core.printSummaryOfResults(results);
 
   const hasESLintCoreProblems = results.flatMap((result) => result.messages).some((message) => message.ruleId === null);
   if (hasESLintCoreProblems) {

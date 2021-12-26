@@ -1,6 +1,7 @@
 import { access, mkdir, readFile, writeFile } from 'fs/promises';
 import { dirname } from 'path';
 import chalk from 'chalk';
+import { Remote } from 'comlink';
 import { ESLint } from 'eslint';
 import ora from 'ora';
 import { promptToInputReuseFilterScript } from '../cli/prompt';
@@ -13,7 +14,7 @@ import {
 } from '../util/filter-script';
 
 export async function doApplySuggestionsAction(
-  core: Core,
+  core: Remote<Core>,
   results: ESLint.LintResult[],
   selectedRuleIds: string[],
 ): Promise<void> {
