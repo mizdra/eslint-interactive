@@ -3,6 +3,10 @@
 import { prompt } from 'enquirer';
 import { Action, DisplayMode } from '../types';
 
+// When combined with worker, for some reason the enquirer grabs the SIGINT and the process continues to survive.
+// Therefore, the process is explicitly terminated.
+const onCancel = () => process.exit();
+
 /**
  * Ask the user for the rule ids to which they want to apply the action.
  * @param ruleIdsInResults The rule ids that are in the lint results.
@@ -15,6 +19,7 @@ export async function promptToInputRuleIds(ruleIdsInResults: string[]): Promise<
       type: 'multiselect',
       message: 'Which rules would you like to apply action?',
       choices: ruleIdsInResults,
+      onCancel,
     },
   ]);
   return ruleIds;
@@ -44,6 +49,7 @@ export async function promptToInputAction(): Promise<Action> {
         },
         { name: 'reselectRules', message: 'Reselect rules' },
       ],
+      onCancel,
     },
   ]);
   return action;
@@ -65,6 +71,7 @@ export async function promptToInputDisplayMode(): Promise<DisplayMode> {
         { name: 'withPager', message: 'Display with pager' },
         { name: 'withoutPager', message: 'Display without pager' },
       ],
+      onCancel,
     },
   ]);
   return displayMode;
@@ -82,6 +89,7 @@ export async function promptToInputDescription(): Promise<string | undefined> {
       name: 'description',
       type: 'input',
       message: 'Leave a code comment with your reason for disabling (Optional)',
+      onCancel,
     },
   ]);
   return description === '' ? undefined : description;
@@ -98,6 +106,7 @@ export async function promptToInputContinue(): Promise<boolean> {
       type: 'confirm',
       message: 'Continue?',
       initial: true,
+      onCancel,
     },
   ]);
   return isContinue;
@@ -114,6 +123,7 @@ export async function promptToInputReuseFilterScript(): Promise<boolean> {
       type: 'confirm',
       message: 'Do you want to reuse a previously edited filter script?',
       initial: true,
+      onCancel,
     },
   ]);
   return reuseFilterScript;
@@ -130,6 +140,7 @@ export async function promptToInputReuseScript(): Promise<boolean> {
       type: 'confirm',
       message: 'Do you want to reuse a previously edited script?',
       initial: true,
+      onCancel,
     },
   ]);
   return reuseScript;

@@ -1,11 +1,11 @@
 import { access, mkdir, readFile, writeFile } from 'fs/promises';
 import { dirname } from 'path';
 import chalk from 'chalk';
+import { Remote } from 'comlink';
 import { ESLint } from 'eslint';
 import ora from 'ora';
 import { promptToInputReuseFilterScript } from '../cli/prompt';
-import { Core } from '../core';
-import { SuggestionFilter } from '../transforms/apply-suggestions';
+import { SerializableCore } from '../core-worker';
 import {
   editFileWithEditor,
   generateExampleFilterScriptFilePath,
@@ -13,7 +13,7 @@ import {
 } from '../util/filter-script';
 
 export async function doApplySuggestionsAction(
-  core: Core,
+  core: Remote<SerializableCore>,
   results: ESLint.LintResult[],
   selectedRuleIds: string[],
 ): Promise<void> {
@@ -35,8 +35,7 @@ export async function doApplySuggestionsAction(
   console.log('Opening editor...');
 
   const filterScript = await editFileWithEditor(filterScriptFilePath);
-  const filter = eval(filterScript) as SuggestionFilter;
   const fixingSpinner = ora('Applying suggestion...').start();
-  await core.applySuggestions(results, selectedRuleIds, filter);
+  await core.applySuggestions(results, selectedRuleIds, filterScript);
   fixingSpinner.succeed(chalk.bold('Applying suggestion was successful.'));
 }

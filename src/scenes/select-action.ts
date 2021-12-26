@@ -1,3 +1,4 @@
+import { Remote } from 'comlink';
 import { ESLint } from 'eslint';
 import { doApplySuggestionsAction } from '../actions/apply-suggestions';
 import { doDisablePerFileAction } from '../actions/disable-per-file';
@@ -6,7 +7,7 @@ import { doFixAction } from '../actions/fix';
 import { doMakeFixableAndFixAction } from '../actions/make-fixable-and-fix';
 import { doPrintDetailsOfResultsAction } from '../actions/print-details-of-results';
 import { promptToInputAction } from '../cli/prompt';
-import { Core } from '../core';
+import { SerializableCore } from '../core-worker';
 import { NextScene } from '../types';
 import { unreachable } from '../util/type-check';
 
@@ -23,7 +24,7 @@ export type SelectActionArgs = {
  * Run the scene where a user select the action to be performed for the problems of selected rules.
  */
 export async function selectAction(
-  core: Core,
+  core: Remote<SerializableCore>,
   { results, ruleIdsInResults, selectedRuleIds }: SelectActionArgs,
 ): Promise<NextScene> {
   const action = await promptToInputAction();

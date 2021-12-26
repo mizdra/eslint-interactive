@@ -28,6 +28,10 @@ module.exports = {
       rules: {
         // ts-ignore は覚悟のある時にしか使わないので、いちいち lint error にする必要もない
         '@typescript-eslint/ban-ts-comment': 'off',
+        // 煩すぎるので off
+        '@typescript-eslint/no-unsafe-return': 'off',
+        // 煩すぎるので off
+        '@typescript-eslint/no-unsafe-argument': 'off',
       },
     },
     // for test

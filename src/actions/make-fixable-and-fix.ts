@@ -1,11 +1,11 @@
 import { access, mkdir, readFile, writeFile } from 'fs/promises';
 import { dirname } from 'path';
 import chalk from 'chalk';
+import { Remote } from 'comlink';
 import { ESLint } from 'eslint';
 import ora from 'ora';
 import { promptToInputReuseScript } from '../cli/prompt';
-import { Core } from '../core';
-import { FixableMaker } from '../transforms/make-fixable-and-fix';
+import { SerializableCore } from '../core-worker';
 import {
   editFileWithEditor,
   generateExampleFixableMakerScriptFilePath,
@@ -13,7 +13,7 @@ import {
 } from '../util/filter-script';
 
 export async function doMakeFixableAndFixAction(
-  core: Core,
+  core: Remote<SerializableCore>,
   results: ESLint.LintResult[],
   selectedRuleIds: string[],
 ): Promise<void> {
@@ -35,8 +35,7 @@ export async function doMakeFixableAndFixAction(
   console.log('Opening editor...');
 
   const fixableMakerScript = await editFileWithEditor(fixableMakerScriptFilePath);
-  const fixableMaker = eval(fixableMakerScript) as FixableMaker;
   const fixingSpinner = ora('Making fixable and fixing...').start();
-  await core.makeFixableAndFix(results, selectedRuleIds, fixableMaker);
+  await core.makeFixableAndFix(results, selectedRuleIds, fixableMakerScript);
   fixingSpinner.succeed(chalk.bold('Making fixable and fixing was successful.'));
 }

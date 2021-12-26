@@ -1,9 +1,10 @@
+import { Remote } from 'comlink';
 import { ESLint } from 'eslint';
 import { promptToInputDisplayMode } from '../cli/prompt';
-import { Core } from '../core';
+import { SerializableCore } from '../core-worker';
 
 export async function doPrintDetailsOfResultsAction(
-  core: Core,
+  core: Remote<SerializableCore>,
   results: ESLint.LintResult[],
   selectedRuleIds: string[],
 ) {
