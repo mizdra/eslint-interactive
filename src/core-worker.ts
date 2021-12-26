@@ -30,6 +30,11 @@ export class SerializableCore {
   printSummaryOfResults(...args: Parameters<Core['printSummaryOfResults']>): ReturnType<Core['printSummaryOfResults']> {
     return this.core.printSummaryOfResults(...args);
   }
+  async printDetailsOfResults(
+    ...args: Parameters<Core['printDetailsOfResults']>
+  ): ReturnType<Core['printDetailsOfResults']> {
+    return this.core.printDetailsOfResults(...args);
+  }
   async fix(...args: Parameters<Core['fix']>): ReturnType<Core['fix']> {
     return this.core.fix(...args);
   }
