@@ -15,6 +15,7 @@ export async function promptToInputRuleIds(ruleIdsInResults: string[]): Promise<
       type: 'multiselect',
       message: 'Which rules would you like to apply action?',
       choices: ruleIdsInResults,
+      onCancel: () => process.exit(),
     },
   ]);
   return ruleIds;
@@ -44,6 +45,7 @@ export async function promptToInputAction(): Promise<Action> {
         },
         { name: 'reselectRules', message: 'Reselect rules' },
       ],
+      onCancel: () => process.exit(),
     },
   ]);
   return action;
@@ -65,6 +67,7 @@ export async function promptToInputDisplayMode(): Promise<DisplayMode> {
         { name: 'withPager', message: 'Display with pager' },
         { name: 'withoutPager', message: 'Display without pager' },
       ],
+      onCancel: () => process.exit(),
     },
   ]);
   return displayMode;
@@ -82,6 +85,7 @@ export async function promptToInputDescription(): Promise<string | undefined> {
       name: 'description',
       type: 'input',
       message: 'Leave a code comment with your reason for disabling (Optional)',
+      onCancel: () => process.exit(),
     },
   ]);
   return description === '' ? undefined : description;
@@ -98,6 +102,7 @@ export async function promptToInputContinue(): Promise<boolean> {
       type: 'confirm',
       message: 'Continue?',
       initial: true,
+      onCancel: () => process.exit(),
     },
   ]);
   return isContinue;
@@ -114,6 +119,7 @@ export async function promptToInputReuseFilterScript(): Promise<boolean> {
       type: 'confirm',
       message: 'Do you want to reuse a previously edited filter script?',
       initial: true,
+      onCancel: () => process.exit(),
     },
   ]);
   return reuseFilterScript;
@@ -130,6 +136,7 @@ export async function promptToInputReuseScript(): Promise<boolean> {
       type: 'confirm',
       message: 'Do you want to reuse a previously edited script?',
       initial: true,
+      onCancel: () => process.exit(),
     },
   ]);
   return reuseScript;
