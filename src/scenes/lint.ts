@@ -2,10 +2,10 @@ import chalk from 'chalk';
 import { Remote } from 'comlink';
 import ora from 'ora';
 import { warn } from '../cli/log';
+import { SerializableCore } from '../core-worker';
 import { NextScene } from '../types';
 import { unique } from '../util/array';
 import { notEmpty } from '../util/type-check';
-import { SerializableCore } from '../worker';
 
 /**
  * Run the scene to lint.

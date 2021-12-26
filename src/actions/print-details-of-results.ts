@@ -1,7 +1,7 @@
 import { Remote } from 'comlink';
 import { ESLint } from 'eslint';
 import { promptToInputDisplayMode } from '../cli/prompt';
-import { SerializableCore } from '../worker';
+import { SerializableCore } from '../core-worker';
 
 export async function doPrintDetailsOfResultsAction(
   core: Remote<SerializableCore>,

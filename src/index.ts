@@ -5,12 +5,12 @@ import nodeEndpoint from 'comlink/dist/umd/node-adapter';
 import isInstalledGlobally from 'is-installed-globally';
 import { warn } from './cli/log';
 import { parseArgv } from './cli/parse-argv';
+import { SerializableCore } from './core-worker';
 import { lint } from './scenes/lint';
 import { selectAction } from './scenes/select-action';
 import { selectRuleIds } from './scenes/select-rule-ids';
 import { selectToContinue } from './scenes/select-to-continue';
 import { NextScene } from './types';
-import { SerializableCore } from './worker';
 
 export type Options = {
   argv: string[];
@@ -31,7 +31,7 @@ export async function run(options: Options) {
 
   // Directly executing the Core API will hog the main thread and halt the spinner.
   // So we wrap it with comlink and run it on the Worker.
-  const worker = new Worker(join(__dirname, 'worker.js'));
+  const worker = new Worker(join(__dirname, 'core-worker.js'));
   const ProxiedCore = wrap<typeof SerializableCore>(nodeEndpoint(worker));
   const core = await new ProxiedCore(config);
 

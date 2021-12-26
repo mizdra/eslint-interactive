@@ -7,9 +7,9 @@ import { doFixAction } from '../actions/fix';
 import { doMakeFixableAndFixAction } from '../actions/make-fixable-and-fix';
 import { doPrintDetailsOfResultsAction } from '../actions/print-details-of-results';
 import { promptToInputAction } from '../cli/prompt';
+import { SerializableCore } from '../core-worker';
 import { NextScene } from '../types';
 import { unreachable } from '../util/type-check';
-import { SerializableCore } from '../worker';
 
 export type SelectActionArgs = {
   /** The lint results of the project */

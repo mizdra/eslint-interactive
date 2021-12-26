@@ -5,12 +5,12 @@ import { Remote } from 'comlink';
 import { ESLint } from 'eslint';
 import ora from 'ora';
 import { promptToInputReuseScript } from '../cli/prompt';
+import { SerializableCore } from '../core-worker';
 import {
   editFileWithEditor,
   generateExampleFixableMakerScriptFilePath,
   generateFixableMakerScriptFilePath,
 } from '../util/filter-script';
-import { SerializableCore } from '../worker';
 
 export async function doMakeFixableAndFixAction(
   core: Remote<SerializableCore>,

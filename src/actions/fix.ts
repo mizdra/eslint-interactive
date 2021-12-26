@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import { Remote } from 'comlink';
 import ora from 'ora';
-import { SerializableCore } from '../worker';
+import { SerializableCore } from '../core-worker';
 
 export async function doFixAction(core: Remote<SerializableCore>, selectedRuleIds: string[]) {
   const fixingSpinner = ora('Fixing...').start();

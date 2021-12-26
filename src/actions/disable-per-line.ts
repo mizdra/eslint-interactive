@@ -3,7 +3,7 @@ import { Remote } from 'comlink';
 import { ESLint } from 'eslint';
 import ora from 'ora';
 import { promptToInputDescription } from '../cli/prompt';
-import { SerializableCore } from '../worker';
+import { SerializableCore } from '../core-worker';
 
 export async function doDisablePerLineAction(
   core: Remote<SerializableCore>,

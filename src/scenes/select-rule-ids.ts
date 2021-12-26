@@ -1,8 +1,8 @@
 import { Remote } from 'comlink';
 import { ESLint } from 'eslint';
 import { promptToInputRuleIds } from '../cli/prompt';
+import { SerializableCore } from '../core-worker';
 import { NextScene } from '../types';
-import { SerializableCore } from '../worker';
 import { selectAction } from './select-action';
 
 export type SelectRuleIdsArgs = {

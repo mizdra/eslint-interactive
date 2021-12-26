@@ -5,12 +5,12 @@ import { Remote } from 'comlink';
 import { ESLint } from 'eslint';
 import ora from 'ora';
 import { promptToInputReuseFilterScript } from '../cli/prompt';
+import { SerializableCore } from '../core-worker';
 import {
   editFileWithEditor,
   generateExampleFilterScriptFilePath,
   generateFilterScriptFilePath,
 } from '../util/filter-script';
-import { SerializableCore } from '../worker';
 
 export async function doApplySuggestionsAction(
   core: Remote<SerializableCore>,
