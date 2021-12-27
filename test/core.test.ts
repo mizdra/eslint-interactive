@@ -60,7 +60,11 @@ describe('Core', () => {
   });
   test('fix', async () => {
     await core.fix(['semi']);
-    const snapshot = await getSnapshotOfChangedFiles();
-    expect(snapshot).toMatchSnapshot();
+    expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
   });
+  // test('disablePerLine', async () => {
+  //   const results = await core.lint();
+  //   await core.disablePerLine(results, ['ban-exponentiation-operator']);
+  //   expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
+  // });
 });
