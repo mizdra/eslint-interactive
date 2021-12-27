@@ -7,6 +7,10 @@ import { Core } from '../src/core';
 
 const execPromise = promisify(exec);
 
+/**
+ * Returns a string containing the stitched together contents of the file modified by transform.
+ * To make the snapshot easier to read, the name of the file is inserted at the beginning of the contents of each file.
+ */
 async function getSnapshotOfChangedFiles(): Promise<string> {
   const { stdout } = await execPromise(`diff -qr fixtures fixtures-tmp | cut -d " " -f 4 | xargs tail -n +1`, {
     cwd: join(__dirname, '..'),
