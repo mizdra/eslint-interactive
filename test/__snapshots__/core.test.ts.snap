@@ -1,5 +1,67 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Core fix 1`] = `
+"==> fixtures/index.js <==
+import { mul } from './lib/mul';
+import { add } from './lib/add';
+import { sub } from './lib/sub';
+import { exp } from './lib/exp';
+import { strictEqual } from 'assert';
+
+const numA=add(1, 2);
+let numB=add(3, 4);
+let numC=sub(5, 6);
+let numD=exp(2, 2);
+let numE=mul(numA, numB, numC, numD);
+
+strictEqual(numD, -84);
+
+==> fixtures/lib/add-disable-comment.jsx <==
+const a = 0;
+// eslint-disable-next-line semi
+const b = 0
+/* eslint-disable-next-line semi */
+const c = 0
+// eslint-disable-next-line ban-exponentiation-operator
+const d = 0;
+// eslint-disable-next-line no-unused-vars
+const jsx = (
+  <>
+    <div>{2 ** 10}</div>
+    {/* eslint-disable-next-line semi */}
+    <div>{2 ** 10}</div>
+  </>
+);
+
+==> fixtures/lib/add.js <==
+/* eslint semi: 1 */
+
+export function add(a, b) {
+  return a + b;
+}
+
+==> fixtures/lib/exp.js <==
+export function exp(a, b) {
+  return a ** b;
+}
+
+==> fixtures/lib/mul.js <==
+export function mul(a, b) {
+  return a * b;
+}
+
+==> fixtures/lib/shebang.js <==
+#!/usr/bin/env node
+
+console.log();
+
+==> fixtures/lib/sub.mjs <==
+export function sub(a, b) {
+  return a - b;
+}
+"
+`;
+
 exports[`Core lint 1`] = `
 Array [
   Object {
@@ -1085,5 +1147,93 @@ key4
     "usedDeprecatedRules": Array [],
     "warningCount": 0,
   },
+]
+`;
+
+exports[`Core printDetailsOfResults 1`] = `
+Array [
+  "[31merror[39m: [1m\`./lib/add\` import should occur before import of \`./lib/mul\`[22m [2m(import/order)[22m at [32mfixtures/index.js:2:1[39m:
+  1 | import { mul } from './lib/mul'
+> 2 | import { add } from './lib/add'
+    | ^
+  3 | import { sub } from './lib/sub'
+  4 | import { exp } from './lib/exp'
+  5 | import { strictEqual } from 'assert'
+
+
+[31merror[39m: [1m\`./lib/exp\` import should occur before import of \`./lib/mul\`[22m [2m(import/order)[22m at [32mfixtures/index.js:4:1[39m:
+  2 | import { add } from './lib/add'
+  3 | import { sub } from './lib/sub'
+> 4 | import { exp } from './lib/exp'
+    | ^
+  5 | import { strictEqual } from 'assert'
+  6 | 
+  7 | const numA=add(1, 2)
+
+
+[31merror[39m: [1m\`assert\` import should occur before import of \`./lib/mul\`[22m [2m(import/order)[22m at [32mfixtures/index.js:5:1[39m:
+  3 | import { sub } from './lib/sub'
+  4 | import { exp } from './lib/exp'
+> 5 | import { strictEqual } from 'assert'
+    | ^
+  6 | 
+  7 | const numA=add(1, 2)
+  8 | let numB=add(3, 4)
+
+
+[31merror[39m: [1mBan exponentiation operator[22m [2m(ban-exponentiation-operator)[22m at [32mfixtures/lib/add-disable-comment.jsx:11:11[39m:
+   9 | const jsx = (
+  10 |   <>
+> 11 |     <div>{2 ** 10}</div>
+     |           ^
+  12 |     {/* eslint-disable-next-line semi */}
+  13 |     <div>{2 ** 10}</div>
+  14 |   </>
+
+
+[31merror[39m: [1mBan exponentiation operator[22m [2m(ban-exponentiation-operator)[22m at [32mfixtures/lib/add-disable-comment.jsx:13:11[39m:
+  11 |     <div>{2 ** 10}</div>
+  12 |     {/* eslint-disable-next-line semi */}
+> 13 |     <div>{2 ** 10}</div>
+     |           ^
+  14 |   </>
+  15 | );
+  16 | 
+
+
+[31merror[39m: [1mBan exponentiation operator[22m [2m(ban-exponentiation-operator)[22m at [32mfixtures/lib/exp.js:2:10[39m:
+  1 | export function exp(a, b) {
+> 2 |   return a ** b
+    |          ^
+  3 | }
+  4 | 
+
+
+[31m[1m28 errors found.[22m[39m[31m[1m[22m[39m
+[31m[1m20 errors potentially fixable with the \`--fix\` option.[22m[39m",
+]
+`;
+
+exports[`Core printSummaryOfResults 1`] = `
+Array [
+  "[1m- 11 files (2 files passed, [91m9 files failed[39m) checked.[22m
+[1m- 48 problems ([31m47 errors[39m, [33m1 warning[39m) found.[22m
+┌─────────────────────────────┬───────┬─────────┬────────────┬─────────────────┐
+│ Rule                        │ Error │ Warning │ is fixable │ has suggestions │
+├─────────────────────────────┼───────┼─────────┼────────────┼─────────────────┤
+│ semi                        │ [31m[1m16[22m[39m    │ [31m[1m1[22m[39m       │ [31m[1m17[22m[39m         │ 0               │
+├─────────────────────────────┼───────┼─────────┼────────────┼─────────────────┤
+│ import/order                │ [31m[1m3[22m[39m     │ 0       │ [31m[1m3[22m[39m          │ 0               │
+├─────────────────────────────┼───────┼─────────┼────────────┼─────────────────┤
+│ prefer-const                │ [31m[1m4[22m[39m     │ 0       │ [31m[1m4[22m[39m          │ 0               │
+├─────────────────────────────┼───────┼─────────┼────────────┼─────────────────┤
+│ no-unused-vars              │ [31m[1m11[22m[39m    │ 0       │ 0          │ 0               │
+├─────────────────────────────┼───────┼─────────┼────────────┼─────────────────┤
+│ ban-exponentiation-operator │ [31m[1m3[22m[39m     │ 0       │ 0          │ 0               │
+├─────────────────────────────┼───────┼─────────┼────────────┼─────────────────┤
+│ no-useless-escape           │ [31m[1m5[22m[39m     │ 0       │ 0          │ [31m[1m5[22m[39m               │
+├─────────────────────────────┼───────┼─────────┼────────────┼─────────────────┤
+│ no-unsafe-negation          │ [31m[1m5[22m[39m     │ 0       │ 0          │ [31m[1m5[22m[39m               │
+└─────────────────────────────┴───────┴─────────┴────────────┴─────────────────┘",
 ]
 `;

@@ -1,7 +1,19 @@
-import { resolve } from 'path';
+import { exec } from 'child_process';
+import { join } from 'path';
+import { promisify } from 'util';
 import { ESLint } from 'eslint';
-import mock from 'mock-fs';
+import { mockConsoleLog } from 'jest-mock-process';
 import { Core } from '../src/core';
+
+const execPromise = promisify(exec);
+
+async function getSnapshotOfChangedFiles(): Promise<string> {
+  const { stdout } = await execPromise(
+    `git diff --relative=fixtures --name-only | awk '{print "fixtures/"$1}' | xargs tail -n +1`,
+    { cwd: join(__dirname, '..') },
+  );
+  return stdout.toString();
+}
 
 // Normalize `results` for the snapshot.
 function normalize(results: ESLint.LintResult[]): ESLint.LintResult[] {
@@ -16,17 +28,8 @@ function normalize(results: ESLint.LintResult[]): ESLint.LintResult[] {
   });
 }
 
-beforeEach(() => {
-  // After applying transform, we want to undo the changes, so we mock the filesystem.
-  mock({
-    fixtures: mock.load(resolve(__dirname, '../fixtures')),
-    // NOTE: I don't know why, but node_modules won't work unless you mock them too.
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    node_modules: mock.load(resolve(__dirname, '../node_modules')),
-  });
-});
-afterEach(() => {
-  mock.restore();
+afterEach(async () => {
+  await execPromise(`git restore fixtures`, { cwd: join(__dirname, '..') });
 });
 
 describe('Core', () => {
@@ -38,7 +41,26 @@ describe('Core', () => {
   });
   test('lint', async () => {
     const results = await core.lint();
-    // NOTE: Since snapshots cannot be saved when the file system is mocked, temporarily unmock it.
-    mock.bypass(() => expect(normalize(results)).toMatchSnapshot());
+    expect(normalize(results)).toMatchSnapshot();
+  });
+  test('printSummaryOfResults', async () => {
+    const results = await core.lint();
+    const mockStdout = mockConsoleLog();
+    core.printSummaryOfResults(results);
+    expect(mockStdout.mock.calls[0]).toMatchSnapshot();
+    mockStdout.mockRestore();
+  });
+  test('printDetailsOfResults', async () => {
+    const results = await core.lint();
+
+    const mockStdout = mockConsoleLog();
+    await core.printDetailsOfResults(results, ['import/order', 'ban-exponentiation-operator'], 'withoutPager');
+    expect(mockStdout.mock.calls[0]).toMatchSnapshot();
+    mockStdout.mockRestore();
+  });
+  test('fix', async () => {
+    await core.fix(['semi']);
+    const snapshot = await getSnapshotOfChangedFiles();
+    expect(snapshot).toMatchSnapshot();
   });
 });
