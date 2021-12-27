@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Core fix 1`] = `
-"==> fixtures/index.js <==
+"==> fixtures-tmp/index.js <==
 import { mul } from './lib/mul';
 import { add } from './lib/add';
 import { sub } from './lib/sub';
@@ -16,7 +16,7 @@ let numE=mul(numA, numB, numC, numD);
 
 strictEqual(numD, -84);
 
-==> fixtures/lib/add-disable-comment.jsx <==
+==> fixtures-tmp/lib/add-disable-comment.jsx <==
 const a = 0;
 // eslint-disable-next-line semi
 const b = 0
@@ -33,29 +33,29 @@ const jsx = (
   </>
 );
 
-==> fixtures/lib/add.js <==
+==> fixtures-tmp/lib/add.js <==
 /* eslint semi: 1 */
 
 export function add(a, b) {
   return a + b;
 }
 
-==> fixtures/lib/exp.js <==
+==> fixtures-tmp/lib/exp.js <==
 export function exp(a, b) {
   return a ** b;
 }
 
-==> fixtures/lib/mul.js <==
+==> fixtures-tmp/lib/mul.js <==
 export function mul(a, b) {
   return a * b;
 }
 
-==> fixtures/lib/shebang.js <==
+==> fixtures-tmp/lib/shebang.js <==
 #!/usr/bin/env node
 
 console.log();
 
-==> fixtures/lib/sub.mjs <==
+==> fixtures-tmp/lib/sub.mjs <==
 export function sub(a, b) {
   return a - b;
 }
@@ -67,7 +67,7 @@ Array [
   Object {
     "errorCount": 0,
     "fatalErrorCount": 0,
-    "filePath": "/fixtures/.eslintrc.js",
+    "filePath": "/fixtures-tmp/.eslintrc.js",
     "fixableErrorCount": 0,
     "fixableWarningCount": 0,
     "messages": Array [],
@@ -77,7 +77,7 @@ Array [
   Object {
     "errorCount": 19,
     "fatalErrorCount": 0,
-    "filePath": "/fixtures/index.js",
+    "filePath": "/fixtures-tmp/index.js",
     "fixableErrorCount": 18,
     "fixableWarningCount": 0,
     "messages": Array [
@@ -431,7 +431,7 @@ import { exp } from './lib/exp'
   Object {
     "errorCount": 7,
     "fatalErrorCount": 0,
-    "filePath": "/fixtures/lib/add-disable-comment.jsx",
+    "filePath": "/fixtures-tmp/lib/add-disable-comment.jsx",
     "fixableErrorCount": 1,
     "fixableWarningCount": 0,
     "messages": Array [
@@ -524,7 +524,7 @@ import { exp } from './lib/exp'
   Object {
     "errorCount": 0,
     "fatalErrorCount": 0,
-    "filePath": "/fixtures/lib/add.js",
+    "filePath": "/fixtures-tmp/lib/add.js",
     "fixableErrorCount": 0,
     "fixableWarningCount": 1,
     "messages": Array [
@@ -553,7 +553,7 @@ import { exp } from './lib/exp'
   Object {
     "errorCount": 10,
     "fatalErrorCount": 0,
-    "filePath": "/fixtures/lib/apply-suggestion.js",
+    "filePath": "/fixtures-tmp/lib/apply-suggestion.js",
     "fixableErrorCount": 0,
     "fixableWarningCount": 0,
     "messages": Array [
@@ -937,7 +937,7 @@ key4
   Object {
     "errorCount": 2,
     "fatalErrorCount": 0,
-    "filePath": "/fixtures/lib/exp.js",
+    "filePath": "/fixtures-tmp/lib/exp.js",
     "fixableErrorCount": 1,
     "fixableWarningCount": 0,
     "messages": Array [
@@ -976,7 +976,7 @@ key4
   Object {
     "errorCount": 6,
     "fatalErrorCount": 0,
-    "filePath": "/fixtures/lib/make-fixable-and-fix.js",
+    "filePath": "/fixtures-tmp/lib/make-fixable-and-fix.js",
     "fixableErrorCount": 0,
     "fixableWarningCount": 0,
     "messages": Array [
@@ -1053,7 +1053,7 @@ key4
   Object {
     "errorCount": 1,
     "fatalErrorCount": 0,
-    "filePath": "/fixtures/lib/mul.js",
+    "filePath": "/fixtures-tmp/lib/mul.js",
     "fixableErrorCount": 1,
     "fixableWarningCount": 0,
     "messages": Array [
@@ -1082,7 +1082,7 @@ key4
   Object {
     "errorCount": 1,
     "fatalErrorCount": 0,
-    "filePath": "/fixtures/lib/shebang.js",
+    "filePath": "/fixtures-tmp/lib/shebang.js",
     "fixableErrorCount": 1,
     "fixableWarningCount": 0,
     "messages": Array [
@@ -1111,7 +1111,7 @@ key4
   Object {
     "errorCount": 1,
     "fatalErrorCount": 0,
-    "filePath": "/fixtures/lib/sub.mjs",
+    "filePath": "/fixtures-tmp/lib/sub.mjs",
     "fixableErrorCount": 1,
     "fixableWarningCount": 0,
     "messages": Array [
@@ -1140,7 +1140,7 @@ key4
   Object {
     "errorCount": 0,
     "fatalErrorCount": 0,
-    "filePath": "/fixtures/rules/ban-exponentiation-operator.js",
+    "filePath": "/fixtures-tmp/rules/ban-exponentiation-operator.js",
     "fixableErrorCount": 0,
     "fixableWarningCount": 0,
     "messages": Array [],
@@ -1152,7 +1152,7 @@ key4
 
 exports[`Core printDetailsOfResults 1`] = `
 Array [
-  "[31merror[39m: [1m\`./lib/add\` import should occur before import of \`./lib/mul\`[22m [2m(import/order)[22m at [32mfixtures/index.js:2:1[39m:
+  "[31merror[39m: [1m\`./lib/add\` import should occur before import of \`./lib/mul\`[22m [2m(import/order)[22m at [32mfixtures-tmp/index.js:2:1[39m:
   1 | import { mul } from './lib/mul'
 > 2 | import { add } from './lib/add'
     | ^
@@ -1161,7 +1161,7 @@ Array [
   5 | import { strictEqual } from 'assert'
 
 
-[31merror[39m: [1m\`./lib/exp\` import should occur before import of \`./lib/mul\`[22m [2m(import/order)[22m at [32mfixtures/index.js:4:1[39m:
+[31merror[39m: [1m\`./lib/exp\` import should occur before import of \`./lib/mul\`[22m [2m(import/order)[22m at [32mfixtures-tmp/index.js:4:1[39m:
   2 | import { add } from './lib/add'
   3 | import { sub } from './lib/sub'
 > 4 | import { exp } from './lib/exp'
@@ -1171,7 +1171,7 @@ Array [
   7 | const numA=add(1, 2)
 
 
-[31merror[39m: [1m\`assert\` import should occur before import of \`./lib/mul\`[22m [2m(import/order)[22m at [32mfixtures/index.js:5:1[39m:
+[31merror[39m: [1m\`assert\` import should occur before import of \`./lib/mul\`[22m [2m(import/order)[22m at [32mfixtures-tmp/index.js:5:1[39m:
   3 | import { sub } from './lib/sub'
   4 | import { exp } from './lib/exp'
 > 5 | import { strictEqual } from 'assert'
@@ -1181,7 +1181,7 @@ Array [
   8 | let numB=add(3, 4)
 
 
-[31merror[39m: [1mBan exponentiation operator[22m [2m(ban-exponentiation-operator)[22m at [32mfixtures/lib/add-disable-comment.jsx:11:11[39m:
+[31merror[39m: [1mBan exponentiation operator[22m [2m(ban-exponentiation-operator)[22m at [32mfixtures-tmp/lib/add-disable-comment.jsx:11:11[39m:
    9 | const jsx = (
   10 |   <>
 > 11 |     <div>{2 ** 10}</div>
@@ -1191,7 +1191,7 @@ Array [
   14 |   </>
 
 
-[31merror[39m: [1mBan exponentiation operator[22m [2m(ban-exponentiation-operator)[22m at [32mfixtures/lib/add-disable-comment.jsx:13:11[39m:
+[31merror[39m: [1mBan exponentiation operator[22m [2m(ban-exponentiation-operator)[22m at [32mfixtures-tmp/lib/add-disable-comment.jsx:13:11[39m:
   11 |     <div>{2 ** 10}</div>
   12 |     {/* eslint-disable-next-line semi */}
 > 13 |     <div>{2 ** 10}</div>
@@ -1201,7 +1201,7 @@ Array [
   16 | 
 
 
-[31merror[39m: [1mBan exponentiation operator[22m [2m(ban-exponentiation-operator)[22m at [32mfixtures/lib/exp.js:2:10[39m:
+[31merror[39m: [1mBan exponentiation operator[22m [2m(ban-exponentiation-operator)[22m at [32mfixtures-tmp/lib/exp.js:2:10[39m:
   1 | export function exp(a, b) {
 > 2 |   return a ** b
     |          ^

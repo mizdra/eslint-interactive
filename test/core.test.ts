@@ -8,10 +8,9 @@ import { Core } from '../src/core';
 const execPromise = promisify(exec);
 
 async function getSnapshotOfChangedFiles(): Promise<string> {
-  const { stdout } = await execPromise(
-    `git diff --relative=fixtures --name-only | awk '{print "fixtures/"$1}' | xargs tail -n +1`,
-    { cwd: join(__dirname, '..') },
-  );
+  const { stdout } = await execPromise(`diff -qr fixtures fixtures-tmp | cut -d " " -f 4 | xargs tail -n +1`, {
+    cwd: join(__dirname, '..'),
+  });
   return stdout.toString();
 }
 
@@ -28,14 +27,18 @@ function normalize(results: ESLint.LintResult[]): ESLint.LintResult[] {
   });
 }
 
+beforeEach(async () => {
+  await execPromise(`rm -rf fixtures-tmp && cp -r fixtures fixtures-tmp`, { cwd: join(__dirname, '..') });
+});
+
 afterEach(async () => {
-  await execPromise(`git restore fixtures`, { cwd: join(__dirname, '..') });
+  await execPromise(`rm -rf fixtures-tmp`, { cwd: join(__dirname, '..') });
 });
 
 describe('Core', () => {
   const core = new Core({
-    patterns: ['fixtures'],
-    rulePaths: ['fixtures/rules'],
+    patterns: ['fixtures-tmp'],
+    rulePaths: ['fixtures-tmp/rules'],
     extensions: ['.js', '.jsx', '.mjs'],
     formatterName: 'codeframe',
   });
