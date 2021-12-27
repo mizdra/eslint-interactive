@@ -41,6 +41,7 @@ describe('Core', () => {
     rulePaths: ['fixtures-tmp/rules'],
     extensions: ['.js', '.jsx', '.mjs'],
     formatterName: 'codeframe',
+    cwd: join(__dirname, '..'),
   });
   test('lint', async () => {
     const results = await core.lint();
@@ -65,9 +66,27 @@ describe('Core', () => {
     await core.fix(['semi']);
     expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
   });
-  // test('disablePerLine', async () => {
-  //   const results = await core.lint();
-  //   await core.disablePerLine(results, ['ban-exponentiation-operator']);
-  //   expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
-  // });
+  test('disablePerLine', async () => {
+    const results = await core.lint();
+    await core.disablePerLine(results, ['ban-exponentiation-operator']);
+    expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
+  });
+  test('disablePerFile', async () => {
+    const results = await core.lint();
+    await core.disablePerFile(results, ['ban-exponentiation-operator']);
+    expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
+  });
+  test('applySuggestions', async () => {
+    const results = await core.lint();
+    await core.applySuggestions(results, ['no-unsafe-negation'], (suggestions) => suggestions[0]);
+    expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
+  });
+  test('makeFixableAndFix', async () => {
+    const results = await core.lint();
+    await core.makeFixableAndFix(results, ['no-unused-vars'], (_message, node) => {
+      if (!node || !node.range) return null;
+      return { range: [node.range[0], node.range[0]], text: '_' };
+    });
+    expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
+  });
 });

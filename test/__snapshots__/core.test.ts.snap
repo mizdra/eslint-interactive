@@ -1,5 +1,74 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Core applySuggestions 1`] = `
+"\\"\\\\'\\";
+'\\\\\\"';
+if (!('key1' in {})) 0;
+if (!('key2' in {})) \\"\\\\'\\";
+if (!(\`
+key3
+\` in {})) \\"\\\\'\\";
+if (!(\`
+key4
+\` in {})) \\"\\\\'\\";
+if (!('key5' in {})) 0;
+"
+`;
+
+exports[`Core disablePerFile 1`] = `
+"==> fixtures-tmp/lib/add-disable-comment.jsx <==
+/* eslint-disable ban-exponentiation-operator */
+const a = 0;
+// eslint-disable-next-line semi
+const b = 0
+/* eslint-disable-next-line semi */
+const c = 0
+// eslint-disable-next-line ban-exponentiation-operator
+const d = 0
+// eslint-disable-next-line no-unused-vars
+const jsx = (
+  <>
+    <div>{2 ** 10}</div>
+    {/* eslint-disable-next-line semi */}
+    <div>{2 ** 10}</div>
+  </>
+);
+
+==> fixtures-tmp/lib/exp.js <==
+/* eslint-disable ban-exponentiation-operator */
+export function exp(a, b) {
+  return a ** b
+}
+"
+`;
+
+exports[`Core disablePerLine 1`] = `
+"==> fixtures-tmp/lib/add-disable-comment.jsx <==
+const a = 0;
+// eslint-disable-next-line semi
+const b = 0
+/* eslint-disable-next-line semi */
+const c = 0
+// eslint-disable-next-line ban-exponentiation-operator
+const d = 0
+// eslint-disable-next-line no-unused-vars
+const jsx = (
+  <>
+{/* eslint-disable-next-line ban-exponentiation-operator */}
+    <div>{2 ** 10}</div>
+    {/* eslint-disable-next-line semi, ban-exponentiation-operator */}
+    <div>{2 ** 10}</div>
+  </>
+);
+
+==> fixtures-tmp/lib/exp.js <==
+export function exp(a, b) {
+// eslint-disable-next-line ban-exponentiation-operator
+  return a ** b
+}
+"
+`;
+
 exports[`Core fix 1`] = `
 "==> fixtures-tmp/index.js <==
 import { mul } from './lib/mul';
@@ -1148,6 +1217,53 @@ key4
     "warningCount": 0,
   },
 ]
+`;
+
+exports[`Core makeFixableAndFix 1`] = `
+"==> fixtures-tmp/index.js <==
+import { mul } from './lib/mul'
+import { add } from './lib/add'
+import { sub } from './lib/sub'
+import { exp } from './lib/exp'
+import { strictEqual } from 'assert'
+
+const numA=add(1, 2)
+let numB=add(3, 4)
+let numC=sub(5, 6)
+let numD=exp(2, 2)
+let _numE=mul(numA, numB, numC, numD)
+
+strictEqual(numD, -84)
+
+==> fixtures-tmp/lib/add-disable-comment.jsx <==
+const _a = 0;
+// eslint-disable-next-line semi
+const _b = 0
+/* eslint-disable-next-line semi */
+const _c = 0
+// eslint-disable-next-line ban-exponentiation-operator
+const _d = 0
+// eslint-disable-next-line no-unused-vars
+const jsx = (
+  <>
+    <div>{2 ** 10}</div>
+    {/* eslint-disable-next-line semi */}
+    <div>{2 ** 10}</div>
+  </>
+);
+
+==> fixtures-tmp/lib/make-fixable-and-fix.js <==
+import { _readFile } from 'fs';
+import { join, _dirname } from 'path';
+
+const _a = 0;
+const _b = 0;
+
+function _fn(_arg) {
+  console.log(join('a', 'b'));
+}
+
+"
 `;
 
 exports[`Core printDetailsOfResults 1`] = `
