@@ -60,3 +60,4 @@ Cargo.lock
 /.cache
 .netlify
 *.tsbuildinfo
+/fixtures-tmp

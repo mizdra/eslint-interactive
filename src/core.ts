@@ -3,7 +3,7 @@ import { join } from 'path';
 import { ESLint } from 'eslint';
 import pager from 'node-pager';
 import { format } from './formatter';
-import { TransformRuleOption } from './rules/transform';
+import transformRule, { TransformRuleOption } from './rules/transform';
 import { SuggestionFilter } from './transforms/apply-suggestions';
 import { FixableMaker } from './transforms/make-fixable-and-fix';
 import { Config, DisplayMode, Transform } from './types';
@@ -27,6 +27,7 @@ export class Core {
       cacheLocation: join(tmpdir(), `eslint-interactive--${Date.now()}-${Math.random()}`),
       rulePaths: this.config.rulePaths,
       extensions: this.config.extensions,
+      cwd: this.config.cwd,
     };
   }
 
@@ -73,7 +74,7 @@ export class Core {
     displayMode: DisplayMode,
   ): Promise<void> {
     const eslint = new ESLint(this.baseOptions);
-    const formatter = await eslint.loadFormatter(this.config.formatterName);
+    const formatter = await eslint.loadFormatter(this.config.formatterName ?? 'codeframe');
     const resultText = formatter.format(filterResultsByRuleId(results, ruleIds));
     if (displayMode === 'withPager') {
       await pager(resultText);
@@ -142,14 +143,23 @@ export class Core {
   private async transform(results: ESLint.LintResult[], ruleIds: string[], transform: Transform) {
     const eslint = new ESLint({
       ...this.baseOptions,
-      overrideConfig: {
-        rules: {
-          transform: [2, { results, ruleIds, transform } as TransformRuleOption],
+      // This is super hack to load ESM plugin/rule.
+      // ref: https://github.com/eslint/eslint/issues/15453#issuecomment-1001200953
+      plugins: {
+        'eslint-interactive': {
+          rules: {
+            transform: transformRule,
+          },
         },
       },
-      rulePaths: [...(this.baseOptions.rulePaths ?? []), join(__dirname, 'rules')],
+      overrideConfig: {
+        plugins: ['eslint-interactive'],
+        rules: {
+          'eslint-interactive/transform': [2, { results, ruleIds, transform } as TransformRuleOption],
+        },
+      },
       // NOTE: Only fix the `transform` rule problems.
-      fix: (message) => message.ruleId === 'transform',
+      fix: (message) => message.ruleId === 'eslint-interactive/transform',
     });
     const newResults = await eslint.lintFiles(this.config.patterns);
     await ESLint.outputFixes(newResults);

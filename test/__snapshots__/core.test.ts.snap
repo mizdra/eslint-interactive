@@ -1,0 +1,1355 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Core applySuggestions 1`] = `
+"\\"\\\\'\\";
+'\\\\\\"';
+if (!('key1' in {})) 0;
+if (!('key2' in {})) \\"\\\\'\\";
+if (!(\`
+key3
+\` in {})) \\"\\\\'\\";
+if (!(\`
+key4
+\` in {})) \\"\\\\'\\";
+if (!('key5' in {})) 0;
+"
+`;
+
+exports[`Core disablePerFile 1`] = `
+"==> fixtures-tmp/lib/add-disable-comment.jsx <==
+/* eslint-disable ban-exponentiation-operator */
+const a = 0;
+// eslint-disable-next-line semi
+const b = 0
+/* eslint-disable-next-line semi */
+const c = 0
+// eslint-disable-next-line ban-exponentiation-operator
+const d = 0
+// eslint-disable-next-line no-unused-vars
+const jsx = (
+  <>
+    <div>{2 ** 10}</div>
+    {/* eslint-disable-next-line semi */}
+    <div>{2 ** 10}</div>
+  </>
+);
+
+==> fixtures-tmp/lib/exp.js <==
+/* eslint-disable ban-exponentiation-operator */
+export function exp(a, b) {
+  return a ** b
+}
+"
+`;
+
+exports[`Core disablePerLine 1`] = `
+"==> fixtures-tmp/lib/add-disable-comment.jsx <==
+const a = 0;
+// eslint-disable-next-line semi
+const b = 0
+/* eslint-disable-next-line semi */
+const c = 0
+// eslint-disable-next-line ban-exponentiation-operator
+const d = 0
+// eslint-disable-next-line no-unused-vars
+const jsx = (
+  <>
+{/* eslint-disable-next-line ban-exponentiation-operator */}
+    <div>{2 ** 10}</div>
+    {/* eslint-disable-next-line semi, ban-exponentiation-operator */}
+    <div>{2 ** 10}</div>
+  </>
+);
+
+==> fixtures-tmp/lib/exp.js <==
+export function exp(a, b) {
+// eslint-disable-next-line ban-exponentiation-operator
+  return a ** b
+}
+"
+`;
+
+exports[`Core fix 1`] = `
+"==> fixtures-tmp/index.js <==
+import { mul } from './lib/mul';
+import { add } from './lib/add';
+import { sub } from './lib/sub';
+import { exp } from './lib/exp';
+import { strictEqual } from 'assert';
+
+const numA=add(1, 2);
+let numB=add(3, 4);
+let numC=sub(5, 6);
+let numD=exp(2, 2);
+let numE=mul(numA, numB, numC, numD);
+
+strictEqual(numD, -84);
+
+==> fixtures-tmp/lib/add-disable-comment.jsx <==
+const a = 0;
+// eslint-disable-next-line semi
+const b = 0
+/* eslint-disable-next-line semi */
+const c = 0
+// eslint-disable-next-line ban-exponentiation-operator
+const d = 0;
+// eslint-disable-next-line no-unused-vars
+const jsx = (
+  <>
+    <div>{2 ** 10}</div>
+    {/* eslint-disable-next-line semi */}
+    <div>{2 ** 10}</div>
+  </>
+);
+
+==> fixtures-tmp/lib/add.js <==
+/* eslint semi: 1 */
+
+export function add(a, b) {
+  return a + b;
+}
+
+==> fixtures-tmp/lib/exp.js <==
+export function exp(a, b) {
+  return a ** b;
+}
+
+==> fixtures-tmp/lib/mul.js <==
+export function mul(a, b) {
+  return a * b;
+}
+
+==> fixtures-tmp/lib/shebang.js <==
+#!/usr/bin/env node
+
+console.log();
+
+==> fixtures-tmp/lib/sub.mjs <==
+export function sub(a, b) {
+  return a - b;
+}
+"
+`;
+
+exports[`Core lint 1`] = `
+Array [
+  Object {
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "filePath": "/fixtures-tmp/.eslintrc.js",
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "messages": Array [],
+    "usedDeprecatedRules": Array [],
+    "warningCount": 0,
+  },
+  Object {
+    "errorCount": 19,
+    "fatalErrorCount": 0,
+    "filePath": "/fixtures-tmp/index.js",
+    "fixableErrorCount": 18,
+    "fixableWarningCount": 0,
+    "messages": Array [
+      Object {
+        "column": 32,
+        "endColumn": 1,
+        "endLine": 2,
+        "fix": Object {
+          "range": Array [
+            31,
+            31,
+          ],
+          "text": ";",
+        },
+        "line": 1,
+        "message": "Missing semicolon.",
+        "messageId": "missingSemi",
+        "nodeType": "ImportDeclaration",
+        "ruleId": "semi",
+        "severity": 2,
+      },
+      Object {
+        "column": 1,
+        "endColumn": 32,
+        "endLine": 2,
+        "fix": Object {
+          "range": Array [
+            0,
+            64,
+          ],
+          "text": "import { add } from './lib/add'
+import { mul } from './lib/mul'
+",
+        },
+        "line": 2,
+        "message": "\`./lib/add\` import should occur before import of \`./lib/mul\`",
+        "nodeType": "ImportDeclaration",
+        "ruleId": "import/order",
+        "severity": 2,
+      },
+      Object {
+        "column": 32,
+        "endColumn": 1,
+        "endLine": 3,
+        "fix": Object {
+          "range": Array [
+            63,
+            63,
+          ],
+          "text": ";",
+        },
+        "line": 2,
+        "message": "Missing semicolon.",
+        "messageId": "missingSemi",
+        "nodeType": "ImportDeclaration",
+        "ruleId": "semi",
+        "severity": 2,
+      },
+      Object {
+        "column": 32,
+        "endColumn": 1,
+        "endLine": 4,
+        "fix": Object {
+          "range": Array [
+            95,
+            95,
+          ],
+          "text": ";",
+        },
+        "line": 3,
+        "message": "Missing semicolon.",
+        "messageId": "missingSemi",
+        "nodeType": "ImportDeclaration",
+        "ruleId": "semi",
+        "severity": 2,
+      },
+      Object {
+        "column": 1,
+        "endColumn": 32,
+        "endLine": 4,
+        "fix": Object {
+          "range": Array [
+            0,
+            128,
+          ],
+          "text": "import { exp } from './lib/exp'
+import { mul } from './lib/mul'
+import { add } from './lib/add'
+import { sub } from './lib/sub'
+",
+        },
+        "line": 4,
+        "message": "\`./lib/exp\` import should occur before import of \`./lib/mul\`",
+        "nodeType": "ImportDeclaration",
+        "ruleId": "import/order",
+        "severity": 2,
+      },
+      Object {
+        "column": 32,
+        "endColumn": 1,
+        "endLine": 5,
+        "fix": Object {
+          "range": Array [
+            127,
+            127,
+          ],
+          "text": ";",
+        },
+        "line": 4,
+        "message": "Missing semicolon.",
+        "messageId": "missingSemi",
+        "nodeType": "ImportDeclaration",
+        "ruleId": "semi",
+        "severity": 2,
+      },
+      Object {
+        "column": 1,
+        "endColumn": 37,
+        "endLine": 5,
+        "fix": Object {
+          "range": Array [
+            0,
+            165,
+          ],
+          "text": "import { strictEqual } from 'assert'
+import { mul } from './lib/mul'
+import { add } from './lib/add'
+import { sub } from './lib/sub'
+import { exp } from './lib/exp'
+",
+        },
+        "line": 5,
+        "message": "\`assert\` import should occur before import of \`./lib/mul\`",
+        "nodeType": "ImportDeclaration",
+        "ruleId": "import/order",
+        "severity": 2,
+      },
+      Object {
+        "column": 37,
+        "endColumn": 1,
+        "endLine": 6,
+        "fix": Object {
+          "range": Array [
+            164,
+            164,
+          ],
+          "text": ";",
+        },
+        "line": 5,
+        "message": "Missing semicolon.",
+        "messageId": "missingSemi",
+        "nodeType": "ImportDeclaration",
+        "ruleId": "semi",
+        "severity": 2,
+      },
+      Object {
+        "column": 21,
+        "endColumn": 1,
+        "endLine": 8,
+        "fix": Object {
+          "range": Array [
+            186,
+            186,
+          ],
+          "text": ";",
+        },
+        "line": 7,
+        "message": "Missing semicolon.",
+        "messageId": "missingSemi",
+        "nodeType": "VariableDeclaration",
+        "ruleId": "semi",
+        "severity": 2,
+      },
+      Object {
+        "column": 5,
+        "endColumn": 9,
+        "endLine": 8,
+        "fix": Object {
+          "range": Array [
+            187,
+            205,
+          ],
+          "text": "const numB=add(3, 4)",
+        },
+        "line": 8,
+        "message": "'numB' is never reassigned. Use 'const' instead.",
+        "messageId": "useConst",
+        "nodeType": "Identifier",
+        "ruleId": "prefer-const",
+        "severity": 2,
+      },
+      Object {
+        "column": 19,
+        "endColumn": 1,
+        "endLine": 9,
+        "fix": Object {
+          "range": Array [
+            205,
+            205,
+          ],
+          "text": ";",
+        },
+        "line": 8,
+        "message": "Missing semicolon.",
+        "messageId": "missingSemi",
+        "nodeType": "VariableDeclaration",
+        "ruleId": "semi",
+        "severity": 2,
+      },
+      Object {
+        "column": 5,
+        "endColumn": 9,
+        "endLine": 9,
+        "fix": Object {
+          "range": Array [
+            206,
+            224,
+          ],
+          "text": "const numC=sub(5, 6)",
+        },
+        "line": 9,
+        "message": "'numC' is never reassigned. Use 'const' instead.",
+        "messageId": "useConst",
+        "nodeType": "Identifier",
+        "ruleId": "prefer-const",
+        "severity": 2,
+      },
+      Object {
+        "column": 19,
+        "endColumn": 1,
+        "endLine": 10,
+        "fix": Object {
+          "range": Array [
+            224,
+            224,
+          ],
+          "text": ";",
+        },
+        "line": 9,
+        "message": "Missing semicolon.",
+        "messageId": "missingSemi",
+        "nodeType": "VariableDeclaration",
+        "ruleId": "semi",
+        "severity": 2,
+      },
+      Object {
+        "column": 5,
+        "endColumn": 9,
+        "endLine": 10,
+        "fix": Object {
+          "range": Array [
+            225,
+            243,
+          ],
+          "text": "const numD=exp(2, 2)",
+        },
+        "line": 10,
+        "message": "'numD' is never reassigned. Use 'const' instead.",
+        "messageId": "useConst",
+        "nodeType": "Identifier",
+        "ruleId": "prefer-const",
+        "severity": 2,
+      },
+      Object {
+        "column": 19,
+        "endColumn": 1,
+        "endLine": 11,
+        "fix": Object {
+          "range": Array [
+            243,
+            243,
+          ],
+          "text": ";",
+        },
+        "line": 10,
+        "message": "Missing semicolon.",
+        "messageId": "missingSemi",
+        "nodeType": "VariableDeclaration",
+        "ruleId": "semi",
+        "severity": 2,
+      },
+      Object {
+        "column": 5,
+        "endColumn": 9,
+        "endLine": 11,
+        "line": 11,
+        "message": "'numE' is assigned a value but never used.",
+        "messageId": "unusedVar",
+        "nodeType": "Identifier",
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+      },
+      Object {
+        "column": 5,
+        "endColumn": 9,
+        "endLine": 11,
+        "fix": Object {
+          "range": Array [
+            244,
+            280,
+          ],
+          "text": "const numE=mul(numA, numB, numC, numD)",
+        },
+        "line": 11,
+        "message": "'numE' is never reassigned. Use 'const' instead.",
+        "messageId": "useConst",
+        "nodeType": "Identifier",
+        "ruleId": "prefer-const",
+        "severity": 2,
+      },
+      Object {
+        "column": 37,
+        "endColumn": 1,
+        "endLine": 12,
+        "fix": Object {
+          "range": Array [
+            280,
+            280,
+          ],
+          "text": ";",
+        },
+        "line": 11,
+        "message": "Missing semicolon.",
+        "messageId": "missingSemi",
+        "nodeType": "VariableDeclaration",
+        "ruleId": "semi",
+        "severity": 2,
+      },
+      Object {
+        "column": 23,
+        "endColumn": 1,
+        "endLine": 14,
+        "fix": Object {
+          "range": Array [
+            304,
+            304,
+          ],
+          "text": ";",
+        },
+        "line": 13,
+        "message": "Missing semicolon.",
+        "messageId": "missingSemi",
+        "nodeType": "ExpressionStatement",
+        "ruleId": "semi",
+        "severity": 2,
+      },
+    ],
+    "usedDeprecatedRules": Array [],
+    "warningCount": 0,
+  },
+  Object {
+    "errorCount": 7,
+    "fatalErrorCount": 0,
+    "filePath": "/fixtures-tmp/lib/add-disable-comment.jsx",
+    "fixableErrorCount": 1,
+    "fixableWarningCount": 0,
+    "messages": Array [
+      Object {
+        "column": 7,
+        "endColumn": 8,
+        "endLine": 1,
+        "line": 1,
+        "message": "'a' is assigned a value but never used.",
+        "messageId": "unusedVar",
+        "nodeType": "Identifier",
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+      },
+      Object {
+        "column": 7,
+        "endColumn": 8,
+        "endLine": 3,
+        "line": 3,
+        "message": "'b' is assigned a value but never used.",
+        "messageId": "unusedVar",
+        "nodeType": "Identifier",
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+      },
+      Object {
+        "column": 7,
+        "endColumn": 8,
+        "endLine": 5,
+        "line": 5,
+        "message": "'c' is assigned a value but never used.",
+        "messageId": "unusedVar",
+        "nodeType": "Identifier",
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+      },
+      Object {
+        "column": 7,
+        "endColumn": 8,
+        "endLine": 7,
+        "line": 7,
+        "message": "'d' is assigned a value but never used.",
+        "messageId": "unusedVar",
+        "nodeType": "Identifier",
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+      },
+      Object {
+        "column": 12,
+        "endColumn": 1,
+        "endLine": 8,
+        "fix": Object {
+          "range": Array [
+            173,
+            173,
+          ],
+          "text": ";",
+        },
+        "line": 7,
+        "message": "Missing semicolon.",
+        "messageId": "missingSemi",
+        "nodeType": "VariableDeclaration",
+        "ruleId": "semi",
+        "severity": 2,
+      },
+      Object {
+        "column": 11,
+        "endColumn": 18,
+        "endLine": 11,
+        "line": 11,
+        "message": "Ban exponentiation operator",
+        "nodeType": "BinaryExpression",
+        "ruleId": "ban-exponentiation-operator",
+        "severity": 2,
+      },
+      Object {
+        "column": 11,
+        "endColumn": 18,
+        "endLine": 13,
+        "line": 13,
+        "message": "Ban exponentiation operator",
+        "nodeType": "BinaryExpression",
+        "ruleId": "ban-exponentiation-operator",
+        "severity": 2,
+      },
+    ],
+    "usedDeprecatedRules": Array [],
+    "warningCount": 0,
+  },
+  Object {
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "filePath": "/fixtures-tmp/lib/add.js",
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 1,
+    "messages": Array [
+      Object {
+        "column": 15,
+        "endColumn": 1,
+        "endLine": 5,
+        "fix": Object {
+          "range": Array [
+            64,
+            64,
+          ],
+          "text": ";",
+        },
+        "line": 4,
+        "message": "Missing semicolon.",
+        "messageId": "missingSemi",
+        "nodeType": "ReturnStatement",
+        "ruleId": "semi",
+        "severity": 1,
+      },
+    ],
+    "usedDeprecatedRules": Array [],
+    "warningCount": 1,
+  },
+  Object {
+    "errorCount": 10,
+    "fatalErrorCount": 0,
+    "filePath": "/fixtures-tmp/lib/apply-suggestion.js",
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "messages": Array [
+      Object {
+        "column": 2,
+        "endColumn": 3,
+        "endLine": 1,
+        "line": 1,
+        "message": "Unnecessary escape character: \\\\'.",
+        "messageId": "unnecessaryEscape",
+        "nodeType": "Literal",
+        "ruleId": "no-useless-escape",
+        "severity": 2,
+        "suggestions": Array [
+          Object {
+            "desc": "Remove the \`\\\\\`. This maintains the current functionality.",
+            "fix": Object {
+              "range": Array [
+                1,
+                2,
+              ],
+              "text": "",
+            },
+            "messageId": "removeEscape",
+          },
+          Object {
+            "desc": "Replace the \`\\\\\` with \`\\\\\\\\\` to include the actual backslash character.",
+            "fix": Object {
+              "range": Array [
+                1,
+                1,
+              ],
+              "text": "\\\\",
+            },
+            "messageId": "escapeBackslash",
+          },
+        ],
+      },
+      Object {
+        "column": 2,
+        "endColumn": 3,
+        "endLine": 2,
+        "line": 2,
+        "message": "Unnecessary escape character: \\\\\\".",
+        "messageId": "unnecessaryEscape",
+        "nodeType": "Literal",
+        "ruleId": "no-useless-escape",
+        "severity": 2,
+        "suggestions": Array [
+          Object {
+            "desc": "Remove the \`\\\\\`. This maintains the current functionality.",
+            "fix": Object {
+              "range": Array [
+                7,
+                8,
+              ],
+              "text": "",
+            },
+            "messageId": "removeEscape",
+          },
+          Object {
+            "desc": "Replace the \`\\\\\` with \`\\\\\\\\\` to include the actual backslash character.",
+            "fix": Object {
+              "range": Array [
+                7,
+                7,
+              ],
+              "text": "\\\\",
+            },
+            "messageId": "escapeBackslash",
+          },
+        ],
+      },
+      Object {
+        "column": 5,
+        "endColumn": 12,
+        "endLine": 3,
+        "line": 3,
+        "message": "Unexpected negating the left operand of 'in' operator.",
+        "messageId": "unexpected",
+        "nodeType": "BinaryExpression",
+        "ruleId": "no-unsafe-negation",
+        "severity": 2,
+        "suggestions": Array [
+          Object {
+            "data": Object {
+              "operator": "in",
+            },
+            "desc": "Negate 'in' expression instead of its left operand. This changes the current behavior.",
+            "fix": Object {
+              "range": Array [
+                17,
+                29,
+              ],
+              "text": "('key1' in {})",
+            },
+            "messageId": "suggestNegatedExpression",
+          },
+          Object {
+            "desc": "Wrap negation in '()' to make the intention explicit. This preserves the current behavior.",
+            "fix": Object {
+              "range": Array [
+                16,
+                23,
+              ],
+              "text": "(!'key1')",
+            },
+            "messageId": "suggestParenthesisedNegation",
+          },
+        ],
+      },
+      Object {
+        "column": 5,
+        "endColumn": 12,
+        "endLine": 4,
+        "line": 4,
+        "message": "Unexpected negating the left operand of 'in' operator.",
+        "messageId": "unexpected",
+        "nodeType": "BinaryExpression",
+        "ruleId": "no-unsafe-negation",
+        "severity": 2,
+        "suggestions": Array [
+          Object {
+            "data": Object {
+              "operator": "in",
+            },
+            "desc": "Negate 'in' expression instead of its left operand. This changes the current behavior.",
+            "fix": Object {
+              "range": Array [
+                39,
+                51,
+              ],
+              "text": "('key2' in {})",
+            },
+            "messageId": "suggestNegatedExpression",
+          },
+          Object {
+            "desc": "Wrap negation in '()' to make the intention explicit. This preserves the current behavior.",
+            "fix": Object {
+              "range": Array [
+                38,
+                45,
+              ],
+              "text": "(!'key2')",
+            },
+            "messageId": "suggestParenthesisedNegation",
+          },
+        ],
+      },
+      Object {
+        "column": 21,
+        "endColumn": 22,
+        "endLine": 4,
+        "line": 4,
+        "message": "Unnecessary escape character: \\\\'.",
+        "messageId": "unnecessaryEscape",
+        "nodeType": "Literal",
+        "ruleId": "no-useless-escape",
+        "severity": 2,
+        "suggestions": Array [
+          Object {
+            "desc": "Remove the \`\\\\\`. This maintains the current functionality.",
+            "fix": Object {
+              "range": Array [
+                54,
+                55,
+              ],
+              "text": "",
+            },
+            "messageId": "removeEscape",
+          },
+          Object {
+            "desc": "Replace the \`\\\\\` with \`\\\\\\\\\` to include the actual backslash character.",
+            "fix": Object {
+              "range": Array [
+                54,
+                54,
+              ],
+              "text": "\\\\",
+            },
+            "messageId": "escapeBackslash",
+          },
+        ],
+      },
+      Object {
+        "column": 5,
+        "endColumn": 2,
+        "endLine": 7,
+        "line": 5,
+        "message": "Unexpected negating the left operand of 'in' operator.",
+        "messageId": "unexpected",
+        "nodeType": "BinaryExpression",
+        "ruleId": "no-unsafe-negation",
+        "severity": 2,
+        "suggestions": Array [
+          Object {
+            "data": Object {
+              "operator": "in",
+            },
+            "desc": "Negate 'in' expression instead of its left operand. This changes the current behavior.",
+            "fix": Object {
+              "range": Array [
+                64,
+                78,
+              ],
+              "text": "(\`
+key3
+\` in {})",
+            },
+            "messageId": "suggestNegatedExpression",
+          },
+          Object {
+            "desc": "Wrap negation in '()' to make the intention explicit. This preserves the current behavior.",
+            "fix": Object {
+              "range": Array [
+                63,
+                72,
+              ],
+              "text": "(!\`
+key3
+\`)",
+            },
+            "messageId": "suggestParenthesisedNegation",
+          },
+        ],
+      },
+      Object {
+        "column": 11,
+        "endColumn": 12,
+        "endLine": 7,
+        "line": 7,
+        "message": "Unnecessary escape character: \\\\'.",
+        "messageId": "unnecessaryEscape",
+        "nodeType": "Literal",
+        "ruleId": "no-useless-escape",
+        "severity": 2,
+        "suggestions": Array [
+          Object {
+            "desc": "Remove the \`\\\\\`. This maintains the current functionality.",
+            "fix": Object {
+              "range": Array [
+                81,
+                82,
+              ],
+              "text": "",
+            },
+            "messageId": "removeEscape",
+          },
+          Object {
+            "desc": "Replace the \`\\\\\` with \`\\\\\\\\\` to include the actual backslash character.",
+            "fix": Object {
+              "range": Array [
+                81,
+                81,
+              ],
+              "text": "\\\\",
+            },
+            "messageId": "escapeBackslash",
+          },
+        ],
+      },
+      Object {
+        "column": 5,
+        "endColumn": 2,
+        "endLine": 10,
+        "line": 8,
+        "message": "Unexpected negating the left operand of 'in' operator.",
+        "messageId": "unexpected",
+        "nodeType": "BinaryExpression",
+        "ruleId": "no-unsafe-negation",
+        "severity": 2,
+        "suggestions": Array [
+          Object {
+            "data": Object {
+              "operator": "in",
+            },
+            "desc": "Negate 'in' expression instead of its left operand. This changes the current behavior.",
+            "fix": Object {
+              "range": Array [
+                91,
+                105,
+              ],
+              "text": "(\`
+key4
+\` in {})",
+            },
+            "messageId": "suggestNegatedExpression",
+          },
+          Object {
+            "desc": "Wrap negation in '()' to make the intention explicit. This preserves the current behavior.",
+            "fix": Object {
+              "range": Array [
+                90,
+                99,
+              ],
+              "text": "(!\`
+key4
+\`)",
+            },
+            "messageId": "suggestParenthesisedNegation",
+          },
+        ],
+      },
+      Object {
+        "column": 11,
+        "endColumn": 12,
+        "endLine": 10,
+        "line": 10,
+        "message": "Unnecessary escape character: \\\\'.",
+        "messageId": "unnecessaryEscape",
+        "nodeType": "Literal",
+        "ruleId": "no-useless-escape",
+        "severity": 2,
+        "suggestions": Array [
+          Object {
+            "desc": "Remove the \`\\\\\`. This maintains the current functionality.",
+            "fix": Object {
+              "range": Array [
+                108,
+                109,
+              ],
+              "text": "",
+            },
+            "messageId": "removeEscape",
+          },
+          Object {
+            "desc": "Replace the \`\\\\\` with \`\\\\\\\\\` to include the actual backslash character.",
+            "fix": Object {
+              "range": Array [
+                108,
+                108,
+              ],
+              "text": "\\\\",
+            },
+            "messageId": "escapeBackslash",
+          },
+        ],
+      },
+      Object {
+        "column": 5,
+        "endColumn": 12,
+        "endLine": 11,
+        "line": 11,
+        "message": "Unexpected negating the left operand of 'in' operator.",
+        "messageId": "unexpected",
+        "nodeType": "BinaryExpression",
+        "ruleId": "no-unsafe-negation",
+        "severity": 2,
+        "suggestions": Array [
+          Object {
+            "data": Object {
+              "operator": "in",
+            },
+            "desc": "Negate 'in' expression instead of its left operand. This changes the current behavior.",
+            "fix": Object {
+              "range": Array [
+                118,
+                130,
+              ],
+              "text": "('key5' in {})",
+            },
+            "messageId": "suggestNegatedExpression",
+          },
+          Object {
+            "desc": "Wrap negation in '()' to make the intention explicit. This preserves the current behavior.",
+            "fix": Object {
+              "range": Array [
+                117,
+                124,
+              ],
+              "text": "(!'key5')",
+            },
+            "messageId": "suggestParenthesisedNegation",
+          },
+        ],
+      },
+    ],
+    "usedDeprecatedRules": Array [],
+    "warningCount": 0,
+  },
+  Object {
+    "errorCount": 2,
+    "fatalErrorCount": 0,
+    "filePath": "/fixtures-tmp/lib/exp.js",
+    "fixableErrorCount": 1,
+    "fixableWarningCount": 0,
+    "messages": Array [
+      Object {
+        "column": 10,
+        "endColumn": 16,
+        "endLine": 2,
+        "line": 2,
+        "message": "Ban exponentiation operator",
+        "nodeType": "BinaryExpression",
+        "ruleId": "ban-exponentiation-operator",
+        "severity": 2,
+      },
+      Object {
+        "column": 16,
+        "endColumn": 1,
+        "endLine": 3,
+        "fix": Object {
+          "range": Array [
+            43,
+            43,
+          ],
+          "text": ";",
+        },
+        "line": 2,
+        "message": "Missing semicolon.",
+        "messageId": "missingSemi",
+        "nodeType": "ReturnStatement",
+        "ruleId": "semi",
+        "severity": 2,
+      },
+    ],
+    "usedDeprecatedRules": Array [],
+    "warningCount": 0,
+  },
+  Object {
+    "errorCount": 6,
+    "fatalErrorCount": 0,
+    "filePath": "/fixtures-tmp/lib/make-fixable-and-fix.js",
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "messages": Array [
+      Object {
+        "column": 10,
+        "endColumn": 18,
+        "endLine": 1,
+        "line": 1,
+        "message": "'readFile' is defined but never used.",
+        "messageId": "unusedVar",
+        "nodeType": "Identifier",
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+      },
+      Object {
+        "column": 16,
+        "endColumn": 23,
+        "endLine": 2,
+        "line": 2,
+        "message": "'dirname' is defined but never used.",
+        "messageId": "unusedVar",
+        "nodeType": "Identifier",
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+      },
+      Object {
+        "column": 7,
+        "endColumn": 8,
+        "endLine": 4,
+        "line": 4,
+        "message": "'a' is assigned a value but never used.",
+        "messageId": "unusedVar",
+        "nodeType": "Identifier",
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+      },
+      Object {
+        "column": 7,
+        "endColumn": 8,
+        "endLine": 5,
+        "line": 5,
+        "message": "'b' is assigned a value but never used.",
+        "messageId": "unusedVar",
+        "nodeType": "Identifier",
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+      },
+      Object {
+        "column": 10,
+        "endColumn": 12,
+        "endLine": 7,
+        "line": 7,
+        "message": "'fn' is defined but never used.",
+        "messageId": "unusedVar",
+        "nodeType": "Identifier",
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+      },
+      Object {
+        "column": 13,
+        "endColumn": 16,
+        "endLine": 7,
+        "line": 7,
+        "message": "'arg' is defined but never used. Allowed unused args must match /^_/u.",
+        "messageId": "unusedVar",
+        "nodeType": "Identifier",
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+      },
+    ],
+    "usedDeprecatedRules": Array [],
+    "warningCount": 0,
+  },
+  Object {
+    "errorCount": 1,
+    "fatalErrorCount": 0,
+    "filePath": "/fixtures-tmp/lib/mul.js",
+    "fixableErrorCount": 1,
+    "fixableWarningCount": 0,
+    "messages": Array [
+      Object {
+        "column": 15,
+        "endColumn": 1,
+        "endLine": 3,
+        "fix": Object {
+          "range": Array [
+            42,
+            42,
+          ],
+          "text": ";",
+        },
+        "line": 2,
+        "message": "Missing semicolon.",
+        "messageId": "missingSemi",
+        "nodeType": "ReturnStatement",
+        "ruleId": "semi",
+        "severity": 2,
+      },
+    ],
+    "usedDeprecatedRules": Array [],
+    "warningCount": 0,
+  },
+  Object {
+    "errorCount": 1,
+    "fatalErrorCount": 0,
+    "filePath": "/fixtures-tmp/lib/shebang.js",
+    "fixableErrorCount": 1,
+    "fixableWarningCount": 0,
+    "messages": Array [
+      Object {
+        "column": 14,
+        "endColumn": 1,
+        "endLine": 4,
+        "fix": Object {
+          "range": Array [
+            34,
+            34,
+          ],
+          "text": ";",
+        },
+        "line": 3,
+        "message": "Missing semicolon.",
+        "messageId": "missingSemi",
+        "nodeType": "ExpressionStatement",
+        "ruleId": "semi",
+        "severity": 2,
+      },
+    ],
+    "usedDeprecatedRules": Array [],
+    "warningCount": 0,
+  },
+  Object {
+    "errorCount": 1,
+    "fatalErrorCount": 0,
+    "filePath": "/fixtures-tmp/lib/sub.mjs",
+    "fixableErrorCount": 1,
+    "fixableWarningCount": 0,
+    "messages": Array [
+      Object {
+        "column": 15,
+        "endColumn": 1,
+        "endLine": 3,
+        "fix": Object {
+          "range": Array [
+            42,
+            42,
+          ],
+          "text": ";",
+        },
+        "line": 2,
+        "message": "Missing semicolon.",
+        "messageId": "missingSemi",
+        "nodeType": "ReturnStatement",
+        "ruleId": "semi",
+        "severity": 2,
+      },
+    ],
+    "usedDeprecatedRules": Array [],
+    "warningCount": 0,
+  },
+  Object {
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "filePath": "/fixtures-tmp/rules/ban-exponentiation-operator.js",
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "messages": Array [],
+    "usedDeprecatedRules": Array [],
+    "warningCount": 0,
+  },
+]
+`;
+
+exports[`Core makeFixableAndFix 1`] = `
+"==> fixtures-tmp/index.js <==
+import { mul } from './lib/mul'
+import { add } from './lib/add'
+import { sub } from './lib/sub'
+import { exp } from './lib/exp'
+import { strictEqual } from 'assert'
+
+const numA=add(1, 2)
+let numB=add(3, 4)
+let numC=sub(5, 6)
+let numD=exp(2, 2)
+let _numE=mul(numA, numB, numC, numD)
+
+strictEqual(numD, -84)
+
+==> fixtures-tmp/lib/add-disable-comment.jsx <==
+const _a = 0;
+// eslint-disable-next-line semi
+const _b = 0
+/* eslint-disable-next-line semi */
+const _c = 0
+// eslint-disable-next-line ban-exponentiation-operator
+const _d = 0
+// eslint-disable-next-line no-unused-vars
+const jsx = (
+  <>
+    <div>{2 ** 10}</div>
+    {/* eslint-disable-next-line semi */}
+    <div>{2 ** 10}</div>
+  </>
+);
+
+==> fixtures-tmp/lib/make-fixable-and-fix.js <==
+import { _readFile } from 'fs';
+import { join, _dirname } from 'path';
+
+const _a = 0;
+const _b = 0;
+
+function _fn(_arg) {
+  console.log(join('a', 'b'));
+}
+
+"
+`;
+
+exports[`Core printDetailsOfResults 1`] = `
+Array [
+  "[31merror[39m: [1m\`./lib/add\` import should occur before import of \`./lib/mul\`[22m [2m(import/order)[22m at [32mfixtures-tmp/index.js:2:1[39m:
+  1 | import { mul } from './lib/mul'
+> 2 | import { add } from './lib/add'
+    | ^
+  3 | import { sub } from './lib/sub'
+  4 | import { exp } from './lib/exp'
+  5 | import { strictEqual } from 'assert'
+
+
+[31merror[39m: [1m\`./lib/exp\` import should occur before import of \`./lib/mul\`[22m [2m(import/order)[22m at [32mfixtures-tmp/index.js:4:1[39m:
+  2 | import { add } from './lib/add'
+  3 | import { sub } from './lib/sub'
+> 4 | import { exp } from './lib/exp'
+    | ^
+  5 | import { strictEqual } from 'assert'
+  6 | 
+  7 | const numA=add(1, 2)
+
+
+[31merror[39m: [1m\`assert\` import should occur before import of \`./lib/mul\`[22m [2m(import/order)[22m at [32mfixtures-tmp/index.js:5:1[39m:
+  3 | import { sub } from './lib/sub'
+  4 | import { exp } from './lib/exp'
+> 5 | import { strictEqual } from 'assert'
+    | ^
+  6 | 
+  7 | const numA=add(1, 2)
+  8 | let numB=add(3, 4)
+
+
+[31merror[39m: [1mBan exponentiation operator[22m [2m(ban-exponentiation-operator)[22m at [32mfixtures-tmp/lib/add-disable-comment.jsx:11:11[39m:
+   9 | const jsx = (
+  10 |   <>
+> 11 |     <div>{2 ** 10}</div>
+     |           ^
+  12 |     {/* eslint-disable-next-line semi */}
+  13 |     <div>{2 ** 10}</div>
+  14 |   </>
+
+
+[31merror[39m: [1mBan exponentiation operator[22m [2m(ban-exponentiation-operator)[22m at [32mfixtures-tmp/lib/add-disable-comment.jsx:13:11[39m:
+  11 |     <div>{2 ** 10}</div>
+  12 |     {/* eslint-disable-next-line semi */}
+> 13 |     <div>{2 ** 10}</div>
+     |           ^
+  14 |   </>
+  15 | );
+  16 | 
+
+
+[31merror[39m: [1mBan exponentiation operator[22m [2m(ban-exponentiation-operator)[22m at [32mfixtures-tmp/lib/exp.js:2:10[39m:
+  1 | export function exp(a, b) {
+> 2 |   return a ** b
+    |          ^
+  3 | }
+  4 | 
+
+
+[31m[1m28 errors found.[22m[39m[31m[1m[22m[39m
+[31m[1m20 errors potentially fixable with the \`--fix\` option.[22m[39m",
+]
+`;
+
+exports[`Core printSummaryOfResults 1`] = `
+Array [
+  "[1m- 11 files (2 files passed, [91m9 files failed[39m) checked.[22m
+[1m- 48 problems ([31m47 errors[39m, [33m1 warning[39m) found.[22m
+┌─────────────────────────────┬───────┬─────────┬────────────┬─────────────────┐
+│ Rule                        │ Error │ Warning │ is fixable │ has suggestions │
+├─────────────────────────────┼───────┼─────────┼────────────┼─────────────────┤
+│ semi                        │ [31m[1m16[22m[39m    │ [31m[1m1[22m[39m       │ [31m[1m17[22m[39m         │ 0               │
+├─────────────────────────────┼───────┼─────────┼────────────┼─────────────────┤
+│ import/order                │ [31m[1m3[22m[39m     │ 0       │ [31m[1m3[22m[39m          │ 0               │
+├─────────────────────────────┼───────┼─────────┼────────────┼─────────────────┤
+│ prefer-const                │ [31m[1m4[22m[39m     │ 0       │ [31m[1m4[22m[39m          │ 0               │
+├─────────────────────────────┼───────┼─────────┼────────────┼─────────────────┤
+│ no-unused-vars              │ [31m[1m11[22m[39m    │ 0       │ 0          │ 0               │
+├─────────────────────────────┼───────┼─────────┼────────────┼─────────────────┤
+│ ban-exponentiation-operator │ [31m[1m3[22m[39m     │ 0       │ 0          │ 0               │
+├─────────────────────────────┼───────┼─────────┼────────────┼─────────────────┤
+│ no-useless-escape           │ [31m[1m5[22m[39m     │ 0       │ 0          │ [31m[1m5[22m[39m               │
+├─────────────────────────────┼───────┼─────────┼────────────┼─────────────────┤
+│ no-unsafe-negation          │ [31m[1m5[22m[39m     │ 0       │ 0          │ [31m[1m5[22m[39m               │
+└─────────────────────────────┴───────┴─────────┴────────────┴─────────────────┘",
+]
+`;
