@@ -73,7 +73,7 @@ export class Core {
     displayMode: DisplayMode,
   ): Promise<void> {
     const eslint = new ESLint(this.baseOptions);
-    const formatter = await eslint.loadFormatter(this.config.formatterName);
+    const formatter = await eslint.loadFormatter(this.config.formatterName ?? 'codeframe');
     const resultText = formatter.format(filterResultsByRuleId(results, ruleIds));
     if (displayMode === 'withPager') {
       await pager(resultText);
