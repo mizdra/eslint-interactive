@@ -1,4 +1,5 @@
-import { join } from 'path';
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
 import { Worker } from 'worker_threads';
 import { wrap } from 'comlink';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -33,7 +34,7 @@ export async function run(options: Options) {
 
   // Directly executing the Core API will hog the main thread and halt the spinner.
   // So we wrap it with comlink and run it on the Worker.
-  const worker = new Worker(join(__dirname, 'core-worker.js'));
+  const worker = new Worker(join(dirname(fileURLToPath(import.meta.url)), 'core-worker.js'));
   const ProxiedCore = wrap<typeof SerializableCore>(nodeEndpoint.default(worker));
   const core = await new ProxiedCore(config);
 
