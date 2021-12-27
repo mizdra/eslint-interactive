@@ -21,6 +21,7 @@ beforeEach(() => {
   mock({
     fixtures: mock.load(resolve(__dirname, '../fixtures')),
     // NOTE: I don't know why, but node_modules won't work unless you mock them too.
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     node_modules: mock.load(resolve(__dirname, '../node_modules')),
   });
 });
