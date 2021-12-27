@@ -8,7 +8,7 @@
   "private": false,
   "scripts": {
     "build": "tsc -p tsconfig.src.json",
-    "dev": "tsc-watch -p tsconfig.src.json --onSuccess 'bin/eslint-interactive fixtures --rulesdir fixtures/rules --ext .js,jsx,.mjs'",
+    "dev": "tsc-watch -p tsconfig.src.json --onSuccess 'bin/eslint-interactive fixtures --rulesdir fixtures/rules --ext .js,.jsx,.mjs'",
     "lint": "run-s -c lint:*",
     "lint:tsc": "run-s -c lint:tsc:*",
     "lint:tsc:src": "tsc -p tsconfig.src.json --noEmit",
