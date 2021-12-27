@@ -57,6 +57,7 @@ export type Config = {
   rulePaths?: string[] | undefined;
   extensions?: string[] | undefined;
   formatterName?: string;
+  cwd?: string;
 };
 
 /**

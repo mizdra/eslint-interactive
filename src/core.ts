@@ -27,6 +27,7 @@ export class Core {
       cacheLocation: join(tmpdir(), `eslint-interactive--${Date.now()}-${Math.random()}`),
       rulePaths: this.config.rulePaths,
       extensions: this.config.extensions,
+      cwd: this.config.cwd,
     };
   }
 
