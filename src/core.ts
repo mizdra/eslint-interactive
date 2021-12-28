@@ -2,7 +2,7 @@ import { tmpdir } from 'os';
 import { join } from 'path';
 import { ESLint } from 'eslint';
 import pager from 'node-pager';
-import { format } from './formatter.js';
+import { format } from './formatter/index.js';
 import transformRule, { TransformRuleOption } from './rules/transform.js';
 import { SuggestionFilter } from './transforms/apply-suggestions.js';
 import { FixableMaker } from './transforms/make-fixable-and-fix.js';

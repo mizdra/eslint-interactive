@@ -2,7 +2,7 @@ const mockFormatByFiles = jest.fn(() => 'formatByFiles');
 const mockFormatByRules = jest.fn(() => 'formatByRules');
 
 import { ESLint } from 'eslint';
-import { format } from '../../src/formatter.js';
+import { format } from '../../src/formatter/index.js';
 import { fakeLintResult, fakeLintMessage } from '../test-util/eslint.js';
 
 jest.mock('../../src/formatter/format-by-files', () => {
