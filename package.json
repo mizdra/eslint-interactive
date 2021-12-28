@@ -22,7 +22,7 @@
   "renovate": "github>mizdra/renovate-config-mizdra",
   "packageManager": "yarn@1.22.15",
   "devDependencies": {
-    "@jest/types": "^27.1.0",
+    "@jest/types": "^27.4.2",
     "@mizdra/eslint-config-mizdra": "^1.1.0",
     "@mizdra/prettier-config-mizdra": "^0.4.0",
     "@types/cli-table": "^0.3.0",
@@ -38,12 +38,12 @@
     "eslint": "^8.1.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.25.2",
-    "jest": "^27.1.0",
+    "jest": "^27.4.5",
     "jest-mock-process": "^1.4.1",
     "npm-run-all": "^4.1.5",
     "prettier": "2.4.1",
     "strip-ansi": "^7.0.1",
-    "ts-jest": "^27.0.5",
+    "ts-jest": "^27.1.2",
     "tsc-watch": "^4.2.9",
     "typescript": "^4.6.0-dev.20211228"
   },
