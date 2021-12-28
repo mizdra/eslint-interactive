@@ -62,4 +62,5 @@ export class SerializableCore {
     return this.core.makeFixableAndFix(results, ruleIds, fixableMaker);
   }
 }
-expose(SerializableCore, nodeEndpoint.default(parentPort));
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+expose(SerializableCore, (nodeEndpoint as any)(parentPort));
