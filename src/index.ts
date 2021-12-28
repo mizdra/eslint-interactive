@@ -3,14 +3,14 @@ import { Worker } from 'worker_threads';
 import { wrap } from 'comlink';
 import nodeEndpoint from 'comlink/dist/umd/node-adapter';
 import isInstalledGlobally from 'is-installed-globally';
-import { warn } from './cli/log';
-import { parseArgv } from './cli/parse-argv';
-import { SerializableCore } from './core-worker';
-import { lint } from './scenes/lint';
-import { selectAction } from './scenes/select-action';
-import { selectRuleIds } from './scenes/select-rule-ids';
-import { selectToContinue } from './scenes/select-to-continue';
-import { NextScene } from './types';
+import { warn } from './cli/log.js';
+import { parseArgv } from './cli/parse-argv.js';
+import { SerializableCore } from './core-worker.js';
+import { lint } from './scenes/lint.js';
+import { selectAction } from './scenes/select-action.js';
+import { selectRuleIds } from './scenes/select-rule-ids.js';
+import { selectToContinue } from './scenes/select-to-continue.js';
+import { NextScene } from './types.js';
 
 export type Options = {
   argv: string[];

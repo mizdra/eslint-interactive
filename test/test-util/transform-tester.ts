@@ -1,7 +1,7 @@
 import { Linter } from 'eslint';
-import { TransformContext, TransformFunction } from '../../src/types';
-import applyFixesRule from './rules/apply-fixes';
-import preferAdditionShorthand from './rules/prefer-addition-shorthand';
+import { TransformContext, TransformFunction } from '../../src/types.js';
+import applyFixesRule from './rules/apply-fixes.js';
+import preferAdditionShorthand from './rules/prefer-addition-shorthand.js';
 
 const DEFAULT_FILENAME = 'test.js';
 

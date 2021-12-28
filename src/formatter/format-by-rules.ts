@@ -2,8 +2,8 @@ import chalk from 'chalk';
 import Table from 'cli-table';
 import { ESLint } from 'eslint';
 // import terminalLink from 'terminal-link';
-import { ERROR_COLOR } from './colors';
-import { takeRuleStatistics } from './take-rule-statistics';
+import { ERROR_COLOR } from './colors.js';
+import { takeRuleStatistics } from './take-rule-statistics.js';
 
 function numCell(num: number): string {
   return num > 0 ? chalk[ERROR_COLOR].bold(num) : num.toString();

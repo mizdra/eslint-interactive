@@ -4,13 +4,13 @@ import chalk from 'chalk';
 import { Remote } from 'comlink';
 import { ESLint } from 'eslint';
 import ora from 'ora';
-import { promptToInputReuseScript } from '../cli/prompt';
-import { SerializableCore } from '../core-worker';
+import { promptToInputReuseScript } from '../cli/prompt.js';
+import { SerializableCore } from '../core-worker.js';
 import {
   editFileWithEditor,
   generateExampleFixableMakerScriptFilePath,
   generateFixableMakerScriptFilePath,
-} from '../util/filter-script';
+} from '../util/filter-script.js';
 
 export async function doMakeFixableAndFixAction(
   core: Remote<SerializableCore>,

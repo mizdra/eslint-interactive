@@ -3,7 +3,7 @@ import { join } from 'path';
 import { promisify } from 'util';
 import { ESLint } from 'eslint';
 import { mockConsoleLog } from 'jest-mock-process';
-import { Core } from '../src/core';
+import { Core } from '../src/core.js';
 
 const execPromise = promisify(exec);
 

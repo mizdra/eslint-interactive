@@ -1,5 +1,5 @@
-import { promptToInputContinue } from '../cli/prompt';
-import { NextScene } from '../types';
+import { promptToInputContinue } from '../cli/prompt.js';
+import { NextScene } from '../types.js';
 
 /**
  * Run the scene where a user select to continue running the program or not.

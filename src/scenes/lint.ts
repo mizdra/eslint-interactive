@@ -1,11 +1,11 @@
 import chalk from 'chalk';
 import { Remote } from 'comlink';
 import ora from 'ora';
-import { warn } from '../cli/log';
-import { SerializableCore } from '../core-worker';
-import { NextScene } from '../types';
-import { unique } from '../util/array';
-import { notEmpty } from '../util/type-check';
+import { warn } from '../cli/log.js';
+import { SerializableCore } from '../core-worker.js';
+import { NextScene } from '../types.js';
+import { unique } from '../util/array.js';
+import { notEmpty } from '../util/type-check.js';
 
 /**
  * Run the scene to lint.
