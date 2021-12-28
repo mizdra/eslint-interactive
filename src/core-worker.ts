@@ -62,5 +62,4 @@ export class SerializableCore {
     return this.core.makeFixableAndFix(results, ruleIds, fixableMaker);
   }
 }
-
-expose(SerializableCore, nodeEndpoint(parentPort));
+expose(SerializableCore, nodeEndpoint.default(parentPort));

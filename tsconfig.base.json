@@ -15,7 +15,7 @@
     /* Module Options */
     "module": "node12",
     "moduleResolution": "node12",
-    "esModuleInterop": true, // CommonJS モジュールを `import _ from 'commonjs'` で import できるように
+    "esModuleInterop": false, // `"module": "node12"` との相性が悪いので off にする
     "resolveJsonModule": true, // import した json の型を推論するように
     "forceConsistentCasingInFileNames": true, // 大文字小文字を区別しない環境 (win) でも unix と同じように区別する
 

@@ -34,7 +34,7 @@ export async function run(options: Options) {
   // Directly executing the Core API will hog the main thread and halt the spinner.
   // So we wrap it with comlink and run it on the Worker.
   const worker = new Worker(join(__dirname, 'core-worker.js'));
-  const ProxiedCore = wrap<typeof SerializableCore>(nodeEndpoint(worker));
+  const ProxiedCore = wrap<typeof SerializableCore>(nodeEndpoint.default(worker));
   const core = await new ProxiedCore(config);
 
   let nextScene: NextScene = { name: 'lint' };
