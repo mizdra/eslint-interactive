@@ -13,5 +13,9 @@
   // あまりカジュアルに起動時に処理を実行したくない、という狙いがある。
   // *.ts ファイルが変更されたら jest のテストが自動実行がされる点は変わらないので、
   // これで開発体験が損なわれることはないはず。
-  "jest.autoRun": { "watch": true }
+  "jest.autoRun": {
+    "watch": true
+  },
+  // Use nightly version tsserver
+  "typescript.tsdk": "node_modules/typescript/lib"
 }
