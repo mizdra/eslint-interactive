@@ -19,7 +19,7 @@ export default {
   resolver: '<rootDir>/test/test-util/jest/resolver.cjs',
   // do not transform `import` statements (for ESM)
   transform: {},
-  collectCoverageFrom: ['<rootDir>/src/**/*.{ts,tsx}', '!**/*.d.ts'],
+  collectCoverageFrom: ['<rootDir>/src/**/*.{js,jsx,cjs,mjs,ts,tsx,cts,mts}', '!**/*.d.ts'],
   globals: {
     'ts-jest': {
       tsconfig: 'tsconfig.test.json',
