@@ -22,6 +22,7 @@
   "renovate": "github>mizdra/renovate-config-mizdra",
   "packageManager": "yarn@1.22.15",
   "devDependencies": {
+    "@jest/globals": "^27.4.4",
     "@jest/types": "^27.4.2",
     "@mizdra/eslint-config-mizdra": "^1.1.0",
     "@mizdra/prettier-config-mizdra": "^0.4.0",
