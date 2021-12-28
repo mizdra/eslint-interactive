@@ -13,10 +13,10 @@
     "incremental": true, // ビルド結果をキャッシュするように
 
     /* Module Options */
-    // "module": "esnext", // 継承先で上書きする
+    "module": "node12",
+    "moduleResolution": "node12",
     "esModuleInterop": true, // CommonJS モジュールを `import _ from 'commonjs'` で import できるように
     "resolveJsonModule": true, // import した json の型を推論するように
-    "moduleResolution": "node", // `node` にしないと `resolveJsonModule` が使えない
     "forceConsistentCasingInFileNames": true, // 大文字小文字を区別しない環境 (win) でも unix と同じように区別する
 
     /* Additional Features */
