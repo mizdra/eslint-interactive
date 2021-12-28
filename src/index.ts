@@ -1,8 +1,10 @@
 import { join } from 'path';
 import { Worker } from 'worker_threads';
 import { wrap } from 'comlink';
-import nodeEndpoint from 'comlink/dist/umd/node-adapter';
-import isInstalledGlobally from 'is-installed-globally';
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+import nodeEndpoint = require('comlink/dist/umd/node-adapter');
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+import isInstalledGlobally = require('is-installed-globally');
 import { warn } from './cli/log.js';
 import { parseArgv } from './cli/parse-argv.js';
 import { SerializableCore } from './core-worker.js';

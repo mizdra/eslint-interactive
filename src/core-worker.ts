@@ -1,6 +1,7 @@
 import { parentPort } from 'worker_threads';
 import { expose } from 'comlink';
-import nodeEndpoint from 'comlink/dist/umd/node-adapter';
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+import nodeEndpoint = require('comlink/dist/umd/node-adapter');
 import { ESLint } from 'eslint';
 import { Core } from './core.js';
 import { SuggestionFilter } from './transforms/apply-suggestions.js';
