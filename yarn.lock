@@ -523,10 +523,10 @@
     "@types/yargs" "^16.0.0"
     chalk "^4.0.0"
 
-"@mizdra/eslint-config-mizdra@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@mizdra/eslint-config-mizdra/-/eslint-config-mizdra-1.0.0.tgz#9382ff72510aecc4cb6ac19f6e8d30a773cd0a11"
-  integrity sha512-9E769NQJTWy/zJcDCtrj3RqsSCFcCd2cE6746+S7IcUzPZSYiDgN3rDniR6PBE74dfqZmOA8iZRYQHSDbKKpKA==
+"@mizdra/eslint-config-mizdra@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@mizdra/eslint-config-mizdra/-/eslint-config-mizdra-1.1.0.tgz#ad87ad48be4ffc96c4999a78b46af8d730b1d27a"
+  integrity sha512-P0X1VLYUTm3ne1NWA1Cepyi3aztqx2ZdStcq1f9bUltpQhY1tppMPES8zWGRJI5OEhod9rlhgozrWd17TvP+1w==
 
 "@mizdra/prettier-config-mizdra@^0.4.0":
   version "0.4.0"
