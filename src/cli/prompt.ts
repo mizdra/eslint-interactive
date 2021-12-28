@@ -1,7 +1,9 @@
 /* istanbul ignore file */
 
-import { prompt } from 'enquirer';
+import enquirer from 'enquirer';
 import { Action, DisplayMode } from '../types.js';
+
+const { prompt } = enquirer;
 
 // When combined with worker, for some reason the enquirer grabs the SIGINT and the process continues to survive.
 // Therefore, the process is explicitly terminated.
