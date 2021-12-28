@@ -6,6 +6,7 @@
   "author": "mizdra <pp.mizdra@gmail.com>",
   "license": "MIT",
   "private": false,
+  "type": "module",
   "scripts": {
     "build": "tsc -p tsconfig.src.json",
     "dev": "tsc-watch -p tsconfig.src.json --onSuccess 'bin/eslint-interactive fixtures --rulesdir fixtures/rules --ext .js,.jsx,.mjs'",
@@ -65,7 +66,7 @@
     "eslint": "^7.0.0 || ^8.0.0"
   },
   "engines": {
-    "node": ">=14.0"
+    "node": "^14.13.1 || >=16.0.0"
   },
   "publishConfig": {
     "access": "public",
