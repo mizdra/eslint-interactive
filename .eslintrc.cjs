@@ -32,6 +32,9 @@ module.exports = {
         '@typescript-eslint/no-unsafe-return': 'off',
         // 煩すぎるので off
         '@typescript-eslint/no-unsafe-argument': 'off',
+        // disable because this rule do not support ESM in TypeScript.
+        // ref: https://github.com/import-js/eslint-plugin-import/issues/2170
+        'import/no-unresolved': 'off',
       },
     },
     // for test
