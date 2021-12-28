@@ -2,8 +2,7 @@ import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import { Worker } from 'worker_threads';
 import { wrap } from 'comlink';
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-import nodeEndpoint = require('comlink/dist/umd/node-adapter');
+import nodeEndpoint from 'comlink/dist/esm/node-adapter.mjs';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 import isInstalledGlobally = require('is-installed-globally');
 import { warn } from './cli/log.js';
