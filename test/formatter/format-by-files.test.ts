@@ -1,7 +1,7 @@
 import { ESLint } from 'eslint';
 import stripAnsi from 'strip-ansi';
-import { formatByFiles } from '../../src/formatter/format-by-files';
-import { fakeLintResult, fakeLintMessage } from '../test-util/eslint';
+import { formatByFiles } from '../../src/formatter/format-by-files.js';
+import { fakeLintResult, fakeLintMessage } from '../test-util/eslint.js';
 
 describe('formatByFiles', () => {
   test('outputs formatted text', () => {

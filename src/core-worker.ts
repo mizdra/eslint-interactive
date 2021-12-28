@@ -1,11 +1,11 @@
 import { parentPort } from 'worker_threads';
 import { expose } from 'comlink';
-import nodeEndpoint from 'comlink/dist/umd/node-adapter';
+import nodeEndpoint from 'comlink/dist/esm/node-adapter.mjs';
 import { ESLint } from 'eslint';
-import { Core } from './core';
-import { SuggestionFilter } from './transforms/apply-suggestions';
-import { FixableMaker } from './transforms/make-fixable-and-fix';
-import { Config } from './types';
+import { Core } from './core.js';
+import { SuggestionFilter } from './transforms/apply-suggestions.js';
+import { FixableMaker } from './transforms/make-fixable-and-fix.js';
+import { Config } from './types.js';
 
 /**
  * @file This is a wrapper module for using the Core API with comlink.
@@ -61,5 +61,5 @@ export class SerializableCore {
     return this.core.makeFixableAndFix(results, ruleIds, fixableMaker);
   }
 }
-
-expose(SerializableCore, nodeEndpoint(parentPort));
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+expose(SerializableCore, (nodeEndpoint as any)(parentPort));

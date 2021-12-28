@@ -1,16 +1,18 @@
-import { join } from 'path';
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
 import { Worker } from 'worker_threads';
 import { wrap } from 'comlink';
-import nodeEndpoint from 'comlink/dist/umd/node-adapter';
-import isInstalledGlobally from 'is-installed-globally';
-import { warn } from './cli/log';
-import { parseArgv } from './cli/parse-argv';
-import { SerializableCore } from './core-worker';
-import { lint } from './scenes/lint';
-import { selectAction } from './scenes/select-action';
-import { selectRuleIds } from './scenes/select-rule-ids';
-import { selectToContinue } from './scenes/select-to-continue';
-import { NextScene } from './types';
+import nodeEndpoint from 'comlink/dist/esm/node-adapter.mjs';
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+import isInstalledGlobally = require('is-installed-globally');
+import { warn } from './cli/log.js';
+import { parseArgv } from './cli/parse-argv.js';
+import { SerializableCore } from './core-worker.js';
+import { lint } from './scenes/lint.js';
+import { selectAction } from './scenes/select-action.js';
+import { selectRuleIds } from './scenes/select-rule-ids.js';
+import { selectToContinue } from './scenes/select-to-continue.js';
+import { NextScene } from './types.js';
 
 export type Options = {
   argv: string[];
@@ -31,8 +33,9 @@ export async function run(options: Options) {
 
   // Directly executing the Core API will hog the main thread and halt the spinner.
   // So we wrap it with comlink and run it on the Worker.
-  const worker = new Worker(join(__dirname, 'core-worker.js'));
-  const ProxiedCore = wrap<typeof SerializableCore>(nodeEndpoint(worker));
+  const worker = new Worker(join(dirname(fileURLToPath(import.meta.url)), 'core-worker.js'));
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const ProxiedCore = wrap<typeof SerializableCore>((nodeEndpoint as any)(worker));
   const core = await new ProxiedCore(config);
 
   let nextScene: NextScene = { name: 'lint' };

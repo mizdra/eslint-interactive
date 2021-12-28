@@ -2,6 +2,7 @@ import { exec as execOriginal } from 'child_process';
 import { mkdir, appendFile, readFile, access } from 'fs/promises';
 import { tmpdir } from 'os';
 import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
 import { promisify } from 'util';
 
 const exec = promisify(execOriginal);
@@ -36,9 +37,9 @@ export function generateFixableMakerScriptFilePath(ruleIds: string[]): string {
 }
 
 export function generateExampleFilterScriptFilePath(): string {
-  return join(__dirname, '..', '..', 'static', 'example-filter-script.js');
+  return join(dirname(fileURLToPath(import.meta.url)), '..', '..', 'static', 'example-filter-script.js');
 }
 
 export function generateExampleFixableMakerScriptFilePath(): string {
-  return join(__dirname, '..', '..', 'static', 'example-fixable-maker-script.js');
+  return join(dirname(fileURLToPath(import.meta.url)), '..', '..', 'static', 'example-fixable-maker-script.js');
 }

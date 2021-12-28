@@ -4,13 +4,13 @@ import chalk from 'chalk';
 import { Remote } from 'comlink';
 import { ESLint } from 'eslint';
 import ora from 'ora';
-import { promptToInputReuseFilterScript } from '../cli/prompt';
-import { SerializableCore } from '../core-worker';
+import { promptToInputReuseFilterScript } from '../cli/prompt.js';
+import { SerializableCore } from '../core-worker.js';
 import {
   editFileWithEditor,
   generateExampleFilterScriptFilePath,
   generateFilterScriptFilePath,
-} from '../util/filter-script';
+} from '../util/filter-script.js';
 
 export async function doApplySuggestionsAction(
   core: Remote<SerializableCore>,

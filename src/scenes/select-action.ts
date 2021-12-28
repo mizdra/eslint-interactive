@@ -1,15 +1,15 @@
 import { Remote } from 'comlink';
 import { ESLint } from 'eslint';
-import { doApplySuggestionsAction } from '../actions/apply-suggestions';
-import { doDisablePerFileAction } from '../actions/disable-per-file';
-import { doDisablePerLineAction } from '../actions/disable-per-line';
-import { doFixAction } from '../actions/fix';
-import { doMakeFixableAndFixAction } from '../actions/make-fixable-and-fix';
-import { doPrintDetailsOfResultsAction } from '../actions/print-details-of-results';
-import { promptToInputAction } from '../cli/prompt';
-import { SerializableCore } from '../core-worker';
-import { NextScene } from '../types';
-import { unreachable } from '../util/type-check';
+import { doApplySuggestionsAction } from '../actions/apply-suggestions.js';
+import { doDisablePerFileAction } from '../actions/disable-per-file.js';
+import { doDisablePerLineAction } from '../actions/disable-per-line.js';
+import { doFixAction } from '../actions/fix.js';
+import { doMakeFixableAndFixAction } from '../actions/make-fixable-and-fix.js';
+import { doPrintDetailsOfResultsAction } from '../actions/print-details-of-results.js';
+import { promptToInputAction } from '../cli/prompt.js';
+import { SerializableCore } from '../core-worker.js';
+import { NextScene } from '../types.js';
+import { unreachable } from '../util/type-check.js';
 
 export type SelectActionArgs = {
   /** The lint results of the project */

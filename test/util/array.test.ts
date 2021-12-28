@@ -1,4 +1,4 @@
-import { groupBy, unique } from '../../src/util/array';
+import { groupBy, unique } from '../../src/util/array.js';
 
 test('unique', () => {
   expect(unique([0, 1, 1, 2, 1])).toStrictEqual([0, 1, 2]);

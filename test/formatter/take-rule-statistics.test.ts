@@ -1,7 +1,7 @@
 import { ESLint } from 'eslint';
-import { takeRuleStatistics } from '../../src/formatter/take-rule-statistics';
-import { RuleStatistic } from '../../src/types';
-import { fakeLintResult, fakeLintMessage, fakeFix, fakeSuggestions } from '../test-util/eslint';
+import { takeRuleStatistics } from '../../src/formatter/take-rule-statistics.js';
+import { RuleStatistic } from '../../src/types.js';
+import { fakeLintResult, fakeLintMessage, fakeFix, fakeSuggestions } from '../test-util/eslint.js';
 
 describe('takeRuleStatistics', () => {
   test('aggregates errors and warnings for each rule', () => {

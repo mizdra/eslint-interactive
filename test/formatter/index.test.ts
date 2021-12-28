@@ -1,22 +1,6 @@
-const mockFormatByFiles = jest.fn(() => 'formatByFiles');
-const mockFormatByRules = jest.fn(() => 'formatByRules');
-
 import { ESLint } from 'eslint';
-import { format } from '../../src/formatter';
-import { fakeLintResult, fakeLintMessage } from '../test-util/eslint';
-
-jest.mock('../../src/formatter/format-by-files', () => {
-  return {
-    ...jest.requireActual('../../src/formatter/format-by-files'),
-    formatByFiles: mockFormatByFiles,
-  };
-});
-jest.mock('../../src/formatter/format-by-rules', () => {
-  return {
-    ...jest.requireActual('../../src/formatter/format-by-rules'),
-    formatByRules: mockFormatByRules,
-  };
-});
+import { format } from '../../src/formatter/index.js';
+import { fakeLintResult, fakeLintMessage } from '../test-util/eslint.js';
 
 describe('format', () => {
   test('call `formatByFiles` and `formatByRules`', () => {
@@ -28,10 +12,13 @@ describe('format', () => {
     const data: ESLint.LintResultData = { rulesMeta: {} };
     const formattedText = format(results, data);
     expect(formattedText).toMatchInlineSnapshot(`
-"formatByFiles
-formatByRules"
-`);
-    expect(mockFormatByFiles).toBeCalledWith(results);
-    expect(mockFormatByRules).toBeCalledWith(results, data);
+      "[1m- 1 file (0 file passed, [91m1 file failed[39m) checked.[22m
+      [1m[22m
+      ┌────────┬───────┬─────────┬────────────┬─────────────────┐
+      │ Rule   │ Error │ Warning │ is fixable │ has suggestions │
+      ├────────┼───────┼─────────┼────────────┼─────────────────┤
+      │ rule-a │ [31m[1m1[22m[39m     │ 0       │ 0          │ 0               │
+      └────────┴───────┴─────────┴────────────┴─────────────────┘"
+    `);
   });
 });

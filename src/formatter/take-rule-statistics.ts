@@ -1,6 +1,6 @@
 import { ESLint, Linter } from 'eslint';
-import { RuleStatistic } from '../types';
-import { groupBy } from '../util/array';
+import { RuleStatistic } from '../types.js';
+import { groupBy } from '../util/array.js';
 
 /** 指定されたルールのエラー/警告の件数などの統計を取る */
 function takeRuleStatistic(ruleId: string, messages: Linter.LintMessage[]): RuleStatistic {

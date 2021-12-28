@@ -1,5 +1,5 @@
-import { createTransformToDisablePerLine } from '../../src/transforms/disable-per-line';
-import { TransformTester } from '../test-util/transform-tester';
+import { createTransformToDisablePerLine } from '../../src/transforms/disable-per-line.js';
+import { TransformTester } from '../test-util/transform-tester.js';
 
 const tester = new TransformTester(
   createTransformToDisablePerLine,

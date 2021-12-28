@@ -1,15 +1,15 @@
 import { Rule } from 'eslint';
 import type { Comment } from 'estree';
-import { TransformContext } from '../types';
-import { unique } from '../util/array';
+import { TransformContext } from '../types.js';
+import { unique } from '../util/array.js';
 import {
   DisableComment,
   findShebang,
   mergeRuleIdsAndDescription,
   parseDisableComment,
   toCommentText,
-} from '../util/eslint';
-import { notEmpty } from '../util/type-check';
+} from '../util/eslint.js';
+import { notEmpty } from '../util/type-check.js';
 
 export type TransformToDisablePerFileArgs = {
   description?: string;

@@ -13,11 +13,21 @@
     "incremental": true, // ビルド結果をキャッシュするように
 
     /* Module Options */
-    // "module": "esnext", // 継承先で上書きする
-    "esModuleInterop": true, // CommonJS モジュールを `import _ from 'commonjs'` で import できるように
+    "module": "node12",
+    "moduleResolution": "node12",
+    "esModuleInterop": false, // `"module": "node12"` との相性が悪いので off にする
     "resolveJsonModule": true, // import した json の型を推論するように
-    "moduleResolution": "node", // `node` にしないと `resolveJsonModule` が使えない
     "forceConsistentCasingInFileNames": true, // 大文字小文字を区別しない環境 (win) でも unix と同じように区別する
+    // 🤯🤯🤯 THIS IS SUPER HACK!!! 🤯🤯🤯
+    // - comlink provides an ESM module (ex. `comlink/dist/esm/node-adapter.mjs`)
+    // - Of course, comlink also provide type definitions (ex. `comlink/dist/esm/node-adapter.d.ts`)
+    // - However, the corresponding type definition for `xxx.mjs` is `xxx.d.mts` in `"module": "node12"` mode
+    // - Therefore, importing the ESM module causes compilation errors
+    // - So, use `paths` option to force `xxx.mjs` to be mapped to `xxx.d.ts`.
+    "baseUrl": ".",
+    "paths": {
+      "comlink/dist/esm/node-adapter.mjs": ["./node_modules/comlink/dist/esm/node-adapter.js"]
+    },
 
     /* Additional Features */
     // "jsx": "react",

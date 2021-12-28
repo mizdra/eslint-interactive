@@ -2,3 +2,4 @@
 /dist
 /tsconfig.src.tsbuildinfo
 /tsconfig.test.tsbuildinfo
+/bin
