@@ -2,7 +2,8 @@
 
 /** @typedef {import('ts-jest/dist/types')} */
 /** @type {import('@jest/types').Config.InitialOptions} */
-module.exports = {
+// eslint-disable-next-line import/no-default-export
+export default {
   displayName: 'test',
   preset: 'ts-jest',
   testMatch: ['<rootDir>/test/**/*.test.ts?(x)'],
