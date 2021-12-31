@@ -4,7 +4,7 @@ import {
   TransformToDisablePerFileArgs,
   TransformToDisablePerLineArgs,
   TransformToMakeFixableAndFixArgs,
-} from './plugin/transforms/index.js';
+} from './plugin/index.js';
 import { SelectActionArgs, SelectRuleIdsArgs } from './scenes/index.js';
 
 /**

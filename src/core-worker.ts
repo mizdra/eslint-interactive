@@ -3,7 +3,7 @@ import { expose } from 'comlink';
 import nodeEndpoint from 'comlink/dist/esm/node-adapter.mjs';
 import { ESLint } from 'eslint';
 import { Core } from './core.js';
-import { FixableMaker, SuggestionFilter } from './plugin/transforms/index.js';
+import { FixableMaker, SuggestionFilter } from './plugin/index.js';
 import { Config } from './types.js';
 
 /**
