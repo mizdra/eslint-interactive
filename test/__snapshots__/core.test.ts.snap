@@ -432,17 +432,6 @@ import { exp } from './lib/exp'
         "column": 5,
         "endColumn": 9,
         "endLine": 11,
-        "line": 11,
-        "message": "'numE' is assigned a value but never used.",
-        "messageId": "unusedVar",
-        "nodeType": "Identifier",
-        "ruleId": "no-unused-vars",
-        "severity": 2,
-      },
-      Object {
-        "column": 5,
-        "endColumn": 9,
-        "endLine": 11,
         "fix": Object {
           "range": Array [
             244,
@@ -455,6 +444,17 @@ import { exp } from './lib/exp'
         "messageId": "useConst",
         "nodeType": "Identifier",
         "ruleId": "prefer-const",
+        "severity": 2,
+      },
+      Object {
+        "column": 5,
+        "endColumn": 9,
+        "endLine": 11,
+        "line": 11,
+        "message": "'numE' is assigned a value but never used.",
+        "messageId": "unusedVar",
+        "nodeType": "Identifier",
+        "ruleId": "no-unused-vars",
         "severity": 2,
       },
       Object {
