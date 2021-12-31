@@ -30,7 +30,7 @@ function normalizeMessage(message: Linter.LintMessage): Linter.LintMessage {
 }
 
 // Normalize `results` for the snapshot.
-function normalize(results: ESLint.LintResult[]): ESLint.LintResult[] {
+function normalizeResults(results: ESLint.LintResult[]): ESLint.LintResult[] {
   return results.map((result) => {
     delete result.source; // Remove the source because the snapshot will be large
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -63,7 +63,7 @@ describe('Core', () => {
   });
   test('lint', async () => {
     const results = await core.lint();
-    expect(normalize(results)).toMatchSnapshot();
+    expect(normalizeResults(results)).toMatchSnapshot();
   });
   test('printSummaryOfResults', async () => {
     const results = await core.lint();
