@@ -20,7 +20,7 @@
   },
   "prettier": "@mizdra/prettier-config-mizdra",
   "renovate": "github>mizdra/renovate-config-mizdra",
-  "packageManager": "yarn@1.22.15",
+  "packageManager": "yarn@1.22.17",
   "devDependencies": {
     "@jest/types": "^27.4.2",
     "@mizdra/eslint-config-mizdra": "^1.1.0",
