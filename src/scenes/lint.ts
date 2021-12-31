@@ -26,7 +26,7 @@ export async function lint(core: Remote<SerializableCore>): Promise<NextScene> {
   }
   lintingSpinner.succeed(chalk.bold('Found errors.'));
   console.log();
-  await core.printSummaryOfResults(results);
+  console.log(await core.formatResultSummary(results));
 
   const hasESLintCoreProblems = results.flatMap((result) => result.messages).some((message) => message.ruleId === null);
   if (hasESLintCoreProblems) {
@@ -36,7 +36,7 @@ export async function lint(core: Remote<SerializableCore>): Promise<NextScene> {
         'Check the details of the problem and fix it. ' +
         'This is usually caused by the invalid eslintrc or the invalid syntax of the linted code.',
     );
-    await core.printDetailsOfResults(results, [null], 'withoutPager');
+    console.log(await core.formatResultDetails(results, [null]));
   }
   return { name: 'selectRuleIds', args: { results, ruleIdsInResults } };
 }

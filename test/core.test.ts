@@ -56,7 +56,7 @@ describe('Core', () => {
   test('printSummaryOfResults', async () => {
     const results = await core.lint();
     const mockStdout = mockConsoleLog();
-    core.printSummaryOfResults(results);
+    core.formatResultSummary(results);
     expect(mockStdout.mock.calls[0]).toMatchSnapshot();
     mockStdout.mockRestore();
   });
@@ -64,7 +64,7 @@ describe('Core', () => {
     const results = await core.lint();
 
     const mockStdout = mockConsoleLog();
-    await core.printDetailsOfResults(results, ['import/order', 'ban-exponentiation-operator'], 'withoutPager');
+    await core.formatResultDetails(results, ['import/order', 'ban-exponentiation-operator'], 'withoutPager');
     expect(mockStdout.mock.calls[0]).toMatchSnapshot();
     mockStdout.mockRestore();
   });
