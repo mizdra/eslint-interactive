@@ -135,7 +135,6 @@ exports[`Core lint 1`] = `
 Array [
   Object {
     "errorCount": 0,
-    "fatalErrorCount": 0,
     "filePath": "/fixtures-tmp/.eslintrc.js",
     "fixableErrorCount": 0,
     "fixableWarningCount": 0,
@@ -145,7 +144,6 @@ Array [
   },
   Object {
     "errorCount": 19,
-    "fatalErrorCount": 0,
     "filePath": "/fixtures-tmp/index.js",
     "fixableErrorCount": 18,
     "fixableWarningCount": 0,
@@ -324,13 +322,6 @@ import { exp } from './lib/exp'
         "column": 5,
         "endColumn": 9,
         "endLine": 8,
-        "fix": Object {
-          "range": Array [
-            187,
-            205,
-          ],
-          "text": "const numB=add(3, 4)",
-        },
         "line": 8,
         "message": "'numB' is never reassigned. Use 'const' instead.",
         "messageId": "useConst",
@@ -360,13 +351,6 @@ import { exp } from './lib/exp'
         "column": 5,
         "endColumn": 9,
         "endLine": 9,
-        "fix": Object {
-          "range": Array [
-            206,
-            224,
-          ],
-          "text": "const numC=sub(5, 6)",
-        },
         "line": 9,
         "message": "'numC' is never reassigned. Use 'const' instead.",
         "messageId": "useConst",
@@ -396,13 +380,6 @@ import { exp } from './lib/exp'
         "column": 5,
         "endColumn": 9,
         "endLine": 10,
-        "fix": Object {
-          "range": Array [
-            225,
-            243,
-          ],
-          "text": "const numD=exp(2, 2)",
-        },
         "line": 10,
         "message": "'numD' is never reassigned. Use 'const' instead.",
         "messageId": "useConst",
@@ -432,13 +409,6 @@ import { exp } from './lib/exp'
         "column": 5,
         "endColumn": 9,
         "endLine": 11,
-        "fix": Object {
-          "range": Array [
-            244,
-            280,
-          ],
-          "text": "const numE=mul(numA, numB, numC, numD)",
-        },
         "line": 11,
         "message": "'numE' is never reassigned. Use 'const' instead.",
         "messageId": "useConst",
@@ -499,7 +469,6 @@ import { exp } from './lib/exp'
   },
   Object {
     "errorCount": 7,
-    "fatalErrorCount": 0,
     "filePath": "/fixtures-tmp/lib/add-disable-comment.jsx",
     "fixableErrorCount": 1,
     "fixableWarningCount": 0,
@@ -592,7 +561,6 @@ import { exp } from './lib/exp'
   },
   Object {
     "errorCount": 0,
-    "fatalErrorCount": 0,
     "filePath": "/fixtures-tmp/lib/add.js",
     "fixableErrorCount": 0,
     "fixableWarningCount": 1,
@@ -621,7 +589,6 @@ import { exp } from './lib/exp'
   },
   Object {
     "errorCount": 10,
-    "fatalErrorCount": 0,
     "filePath": "/fixtures-tmp/lib/apply-suggestion.js",
     "fixableErrorCount": 0,
     "fixableWarningCount": 0,
@@ -1005,7 +972,6 @@ key4
   },
   Object {
     "errorCount": 1,
-    "fatalErrorCount": 1,
     "filePath": "/fixtures-tmp/lib/eslint-core-problem.mjs",
     "fixableErrorCount": 0,
     "fixableWarningCount": 0,
@@ -1024,7 +990,6 @@ key4
   },
   Object {
     "errorCount": 2,
-    "fatalErrorCount": 0,
     "filePath": "/fixtures-tmp/lib/exp.js",
     "fixableErrorCount": 1,
     "fixableWarningCount": 0,
@@ -1063,7 +1028,6 @@ key4
   },
   Object {
     "errorCount": 6,
-    "fatalErrorCount": 0,
     "filePath": "/fixtures-tmp/lib/make-fixable-and-fix.js",
     "fixableErrorCount": 0,
     "fixableWarningCount": 0,
@@ -1140,7 +1104,6 @@ key4
   },
   Object {
     "errorCount": 1,
-    "fatalErrorCount": 0,
     "filePath": "/fixtures-tmp/lib/mul.js",
     "fixableErrorCount": 1,
     "fixableWarningCount": 0,
@@ -1169,7 +1132,6 @@ key4
   },
   Object {
     "errorCount": 1,
-    "fatalErrorCount": 0,
     "filePath": "/fixtures-tmp/lib/shebang.js",
     "fixableErrorCount": 1,
     "fixableWarningCount": 0,
@@ -1198,7 +1160,6 @@ key4
   },
   Object {
     "errorCount": 1,
-    "fatalErrorCount": 0,
     "filePath": "/fixtures-tmp/lib/sub.mjs",
     "fixableErrorCount": 1,
     "fixableWarningCount": 0,
@@ -1227,7 +1188,6 @@ key4
   },
   Object {
     "errorCount": 0,
-    "fatalErrorCount": 0,
     "filePath": "/fixtures-tmp/rules/ban-exponentiation-operator.js",
     "fixableErrorCount": 0,
     "fixableWarningCount": 0,
