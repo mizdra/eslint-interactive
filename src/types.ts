@@ -1,10 +1,11 @@
 import { Linter, Rule, SourceCode } from 'eslint';
-import { SelectActionArgs } from './scenes/select-action.js';
-import { SelectRuleIdsArgs } from './scenes/select-rule-ids.js';
-import { TransformToApplySuggestionsArgs } from './transforms/apply-suggestions.js';
-import { TransformToDisablePerFileArgs } from './transforms/disable-per-file.js';
-import { TransformToDisablePerLineArgs } from './transforms/disable-per-line.js';
-import { TransformToMakeFixableAndFixArgs } from './transforms/make-fixable-and-fix.js';
+import {
+  TransformToApplySuggestionsArgs,
+  TransformToDisablePerFileArgs,
+  TransformToDisablePerLineArgs,
+  TransformToMakeFixableAndFixArgs,
+} from './plugin/index.js';
+import { SelectActionArgs, SelectRuleIdsArgs } from './scenes/index.js';
 
 /**
  * The type that indicates what to do with the problems of selected rules.

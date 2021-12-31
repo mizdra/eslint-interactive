@@ -8,10 +8,7 @@ import isInstalledGlobally = require('is-installed-globally');
 import { warn } from './cli/log.js';
 import { parseArgv } from './cli/parse-argv.js';
 import { SerializableCore } from './core-worker.js';
-import { lint } from './scenes/lint.js';
-import { selectAction } from './scenes/select-action.js';
-import { selectRuleIds } from './scenes/select-rule-ids.js';
-import { selectToContinue } from './scenes/select-to-continue.js';
+import { lint, selectAction, selectRuleIds, selectToContinue } from './scenes/index.js';
 import { NextScene } from './types.js';
 
 export type Options = {

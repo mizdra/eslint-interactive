@@ -1,9 +1,11 @@
 import { ESLint, Rule } from 'eslint';
-import { createTransformToApplySuggestions } from '../transforms/apply-suggestions.js';
-import { createTransformToDisablePerFile } from '../transforms/disable-per-file.js';
-import { createTransformToDisablePerLine } from '../transforms/disable-per-line.js';
-import { createTransformToMakeFixableAndFix } from '../transforms/make-fixable-and-fix.js';
 import { Transform, TransformContext } from '../types.js';
+import {
+  createTransformToApplySuggestions,
+  createTransformToDisablePerFile,
+  createTransformToDisablePerLine,
+  createTransformToMakeFixableAndFix,
+} from './transforms/index.js';
 
 /**
  * @file The rule to do the transform.
@@ -27,7 +29,7 @@ export type TransformRuleOption = {
   transform: Transform;
 };
 
-const rule: Rule.RuleModule = {
+export const transformRule: Rule.RuleModule = {
   meta: {
     fixable: 'code',
   },
@@ -99,6 +101,3 @@ const rule: Rule.RuleModule = {
     };
   },
 };
-
-// eslint-disable-next-line import/no-default-export
-export default rule;
