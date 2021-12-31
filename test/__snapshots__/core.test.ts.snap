@@ -1004,6 +1004,25 @@ key4
     "warningCount": 0,
   },
   Object {
+    "errorCount": 1,
+    "fatalErrorCount": 1,
+    "filePath": "/fixtures-tmp/lib/eslint-core-problem.mjs",
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "messages": Array [
+      Object {
+        "column": 9,
+        "fatal": true,
+        "line": 1,
+        "message": "Parsing error: Unexpected token syntax",
+        "ruleId": null,
+        "severity": 2,
+      },
+    ],
+    "usedDeprecatedRules": Array [],
+    "warningCount": 0,
+  },
+  Object {
     "errorCount": 2,
     "fatalErrorCount": 0,
     "filePath": "/fixtures-tmp/lib/exp.js",
@@ -1329,8 +1348,8 @@ exports[`Core printDetailsOfResults 1`] = `
 `;
 
 exports[`Core printSummaryOfResults 1`] = `
-"[1m- 11 files (2 files passed, [91m9 files failed[39m) checked.[22m
-[1m- 48 problems ([31m47 errors[39m, [33m1 warning[39m) found.[22m
+"[1m- 12 files (2 files passed, [91m10 files failed[39m) checked.[22m
+[1m- 49 problems ([31m48 errors[39m, [33m1 warning[39m) found.[22m
 ┌─────────────────────────────┬───────┬─────────┬────────────┬─────────────────┐
 │ Rule                        │ Error │ Warning │ is fixable │ has suggestions │
 ├─────────────────────────────┼───────┼─────────┼────────────┼─────────────────┤
