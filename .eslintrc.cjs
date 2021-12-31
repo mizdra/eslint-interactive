@@ -17,6 +17,19 @@ module.exports = {
   },
   rules: {
     'import/no-extraneous-dependencies': 'error',
+    // 子ディレクトリ  (実際には孫など子以降を含む) のモジュールの import を禁止する
+    'no-restricted-imports': [
+      'error',
+      {
+        patterns: [
+          './**/*',
+          // 子ディレクトリでも index.js 経由なら許可
+          '!./*/index.js',
+          // 同一ディレクトリにあるモジュールは許可
+          '!./*',
+        ],
+      },
+    ],
   },
   overrides: [
     // for typescript
