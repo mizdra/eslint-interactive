@@ -27,7 +27,7 @@ export type TransformRuleOption = {
   transform: Transform;
 };
 
-const rule: Rule.RuleModule = {
+export const transformRule: Rule.RuleModule = {
   meta: {
     fixable: 'code',
   },
@@ -99,6 +99,3 @@ const rule: Rule.RuleModule = {
     };
   },
 };
-
-// eslint-disable-next-line import/no-default-export
-export default rule;

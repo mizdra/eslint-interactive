@@ -2,7 +2,7 @@ import { tmpdir } from 'os';
 import { join } from 'path';
 import { ESLint } from 'eslint';
 import { format } from './formatter/index.js';
-import transformRule, { TransformRuleOption } from './rules/transform.js';
+import { eslintInteractivePlugin, TransformRuleOption } from './plugin/index.js';
 import { FixableMaker, SuggestionFilter } from './transforms/index.js';
 import { Config, Transform } from './types.js';
 import { filterResultsByRuleId, scanUsedPluginsFromResults } from './util/eslint.js';
@@ -133,11 +133,7 @@ export class Core {
       // This is super hack to load ESM plugin/rule.
       // ref: https://github.com/eslint/eslint/issues/15453#issuecomment-1001200953
       plugins: {
-        'eslint-interactive': {
-          rules: {
-            transform: transformRule,
-          },
-        },
+        'eslint-interactive': eslintInteractivePlugin,
       },
       overrideConfig: {
         plugins: ['eslint-interactive'],
