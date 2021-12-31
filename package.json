@@ -7,6 +7,7 @@
   "license": "MIT",
   "private": false,
   "type": "module",
+  "exports": "./dist/index.js",
   "scripts": {
     "build": "tsc -p tsconfig.src.json",
     "dev": "tsc-watch -p tsconfig.src.json --onSuccess 'bin/eslint-interactive.js fixtures --rulesdir fixtures/rules --ext .js,.jsx,.mjs'",
