@@ -3,8 +3,7 @@ import { join } from 'path';
 import { ESLint } from 'eslint';
 import { format } from './formatter/index.js';
 import transformRule, { TransformRuleOption } from './rules/transform.js';
-import { SuggestionFilter } from './transforms/apply-suggestions.js';
-import { FixableMaker } from './transforms/make-fixable-and-fix.js';
+import { FixableMaker, SuggestionFilter } from './transforms/index.js';
 import { Config, Transform } from './types.js';
 import { filterResultsByRuleId, scanUsedPluginsFromResults } from './util/eslint.js';
 
