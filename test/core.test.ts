@@ -3,7 +3,6 @@ import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import { promisify } from 'util';
 import { ESLint } from 'eslint';
-import { mockConsoleLog } from 'jest-mock-process';
 import { Core } from '../src/core.js';
 
 const execPromise = promisify(exec);
@@ -55,18 +54,11 @@ describe('Core', () => {
   });
   test('printSummaryOfResults', async () => {
     const results = await core.lint();
-    const mockStdout = mockConsoleLog();
-    core.formatResultSummary(results);
-    expect(mockStdout.mock.calls[0]).toMatchSnapshot();
-    mockStdout.mockRestore();
+    expect(core.formatResultSummary(results)).toMatchSnapshot();
   });
   test('printDetailsOfResults', async () => {
     const results = await core.lint();
-
-    const mockStdout = mockConsoleLog();
-    await core.formatResultDetails(results, ['import/order', 'ban-exponentiation-operator'], 'withoutPager');
-    expect(mockStdout.mock.calls[0]).toMatchSnapshot();
-    mockStdout.mockRestore();
+    expect(await core.formatResultDetails(results, ['import/order', 'ban-exponentiation-operator'])).toMatchSnapshot();
   });
   test('fix', async () => {
     await core.fix(['semi']);
