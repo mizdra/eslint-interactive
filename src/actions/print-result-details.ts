@@ -4,7 +4,7 @@ import pager from 'node-pager';
 import { promptToInputDisplayMode } from '../cli/prompt.js';
 import { SerializableCore } from '../core-worker.js';
 
-export async function doPrintDetailsOfResultsAction(
+export async function doPrintResultDetailsAction(
   core: Remote<SerializableCore>,
   results: ESLint.LintResult[],
   selectedRuleIds: string[],

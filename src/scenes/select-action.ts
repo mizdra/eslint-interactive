@@ -5,7 +5,7 @@ import { doDisablePerFileAction } from '../actions/disable-per-file.js';
 import { doDisablePerLineAction } from '../actions/disable-per-line.js';
 import { doFixAction } from '../actions/fix.js';
 import { doMakeFixableAndFixAction } from '../actions/make-fixable-and-fix.js';
-import { doPrintDetailsOfResultsAction } from '../actions/print-details-of-results.js';
+import { doPrintResultDetailsAction } from '../actions/print-result-details.js';
 import { promptToInputAction } from '../cli/prompt.js';
 import { SerializableCore } from '../core-worker.js';
 import { NextScene } from '../types.js';
@@ -31,8 +31,8 @@ export async function selectAction(
 
   if (action === 'reselectRules') return { name: 'selectRuleIds', args: { results, ruleIdsInResults } };
 
-  if (action === 'printDetailsOfResults') {
-    await doPrintDetailsOfResultsAction(core, results, selectedRuleIds);
+  if (action === 'printResultDetails') {
+    await doPrintResultDetailsAction(core, results, selectedRuleIds);
     return { name: 'selectAction', args: { results, ruleIdsInResults, selectedRuleIds } };
   } else if (action === 'fix') {
     await doFixAction(core, selectedRuleIds);
@@ -50,5 +50,6 @@ export async function selectAction(
     await doMakeFixableAndFixAction(core, results, selectedRuleIds);
     return { name: 'selectToContinue' };
   }
-  return unreachable();
+  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+  return unreachable(`unknown action: ${action}`);
 }
