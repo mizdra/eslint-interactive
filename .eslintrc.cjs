@@ -63,5 +63,13 @@ module.exports = {
         'no-restricted-imports': 'off',
       },
     },
+    // for e2e test
+    {
+      files: ['test/e2e/**/*.{ts,tsx,cts,mts}'],
+      rules: {
+        // test/e2e/node_modules/ だけでなく、node_modules/ からの import も許可する
+        'import/no-extraneous-dependencies': ['error', { packageDir: ['.', './test/e2e'] }],
+      },
+    },
   ],
 };
