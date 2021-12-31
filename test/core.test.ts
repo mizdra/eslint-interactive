@@ -2,7 +2,7 @@ import { exec } from 'child_process';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import { promisify } from 'util';
-import { ESLint } from 'eslint';
+import { ESLint, Linter } from 'eslint';
 import { Core } from '../src/core.js';
 
 const execPromise = promisify(exec);
@@ -19,15 +19,28 @@ async function getSnapshotOfChangedFiles(): Promise<string> {
   return stdout.toString();
 }
 
+// Normalize `message` for the snapshot.
+function normalizeMessage(message: Linter.LintMessage): Linter.LintMessage {
+  // Exclude field because of the different format of `fix` in prefer-const in ESLint v7.0.0
+  if (message.ruleId === 'prefer-const') {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    delete (message as any).fix;
+  }
+  return message;
+}
+
 // Normalize `results` for the snapshot.
-function normalize(results: ESLint.LintResult[]): ESLint.LintResult[] {
+function normalizeResults(results: ESLint.LintResult[]): ESLint.LintResult[] {
   return results.map((result) => {
     delete result.source; // Remove the source because the snapshot will be large
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    delete (result as any).fatalErrorCount; // Remove because this field is not supported in eslint v7.0.0
     return {
       ...result,
       // Usually, `filePath` changes depending on the environment, and the snapshot will fail.
       // So, remove the current directory from `filePath`.
       filePath: result.filePath.replace(process.cwd(), ''),
+      messages: result.messages.map(normalizeMessage),
     };
   });
 }
@@ -50,7 +63,7 @@ describe('Core', () => {
   });
   test('lint', async () => {
     const results = await core.lint();
-    expect(normalize(results)).toMatchSnapshot();
+    expect(normalizeResults(results)).toMatchSnapshot();
   });
   test('printSummaryOfResults', async () => {
     const results = await core.lint();
