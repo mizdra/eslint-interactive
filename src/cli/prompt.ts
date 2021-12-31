@@ -40,7 +40,7 @@ export async function promptToInputAction(): Promise<Action> {
       type: 'select',
       message: 'Which action do you want to do?',
       choices: [
-        { name: 'printDetailsOfResults', message: 'Display details of lint results' },
+        { name: 'printResultDetails', message: 'Display details of lint results' },
         { name: 'fix', message: 'Run `eslint --fix`' },
         { name: 'disablePerLine', message: 'Disable per line' },
         { name: 'disablePerFile', message: 'Disable per file' },

@@ -1,12 +1,11 @@
 import { tmpdir } from 'os';
 import { join } from 'path';
 import { ESLint } from 'eslint';
-import pager from 'node-pager';
 import { format } from './formatter/index.js';
 import transformRule, { TransformRuleOption } from './rules/transform.js';
 import { SuggestionFilter } from './transforms/apply-suggestions.js';
 import { FixableMaker } from './transforms/make-fixable-and-fix.js';
-import { Config, DisplayMode, Transform } from './types.js';
+import { Config, Transform } from './types.js';
 import { filterResultsByRuleId, scanUsedPluginsFromResults } from './util/eslint.js';
 
 /**
@@ -42,10 +41,10 @@ export class Core {
   }
 
   /**
-   * Print summary of lint results.
+   * Returns summary of lint results.
    * @param results The lint results of the project to print summary
    */
-  printSummaryOfResults(results: ESLint.LintResult[]): void {
+  formatResultSummary(results: ESLint.LintResult[]): string {
     // get used plugins from `results`
     const plugins = scanUsedPluginsFromResults(results);
 
@@ -58,29 +57,18 @@ export class Core {
     // Therefore, the function may not exist in versions lower than 7.29.0.
     const rulesMeta: ESLint.LintResultData['rulesMeta'] = eslint.getRulesMetaForResults?.(results) ?? {};
 
-    const resultText = format(results, { rulesMeta: rulesMeta });
-    console.log(resultText);
+    return format(results, { rulesMeta: rulesMeta });
   }
 
   /**
-   * Print details of lint results.
-   * @param displayMode How to display a problem
+   * Returns details of lint results.
    * @param results The lint results of the project to print summary
    * @param ruleIds The rule ids to print details
    */
-  async printDetailsOfResults(
-    results: ESLint.LintResult[],
-    ruleIds: (string | null)[],
-    displayMode: DisplayMode,
-  ): Promise<void> {
+  async formatResultDetails(results: ESLint.LintResult[], ruleIds: (string | null)[]): Promise<string> {
     const eslint = new ESLint(this.baseOptions);
     const formatter = await eslint.loadFormatter(this.config.formatterName ?? 'codeframe');
-    const resultText = formatter.format(filterResultsByRuleId(results, ruleIds));
-    if (displayMode === 'withPager') {
-      await pager(resultText);
-    } else {
-      console.log(resultText);
-    }
+    return formatter.format(filterResultsByRuleId(results, ruleIds));
   }
 
   /**

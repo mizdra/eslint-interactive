@@ -27,13 +27,11 @@ export class SerializableCore {
   async lint(...args: Parameters<Core['lint']>): ReturnType<Core['lint']> {
     return this.core.lint(...args);
   }
-  printSummaryOfResults(...args: Parameters<Core['printSummaryOfResults']>): ReturnType<Core['printSummaryOfResults']> {
-    return this.core.printSummaryOfResults(...args);
+  formatResultSummary(...args: Parameters<Core['formatResultSummary']>): ReturnType<Core['formatResultSummary']> {
+    return this.core.formatResultSummary(...args);
   }
-  async printDetailsOfResults(
-    ...args: Parameters<Core['printDetailsOfResults']>
-  ): ReturnType<Core['printDetailsOfResults']> {
-    return this.core.printDetailsOfResults(...args);
+  async formatResultDetails(...args: Parameters<Core['formatResultDetails']>): ReturnType<Core['formatResultDetails']> {
+    return this.core.formatResultDetails(...args);
   }
   async fix(...args: Parameters<Core['fix']>): ReturnType<Core['fix']> {
     return this.core.fix(...args);

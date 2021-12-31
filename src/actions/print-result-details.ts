@@ -1,13 +1,18 @@
 import { Remote } from 'comlink';
 import { ESLint } from 'eslint';
+import pager from 'node-pager';
 import { promptToInputDisplayMode } from '../cli/prompt.js';
 import { SerializableCore } from '../core-worker.js';
 
-export async function doPrintDetailsOfResultsAction(
+export async function doPrintResultDetailsAction(
   core: Remote<SerializableCore>,
   results: ESLint.LintResult[],
   selectedRuleIds: string[],
 ) {
   const displayMode = await promptToInputDisplayMode();
-  await core.printDetailsOfResults(results, selectedRuleIds, displayMode);
+  if (displayMode === 'withPager') {
+    await pager(await core.formatResultDetails(results, selectedRuleIds));
+  } else {
+    console.log(await core.formatResultDetails(results, selectedRuleIds));
+  }
 }

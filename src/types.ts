@@ -10,7 +10,7 @@ import { TransformToMakeFixableAndFixArgs } from './transforms/make-fixable-and-
  * The type that indicates what to do with the problems of selected rules.
  */
 export type Action =
-  | 'printDetailsOfResults'
+  | 'printResultDetails'
   | 'fix'
   | 'disablePerLine'
   | 'disablePerFile'

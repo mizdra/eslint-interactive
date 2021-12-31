@@ -1004,6 +1004,25 @@ key4
     "warningCount": 0,
   },
   Object {
+    "errorCount": 1,
+    "fatalErrorCount": 1,
+    "filePath": "/fixtures-tmp/lib/eslint-core-problem.mjs",
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "messages": Array [
+      Object {
+        "column": 9,
+        "fatal": true,
+        "line": 1,
+        "message": "Parsing error: Unexpected token syntax",
+        "ruleId": null,
+        "severity": 2,
+      },
+    ],
+    "usedDeprecatedRules": Array [],
+    "warningCount": 0,
+  },
+  Object {
     "errorCount": 2,
     "fatalErrorCount": 0,
     "filePath": "/fixtures-tmp/lib/exp.js",
@@ -1267,8 +1286,7 @@ function _fn(_arg) {
 `;
 
 exports[`Core printDetailsOfResults 1`] = `
-Array [
-  "[31merror[39m: [1m\`./lib/add\` import should occur before import of \`./lib/mul\`[22m [2m(import/order)[22m at [32mfixtures-tmp/index.js:2:1[39m:
+"[31merror[39m: [1m\`./lib/add\` import should occur before import of \`./lib/mul\`[22m [2m(import/order)[22m at [32mfixtures-tmp/index.js:2:1[39m:
   1 | import { mul } from './lib/mul'
 > 2 | import { add } from './lib/add'
     | ^
@@ -1326,14 +1344,12 @@ Array [
 
 
 [31m[1m28 errors found.[22m[39m[31m[1m[22m[39m
-[31m[1m20 errors potentially fixable with the \`--fix\` option.[22m[39m",
-]
+[31m[1m20 errors potentially fixable with the \`--fix\` option.[22m[39m"
 `;
 
 exports[`Core printSummaryOfResults 1`] = `
-Array [
-  "[1m- 11 files (2 files passed, [91m9 files failed[39m) checked.[22m
-[1m- 48 problems ([31m47 errors[39m, [33m1 warning[39m) found.[22m
+"[1m- 12 files (2 files passed, [91m10 files failed[39m) checked.[22m
+[1m- 49 problems ([31m48 errors[39m, [33m1 warning[39m) found.[22m
 ┌─────────────────────────────┬───────┬─────────┬────────────┬─────────────────┐
 │ Rule                        │ Error │ Warning │ is fixable │ has suggestions │
 ├─────────────────────────────┼───────┼─────────┼────────────┼─────────────────┤
@@ -1350,6 +1366,5 @@ Array [
 │ no-useless-escape           │ [31m[1m5[22m[39m     │ 0       │ 0          │ [31m[1m5[22m[39m               │
 ├─────────────────────────────┼───────┼─────────┼────────────┼─────────────────┤
 │ no-unsafe-negation          │ [31m[1m5[22m[39m     │ 0       │ 0          │ [31m[1m5[22m[39m               │
-└─────────────────────────────┴───────┴─────────┴────────────┴─────────────────┘",
-]
+└─────────────────────────────┴───────┴─────────┴────────────┴─────────────────┘"
 `;
