@@ -59,6 +59,9 @@ module.exports = {
       env: {
         jest: true,
       },
+      rules: {
+        'no-restricted-imports': 'off',
+      },
     },
   ],
 };
