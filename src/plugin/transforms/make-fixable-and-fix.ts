@@ -1,8 +1,8 @@
 import { Linter, Rule, SourceCode } from 'eslint';
 import { traverse } from 'estraverse';
 import type { Node } from 'estree';
-import { TransformContext } from '../types.js';
-import { unreachable } from '../util/type-check.js';
+import { TransformContext } from '../../types.js';
+import { unreachable } from '../../util/type-check.js';
 
 export type FixableMaker = (message: Linter.LintMessage, node: Node | null) => Rule.Fix | null | undefined;
 

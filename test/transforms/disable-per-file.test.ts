@@ -1,4 +1,4 @@
-import { createTransformToDisablePerFile } from '../../src/transforms/disable-per-file.js';
+import { createTransformToDisablePerFile } from '../../src/plugin/transforms/disable-per-file.js';
 import { TransformTester } from '../test-util/transform-tester.js';
 
 const tester = new TransformTester(

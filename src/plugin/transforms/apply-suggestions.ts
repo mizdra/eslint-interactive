@@ -1,5 +1,5 @@
 import { Linter, Rule } from 'eslint';
-import { TransformContext } from '../types.js';
+import { TransformContext } from '../../types.js';
 
 export type SuggestionFilter = (
   suggestions: Linter.LintSuggestion[],
