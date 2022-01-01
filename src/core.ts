@@ -9,8 +9,16 @@ import {
   SuggestionFilter,
   Transform,
 } from './plugin/index.js';
-import { Config } from './types.js';
 import { filterResultsByRuleId, scanUsedPluginsFromResults } from './util/eslint.js';
+
+/** The config of eslint-interactive */
+export type Config = {
+  patterns: string[];
+  rulePaths?: string[] | undefined;
+  extensions?: string[] | undefined;
+  formatterName?: string;
+  cwd?: string;
+};
 
 /**
  * The core of eslint-interactive.
