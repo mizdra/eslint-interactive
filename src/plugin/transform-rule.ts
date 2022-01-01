@@ -1,5 +1,5 @@
 import { ESLint, Rule } from 'eslint';
-import { Transform, TransformContext } from '../types.js';
+import { Transform, TransformContext } from '../plugin/index.js';
 import {
   createTransformToApplySuggestions,
   createTransformToDisablePerFile,

@@ -1,6 +1,5 @@
 import { ESLint } from 'eslint';
-import { takeRuleStatistics } from '../../src/formatter/take-rule-statistics.js';
-import { RuleStatistic } from '../../src/types.js';
+import { takeRuleStatistics, type RuleStatistic } from '../../src/formatter/take-rule-statistics.js';
 import { fakeLintResult, fakeLintMessage, fakeFix, fakeSuggestions } from '../test-util/eslint.js';
 
 describe('takeRuleStatistics', () => {

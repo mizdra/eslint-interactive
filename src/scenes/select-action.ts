@@ -8,7 +8,7 @@ import { doMakeFixableAndFixAction } from '../actions/make-fixable-and-fix.js';
 import { doPrintResultDetailsAction } from '../actions/print-result-details.js';
 import { promptToInputAction } from '../cli/prompt.js';
 import { SerializableCore } from '../core-worker.js';
-import { NextScene } from '../types.js';
+import { NextScene } from '../scenes/index.js';
 import { unreachable } from '../util/type-check.js';
 
 export type SelectActionArgs = {

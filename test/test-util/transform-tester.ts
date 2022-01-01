@@ -1,5 +1,5 @@
 import { Linter } from 'eslint';
-import { TransformContext, TransformFunction } from '../../src/types.js';
+import { TransformContext, TransformFunction } from '../../src/plugin/index.js';
 import applyFixesRule from './rules/apply-fixes.js';
 import preferAdditionShorthand from './rules/prefer-addition-shorthand.js';
 

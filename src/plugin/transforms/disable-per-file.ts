@@ -1,6 +1,6 @@
 import { Rule } from 'eslint';
 import type { Comment } from 'estree';
-import { TransformContext } from '../../types.js';
+import { TransformContext } from '../../plugin/index.js';
 import { unique } from '../../util/array.js';
 import {
   DisableComment,

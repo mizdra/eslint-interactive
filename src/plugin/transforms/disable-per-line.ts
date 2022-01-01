@@ -1,6 +1,6 @@
 import { Linter, Rule } from 'eslint';
 import type { Comment } from 'estree';
-import { TransformContext } from '../../types.js';
+import { TransformContext } from '../../plugin/index.js';
 import { groupBy, unique } from '../../util/array.js';
 import { DisableComment, mergeRuleIdsAndDescription, parseDisableComment, toCommentText } from '../../util/eslint.js';
 import { notEmpty } from '../../util/type-check.js';

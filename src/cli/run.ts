@@ -8,8 +8,7 @@ import isInstalledGlobally = require('is-installed-globally');
 import { warn } from '../cli/log.js';
 import { parseArgv } from '../cli/parse-argv.js';
 import { SerializableCore } from '../core-worker.js';
-import { lint, selectAction, selectRuleIds, selectToContinue } from '../scenes/index.js';
-import { NextScene } from '../types.js';
+import { lint, selectAction, selectRuleIds, selectToContinue, NextScene } from '../scenes/index.js';
 
 export type Options = {
   argv: string[];

@@ -1,5 +1,4 @@
 export { run, type Options } from './cli/run.js';
-export { Core } from './core.js';
-export { type Config, type RuleStatistic } from './types.js';
+export { Core, type Config } from './core.js';
+export { takeRuleStatistics, type RuleStatistic } from './formatter/index.js';
 export { type FixableMaker, type SuggestionFilter } from './plugin/index.js';
-export { takeRuleStatistics } from './formatter/index.js';

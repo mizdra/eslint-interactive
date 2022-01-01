@@ -2,9 +2,23 @@ import { tmpdir } from 'os';
 import { join } from 'path';
 import { ESLint } from 'eslint';
 import { format } from './formatter/index.js';
-import { eslintInteractivePlugin, TransformRuleOption, FixableMaker, SuggestionFilter } from './plugin/index.js';
-import { Config, Transform } from './types.js';
+import {
+  eslintInteractivePlugin,
+  TransformRuleOption,
+  FixableMaker,
+  SuggestionFilter,
+  Transform,
+} from './plugin/index.js';
 import { filterResultsByRuleId, scanUsedPluginsFromResults } from './util/eslint.js';
+
+/** The config of eslint-interactive */
+export type Config = {
+  patterns: string[];
+  rulePaths?: string[] | undefined;
+  extensions?: string[] | undefined;
+  formatterName?: string;
+  cwd?: string;
+};
 
 /**
  * The core of eslint-interactive.
