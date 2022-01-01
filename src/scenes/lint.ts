@@ -3,7 +3,7 @@ import { Remote } from 'comlink';
 import ora from 'ora';
 import { warn } from '../cli/log.js';
 import { SerializableCore } from '../core-worker.js';
-import { NextScene } from '../types.js';
+import { NextScene } from '../scenes/index.js';
 import { unique } from '../util/array.js';
 import { notEmpty } from '../util/type-check.js';
 

@@ -1,5 +1,3 @@
-import { SelectActionArgs, SelectRuleIdsArgs } from './scenes/index.js';
-
 /**
  * The type that indicates what to do with the problems of selected rules.
  */
@@ -33,17 +31,6 @@ export type RuleStatistic = {
   hasSuggestionsErrorCount: number;
   hasSuggestionsWarningCount: number;
 };
-
-/**
- * The return type when calling a scene function.
- * Indicates which scene to jump to next.
- */
-export type NextScene =
-  | { name: 'lint' }
-  | { name: 'selectRuleIds'; args: SelectRuleIdsArgs }
-  | { name: 'selectAction'; args: SelectActionArgs }
-  | { name: 'selectToContinue' }
-  | { name: 'exit' };
 
 /** The config of eslint-interactive */
 export type Config = {
