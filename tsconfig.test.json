@@ -1,6 +1,6 @@
 {
   "extends": "./tsconfig.base.json",
-  "include": ["test/**/*", "src/**/*", "local-rules"],
+  "include": ["test/**/*", "e2e-test/**/*", "src/**/*", "local-rules"],
   "exclude": ["node_modules"],
   "compilerOptions": {
     // "outDir": "./dist/",

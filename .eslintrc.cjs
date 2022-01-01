@@ -65,10 +65,10 @@ module.exports = {
     },
     // for e2e test
     {
-      files: ['test/e2e/**/*.{ts,tsx,cts,mts}'],
+      files: ['e2e-test/**/*.{ts,tsx,cts,mts}'],
       rules: {
         // test/e2e/node_modules/ だけでなく、node_modules/ からの import も許可する
-        'import/no-extraneous-dependencies': ['error', { packageDir: ['.', './test/e2e'] }],
+        'import/no-extraneous-dependencies': ['error', { packageDir: ['.', './e2e-test'] }],
       },
     },
   ],

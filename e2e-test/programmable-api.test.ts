@@ -6,7 +6,7 @@ import stripAnsi from 'strip-ansi';
 test('Programmable API', async () => {
   const core = new Core({
     patterns: ['fixtures'],
-    cwd: join(dirname(fileURLToPath(import.meta.url)), '..', '..'),
+    cwd: join(dirname(fileURLToPath(import.meta.url)), '..'),
   });
   const results = await core.lint();
 
