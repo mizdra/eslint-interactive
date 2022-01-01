@@ -39,7 +39,7 @@ module.exports = {
     {
       files: ['*.ts', '*.tsx', '*.cts', '*.mts'],
       parserOptions: {
-        project: ['./tsconfig.src.json', './tsconfig.test.json'],
+        project: ['./tsconfig.src.json', './tsconfig.test.json', './e2e-test/tsconfig.json'],
       },
       rules: {
         // ts-ignore は覚悟のある時にしか使わないので、いちいち lint error にする必要もない
