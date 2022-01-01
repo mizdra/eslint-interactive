@@ -10,6 +10,7 @@
   <em>
     Run <code>eslint --fix</code>,  disable per line, apply suggestions, and more!
   </em>
+  <img alt="Screenshot" src="./docs/screenshot.png" />
 </p>
 
 ## Motivation
