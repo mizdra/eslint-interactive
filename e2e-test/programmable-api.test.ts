@@ -2,10 +2,19 @@ import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import { Core, takeRuleStatistics } from '@mizdra/eslint-interactive';
 import stripAnsi from 'strip-ansi';
+import { cleanupFixturesCopy, getSnapshotOfChangedFiles, setupFixturesCopy } from '../test/test-util/fixtures.js';
+
+beforeEach(async () => {
+  await setupFixturesCopy();
+});
+
+afterEach(async () => {
+  await cleanupFixturesCopy();
+});
 
 test('Programmable API', async () => {
   const core = new Core({
-    patterns: ['fixtures'],
+    patterns: ['fixtures-tmp'],
     cwd: join(dirname(fileURLToPath(import.meta.url)), '..'),
   });
   const results = await core.lint();
@@ -23,12 +32,8 @@ test('Programmable API', async () => {
   const ruleIds = sortedStatistics.map((statistic) => statistic.ruleId);
 
   const top3RuleIds = ruleIds.slice(0, 3);
+  expect(top3RuleIds).toStrictEqual(['semi', 'prefer-const', 'import/order']);
 
-  expect(top3RuleIds).toMatchInlineSnapshot(`
-    Array [
-      "semi",
-      "prefer-const",
-      "import/order",
-    ]
-  `);
+  await core.fix(top3RuleIds);
+  expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
 });

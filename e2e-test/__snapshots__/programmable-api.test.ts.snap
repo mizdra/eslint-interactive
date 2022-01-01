@@ -103,3 +103,43 @@ Array [
   },
 ]
 `;
+
+exports[`Programmable API 3`] = `
+"==> fixtures-tmp/index.js <==
+import { strictEqual } from 'assert';
+import { add } from './lib/add';
+import { exp } from './lib/exp';
+import { mul } from './lib/mul';
+import { sub } from './lib/sub';
+
+const numA=add(1, 2);
+const numB=add(3, 4);
+const numC=sub(5, 6);
+const numD=exp(2, 2);
+const numE=mul(numA, numB, numC, numD);
+
+strictEqual(numD, -84);
+
+==> fixtures-tmp/lib/add.js <==
+/* eslint semi: 1 */
+
+export function add(a, b) {
+  return a + b;
+}
+
+==> fixtures-tmp/lib/exp.js <==
+export function exp(a, b) {
+  return a ** b;
+}
+
+==> fixtures-tmp/lib/mul.js <==
+export function mul(a, b) {
+  return a * b;
+}
+
+==> fixtures-tmp/lib/shebang.js <==
+#!/usr/bin/env node
+
+console.log();
+"
+`;
