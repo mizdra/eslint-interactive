@@ -62,3 +62,9 @@ jobs:
 
       - name: yarn run test
         run: yarn run test
+
+      - name: yarn run build
+        run: yarn run build
+
+      - name: yarn run postbuild:test
+        run: yarn run postbuild:test
