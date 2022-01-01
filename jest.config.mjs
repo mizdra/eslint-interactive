@@ -1,12 +1,8 @@
 // @ts-check
 
-/** @typedef {import('ts-jest/dist/types')} */
-/** @type {import('@jest/types').Config.InitialOptions} */
-// eslint-disable-next-line import/no-default-export
-export default {
-  displayName: 'test',
+/** @type import('@jest/types').Config.InitialOptions */
+const SHARED_CONFIG = {
   preset: 'ts-jest/presets/default-esm',
-  testMatch: ['<rootDir>/test/**/*.test.ts?(x)'],
   // Since fixtures-tmp are rewritten during testing, if they are in the watch target, the test will be retrying infinitely.
   watchPathIgnorePatterns: ['<rootDir>/fixtures-tmp/'],
   // ESLint v8 では `pkg.exports` を利用したモジュールに依存しているが、jest は `pkg.exports` を解釈できないため、
@@ -19,11 +15,28 @@ export default {
   resolver: '<rootDir>/test/test-util/jest/resolver.cjs',
   // do not transform `import` statements (for ESM)
   transform: {},
-  collectCoverageFrom: ['<rootDir>/src/**/*.{js,jsx,cjs,mjs,ts,tsx,cts,mts}', '!**/*.d.ts'],
   globals: {
     'ts-jest': {
       tsconfig: 'tsconfig.test.json',
       useESM: true,
     },
   },
+};
+
+/** @typedef {import('ts-jest/dist/types')} */
+/** @type {import('@jest/types').Config.InitialOptions} */
+// eslint-disable-next-line import/no-default-export
+export default {
+  projects: [
+    {
+      ...SHARED_CONFIG,
+      displayName: 'unit',
+      testMatch: ['<rootDir>/test/**/*.test.ts?(x)'],
+    },
+    {
+      ...SHARED_CONFIG,
+      displayName: 'e2e',
+      testMatch: ['<rootDir>/e2e-test/**/*.test.ts?(x)'],
+    },
+  ],
 };
