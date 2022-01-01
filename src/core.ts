@@ -2,8 +2,14 @@ import { tmpdir } from 'os';
 import { join } from 'path';
 import { ESLint } from 'eslint';
 import { format } from './formatter/index.js';
-import { eslintInteractivePlugin, TransformRuleOption, FixableMaker, SuggestionFilter } from './plugin/index.js';
-import { Config, Transform } from './types.js';
+import {
+  eslintInteractivePlugin,
+  TransformRuleOption,
+  FixableMaker,
+  SuggestionFilter,
+  Transform,
+} from './plugin/index.js';
+import { Config } from './types.js';
 import { filterResultsByRuleId, scanUsedPluginsFromResults } from './util/eslint.js';
 
 /**
