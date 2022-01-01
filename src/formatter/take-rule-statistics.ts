@@ -1,6 +1,20 @@
 import { ESLint, Linter } from 'eslint';
-import { RuleStatistic } from '../types.js';
 import { groupBy } from '../util/array.js';
+
+/**
+ * The type representing the lint results of a rule unit.
+ */
+export type RuleStatistic = {
+  ruleId: string;
+  errorCount: number;
+  warningCount: number;
+  isFixableCount: number;
+  isFixableErrorCount: number;
+  isFixableWarningCount: number;
+  hasSuggestionsCount: number;
+  hasSuggestionsErrorCount: number;
+  hasSuggestionsWarningCount: number;
+};
 
 /** 指定されたルールのエラー/警告の件数などの統計を取る */
 function takeRuleStatistic(ruleId: string, messages: Linter.LintMessage[]): RuleStatistic {
