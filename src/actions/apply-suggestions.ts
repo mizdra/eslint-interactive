@@ -3,7 +3,7 @@ import { dirname } from 'path';
 import chalk from 'chalk';
 import { Remote } from 'comlink';
 import { ESLint } from 'eslint';
-import ora from 'ora';
+import { ora } from '../cli/ora.js';
 import { promptToInputReuseFilterScript } from '../cli/prompt.js';
 import { SerializableCore } from '../core-worker.js';
 import {

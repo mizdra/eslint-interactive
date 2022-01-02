@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import { Remote } from 'comlink';
-import ora from 'ora';
 import { warn } from '../cli/log.js';
+import { ora } from '../cli/ora.js';
 import { SerializableCore } from '../core-worker.js';
 import { NextScene } from '../scenes/index.js';
 import { unique } from '../util/array.js';
@@ -13,6 +13,9 @@ import { notEmpty } from '../util/type-check.js';
 export async function lint(core: Remote<SerializableCore>): Promise<NextScene> {
   const lintingSpinner = ora('Linting...').start();
   const results = await core.lint();
+  lintingSpinner.succeed(chalk.bold('Linting was successful.'));
+  console.log();
+
   const ruleIdsInResults = unique(
     results
       .flatMap((result) => result.messages)
@@ -21,11 +24,9 @@ export async function lint(core: Remote<SerializableCore>): Promise<NextScene> {
   );
 
   if (ruleIdsInResults.length === 0) {
-    lintingSpinner.succeed(chalk.bold('No error found.'));
+    console.log('💚 No error found.');
     return { name: 'exit' };
   }
-  lintingSpinner.succeed(chalk.bold('Found errors.'));
-  console.log();
   console.log(await core.formatResultSummary(results));
 
   const hasESLintCoreProblems = results.flatMap((result) => result.messages).some((message) => message.ruleId === null);
@@ -38,5 +39,6 @@ export async function lint(core: Remote<SerializableCore>): Promise<NextScene> {
     );
     console.log(await core.formatResultDetails(results, [null]));
   }
+  console.log();
   return { name: 'selectRuleIds', args: { results, ruleIdsInResults } };
 }
