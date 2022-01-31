@@ -34,6 +34,7 @@ export type TransformContext = {
   sourceCode: SourceCode;
   messages: Linter.LintMessage[];
   ruleIds: string[];
+  fixer: Rule.RuleFixer;
 };
 
 /**
