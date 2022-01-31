@@ -1,12 +1,11 @@
 import { Linter } from 'eslint';
-import { TransformContext, TransformFunction } from '../../src/plugin/index.js';
-import applyFixesRule from './rules/apply-fixes.js';
+import { eslintInteractivePlugin, TransformContext, TransformFunction } from '../../src/plugin/index.js';
 import preferAdditionShorthand from './rules/prefer-addition-shorthand.js';
 
 const DEFAULT_FILENAME = 'test.js';
 
 const linter = new Linter();
-linter.defineRule('apply-fixes', applyFixesRule);
+linter.defineRule('eslint-interactive/transform', eslintInteractivePlugin.rules.transform);
 linter.defineRule('prefer-addition-shorthand', preferAdditionShorthand);
 
 /**
@@ -81,11 +80,13 @@ export class TransformTester<T> {
     const context = createTransformContext(testCase, code, this.defaultLinterConfig);
     const fixes = this.transformFunction(context, testCase.args ?? this.defaultArgs);
 
+    const results = linter.verify(testCase.code);
+
     const report = linter.verifyAndFix(
       code,
       {
         rules: {
-          'apply-fixes': [2, fixes],
+          'eslint-interactive/transform': [2, { results, ruleIds, transform } as TransformRuleOption],
         },
         ...this.defaultLinterConfig,
       },
