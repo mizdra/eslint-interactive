@@ -18,7 +18,7 @@
     "lint:eslint": "eslint --ignore-pattern '/fixtures' .",
     "lint:prettier": "prettier --check .",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest --selectProjects unit --colors",
-    "postbuild:test": "yarn install --cwd e2e-test --frozen-lockfile && NODE_OPTIONS=--experimental-vm-modules jest --selectProjects e2e --colors"
+    "postbuild:test": "yarn install --cwd e2e-test/import-as-esm-from-esm --frozen-lockfile && NODE_OPTIONS=--experimental-vm-modules jest --selectProjects e2e --colors"
   },
   "prettier": "@mizdra/prettier-config-mizdra",
   "renovate": "github>mizdra/renovate-config-mizdra",
