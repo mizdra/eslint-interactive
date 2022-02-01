@@ -2,7 +2,7 @@ import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import { Core, takeRuleStatistics } from '@mizdra/eslint-interactive';
 import stripAnsi from 'strip-ansi';
-import { cleanupFixturesCopy, getSnapshotOfChangedFiles, setupFixturesCopy } from '../test/test-util/fixtures.js';
+import { cleanupFixturesCopy, getSnapshotOfChangedFiles, setupFixturesCopy } from '../../test/test-util/fixtures.js';
 
 beforeEach(async () => {
   await setupFixturesCopy();
@@ -15,7 +15,7 @@ afterEach(async () => {
 test('Programmable API', async () => {
   const core = new Core({
     patterns: ['fixtures-tmp'],
-    cwd: join(dirname(fileURLToPath(import.meta.url)), '..'),
+    cwd: join(dirname(fileURLToPath(import.meta.url)), '..', '..'),
   });
   const results = await core.lint();
 

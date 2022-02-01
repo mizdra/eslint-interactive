@@ -23,8 +23,8 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@mizdra/eslint-interactive@../":
-  version "6.0.0"
+"@mizdra/eslint-interactive@../../":
+  version "6.1.0"
   dependencies:
     boxen "^6.2.1"
     chalk "^5.0.0"
@@ -36,7 +36,7 @@
     is-installed-globally "^0.4.0"
     node-pager "^0.3.6"
     ora "^6.0.1"
-    source-map-support "^0.5.20"
+    source-map-support "^0.5.21"
     terminal-link "^3.0.0"
     yargs "^16.2.0"
 
@@ -493,7 +493,7 @@ signal-exit@^3.0.2:
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.6.tgz#24e630c4b0f03fea446a2bd299e62b4a6ca8d0af"
   integrity sha512-sDl4qMFpijcGw22U5w63KmD3cZJfBuFlVNbVMKje2keoKML7X2UzWbc4XrmEbDwg0NXJc3yv4/ox7b+JWb57kQ==
 
-source-map-support@^0.5.20:
+source-map-support@^0.5.21:
   version "0.5.21"
   resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.5.21.tgz#04fe7c7f9e1ed2d662233c28cb2b35b9f63f6e4f"
   integrity sha512-uBHU3L3czsIyYXKX88fdrGovxdSCoTGDRZ6SYXtSRxLZUzHg5P/66Ht6uoUlHu9EZod+inXhKo3qQgwXUT/y1w==

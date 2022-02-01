@@ -19,15 +19,18 @@ function normalizeMessage(message: Linter.LintMessage): Linter.LintMessage {
 // Normalize `results` for the snapshot.
 function normalizeResults(results: ESLint.LintResult[]): ESLint.LintResult[] {
   return results.map((result) => {
-    delete result.source; // Remove the source because the snapshot will be large
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    delete (result as any).fatalErrorCount; // Remove because this field is not supported in eslint v7.0.0
     return {
       ...result,
       // Usually, `filePath` changes depending on the environment, and the snapshot will fail.
       // So, remove the current directory from `filePath`.
       filePath: result.filePath.replace(process.cwd(), ''),
       messages: result.messages.map(normalizeMessage),
+      // Remove the source because the snapshot will be large
+      source: 'ommitted',
+      // Remove the suppressedMessages because this field is supported in eslint v8.8.0+
+      suppressedMessages: 'omitted',
+      // Remove because this field is not supported in eslint v7.0.0
+      fatalErrorCount: NaN,
     };
   });
 }

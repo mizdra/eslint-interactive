@@ -39,7 +39,7 @@ module.exports = {
     {
       files: ['*.ts', '*.tsx', '*.cts', '*.mts'],
       parserOptions: {
-        project: ['./tsconfig.src.json', './tsconfig.test.json', './e2e-test/tsconfig.json'],
+        project: ['./tsconfig.src.json', './tsconfig.test.json', './e2e-test/import-as-esm-from-esm/tsconfig.json'],
       },
       rules: {
         // ts-ignore は覚悟のある時にしか使わないので、いちいち lint error にする必要もない
@@ -68,7 +68,7 @@ module.exports = {
       files: ['e2e-test/**/*.{ts,tsx,cts,mts}'],
       rules: {
         // test/e2e/node_modules/ だけでなく、node_modules/ からの import も許可する
-        'import/no-extraneous-dependencies': ['error', { packageDir: ['.', './e2e-test'] }],
+        'import/no-extraneous-dependencies': ['error', { packageDir: ['.', './e2e-test/import-as-esm-from-esm'] }],
       },
     },
   ],
