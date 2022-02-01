@@ -17,8 +17,8 @@
     "lint:tsc:test": "tsc -p tsconfig.test.json --noEmit",
     "lint:eslint": "eslint --ignore-pattern '/fixtures' .",
     "lint:prettier": "prettier --check .",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest --selectProjects unit --colors",
-    "postbuild:test": "yarn install --cwd e2e-test/import-as-esm-from-esm --frozen-lockfile && NODE_OPTIONS=--experimental-vm-modules jest --selectProjects e2e --colors"
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest --colors",
+    "postbuild:test": "./run-e2e-test.sh"
   },
   "prettier": "@mizdra/prettier-config-mizdra",
   "renovate": "github>mizdra/renovate-config-mizdra",
