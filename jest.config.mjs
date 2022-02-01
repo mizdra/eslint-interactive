@@ -4,8 +4,7 @@ import { baseConfig } from './jest.config.base.mjs';
 
 /** @typedef {import('ts-jest/dist/types')} */
 /** @type {import('@jest/types').Config.InitialOptions} */
-// eslint-disable-next-line import/no-default-export
-export default {
+const config = {
   ...baseConfig,
   testMatch: ['<rootDir>/test/**/*.test.ts?(x)'],
   globals: {
@@ -16,3 +15,6 @@ export default {
     },
   },
 };
+
+// eslint-disable-next-line import/no-default-export
+export default config;
