@@ -20,6 +20,7 @@ function normalizeMessage(message: Linter.LintMessage): Linter.LintMessage {
 function normalizeResults(results: ESLint.LintResult[]): ESLint.LintResult[] {
   return results.map((result) => {
     delete result.source; // Remove the source because the snapshot will be large
+    delete result.suppressedMessages; // Remove the suppressedMessages because this field is supported in eslint v8.8.0+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     delete (result as any).fatalErrorCount; // Remove because this field is not supported in eslint v7.0.0
     return {
