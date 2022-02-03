@@ -8,4 +8,4 @@ npm install -g eslint@$(cat ../../node_modules/eslint/package.json | jq -r .vers
 # workaround for https://github.com/mizdra/eslint-interactive/issues/133
 npm install source-map-support
 
-eslint-interactive -v
+eslint-interactive --version
