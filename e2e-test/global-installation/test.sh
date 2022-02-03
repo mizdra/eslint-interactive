@@ -15,3 +15,6 @@ npm install source-map-support
 
 ## Successful launch
 eslint-interactive --version
+
+## Successful lint without error
+eslint-interactive .
