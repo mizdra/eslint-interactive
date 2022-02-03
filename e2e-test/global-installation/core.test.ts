@@ -1,8 +1,11 @@
+// t
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
-// @ts-expect-error
-import { Core } from '@mizdra/eslint-interactive';
 import { cleanupFixturesCopy, setupFixturesCopy } from '../../test/test-util/fixtures.js';
+
+// @ts-expect-error
+// eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
+const { Core } = require(join(process.env.NODE_ROOT_GLOBAL_PATH, '@mizdra/eslint-interactive'));
 
 beforeEach(async () => {
   await setupFixturesCopy();
