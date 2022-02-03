@@ -26,14 +26,12 @@ export type Config = {
  */
 export class Core {
   readonly config: Config;
+  /** The base options of ESLint */
+  readonly baseOptions: ESLint.Options;
 
   constructor(config: Config) {
     this.config = config;
-  }
-
-  /** The base options of ESLint */
-  get baseOptions(): ESLint.Options {
-    return {
+    this.baseOptions = {
       cache: true,
       cacheLocation: join(tmpdir(), `eslint-interactive--${Date.now()}-${Math.random()}`),
       rulePaths: this.config.rulePaths,
