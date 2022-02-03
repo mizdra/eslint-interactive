@@ -5,6 +5,7 @@
   "references": [
     { "path": "./tsconfig.src.json" },
     { "path": "./tsconfig.test.json" },
-    { "path": "./e2e-test/import-as-esm-from-esm/tsconfig.json" }
+    { "path": "./e2e-test/import-as-esm-from-esm/tsconfig.json" },
+    { "path": "./e2e-test/global-installation/tsconfig.json" }
   ]
 }
