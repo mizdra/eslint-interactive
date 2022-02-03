@@ -1,2 +1,2 @@
 npm install -g ../../
-NODE_OPTIONS=--experimental-vm-modules npx jest --colors
+NODE_PATH="$(npm root -g):$(npm root)" NODE_OPTIONS=--experimental-vm-modules npx jest --colors
