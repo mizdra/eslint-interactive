@@ -6,4 +6,3 @@ npm install -g $(ls mizdra-eslint-interactive-*.tgz)
 npm install source-map-support
 
 eslint-interactive -v
-NODE_ROOT_GLOBAL_PATH="$(npm root -g)" NODE_OPTIONS=--experimental-vm-modules npx jest --colors
