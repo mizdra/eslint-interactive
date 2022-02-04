@@ -1,4 +1,4 @@
-#!/usr/bin/env -S node -r source-map-support/register
+#!/usr/bin/env -S node -r source-map-support/register --unhandled-rejections=strict
 
 import { run } from '../dist/index.js';
 
