@@ -1,4 +1,4 @@
-import { parentPort } from 'worker_threads';
+import { parentPort, MessageChannel } from 'worker_threads';
 import { expose } from 'comlink';
 import nodeEndpoint from 'comlink/dist/esm/node-adapter.mjs';
 import { ESLint } from 'eslint';
@@ -57,5 +57,10 @@ export class SerializableCore {
     return this.core.makeFixableAndFix(results, ruleIds, fixableMaker);
   }
 }
+
+// workaround for https://github.com/GoogleChromeLabs/comlink/issues/466
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(globalThis as any).MessageChannel = MessageChannel;
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 expose(SerializableCore, (nodeEndpoint as any)(parentPort));
