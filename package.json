@@ -61,6 +61,7 @@
     "is-installed-globally": "^0.4.0",
     "node-pager": "^0.3.6",
     "ora": "^6.0.1",
+    "resolve-global": "^1.0.0",
     "terminal-link": "^3.0.0",
     "yargs": "^16.2.0"
   },
