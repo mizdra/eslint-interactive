@@ -46,4 +46,5 @@ export async function run(options: Options) {
       nextScene = await selectToContinue();
     }
   }
+  await worker.terminate();
 }
