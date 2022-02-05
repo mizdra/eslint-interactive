@@ -1,12 +1,9 @@
 import { tmpdir } from 'os';
 import { join } from 'path';
+import { fileURLToPath } from 'url';
 import { ESLint } from 'eslint';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 import isInstalledGlobally = require('is-installed-globally');
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-import resolveFrom = require('resolve-from');
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-import resolveGlobal = require('resolve-global');
 import { format } from './formatter/index.js';
 import {
   eslintInteractivePlugin,
@@ -85,11 +82,18 @@ export class Core {
     const eslint = new ESLint(this.baseOptions);
     const formatterName = this.config.formatterName ?? 'codeframe';
 
-    // When eslint-interactive is installed globally, eslint-codeframe-formatter will also be installed globally.
+    // When eslint-interactive is installed globally, eslint-formatter-codeframe will also be installed globally.
     // On the other hand, `eslint.loadFormatter` cannot load the globally installed formatter by name. So here it loads them by path.
     const resolvedFormatterNameOrPath =
       isInstalledGlobally && formatterName === 'codeframe'
-        ? resolveFrom(resolveGlobal('@mizdra/eslint-interactive'), 'eslint-codeframe-formatter')
+        ? fileURLToPath(
+            // @ts-expect-error
+            await import.meta.resolve(
+              'eslint-formatter-codeframe',
+              // @ts-expect-error
+              await import.meta.resolve('@mizdra/eslint-interactive'),
+            ),
+          )
         : formatterName;
 
     const formatter = await eslint.loadFormatter(resolvedFormatterNameOrPath);
