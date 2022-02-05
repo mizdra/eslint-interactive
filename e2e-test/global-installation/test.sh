@@ -7,9 +7,6 @@ npm install -g $(ls mizdra-eslint-interactive-*.tgz)
 ## install peerDeps manually
 npm install -g eslint@$(cat ../../node_modules/eslint/package.json | jq -r .version)
 
-## workaround for https://github.com/mizdra/eslint-interactive/issues/133
-npm install source-map-support
-
 
 # Test cases
 

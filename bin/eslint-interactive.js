@@ -1,4 +1,4 @@
-#!/usr/bin/env -S node --enable-source-maps --unhandled-rejections=strict
+#!/usr/bin/env -S node --enable-source-maps --unhandled-rejections=strict --experimental-import-meta-resolve
 
 import { run } from '../dist/index.js';
 
