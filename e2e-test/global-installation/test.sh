@@ -14,4 +14,7 @@ npm install -g eslint@$(cat ../../node_modules/eslint/package.json | jq -r .vers
 eslint-interactive --version
 
 ## Successful lint without error
-eslint-interactive .
+eslint-interactive pass.js
+
+## can print error with eslint-formatter-codeframe
+node test.js
