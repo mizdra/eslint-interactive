@@ -34,7 +34,7 @@ function generateFixPerLine(
         description,
       }),
     });
-    return { range: disableCommentPerLine.range, text };
+    return context.fixer.replaceTextRange(disableCommentPerLine.range, text);
   } else {
     const headNodeIndex = context.sourceCode.getIndexFromLoc({ line: line, column: 0 });
     const headNode = context.sourceCode.getNodeByRangeIndex(headNodeIndex);
@@ -43,16 +43,10 @@ function generateFixPerLine(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if ((headNode.type as any) === 'JSXText') {
       const commentText = toCommentText({ type: 'Block', scope: 'next-line', ruleIds: ruleIdsToDisable, description });
-      return {
-        range: [headNodeIndex, headNodeIndex],
-        text: '{' + commentText + '}\n',
-      };
+      return context.fixer.insertTextBeforeRange([headNodeIndex, headNodeIndex], '{' + commentText + '}\n');
     } else {
       const commentText = toCommentText({ type: 'Line', scope: 'next-line', ruleIds: ruleIdsToDisable, description });
-      return {
-        range: [headNodeIndex, headNodeIndex],
-        text: commentText + '\n',
-      };
+      return context.fixer.insertTextBeforeRange([headNodeIndex, headNodeIndex], commentText + '\n');
     }
   }
 }

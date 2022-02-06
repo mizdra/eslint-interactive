@@ -23,6 +23,48 @@ import {
 
 const filenameToIsAlreadyFixed = new Map<string, boolean>();
 
+function createFixes(
+  context: Rule.RuleContext,
+  ruleOption: TransformRuleOption,
+  fixer: Rule.RuleFixer,
+): Rule.Fix[] | null {
+  const { transform, results, ruleIds } = ruleOption;
+  const result = results.find((result) => result.filePath === context.getFilename());
+  if (!result) return null;
+  const messages = result.messages.filter((message) => message.ruleId && ruleIds.includes(message.ruleId));
+
+  const transformContext: TransformContext = {
+    filename: context.getFilename(),
+    sourceCode: context.getSourceCode(),
+    messages,
+    ruleIds,
+    fixer,
+  };
+
+  let fixes: Rule.Fix[] = [];
+  if (transform.name === 'disablePerLine') {
+    fixes = createTransformToDisablePerLine(transformContext, transform.args);
+  } else if (transform.name === 'disablePerFile') {
+    fixes = createTransformToDisablePerFile(transformContext, transform.args);
+  } else if (transform.name === 'applySuggestions') {
+    fixes = createTransformToApplySuggestions(transformContext, transform.args);
+  } else if (transform.name === 'makeFixableAndFix') {
+    fixes = createTransformToMakeFixableAndFix(transformContext, transform.args);
+  } else {
+    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions, @typescript-eslint/no-explicit-any
+    throw new Error(`Unknown transform: ${(transform as any).name}`);
+  }
+
+  if (fixes.length === 0) return null;
+
+  // 🤯🤯🤯 THIS IS SUPER HACK!!! 🤯🤯🤯
+  // `disablePerFile` などでは、1つ message を修正する度に、disable comment が 1 行追加されて、message に格納されている位置情報と、
+  // 本来修正するべきコードの位置が 1 行ずれてしまう。そこで、ファイルの後ろ側の行の message から修正していくことで、
+  // message の位置情報と本来修正するべきコードの位置情報がずれないようにしている。
+  const sortedFixed = fixes.sort((a, b) => b.range[0] - a.range[0]);
+  return sortedFixed;
+}
+
 export type TransformRuleOption = {
   ruleIds: string[];
   results: ESLint.LintResult[];
@@ -48,40 +90,7 @@ export const transformRule: Rule.RuleModule = {
       return {};
     }
 
-    const { transform, results, ruleIds } = context.options[0] as TransformRuleOption;
-
-    const result = results.find((result) => result.filePath === filename);
-    if (!result) return {};
-    const messages = result.messages.filter((message) => message.ruleId && ruleIds.includes(message.ruleId));
-
-    const transformContext: TransformContext = {
-      filename: context.getFilename(),
-      sourceCode: context.getSourceCode(),
-      messages,
-      ruleIds,
-    };
-
-    let fixes: Rule.Fix[] = [];
-    if (transform.name === 'disablePerLine') {
-      fixes = createTransformToDisablePerLine(transformContext, transform.args);
-    } else if (transform.name === 'disablePerFile') {
-      fixes = createTransformToDisablePerFile(transformContext, transform.args);
-    } else if (transform.name === 'applySuggestions') {
-      fixes = createTransformToApplySuggestions(transformContext, transform.args);
-    } else if (transform.name === 'makeFixableAndFix') {
-      fixes = createTransformToMakeFixableAndFix(transformContext, transform.args);
-    } else {
-      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions, @typescript-eslint/no-explicit-any
-      throw new Error(`Unknown transform: ${(transform as any).name}`);
-    }
-
-    if (fixes.length === 0) return {};
-
-    // 🤯🤯🤯 THIS IS SUPER HACK!!! 🤯🤯🤯
-    // `disablePerFile` などでは、1つ message を修正する度に、disable comment が 1 行追加されて、message に格納されている位置情報と、
-    // 本来修正するべきコードの位置が 1 行ずれてしまう。そこで、ファイルの後ろ側の行の message から修正していくことで、
-    // message の位置情報と本来修正するべきコードの位置情報がずれないようにしている。
-    const sortedFixed = fixes.sort((a, b) => b.range[0] - a.range[0]);
+    const ruleOption = context.options[0] as TransformRuleOption;
 
     return {
       // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -94,9 +103,13 @@ export const transformRule: Rule.RuleModule = {
             column: 0,
           },
           message: `transform`,
-          fix: () => sortedFixed,
+          fix: (fixer) => {
+            const fixes = createFixes(context, ruleOption, fixer);
+            // if `fixes` is null, do not set the flag.
+            if (fixes) filenameToIsAlreadyFixed.set(filename, true);
+            return fixes;
+          },
         });
-        filenameToIsAlreadyFixed.set(filename, true);
       },
     };
   },

@@ -27,7 +27,7 @@ async function readStream(stream) {
     { shell: true, stdio: ['pipe', 'pipe', 'pipe'] },
   );
 
-  await wait(500);
+  await wait(2000);
   child.stdin.write(' ');
   await wait(500);
   child.stdin.write(LF);
