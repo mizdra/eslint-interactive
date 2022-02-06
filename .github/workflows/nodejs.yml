@@ -50,7 +50,7 @@ jobs:
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
           key: test-${{ runner.os }}-${{ matrix.node }}-yarn-${{ hashFiles('**/yarn.lock') }}-${{ matrix.eslint }}
-          restore-keys: test-${{ runner.OS }}-${{ matrix.node }}-yarn-
+          restore-keys: test-${{ runner.os }}-${{ matrix.node }}-yarn-
 
       - name: yarn install --frozen-lockfile
         run: yarn install --frozen-lockfile
