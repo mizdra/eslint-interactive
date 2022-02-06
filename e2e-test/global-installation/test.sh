@@ -17,4 +17,4 @@ eslint-interactive --version
 eslint-interactive pass.js
 
 ## can print error with eslint-formatter-codeframe
-node test.js
+node can-print-error-with-eslint-formatter-codeframe.test.js
