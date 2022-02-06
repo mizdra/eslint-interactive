@@ -17,10 +17,14 @@
  * and selects the suggestion to be applied from the list and returns it.
  * @param {import('eslint').Linter.LintSuggestion[]} suggestions - The list of suggestions that can be applied to the problem
  * @param {import('eslint').Linter.LintMessage} message - The `message` that contained a `suggestion`
+ * @param {import('@mizdra/eslint-interactive').TransformContext} context - The context of the transformation.
  * @returns {import('eslint').Linter.LintSuggestion | null | undefined} Suggestion to apply. If null or undefined is returned, do not apply any suggestion.
  */
-function filterSuggestions(suggestions, message) {
+function filterSuggestions(suggestions, message, context) {
   // example:
+
+  console.log(context.filename);
+
   if (message.ruleId === 'no-unsafe-negation') {
     return suggestions.find((suggestion) => suggestion.desc.startsWith('Wrap negation'));
   } else if (message.ruleId === 'no-useless-escape') {

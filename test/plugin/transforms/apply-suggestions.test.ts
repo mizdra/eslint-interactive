@@ -1,4 +1,4 @@
-import { Linter } from 'eslint';
+import { basename } from 'path';
 import { TransformTester } from '../../test-util/transform-tester.js';
 
 const tester = new TransformTester(
@@ -51,25 +51,26 @@ describe('apply-suggestions', () => {
     ).toMatchInlineSnapshot(`"a += 1; b += 1;"`);
   });
   test('filter には suggestions, message が渡ってくる', async () => {
-    expect(
-      await tester.test({
-        code: ['a = a + 1;'],
-        ruleIdsToTransform: ['eslint-interactive/prefer-addition-shorthand'],
-        args: {
-          filter: (suggestions, message) => {
-            const suggestion: Linter.LintSuggestion = {
-              desc: 'description',
-              fix: {
-                range: [0, 9],
-                text: "'" + JSON.stringify({ suggestions, message }, null, '  ') + "'",
-              },
-            };
-
-            return suggestion;
-          },
+    await tester.test({
+      code: ['a = a + 1;'],
+      ruleIdsToTransform: ['eslint-interactive/prefer-addition-shorthand'],
+      args: {
+        filter: (suggestions, message, context) => {
+          expect({
+            suggestions,
+            message,
+            context: {
+              ...context,
+              // Use only basename, because the path will change depending on the environment.
+              filename: basename(context.filename),
+              // Take a snapshot of only part of it because `sourceCode` is huge
+              sourceCode: { text: context.sourceCode.text },
+            },
+          }).toMatchSnapshot();
+          return null;
         },
-      }),
-    ).toMatchSnapshot();
+      },
+    });
   });
   test('suggestion がない場合は何もしない', async () => {
     expect(

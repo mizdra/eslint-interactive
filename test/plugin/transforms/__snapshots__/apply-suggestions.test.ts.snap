@@ -1,80 +1,143 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`apply-suggestions filter には suggestions, message が渡ってくる 1`] = `
-"'{
-  \\"suggestions\\": [
-    {
-      \\"desc\\": \\"Use \`val += 1\` instead.\\",
-      \\"fix\\": {
-        \\"range\\": [
-          0,
-          9
-        ],
-        \\"text\\": \\"a += 1\\"
-      }
+Object {
+  "context": Object {
+    "filename": "test.js",
+    "fixer": Object {
+      "insertTextAfter": [Function],
+      "insertTextAfterRange": [Function],
+      "insertTextBefore": [Function],
+      "insertTextBeforeRange": [Function],
+      "remove": [Function],
+      "removeRange": [Function],
+      "replaceText": [Function],
+      "replaceTextRange": [Function],
     },
-    {
-      \\"desc\\": \\"Use \`val++\` instead.\\",
-      \\"fix\\": {
-        \\"range\\": [
-          0,
-          9
+    "messages": Array [
+      Object {
+        "column": 1,
+        "endColumn": 10,
+        "endLine": 1,
+        "line": 1,
+        "message": "The addition method is redundant.",
+        "nodeType": "AssignmentExpression",
+        "ruleId": "eslint-interactive/prefer-addition-shorthand",
+        "severity": 2,
+        "suggestions": Array [
+          Object {
+            "desc": "Use \`val += 1\` instead.",
+            "fix": Object {
+              "range": Array [
+                0,
+                9,
+              ],
+              "text": "a += 1",
+            },
+          },
+          Object {
+            "desc": "Use \`val++\` instead.",
+            "fix": Object {
+              "range": Array [
+                0,
+                9,
+              ],
+              "text": "a++",
+            },
+          },
+          Object {
+            "desc": "Use \`++val\` instead.",
+            "fix": Object {
+              "range": Array [
+                0,
+                9,
+              ],
+              "text": "++a",
+            },
+          },
         ],
-        \\"text\\": \\"a++\\"
-      }
+      },
+    ],
+    "ruleIds": Array [
+      "eslint-interactive/prefer-addition-shorthand",
+    ],
+    "sourceCode": Object {
+      "text": "a = a + 1;",
     },
-    {
-      \\"desc\\": \\"Use \`++val\` instead.\\",
-      \\"fix\\": {
-        \\"range\\": [
+  },
+  "message": Object {
+    "column": 1,
+    "endColumn": 10,
+    "endLine": 1,
+    "line": 1,
+    "message": "The addition method is redundant.",
+    "nodeType": "AssignmentExpression",
+    "ruleId": "eslint-interactive/prefer-addition-shorthand",
+    "severity": 2,
+    "suggestions": Array [
+      Object {
+        "desc": "Use \`val += 1\` instead.",
+        "fix": Object {
+          "range": Array [
+            0,
+            9,
+          ],
+          "text": "a += 1",
+        },
+      },
+      Object {
+        "desc": "Use \`val++\` instead.",
+        "fix": Object {
+          "range": Array [
+            0,
+            9,
+          ],
+          "text": "a++",
+        },
+      },
+      Object {
+        "desc": "Use \`++val\` instead.",
+        "fix": Object {
+          "range": Array [
+            0,
+            9,
+          ],
+          "text": "++a",
+        },
+      },
+    ],
+  },
+  "suggestions": Array [
+    Object {
+      "desc": "Use \`val += 1\` instead.",
+      "fix": Object {
+        "range": Array [
           0,
-          9
+          9,
         ],
-        \\"text\\": \\"++a\\"
-      }
-    }
+        "text": "a += 1",
+      },
+    },
+    Object {
+      "desc": "Use \`val++\` instead.",
+      "fix": Object {
+        "range": Array [
+          0,
+          9,
+        ],
+        "text": "a++",
+      },
+    },
+    Object {
+      "desc": "Use \`++val\` instead.",
+      "fix": Object {
+        "range": Array [
+          0,
+          9,
+        ],
+        "text": "++a",
+      },
+    },
   ],
-  \\"message\\": {
-    \\"ruleId\\": \\"eslint-interactive/prefer-addition-shorthand\\",
-    \\"severity\\": 2,
-    \\"message\\": \\"The addition method is redundant.\\",
-    \\"line\\": 1,
-    \\"column\\": 1,
-    \\"nodeType\\": \\"AssignmentExpression\\",
-    \\"endLine\\": 1,
-    \\"endColumn\\": 10,
-    \\"suggestions\\": [
-      {
-        \\"desc\\": \\"Use \`val += 1\` instead.\\",
-        \\"fix\\": {
-          \\"range\\": [
-            0,
-            9
-          ],
-          \\"text\\": \\"a += 1\\"
-        }
-      },
-      {
-        \\"desc\\": \\"Use \`val++\` instead.\\",
-        \\"fix\\": {
-          \\"range\\": [
-            0,
-            9
-          ],
-          \\"text\\": \\"a++\\"
-        }
-      },
-      {
-        \\"desc\\": \\"Use \`++val\` instead.\\",
-        \\"fix\\": {
-          \\"range\\": [
-            0,
-            9
-          ],
-          \\"text\\": \\"++a\\"
-        }
-      }
-    ]
-  }
-}';"
+}
 `;

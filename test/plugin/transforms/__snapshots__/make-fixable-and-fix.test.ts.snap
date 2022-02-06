@@ -2,6 +2,38 @@
 
 exports[`make-fixable-and-fix \`fixableMaker\` receives the message and node. 1`] = `
 Object {
+  "context": Object {
+    "filename": "test.js",
+    "fixer": Object {
+      "insertTextAfter": [Function],
+      "insertTextAfterRange": [Function],
+      "insertTextBefore": [Function],
+      "insertTextBeforeRange": [Function],
+      "remove": [Function],
+      "removeRange": [Function],
+      "replaceText": [Function],
+      "replaceTextRange": [Function],
+    },
+    "messages": Array [
+      Object {
+        "column": 7,
+        "endColumn": 8,
+        "endLine": 1,
+        "line": 1,
+        "message": "'a' is assigned a value but never used.",
+        "messageId": "unusedVar",
+        "nodeType": "Identifier",
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+      },
+    ],
+    "ruleIds": Array [
+      "no-unused-vars",
+    ],
+    "sourceCode": Object {
+      "text": "const a = 1;",
+    },
+  },
   "message": Object {
     "column": 7,
     "endColumn": 8,

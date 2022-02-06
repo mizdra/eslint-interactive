@@ -16,10 +16,13 @@
  * A function to convert `Linter.LintMessage` to `Rule.Fix`.
  * @param {import('eslint').Linter.LintMessage} message - The `Linter.LintMessage` to be converted.
  * @param {import('estree').Node | null} node - The node corresponding to the message.
+ * @param {import('@mizdra/eslint-interactive').TransformContext} context - The context of the transformation.
  * @returns {import('eslint').Rule.Fix | null | undefined} The `Rule.Fix` converted from `Linter.LintMessage`. If null or undefined, the message is not fixable.
  */
-function fixableMaker(message, node) {
+function fixableMaker(message, node, context) {
   // example:
+
+  console.log(context.filename);
 
   // Edge case handling
   if (!node) return null;
@@ -30,10 +33,9 @@ function fixableMaker(message, node) {
     // target codes: https://astexplorer.net/#/gist/e33d44d2e69a733766abbc9706fd3ed5/169a615afba7b0d5c88e87894db93fc7346250d2
 
     if (node.type !== 'Identifier') return null;
-    return {
-      range: [node.range[0], node.range[0]],
-      text: '_',
-    };
+    // For more information about the fixer API, see the following:
+    // https://eslint.org/docs/developer-guide/working-with-rules#applying-fixes
+    return context.fixer.insertTextBefore(node, '_');
   } else {
     return null;
   }

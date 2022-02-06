@@ -1,3 +1,4 @@
+import { basename } from 'path';
 import { TransformTester } from '../../test-util/transform-tester.js';
 
 const tester = new TransformTester(
@@ -90,10 +91,17 @@ describe('make-fixable-and-fix', () => {
       code: ['const a = 1;'],
       ruleIdsToTransform: ['no-unused-vars'],
       args: {
-        fixableMaker: (message, node) => {
+        fixableMaker: (message, node, context) => {
           expect({
             message,
-            node: node,
+            node,
+            context: {
+              ...context,
+              // Use only basename, because the path will change depending on the environment.
+              filename: basename(context.filename),
+              // Take a snapshot of only part of it because `sourceCode` is huge
+              sourceCode: { text: context.sourceCode.text },
+            },
           }).toMatchSnapshot();
           return null;
         },

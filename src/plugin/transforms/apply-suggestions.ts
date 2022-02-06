@@ -4,24 +4,29 @@ import { TransformContext } from '../../plugin/index.js';
 export type SuggestionFilter = (
   suggestions: Linter.LintSuggestion[],
   message: Linter.LintMessage,
+  context: TransformContext,
 ) => Linter.LintSuggestion | null | undefined;
 
 export type TransformToApplySuggestionsArgs = {
   filter: SuggestionFilter;
 };
 
-function getApplicableSuggestion(message: Linter.LintMessage, filter: SuggestionFilter): Linter.LintSuggestion | null {
+function getApplicableSuggestion(
+  message: Linter.LintMessage,
+  filter: SuggestionFilter,
+  context: TransformContext,
+): Linter.LintSuggestion | null {
   if (!message.suggestions || message.suggestions.length === 0) return null;
-  const suggestion = filter(message.suggestions, message);
+  const suggestion = filter(message.suggestions, message, context);
   return suggestion ?? null;
 }
 
 function generateFixPerMessage(
-  _context: TransformContext,
+  context: TransformContext,
   filter: SuggestionFilter,
   message: Linter.LintMessage,
 ): Rule.Fix | null {
-  const suggestion = getApplicableSuggestion(message, filter);
+  const suggestion = getApplicableSuggestion(message, filter, context);
   if (!suggestion) return null;
   return suggestion.fix;
 }
