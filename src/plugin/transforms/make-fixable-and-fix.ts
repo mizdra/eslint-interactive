@@ -4,7 +4,11 @@ import type { Node } from 'estree';
 import { TransformContext } from '../../plugin/index.js';
 import { unreachable } from '../../util/type-check.js';
 
-export type FixableMaker = (message: Linter.LintMessage, node: Node | null) => Rule.Fix | null | undefined;
+export type FixableMaker = (
+  message: Linter.LintMessage,
+  node: Node | null,
+  context: TransformContext,
+) => Rule.Fix | null | undefined;
 
 export type TransformToMakeFixableAndFixArgs = {
   fixableMaker: FixableMaker;
@@ -59,7 +63,7 @@ function generateFixes(context: TransformContext, args: TransformToMakeFixableAn
   const fixes: Rule.Fix[] = [];
   for (const message of context.messages) {
     const node = messageToNode.get(message) ?? null;
-    const fix = args.fixableMaker(message, node);
+    const fix = args.fixableMaker(message, node, context);
     if (fix) fixes.push(fix);
   }
   return fixes;
