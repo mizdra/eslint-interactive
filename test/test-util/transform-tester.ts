@@ -1,5 +1,6 @@
 import { resolve } from 'path';
 import { Linter, ESLint } from 'eslint';
+import { transformRule } from 'src/plugin/transform-rule.js';
 import { eslintInteractivePlugin, TransformArg, TransformName, TransformRuleOption } from '../../src/plugin/index.js';
 import preferAdditionShorthand from './rules/prefer-addition-shorthand.js';
 
@@ -51,55 +52,53 @@ export class TransformTester<T extends TransformName> {
 
     const filePath = testCase.filename ?? DEFAULT_FILENAME;
 
-    const eslint1 = new ESLint({
+    const eslint1 = this.createESLint({
+      rules: {
+        ...Object.fromEntries(testCase.ruleIdsToTransform.map((ruleId) => [ruleId, 'error'])),
+      },
+    });
+    const results1 = await eslint1.lintText(code, { filePath });
+
+    const eslint = this.createESLint({
+      rules: {
+        'eslint-interactive/transform': [
+          2,
+          {
+            results: results1,
+            ruleIds: testCase.ruleIdsToTransform,
+            transform: { name: this.transformName, args: { ...this.defaultTransformArgs, ...testCase.args } },
+          } as TransformRuleOption,
+        ],
+      },
+    });
+    const results = await eslint.lintText(code, { filePath });
+
+    const resultOfTargetFile = results.find((result) => result.filePath === resolve(filePath));
+    if (!resultOfTargetFile) return null;
+    return resultOfTargetFile.output ?? null;
+  }
+
+  private createESLint(options: { rules?: Linter.HasRules['rules'] }): ESLint {
+    return new ESLint({
       useEslintrc: false,
       plugins: {
         'eslint-interactive': {
           rules: {
             'prefer-addition-shorthand': preferAdditionShorthand,
+            'transform': transformRule,
           },
         },
       },
       overrideConfig: {
         plugins: ['eslint-interactive', ...(this.defaultLinterConfig.plugins ?? [])],
         rules: {
-          'eslint-interactive/prefer-addition-shorthand': 2,
-          ...Object.fromEntries(testCase.ruleIdsToTransform.map((ruleId) => [ruleId, 'error'])),
           ...this.defaultLinterConfig.rules,
-        },
-        ...this.defaultLinterConfig,
-      },
-    });
-    const results1 = await eslint1.lintText(code, { filePath });
-
-    const eslint = new ESLint({
-      useEslintrc: false,
-      plugins: {
-        'eslint-interactive': eslintInteractivePlugin,
-      },
-      overrideConfig: {
-        plugins: ['eslint-interactive', ...(this.defaultLinterConfig.plugins ?? [])],
-        rules: {
-          'eslint-interactive/transform': [
-            2,
-            {
-              results: results1,
-              ruleIds: testCase.ruleIdsToTransform,
-              transform: { name: this.transformName, args: { ...this.defaultTransformArgs, ...testCase.args } },
-            } as TransformRuleOption,
-          ],
-          ...this.defaultLinterConfig.rules,
+          ...options.rules,
         },
         ...this.defaultLinterConfig,
       },
       // NOTE: Only fix the `transform` rule problems.
       fix: (message) => message.ruleId === 'eslint-interactive/transform',
     });
-
-    const results = await eslint.lintText(code, { filePath });
-
-    const resultOfTargetFile = results.find((result) => result.filePath === resolve(filePath));
-    if (!resultOfTargetFile) return null;
-    return resultOfTargetFile.output ?? null;
   }
 }
