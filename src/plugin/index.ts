@@ -21,10 +21,24 @@ export const eslintInteractivePlugin = {
  * The type representing the transform to do.
  */
 export type Transform =
-  | { name: 'disablePerLine'; args: TransformToDisablePerLineArgs }
-  | { name: 'disablePerFile'; args: TransformToDisablePerFileArgs }
-  | { name: 'applySuggestions'; args: TransformToApplySuggestionsArgs }
-  | { name: 'makeFixableAndFix'; args: TransformToMakeFixableAndFixArgs };
+  | { name: 'disablePerLine'; args: TransformArg<'disablePerLine'> }
+  | { name: 'disablePerFile'; args: TransformArg<'disablePerFile'> }
+  | { name: 'applySuggestions'; args: TransformArg<'applySuggestions'> }
+  | { name: 'makeFixableAndFix'; args: TransformArg<'makeFixableAndFix'> };
+
+/** For test */
+export type TransformName = 'disablePerLine' | 'disablePerFile' | 'applySuggestions' | 'makeFixableAndFix';
+
+/** For test */
+export type TransformArg<T extends TransformName> = T extends 'disablePerLine'
+  ? TransformToDisablePerLineArgs
+  : T extends 'disablePerFile'
+  ? TransformToDisablePerFileArgs
+  : T extends 'applySuggestions'
+  ? TransformToApplySuggestionsArgs
+  : T extends 'makeFixableAndFix'
+  ? TransformToMakeFixableAndFixArgs
+  : never;
 
 /**
  * The type representing the additional information for the transform.

@@ -1,16 +1,15 @@
-import { createTransformToDisablePerFile } from '../../../src/plugin/transforms/disable-per-file.js';
 import { TransformTester } from '../../test-util/transform-tester.js';
 
 const tester = new TransformTester(
-  createTransformToDisablePerFile,
+  'disablePerFile',
   {},
   { parserOptions: { ecmaVersion: 2020, ecmaFeatures: { jsx: true } } },
 );
 
 describe('disable-per-file', () => {
-  test('basic', () => {
+  test('basic', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: 'var val',
         ruleIdsToTransform: ['semi'],
       }),
@@ -19,9 +18,9 @@ describe('disable-per-file', () => {
       var val"
     `);
   });
-  test('複数の rule を同時に disable できる', () => {
+  test('複数の rule を同時に disable できる', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: 'var val',
         ruleIdsToTransform: ['semi', 'no-var'],
       }),
@@ -30,9 +29,9 @@ describe('disable-per-file', () => {
       var val"
     `);
   });
-  test('既に disable comment が付いている場合は、末尾に足す', () => {
+  test('既に disable comment が付いている場合は、末尾に足す', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: ['/* eslint-disable semi */', 'var val'],
         ruleIdsToTransform: ['no-var'],
       }),
@@ -41,9 +40,9 @@ describe('disable-per-file', () => {
       var val"
     `);
   });
-  test('disable description があっても disable できる', () => {
+  test('disable description があっても disable できる', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: ['/* eslint-disable semi -- comment */', 'var val'],
         ruleIdsToTransform: ['no-var'],
       }),
@@ -52,9 +51,9 @@ describe('disable-per-file', () => {
       var val"
     `);
   });
-  test('disable description を追加できる', () => {
+  test('disable description を追加できる', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: ['/* eslint-disable semi */', 'var val'],
         ruleIdsToTransform: ['no-var'],
         args: { description: 'comment' },
@@ -64,9 +63,9 @@ describe('disable-per-file', () => {
       var val"
     `);
   });
-  test('既に disable description があるコメントに対しても disable description を追加できる', () => {
+  test('既に disable description があるコメントに対しても disable description を追加できる', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: ['/* eslint-disable semi -- foo */', 'var val'],
         ruleIdsToTransform: ['no-var'],
         args: { description: 'bar' },
@@ -76,9 +75,9 @@ describe('disable-per-file', () => {
       var val"
     `);
   });
-  test('`eslint-disable` has precedence over `@ts-check`', () => {
+  test('`eslint-disable` has precedence over `@ts-check`', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: ['// @ts-check', 'var val'],
         ruleIdsToTransform: ['no-var'],
       }),
@@ -88,9 +87,9 @@ describe('disable-per-file', () => {
       var val"
     `);
   });
-  test('`eslint-disable` has precedence over `/* @jsxImportSource xxx */`', () => {
+  test('`eslint-disable` has precedence over `/* @jsxImportSource xxx */`', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: ['/* @jsxImportSource @emotion/react */', 'var val'],
         ruleIdsToTransform: ['no-var'],
       }),
@@ -100,9 +99,9 @@ describe('disable-per-file', () => {
       var val"
     `);
   });
-  test('The shebang has precedence over `eslint-disable`', () => {
+  test('The shebang has precedence over `eslint-disable`', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: ['#!/usr/bin/env node', 'var val'],
         ruleIdsToTransform: ['no-var'],
       }),

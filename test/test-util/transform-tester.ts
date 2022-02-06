@@ -1,18 +1,15 @@
-import { Linter } from 'eslint';
-import { TransformContext, TransformFunction } from '../../src/plugin/index.js';
-import applyFixesRule from './rules/apply-fixes.js';
+import { resolve } from 'path';
+import { Linter, ESLint } from 'eslint';
+import { TransformArg, TransformName, TransformRuleOption } from '../../src/plugin/index.js';
+import { transformRule } from '../../src/plugin/transform-rule.js';
 import preferAdditionShorthand from './rules/prefer-addition-shorthand.js';
 
 const DEFAULT_FILENAME = 'test.js';
 
-const linter = new Linter();
-linter.defineRule('apply-fixes', applyFixesRule);
-linter.defineRule('prefer-addition-shorthand', preferAdditionShorthand);
-
 /**
  * The type representing the test case.
  */
-type TestCase<T> = {
+type TestCase<T extends TransformName> = {
   /**
    * The filename of the code.
    */
@@ -28,47 +25,21 @@ type TestCase<T> = {
   /**
    * The arguments to pass to the transform function.
    */
-  args?: T;
+  args?: TransformArg<T>;
 };
 
 type TestResult = string | null;
 
-function createTransformContext<T>(
-  testCase: TestCase<T>,
-  code: string,
-  defaultLinterConfig: Linter.Config,
-): TransformContext {
-  const filename = testCase.filename ?? DEFAULT_FILENAME;
-  const messages = linter.verify(
-    code,
-    {
-      rules: Object.fromEntries(testCase.ruleIdsToTransform.map((ruleId) => [ruleId, 'error'])),
-      ...defaultLinterConfig,
-    },
-    { filename },
-  );
-  const sourceCode = linter.getSourceCode();
-  const filteredMessages = messages.filter(
-    (message) => message.ruleId && testCase.ruleIdsToTransform.includes(message.ruleId),
-  );
-  return {
-    filename,
-    sourceCode,
-    messages: filteredMessages,
-    ruleIds: testCase.ruleIdsToTransform,
-  };
-}
-
 /**
  * The test utility for the transform.
  */
-export class TransformTester<T> {
-  private transformFunction: TransformFunction<T>;
-  private defaultArgs: T;
+export class TransformTester<T extends TransformName> {
+  private transformName: T;
+  private defaultTransformArgs: TransformArg<T>;
   private defaultLinterConfig: Linter.Config;
-  constructor(transformFunction: TransformFunction<T>, defaultArgs: T, defaultLinterConfig: Linter.Config) {
-    this.transformFunction = transformFunction;
-    this.defaultArgs = defaultArgs;
+  constructor(transformName: T, defaultTransformArgs: TransformArg<T>, defaultLinterConfig: Linter.Config) {
+    this.transformName = transformName;
+    this.defaultTransformArgs = defaultTransformArgs;
     this.defaultLinterConfig = defaultLinterConfig;
   }
   /**
@@ -76,22 +47,59 @@ export class TransformTester<T> {
    * @param testCase The test case.
    * @returns The transformed code. If the transform skipped, null is returned.
    */
-  test(testCase: TestCase<T>): TestResult {
+  async test(testCase: TestCase<T>): Promise<TestResult> {
     const code = Array.isArray(testCase.code) ? testCase.code.join('\n') : testCase.code;
-    const context = createTransformContext(testCase, code, this.defaultLinterConfig);
-    const fixes = this.transformFunction(context, testCase.args ?? this.defaultArgs);
 
-    const report = linter.verifyAndFix(
-      code,
-      {
+    const filePath = testCase.filename ?? DEFAULT_FILENAME;
+
+    const eslintForLint = this.createESLint({
+      rules: {
+        ...Object.fromEntries(testCase.ruleIdsToTransform.map((ruleId) => [ruleId, 'error'])),
+      },
+    });
+    const resultsForLint = await eslintForLint.lintText(code, { filePath });
+
+    const eslintForFix = this.createESLint({
+      rules: {
+        'eslint-interactive/transform': [
+          2,
+          {
+            results: resultsForLint,
+            ruleIds: testCase.ruleIdsToTransform,
+            transform: { name: this.transformName, args: { ...this.defaultTransformArgs, ...testCase.args } },
+          } as TransformRuleOption,
+        ],
+      },
+      // NOTE: fix with `transform` rule.
+      fix: true,
+    });
+    const resultsForFix = await eslintForFix.lintText(code, { filePath });
+
+    const resultOfTargetFile = resultsForFix.find((result) => result.filePath === resolve(filePath));
+    if (!resultOfTargetFile) return null;
+    return resultOfTargetFile.output ?? null;
+  }
+
+  private createESLint(options: { rules?: Linter.HasRules['rules']; fix?: ESLint.Options['fix'] }): ESLint {
+    return new ESLint({
+      useEslintrc: false,
+      plugins: {
+        'eslint-interactive': {
+          rules: {
+            'prefer-addition-shorthand': preferAdditionShorthand,
+            'transform': transformRule,
+          },
+        },
+      },
+      overrideConfig: {
+        plugins: ['eslint-interactive', ...(this.defaultLinterConfig.plugins ?? [])],
         rules: {
-          'apply-fixes': [2, fixes],
+          ...this.defaultLinterConfig.rules,
+          ...options.rules,
         },
         ...this.defaultLinterConfig,
       },
-      testCase.filename ?? DEFAULT_FILENAME,
-    );
-    if (report.fixed) return report.output;
-    return null;
+      fix: options.fix,
+    });
   }
 }

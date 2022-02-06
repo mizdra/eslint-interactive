@@ -35,7 +35,7 @@ exports[`apply-suggestions filter には suggestions, message が渡ってくる
     }
   ],
   \\"message\\": {
-    \\"ruleId\\": \\"prefer-addition-shorthand\\",
+    \\"ruleId\\": \\"eslint-interactive/prefer-addition-shorthand\\",
     \\"severity\\": 2,
     \\"message\\": \\"The addition method is redundant.\\",
     \\"line\\": 1,
