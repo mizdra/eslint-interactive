@@ -1,3 +1,4 @@
+import { basename } from 'path';
 import { TransformTester } from '../../test-util/transform-tester.js';
 
 const tester = new TransformTester(
@@ -54,10 +55,17 @@ describe('apply-suggestions', () => {
       code: ['a = a + 1;'],
       ruleIdsToTransform: ['eslint-interactive/prefer-addition-shorthand'],
       args: {
-        filter: (suggestions, message) => {
+        filter: (suggestions, message, context) => {
           expect({
             suggestions,
             message,
+            context: {
+              ...context,
+              // Use only basename, because the path will change depending on the environment.
+              filename: basename(context.filename),
+              // Take a snapshot of only part of it because `sourceCode` is huge
+              sourceCode: { text: context.sourceCode.text },
+            },
           }).toMatchSnapshot();
           return null;
         },
