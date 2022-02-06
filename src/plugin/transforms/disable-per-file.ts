@@ -34,13 +34,13 @@ function generateFix(context: TransformContext, description?: string): Rule.Fix 
         description,
       }),
     });
-    return { range: disableCommentPerFile.range, text };
+    return context.fixer.replaceTextRange(disableCommentPerFile.range, text);
   } else {
     const text = toCommentText({ type: 'Block', scope: 'file', ruleIds: ruleIdsToDisable, description }) + '\n';
 
     const shebang = findShebang(context.sourceCode.text);
     // if shebang exists, insert comment after shebang
-    return { range: shebang ? [shebang.range[1], shebang.range[1]] : [0, 0], text };
+    return context.fixer.insertTextAfterRange(shebang?.range ?? [0, 0], text);
   }
 }
 
