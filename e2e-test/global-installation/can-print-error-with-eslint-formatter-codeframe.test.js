@@ -43,5 +43,5 @@ async function readStream(stream) {
   const output = await readStream(child.stdout);
   console.log(output); // for debug
 
-  assert(output.includes('error: Missing semicolon (semi) at failed.js:1:2:'));
+  assert(output.includes('error: Missing semicolon (semi) at failed.js:2:2:'));
 })();
