@@ -15,7 +15,7 @@
     "lint:tsc": "run-s -c lint:tsc:*",
     "lint:tsc:src": "tsc -p tsconfig.src.json --noEmit",
     "lint:tsc:test": "tsc -p tsconfig.test.json --noEmit",
-    "lint:eslint": "eslint --ignore-pattern '/fixtures' .",
+    "lint:eslint": "eslint --ignore-pattern '/fixtures/' --ignore-pattern '/e2e-test/' .",
     "lint:prettier": "prettier --check .",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest --colors",
     "postbuild:test": "./run-e2e-test.sh"
