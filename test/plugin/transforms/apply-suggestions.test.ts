@@ -12,18 +12,18 @@ const tester = new TransformTester<TransformToApplySuggestionsArgs>(
 );
 
 describe('apply-suggestions', () => {
-  test('basic', () => {
+  test('basic', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: 'a = a + 1;',
         ruleIdsToTransform: ['prefer-addition-shorthand'],
         args: { filter: (suggestions) => suggestions[0] },
       }),
     ).toMatchInlineSnapshot(`"a += 1;"`);
   });
-  test('一度に複数の suggestion を適用できる', () => {
+  test('一度に複数の suggestion を適用できる', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: ['a = a + 1;', 'b = b + 1;'],
         ruleIdsToTransform: ['prefer-addition-shorthand'],
         args: { filter: (suggestions) => suggestions[0] },
@@ -33,9 +33,9 @@ describe('apply-suggestions', () => {
       b += 1;"
     `);
   });
-  test('一度に複数の rule の suggestion を適用できる', () => {
+  test('一度に複数の rule の suggestion を適用できる', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: ['a = a + 1;', 'if (!key in object) {}'],
         ruleIdsToTransform: ['prefer-addition-shorthand', 'no-unsafe-negation'],
         args: { filter: (suggestions) => suggestions[0] },
@@ -45,18 +45,18 @@ describe('apply-suggestions', () => {
       if (!(key in object)) {}"
     `);
   });
-  test('1 つの行に複数の suggestion があっても全ての suggestion が適用できる', () => {
+  test('1 つの行に複数の suggestion があっても全ての suggestion が適用できる', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: ['a = a + 1; b = b + 1;'],
         ruleIdsToTransform: ['prefer-addition-shorthand'],
         args: { filter: (suggestions) => suggestions[0] },
       }),
     ).toMatchInlineSnapshot(`"a += 1; b += 1;"`);
   });
-  test('filter には suggestions, message が渡ってくる', () => {
+  test('filter には suggestions, message が渡ってくる', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: ['a = a + 1;'],
         ruleIdsToTransform: ['prefer-addition-shorthand'],
         args: {
@@ -75,18 +75,18 @@ describe('apply-suggestions', () => {
       }),
     ).toMatchSnapshot();
   });
-  test('suggestion がない場合は何もしない', () => {
+  test('suggestion がない場合は何もしない', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: 'a = a + 1;',
         ruleIdsToTransform: ['semi'],
         args: { filter: (suggestions) => suggestions[0] },
       }),
     ).toMatchInlineSnapshot(`null`);
   });
-  test('filter から null もしくは undefined を返すと、suggestion は適用されない', () => {
+  test('filter から null もしくは undefined を返すと、suggestion は適用されない', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: 'a = a + 1;',
         ruleIdsToTransform: ['prefer-addition-shorthand'],
         args: { filter: (_suggestions) => (Math.random() < 0.5 ? null : undefined) },

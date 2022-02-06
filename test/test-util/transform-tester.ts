@@ -1,4 +1,5 @@
-import { Linter } from 'eslint';
+import { resolve } from 'path';
+import { Linter, ESLint } from 'eslint';
 import { TransformContext, TransformFunction } from '../../src/plugin/index.js';
 import applyFixesRule from './rules/apply-fixes.js';
 import preferAdditionShorthand from './rules/prefer-addition-shorthand.js';
@@ -6,7 +7,6 @@ import preferAdditionShorthand from './rules/prefer-addition-shorthand.js';
 const DEFAULT_FILENAME = 'test.js';
 
 const linter = new Linter();
-linter.defineRule('apply-fixes', applyFixesRule);
 linter.defineRule('prefer-addition-shorthand', preferAdditionShorthand);
 
 /**
@@ -76,22 +76,38 @@ export class TransformTester<T> {
    * @param testCase The test case.
    * @returns The transformed code. If the transform skipped, null is returned.
    */
-  test(testCase: TestCase<T>): TestResult {
+  async test(testCase: TestCase<T>): Promise<TestResult> {
     const code = Array.isArray(testCase.code) ? testCase.code.join('\n') : testCase.code;
     const context = createTransformContext(testCase, code, this.defaultLinterConfig);
     const fixes = this.transformFunction(context, testCase.args ?? this.defaultArgs);
 
-    const report = linter.verifyAndFix(
-      code,
-      {
+    const eslint = new ESLint({
+      useEslintrc: false,
+      plugins: {
+        'eslint-interactive': {
+          rules: {
+            'apply-fixes': applyFixesRule,
+          },
+        },
+      },
+      overrideConfig: {
+        plugins: ['eslint-interactive', ...(this.defaultLinterConfig.plugins ?? [])],
         rules: {
-          'apply-fixes': [2, fixes],
+          'eslint-interactive/apply-fixes': [2, fixes],
+          ...this.defaultLinterConfig.rules,
         },
         ...this.defaultLinterConfig,
       },
-      testCase.filename ?? DEFAULT_FILENAME,
-    );
-    if (report.fixed) return report.output;
-    return null;
+      // NOTE: Only fix the `apply-fixes` rule problems.
+      fix: (message) => message.ruleId === 'eslint-interactive/apply-fixes',
+    });
+
+    const filePath = testCase.filename ?? DEFAULT_FILENAME;
+
+    const results = await eslint.lintText(code, { filePath: testCase.filename ?? DEFAULT_FILENAME });
+
+    const resultOfTargetFile = results.find((result) => result.filePath === resolve(filePath));
+    if (!resultOfTargetFile) return null;
+    return resultOfTargetFile.output ?? null;
   }
 }
