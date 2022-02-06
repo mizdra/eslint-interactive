@@ -1,8 +1,7 @@
-import { createTransformToDisablePerLine } from '../../../src/plugin/transforms/disable-per-line.js';
 import { TransformTester } from '../../test-util/transform-tester.js';
 
 const tester = new TransformTester(
-  createTransformToDisablePerLine,
+  'disablePerLine',
   {},
   { parserOptions: { ecmaVersion: 2020, ecmaFeatures: { jsx: true } } },
 );

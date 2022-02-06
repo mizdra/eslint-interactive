@@ -1,12 +1,8 @@
 import { Linter } from 'eslint';
-import {
-  createTransformToApplySuggestions,
-  TransformToApplySuggestionsArgs,
-} from '../../../src/plugin/transforms/apply-suggestions.js';
 import { TransformTester } from '../../test-util/transform-tester.js';
 
-const tester = new TransformTester<TransformToApplySuggestionsArgs>(
-  createTransformToApplySuggestions,
+const tester = new TransformTester(
+  'applySuggestions',
   { filter: (suggestions) => suggestions[0] },
   { parserOptions: { ecmaVersion: 2020, ecmaFeatures: { jsx: true } } },
 );
@@ -16,7 +12,7 @@ describe('apply-suggestions', () => {
     expect(
       await tester.test({
         code: 'a = a + 1;',
-        ruleIdsToTransform: ['prefer-addition-shorthand'],
+        ruleIdsToTransform: ['eslint-interactive/prefer-addition-shorthand'],
         args: { filter: (suggestions) => suggestions[0] },
       }),
     ).toMatchInlineSnapshot(`"a += 1;"`);
@@ -25,7 +21,7 @@ describe('apply-suggestions', () => {
     expect(
       await tester.test({
         code: ['a = a + 1;', 'b = b + 1;'],
-        ruleIdsToTransform: ['prefer-addition-shorthand'],
+        ruleIdsToTransform: ['eslint-interactive/prefer-addition-shorthand'],
         args: { filter: (suggestions) => suggestions[0] },
       }),
     ).toMatchInlineSnapshot(`
@@ -37,7 +33,7 @@ describe('apply-suggestions', () => {
     expect(
       await tester.test({
         code: ['a = a + 1;', 'if (!key in object) {}'],
-        ruleIdsToTransform: ['prefer-addition-shorthand', 'no-unsafe-negation'],
+        ruleIdsToTransform: ['eslint-interactive/prefer-addition-shorthand', 'no-unsafe-negation'],
         args: { filter: (suggestions) => suggestions[0] },
       }),
     ).toMatchInlineSnapshot(`
@@ -49,7 +45,7 @@ describe('apply-suggestions', () => {
     expect(
       await tester.test({
         code: ['a = a + 1; b = b + 1;'],
-        ruleIdsToTransform: ['prefer-addition-shorthand'],
+        ruleIdsToTransform: ['eslint-interactive/prefer-addition-shorthand'],
         args: { filter: (suggestions) => suggestions[0] },
       }),
     ).toMatchInlineSnapshot(`"a += 1; b += 1;"`);
@@ -58,7 +54,7 @@ describe('apply-suggestions', () => {
     expect(
       await tester.test({
         code: ['a = a + 1;'],
-        ruleIdsToTransform: ['prefer-addition-shorthand'],
+        ruleIdsToTransform: ['eslint-interactive/prefer-addition-shorthand'],
         args: {
           filter: (suggestions, message) => {
             const suggestion: Linter.LintSuggestion = {
@@ -88,7 +84,7 @@ describe('apply-suggestions', () => {
     expect(
       await tester.test({
         code: 'a = a + 1;',
-        ruleIdsToTransform: ['prefer-addition-shorthand'],
+        ruleIdsToTransform: ['eslint-interactive/prefer-addition-shorthand'],
         args: { filter: (_suggestions) => (Math.random() < 0.5 ? null : undefined) },
       }),
     ).toMatchInlineSnapshot(`null`);

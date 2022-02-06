@@ -1,8 +1,7 @@
-import { createTransformToDisablePerFile } from '../../../src/plugin/transforms/disable-per-file.js';
 import { TransformTester } from '../../test-util/transform-tester.js';
 
 const tester = new TransformTester(
-  createTransformToDisablePerFile,
+  'disablePerFile',
   {},
   { parserOptions: { ecmaVersion: 2020, ecmaFeatures: { jsx: true } } },
 );

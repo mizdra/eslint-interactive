@@ -1,11 +1,7 @@
-import {
-  createTransformToMakeFixableAndFix,
-  TransformToMakeFixableAndFixArgs,
-} from '../../../src/plugin/transforms/make-fixable-and-fix.js';
 import { TransformTester } from '../../test-util/transform-tester.js';
 
-const tester = new TransformTester<TransformToMakeFixableAndFixArgs>(
-  createTransformToMakeFixableAndFix,
+const tester = new TransformTester(
+  'makeFixableAndFix',
   {
     fixableMaker: (_message, node) => {
       if (!node || !node.range) return null;

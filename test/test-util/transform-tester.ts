@@ -1,18 +1,14 @@
 import { resolve } from 'path';
 import { Linter, ESLint } from 'eslint';
-import { TransformContext, TransformFunction } from '../../src/plugin/index.js';
-import applyFixesRule from './rules/apply-fixes.js';
+import { eslintInteractivePlugin, TransformArg, TransformName, TransformRuleOption } from '../../src/plugin/index.js';
 import preferAdditionShorthand from './rules/prefer-addition-shorthand.js';
 
 const DEFAULT_FILENAME = 'test.js';
 
-const linter = new Linter();
-linter.defineRule('prefer-addition-shorthand', preferAdditionShorthand);
-
 /**
  * The type representing the test case.
  */
-type TestCase<T> = {
+type TestCase<T extends TransformName> = {
   /**
    * The filename of the code.
    */
@@ -28,47 +24,21 @@ type TestCase<T> = {
   /**
    * The arguments to pass to the transform function.
    */
-  args?: T;
+  args?: TransformArg<T>;
 };
 
 type TestResult = string | null;
 
-function createTransformContext<T>(
-  testCase: TestCase<T>,
-  code: string,
-  defaultLinterConfig: Linter.Config,
-): TransformContext {
-  const filename = testCase.filename ?? DEFAULT_FILENAME;
-  const messages = linter.verify(
-    code,
-    {
-      rules: Object.fromEntries(testCase.ruleIdsToTransform.map((ruleId) => [ruleId, 'error'])),
-      ...defaultLinterConfig,
-    },
-    { filename },
-  );
-  const sourceCode = linter.getSourceCode();
-  const filteredMessages = messages.filter(
-    (message) => message.ruleId && testCase.ruleIdsToTransform.includes(message.ruleId),
-  );
-  return {
-    filename,
-    sourceCode,
-    messages: filteredMessages,
-    ruleIds: testCase.ruleIdsToTransform,
-  };
-}
-
 /**
  * The test utility for the transform.
  */
-export class TransformTester<T> {
-  private transformFunction: TransformFunction<T>;
-  private defaultArgs: T;
+export class TransformTester<T extends TransformName> {
+  private transformName: T;
+  private defaultTransformArgs: TransformArg<T>;
   private defaultLinterConfig: Linter.Config;
-  constructor(transformFunction: TransformFunction<T>, defaultArgs: T, defaultLinterConfig: Linter.Config) {
-    this.transformFunction = transformFunction;
-    this.defaultArgs = defaultArgs;
+  constructor(transformName: T, defaultTransformArgs: TransformArg<T>, defaultLinterConfig: Linter.Config) {
+    this.transformName = transformName;
+    this.defaultTransformArgs = defaultTransformArgs;
     this.defaultLinterConfig = defaultLinterConfig;
   }
   /**
@@ -78,33 +48,55 @@ export class TransformTester<T> {
    */
   async test(testCase: TestCase<T>): Promise<TestResult> {
     const code = Array.isArray(testCase.code) ? testCase.code.join('\n') : testCase.code;
-    const context = createTransformContext(testCase, code, this.defaultLinterConfig);
-    const fixes = this.transformFunction(context, testCase.args ?? this.defaultArgs);
 
-    const eslint = new ESLint({
+    const filePath = testCase.filename ?? DEFAULT_FILENAME;
+
+    const eslint1 = new ESLint({
       useEslintrc: false,
       plugins: {
         'eslint-interactive': {
           rules: {
-            'apply-fixes': applyFixesRule,
+            'prefer-addition-shorthand': preferAdditionShorthand,
           },
         },
       },
       overrideConfig: {
         plugins: ['eslint-interactive', ...(this.defaultLinterConfig.plugins ?? [])],
         rules: {
-          'eslint-interactive/apply-fixes': [2, fixes],
+          'eslint-interactive/prefer-addition-shorthand': 2,
+          ...Object.fromEntries(testCase.ruleIdsToTransform.map((ruleId) => [ruleId, 'error'])),
           ...this.defaultLinterConfig.rules,
         },
         ...this.defaultLinterConfig,
       },
-      // NOTE: Only fix the `apply-fixes` rule problems.
-      fix: (message) => message.ruleId === 'eslint-interactive/apply-fixes',
+    });
+    const results1 = await eslint1.lintText(code, { filePath });
+
+    const eslint = new ESLint({
+      useEslintrc: false,
+      plugins: {
+        'eslint-interactive': eslintInteractivePlugin,
+      },
+      overrideConfig: {
+        plugins: ['eslint-interactive', ...(this.defaultLinterConfig.plugins ?? [])],
+        rules: {
+          'eslint-interactive/transform': [
+            2,
+            {
+              results: results1,
+              ruleIds: testCase.ruleIdsToTransform,
+              transform: { name: this.transformName, args: { ...this.defaultTransformArgs, ...testCase.args } },
+            } as TransformRuleOption,
+          ],
+          ...this.defaultLinterConfig.rules,
+        },
+        ...this.defaultLinterConfig,
+      },
+      // NOTE: Only fix the `transform` rule problems.
+      fix: (message) => message.ruleId === 'eslint-interactive/transform',
     });
 
-    const filePath = testCase.filename ?? DEFAULT_FILENAME;
-
-    const results = await eslint.lintText(code, { filePath: testCase.filename ?? DEFAULT_FILENAME });
+    const results = await eslint.lintText(code, { filePath });
 
     const resultOfTargetFile = results.find((result) => result.filePath === resolve(filePath));
     if (!resultOfTargetFile) return null;
