@@ -1,3 +1,4 @@
+import assert from 'assert/strict';
 import { spawn } from 'child_process';
 
 const ETX = String.fromCharCode(0x03); // ^C
@@ -7,8 +8,24 @@ async function wait(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+async function readStream(stream) {
+  let result = '';
+  for await (const line of stream) {
+    result += line;
+  }
+  return result;
+}
+
 (async () => {
-  const child = spawn('eslint-interactive', ['failed.js'], { stdio: ['pipe', process.stdout, process.stderr] });
+  const child = spawn(
+    'eslint-interactive',
+    [
+      'failed.js',
+      // merge stderr to stdout
+      '2>&1',
+    ],
+    { shell: true, stdio: ['pipe', 'pipe', 'pipe'] },
+  );
 
   await wait(500);
   child.stdin.write(' ');
@@ -22,4 +39,9 @@ async function wait(ms) {
   child.stdin.write(LF);
   await wait(500);
   child.stdin.write(ETX);
+
+  const output = await readStream(child.stdout);
+  console.log(output); // for debug
+
+  assert(output.includes('error: Missing semicolon (semi) at failed.js:1:2:'));
 })();
