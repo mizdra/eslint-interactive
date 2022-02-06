@@ -1,4 +1,4 @@
-import assert from 'assert/strict';
+import assert from 'assert';
 import { spawn } from 'child_process';
 
 const ETX = String.fromCharCode(0x03); // ^C
