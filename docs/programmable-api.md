@@ -1,5 +1,7 @@
 # Programmable API documentation
 
+> :warning: This feature is experimental and may change significantly.
+
 `eslint-interactive` provides an API for programmatically executing `eslint --fix`, disable per line, etc.
 
 It allows the user to perform complex fix operations :sunglasses:
