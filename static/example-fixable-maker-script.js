@@ -33,10 +33,9 @@ function fixableMaker(message, node, context) {
     // target codes: https://astexplorer.net/#/gist/e33d44d2e69a733766abbc9706fd3ed5/169a615afba7b0d5c88e87894db93fc7346250d2
 
     if (node.type !== 'Identifier') return null;
-    return {
-      range: [node.range[0], node.range[0]],
-      text: '_',
-    };
+    // For more information about the fixer API, see the following:
+    // https://eslint.org/docs/developer-guide/working-with-rules#applying-fixes
+    return context.fixer.insertTextBefore(node, '_');
   } else {
     return null;
   }
