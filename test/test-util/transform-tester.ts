@@ -1,7 +1,7 @@
 import { resolve } from 'path';
 import { Linter, ESLint } from 'eslint';
-import { transformRule } from 'src/plugin/transform-rule.js';
-import { eslintInteractivePlugin, TransformArg, TransformName, TransformRuleOption } from '../../src/plugin/index.js';
+import { TransformArg, TransformName, TransformRuleOption } from '../../src/plugin/index.js';
+import { transformRule } from '../../src/plugin/transform-rule.js';
 import preferAdditionShorthand from './rules/prefer-addition-shorthand.js';
 
 const DEFAULT_FILENAME = 'test.js';
@@ -52,33 +52,35 @@ export class TransformTester<T extends TransformName> {
 
     const filePath = testCase.filename ?? DEFAULT_FILENAME;
 
-    const eslint1 = this.createESLint({
+    const eslintForLint = this.createESLint({
       rules: {
         ...Object.fromEntries(testCase.ruleIdsToTransform.map((ruleId) => [ruleId, 'error'])),
       },
     });
-    const results1 = await eslint1.lintText(code, { filePath });
+    const resultsForLint = await eslintForLint.lintText(code, { filePath });
 
-    const eslint = this.createESLint({
+    const eslintForFix = this.createESLint({
       rules: {
         'eslint-interactive/transform': [
           2,
           {
-            results: results1,
+            results: resultsForLint,
             ruleIds: testCase.ruleIdsToTransform,
             transform: { name: this.transformName, args: { ...this.defaultTransformArgs, ...testCase.args } },
           } as TransformRuleOption,
         ],
       },
+      // NOTE: fix with `transform` rule.
+      fix: true,
     });
-    const results = await eslint.lintText(code, { filePath });
+    const resultsForFix = await eslintForFix.lintText(code, { filePath });
 
-    const resultOfTargetFile = results.find((result) => result.filePath === resolve(filePath));
+    const resultOfTargetFile = resultsForFix.find((result) => result.filePath === resolve(filePath));
     if (!resultOfTargetFile) return null;
     return resultOfTargetFile.output ?? null;
   }
 
-  private createESLint(options: { rules?: Linter.HasRules['rules'] }): ESLint {
+  private createESLint(options: { rules?: Linter.HasRules['rules']; fix?: ESLint.Options['fix'] }): ESLint {
     return new ESLint({
       useEslintrc: false,
       plugins: {
@@ -97,8 +99,7 @@ export class TransformTester<T extends TransformName> {
         },
         ...this.defaultLinterConfig,
       },
-      // NOTE: Only fix the `transform` rule problems.
-      fix: (message) => message.ruleId === 'eslint-interactive/transform',
+      fix: options.fix,
     });
   }
 }
