@@ -30,4 +30,4 @@ changelog:
       labels: ['Type: Dependencies']
 
     - title: Other Changes
-      labels: ["*"]
+      labels: ['*']
