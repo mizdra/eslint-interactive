@@ -26,8 +26,10 @@ export type Transform =
   | { name: 'applySuggestions'; args: TransformArg<'applySuggestions'> }
   | { name: 'makeFixableAndFix'; args: TransformArg<'makeFixableAndFix'> };
 
+/** For test */
 export type TransformName = 'disablePerLine' | 'disablePerFile' | 'applySuggestions' | 'makeFixableAndFix';
 
+/** For test */
 export type TransformArg<T extends TransformName> = T extends 'disablePerLine'
   ? TransformToDisablePerLineArgs
   : T extends 'disablePerFile'
