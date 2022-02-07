@@ -19,6 +19,7 @@ export type Action =
   | 'disablePerLine'
   | 'disablePerFile'
   | 'applySuggestions'
+  | 'makeFixableAndFix'
   | 'reselectRules';
 
 /**
