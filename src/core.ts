@@ -206,6 +206,26 @@ export class Core {
     });
     const newResults = await eslint.lintFiles(this.config.patterns);
     await ESLint.outputFixes(newResults);
-    return newResults;
+    return newResults.map((newResult) => {
+      if (newResult.source) return newResult;
+      const result = results.find((result) => result.filePath === newResult.filePath);
+      if (!result) throw new Error(`The result of ${newResult.filePath} is not found.`);
+      // Usually, the result with `output` property does not contain `source` property.
+      // However, `source` property is required for undoTransformation.
+      // Therefore, `source` property is added here.
+      return { ...newResult, source: result.source };
+    });
+  }
+
+  /**
+   * Undo transformations.
+   * @param results The lint results returned by the transform function.
+   * */
+  async undoTransformation(results: ESLint.LintResult[]): Promise<void> {
+    const newResults = results.map((result) => ({
+      ...result,
+      output: result.source,
+    }));
+    await ESLint.outputFixes(newResults);
   }
 }
