@@ -31,6 +31,11 @@ export type Action =
 export type DisplayMode = 'withPager' | 'withoutPager';
 
 /**
+ * The type that represents what to do next.
+ */
+export type NextStep = 'fixOtherRules' | 'exit' | 'undoTheFix';
+
+/**
  * Ask the user for the rule ids to which they want to apply the action.
  * @param ruleIdsInResults The rule ids that are in the lint results.
  * @returns The rule ids
@@ -138,20 +143,24 @@ export async function promptToInputDescription(): Promise<string | undefined> {
 }
 
 /**
- * Ask the user continue running the program or not
- * @returns If it continues, `true`, if not, `false`.
+ * Ask the user what to do next.
+ * @returns What to do next.
  */
-export async function promptToInputContinue(): Promise<boolean> {
-  const { isContinue } = await prompt<{ isContinue: boolean }>([
+export async function promptToInputWhatToDoNext(): Promise<NextStep> {
+  const { nextStep } = await prompt<{ nextStep: NextStep }>([
     {
-      name: 'isContinue',
-      type: 'confirm',
-      message: 'Continue?',
-      initial: true,
+      name: 'nextStep',
+      type: 'select',
+      message: "What's the next step?",
+      choices: [
+        { name: 'fixOtherRules', message: '🔧 Fix other rules' },
+        { name: 'undoTheFix', message: '↩️  Undo the fix' },
+        { name: 'exit', message: '💚 Exit' },
+      ],
       onCancel,
     },
   ]);
-  return isContinue;
+  return nextStep;
 }
 
 /**

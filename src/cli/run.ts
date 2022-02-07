@@ -43,7 +43,7 @@ export async function run(options: Options) {
     } else if (nextScene.name === 'selectAction') {
       nextScene = await selectAction(core, nextScene.args);
     } else if (nextScene.name === 'selectToContinue') {
-      nextScene = await selectToContinue();
+      nextScene = await selectToContinue(core, nextScene.args);
     }
   }
   await worker.terminate();

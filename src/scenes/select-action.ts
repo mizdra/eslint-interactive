@@ -36,19 +36,19 @@ export async function selectAction(
     return { name: 'selectAction', args: { results, ruleIdsInResults, selectedRuleIds } };
   } else if (action === 'fix') {
     await doFixAction(core, selectedRuleIds);
-    return { name: 'selectToContinue' };
+    return { name: 'selectToContinue', args: { results, ruleIdsInResults, selectedRuleIds } };
   } else if (action === 'disablePerLine') {
     await doDisablePerLineAction(core, results, selectedRuleIds);
-    return { name: 'selectToContinue' };
+    return { name: 'selectToContinue', args: { results, ruleIdsInResults, selectedRuleIds } };
   } else if (action === 'disablePerFile') {
     await doDisablePerFileAction(core, results, selectedRuleIds);
-    return { name: 'selectToContinue' };
+    return { name: 'selectToContinue', args: { results, ruleIdsInResults, selectedRuleIds } };
   } else if (action === 'applySuggestions') {
     await doApplySuggestionsAction(core, results, selectedRuleIds);
-    return { name: 'selectToContinue' };
+    return { name: 'selectToContinue', args: { results, ruleIdsInResults, selectedRuleIds } };
   } else if (action === 'makeFixableAndFix') {
     await doMakeFixableAndFixAction(core, results, selectedRuleIds);
-    return { name: 'selectToContinue' };
+    return { name: 'selectToContinue', args: { results, ruleIdsInResults, selectedRuleIds } };
   }
   // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
   return unreachable(`unknown action: ${action}`);
