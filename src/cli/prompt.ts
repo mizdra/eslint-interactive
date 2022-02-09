@@ -1,6 +1,8 @@
 /* istanbul ignore file */
 
 import enquirer from 'enquirer';
+import { ESLint } from 'eslint';
+import { takeRuleStatistics } from '../formatter/index.js';
 
 const { prompt } = enquirer;
 
@@ -38,7 +40,11 @@ export async function promptToInputRuleIds(ruleIdsInResults: string[]): Promise<
       name: 'ruleIds',
       type: 'multiselect',
       message: 'Which rules would you like to apply action?',
+      hint: 'Select all you want with <space> key.',
       choices: ruleIdsInResults,
+      validate(value) {
+        return value.length === 0 ? `Select at least one rule with <space> key.` : true;
+      },
       onCancel,
     },
   ]);
@@ -49,7 +55,18 @@ export async function promptToInputRuleIds(ruleIdsInResults: string[]): Promise<
  * Ask the user what action they want to perform.
  * @returns The action name
  */
-export async function promptToInputAction(): Promise<Action> {
+export async function promptToInputAction(results: ESLint.LintResult[], selectedRuleIds: string[]): Promise<Action> {
+  const ruleStatistics = takeRuleStatistics(results).filter((ruleStatistic) =>
+    selectedRuleIds.includes(ruleStatistic.ruleId),
+  );
+  const foldedStatistics = ruleStatistics.reduce(
+    (a, b) => ({
+      isFixableCount: a.isFixableCount + b.isFixableCount,
+      hasSuggestionsCount: a.hasSuggestionsCount + b.hasSuggestionsCount,
+    }),
+    { isFixableCount: 0, hasSuggestionsCount: 0 },
+  );
+
   const { action } = await prompt<{
     action: Action;
   }>([
@@ -59,10 +76,14 @@ export async function promptToInputAction(): Promise<Action> {
       message: 'Which action do you want to do?',
       choices: [
         { name: 'printResultDetails', message: 'Display details of lint results' },
-        { name: 'fix', message: 'Run `eslint --fix`' },
+        { name: 'fix', message: 'Run `eslint --fix`', disabled: foldedStatistics.isFixableCount === 0 },
         { name: 'disablePerLine', message: 'Disable per line' },
         { name: 'disablePerFile', message: 'Disable per file' },
-        { name: 'applySuggestions', message: 'Apply suggestions (experimental, for experts)' },
+        {
+          name: 'applySuggestions',
+          message: 'Apply suggestions (experimental, for experts)',
+          disabled: foldedStatistics.hasSuggestionsCount === 0,
+        },
         {
           name: 'makeFixableAndFix',
           message: 'Make forcibly fixable and run `eslint --fix` (experimental, for experts)',
