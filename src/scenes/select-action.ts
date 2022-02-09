@@ -27,7 +27,7 @@ export async function selectAction(
   core: Remote<SerializableCore>,
   { results, ruleIdsInResults, selectedRuleIds }: SelectActionArgs,
 ): Promise<NextScene> {
-  const action = await promptToInputAction();
+  const action = await promptToInputAction(results, selectedRuleIds);
 
   if (action === 'reselectRules') return { name: 'selectRuleIds', args: { results, ruleIdsInResults } };
 
