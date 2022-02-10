@@ -1,4 +1,3 @@
-import { tmpdir } from 'os';
 import { join } from 'path';
 import { fileURLToPath } from 'url';
 import { ESLint } from 'eslint';
@@ -12,6 +11,7 @@ import {
   SuggestionFilter,
   Transform,
 } from './plugin/index.js';
+import { getCacheDir } from './util/cache.js';
 import { filterResultsByRuleId, scanUsedPluginsFromResults } from './util/eslint.js';
 
 /** The config of eslint-interactive */
@@ -36,7 +36,7 @@ export class Core {
     this.config = config;
     this.baseOptions = {
       cache: true,
-      cacheLocation: join(tmpdir(), `eslint-interactive--${Date.now()}-${Math.random()}`),
+      cacheLocation: join(getCacheDir(), '.eslintcache'),
       rulePaths: this.config.rulePaths,
       extensions: this.config.extensions,
       cwd: this.config.cwd,
