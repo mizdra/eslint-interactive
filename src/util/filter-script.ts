@@ -1,9 +1,9 @@
 import { exec as execOriginal } from 'child_process';
 import { mkdir, appendFile, readFile, access } from 'fs/promises';
-import { tmpdir } from 'os';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import { promisify } from 'util';
+import { getCacheDir } from './cache.js';
 
 const exec = promisify(execOriginal);
 
@@ -26,13 +26,13 @@ export async function editFileWithEditor(filepath: string): Promise<string> {
 
 export function generateFilterScriptFilePath(ruleIds: string[]): string {
   const basename = ruleIds.join('_').replace(/[^\w-]/g, '') + '.js';
-  const filepath = join(tmpdir(), 'eslint-interactive', 'filter-script', basename);
+  const filepath = join(getCacheDir(), 'filter-script', basename);
   return filepath;
 }
 
 export function generateFixableMakerScriptFilePath(ruleIds: string[]): string {
   const basename = ruleIds.join('_').replace(/[^\w-]/g, '') + '.js';
-  const filepath = join(tmpdir(), 'eslint-interactive', 'fixable-maker-script', basename);
+  const filepath = join(getCacheDir(), 'fixable-maker-script', basename);
   return filepath;
 }
 
