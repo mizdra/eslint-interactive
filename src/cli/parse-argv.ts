@@ -1,17 +1,11 @@
-import { readFileSync } from 'fs';
-import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
 import yargs from 'yargs';
 import { Config } from '../core.js';
+import { VERSION } from './package.js';
 
 /** Parse argv into the config object of eslint-interactive */
 export function parseArgv(argv: string[]): Config {
-  const pkg = JSON.parse(
-    readFileSync(join(dirname(fileURLToPath(import.meta.url)), '..', '..', 'package.json'), 'utf8'),
-  );
-
   const parsedArgv = yargs(argv.slice(2))
-    .version(pkg.version)
+    .version(VERSION)
     .usage('$0 [file.js] [dir]')
     .option('rulesdir', {
       type: 'array',
