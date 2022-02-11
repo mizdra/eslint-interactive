@@ -1,7 +1,7 @@
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import { ESLint, Linter } from 'eslint';
-import { Core } from '../src/core.js';
+import { Core, DEFAULT_BASE_CONFIG } from '../src/core.js';
 import { cleanupFixturesCopy, getSnapshotOfChangedFiles, setupFixturesCopy } from './test-util/fixtures.js';
 
 const cwd = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -50,6 +50,34 @@ describe('Core', () => {
     extensions: ['.js', '.jsx', '.mjs'],
     formatterName: 'codeframe',
     cwd,
+  });
+  test('baseOptions', () => {
+    const core1 = new Core({
+      patterns: ['pattern-a', 'pattern-b'],
+      rulePaths: ['rule-path-a', 'rule-path-b'],
+      extensions: ['.js', '.jsx'],
+      formatterName: 'codeframe',
+      cache: false,
+      cacheLocation: '.eslintcache',
+      cwd: '/tmp/cwd',
+    });
+    expect(core1.baseOptions).toStrictEqual<ESLint.Options>({
+      cache: false,
+      cacheLocation: '.eslintcache',
+      rulePaths: ['rule-path-a', 'rule-path-b'],
+      extensions: ['.js', '.jsx'],
+      cwd: '/tmp/cwd',
+    });
+    const core2 = new Core({
+      patterns: ['pattern-a', 'pattern-b'],
+    });
+    expect(core2.baseOptions).toStrictEqual<ESLint.Options>({
+      cache: DEFAULT_BASE_CONFIG.cache,
+      cacheLocation: DEFAULT_BASE_CONFIG.cacheLocation,
+      rulePaths: undefined,
+      extensions: undefined,
+      cwd: undefined,
+    });
   });
   test('lint', async () => {
     const results = await core.lint();
