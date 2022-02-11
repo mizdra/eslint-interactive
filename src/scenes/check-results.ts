@@ -22,7 +22,6 @@ export async function checkResults(
   core: Remote<SerializableCore>,
   { results, ruleIdsInResults, selectedRuleIds, selectedAction }: CheckResultsArgs,
 ): Promise<NextScene> {
-  console.log();
   const nextStep = await promptToInputWhatToDoNext();
   if (nextStep === 'exit') return { name: 'exit' };
   if (nextStep === 'undoTheFix') {
