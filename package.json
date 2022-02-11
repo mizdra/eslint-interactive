@@ -52,6 +52,7 @@
   },
   "dependencies": {
     "boxen": "^6.2.1",
+    "cachedir": "^2.3.0",
     "chalk": "^5.0.0",
     "cli-table": "^0.3.11",
     "comlink": "^4.3.1",
