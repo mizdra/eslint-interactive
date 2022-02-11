@@ -2,9 +2,9 @@ import { Remote } from 'comlink';
 import { ESLint } from 'eslint';
 import { promptToInputWhatToDoNext } from '../cli/prompt.js';
 import { SerializableCore } from '../core-worker.js';
-import { NextScene } from '../scenes/index.js';
+import { NextScene } from './index.js';
 
-export type SelectNextStepArgs = {
+export type CheckResultsArgs = {
   /** The lint results of the project */
   results: ESLint.LintResult[];
   /** The rule ids that are in the `results`. */
@@ -14,11 +14,11 @@ export type SelectNextStepArgs = {
 };
 
 /**
- * Run the scene where a user select to continue running the program or not.
+ * Run the scene where a user check the transformation results.
  */
-export async function selectToContinue(
+export async function checkResults(
   core: Remote<SerializableCore>,
-  { results, ruleIdsInResults, selectedRuleIds }: SelectNextStepArgs,
+  { results, ruleIdsInResults, selectedRuleIds }: CheckResultsArgs,
 ): Promise<NextScene> {
   console.log();
   const nextStep = await promptToInputWhatToDoNext();
