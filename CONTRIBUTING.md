@@ -11,12 +11,19 @@ This is a guide for contributors.
 
 ## How to release
 
-```console
-$ # Wait for passing CI...
-$ git switch main
-$ git pull
-$ yarn version
-$ rm -rf dist && yarn run build
-$ npm publish
-$ git push --follow-tags
-```
+- Wait for passing CI...
+- ```bash
+  git switch main && git pull
+  ```
+- ```bash
+  rm -rf dist && yarn run build
+  ```
+- ```bash
+  yarn version
+  ```
+- ```bash
+  npm publish
+  ```
+- ```bash
+  git push --follow-tags
+  ```

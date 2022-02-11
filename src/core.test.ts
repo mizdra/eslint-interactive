@@ -1,7 +1,7 @@
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import { ESLint, Linter } from 'eslint';
-import { Core, DEFAULT_BASE_CONFIG } from '../src/core.js';
+import { Core, DEFAULT_BASE_CONFIG } from './core.js';
 import { cleanupFixturesCopy, getSnapshotOfChangedFiles, setupFixturesCopy } from './test-util/fixtures.js';
 
 const cwd = join(dirname(fileURLToPath(import.meta.url)), '..');

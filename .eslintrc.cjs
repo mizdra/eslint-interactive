@@ -39,12 +39,7 @@ module.exports = {
     {
       files: ['*.ts', '*.tsx', '*.cts', '*.mts'],
       parserOptions: {
-        project: [
-          './tsconfig.src.json',
-          './tsconfig.test.json',
-          './e2e-test/import-as-esm-from-esm/tsconfig.json',
-          './e2e-test/global-installation/tsconfig.json',
-        ],
+        project: ['./tsconfig.src.json', './tsconfig.test.json', './e2e-test/import-as-esm-from-esm/tsconfig.json'],
       },
       rules: {
         // ts-ignore は覚悟のある時にしか使わないので、いちいち lint error にする必要もない
@@ -60,7 +55,7 @@ module.exports = {
     },
     // for test
     {
-      files: ['test/**/*.{ts,tsx,cts,mts}'],
+      files: ['src/**/*.test.{ts,tsx,cts,mts}', 'src/test-util/**/*.{ts,tsx,cts,mts}'],
       env: {
         jest: true,
       },

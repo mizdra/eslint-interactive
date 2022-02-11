@@ -6,7 +6,7 @@ import { baseConfig } from './jest.config.base.mjs';
 /** @type {import('@jest/types').Config.InitialOptions} */
 const config = {
   ...baseConfig,
-  testMatch: ['<rootDir>/test/**/*.test.ts?(x)'],
+  testMatch: ['<rootDir>/src/**/*.test.ts?(x)'],
   globals: {
     ...baseConfig.globals,
     'ts-jest': {

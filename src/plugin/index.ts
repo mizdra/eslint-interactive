@@ -1,4 +1,5 @@
 import { Linter, Rule, SourceCode } from 'eslint';
+import { preferAdditionShorthandRule } from './prefer-addition-shorthand-rule.js';
 import { transformRule, type TransformRuleOption } from './transform-rule.js';
 import {
   type FixableMaker,
@@ -13,7 +14,9 @@ export { TransformRuleOption, type FixableMaker, type SuggestionFilter };
 
 export const eslintInteractivePlugin = {
   rules: {
-    transform: transformRule,
+    'transform': transformRule,
+    // for test
+    'prefer-addition-shorthand': preferAdditionShorthandRule,
   },
 };
 

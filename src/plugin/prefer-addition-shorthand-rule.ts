@@ -1,8 +1,12 @@
 import { Rule } from 'eslint';
 
+/**
+ * @file This is a rule for testing purposes.
+ */
+
 export type ApplyFixesRuleOption = Rule.Fix[];
 
-const rule: Rule.RuleModule = {
+export const preferAdditionShorthandRule: Rule.RuleModule = {
   meta: {
     type: 'suggestion',
     // @ts-ignore
@@ -50,6 +54,3 @@ const rule: Rule.RuleModule = {
     };
   },
 };
-
-// eslint-disable-next-line import/no-default-export
-export default rule;
