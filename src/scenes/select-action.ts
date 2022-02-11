@@ -31,26 +31,33 @@ export async function selectAction(
 ): Promise<NextScene> {
   const selectedAction = await promptToInputAction(results, selectedRuleIds, initialAction);
 
-  if (selectedAction === 'reselectRules') return { name: 'selectRuleIds', args: { results, ruleIdsInResults } };
+  const selectRuleIdsScene: NextScene = { name: 'selectRuleIds', args: { results, ruleIdsInResults } };
+  const selectActionScene: NextScene = { name: 'selectAction', args: { results, ruleIdsInResults, selectedRuleIds } };
+  const checkResultsScene: NextScene = {
+    name: 'checkResults',
+    args: { results, ruleIdsInResults, selectedRuleIds, selectedAction },
+  };
+
+  if (selectedAction === 'reselectRules') return selectRuleIdsScene;
 
   if (selectedAction === 'printResultDetails') {
     await doPrintResultDetailsAction(core, results, selectedRuleIds);
-    return { name: 'selectAction', args: { results, ruleIdsInResults, selectedRuleIds } };
+    return selectActionScene;
   } else if (selectedAction === 'fix') {
     await doFixAction(core, selectedRuleIds);
-    return { name: 'checkResults', args: { results, ruleIdsInResults, selectedRuleIds, selectedAction } };
+    return checkResultsScene;
   } else if (selectedAction === 'disablePerLine') {
     await doDisablePerLineAction(core, results, selectedRuleIds);
-    return { name: 'checkResults', args: { results, ruleIdsInResults, selectedRuleIds, selectedAction } };
+    return checkResultsScene;
   } else if (selectedAction === 'disablePerFile') {
     await doDisablePerFileAction(core, results, selectedRuleIds);
-    return { name: 'checkResults', args: { results, ruleIdsInResults, selectedRuleIds, selectedAction } };
+    return checkResultsScene;
   } else if (selectedAction === 'applySuggestions') {
     await doApplySuggestionsAction(core, results, selectedRuleIds);
-    return { name: 'checkResults', args: { results, ruleIdsInResults, selectedRuleIds, selectedAction } };
+    return checkResultsScene;
   } else if (selectedAction === 'makeFixableAndFix') {
     await doMakeFixableAndFixAction(core, results, selectedRuleIds);
-    return { name: 'checkResults', args: { results, ruleIdsInResults, selectedRuleIds, selectedAction } };
+    return checkResultsScene;
   }
   // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
   return unreachable(`unknown action: ${selectedAction}`);
