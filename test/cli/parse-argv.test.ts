@@ -25,4 +25,12 @@ describe('parseArgv', () => {
     expect(parseArgv([...baseArgs, '--format', 'foo']).formatterName).toBe('foo');
     expect(parseArgv([...baseArgs, '--format', '1']).formatterName).toBe('1');
   });
+  test('--cache', () => {
+    expect(parseArgv([...baseArgs, '--cache']).cache).toBe(true);
+    expect(parseArgv([...baseArgs, '--no-cache']).cache).toBe(false);
+    expect(parseArgv([...baseArgs, '--cache', 'false']).cache).toBe(false);
+  });
+  test('--cache-location', () => {
+    expect(parseArgv([...baseArgs, '--cache-location', '.eslintcache']).cacheLocation).toBe('.eslintcache');
+  });
 });
