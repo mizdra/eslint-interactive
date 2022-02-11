@@ -60,7 +60,7 @@ module.exports = {
     },
     // for test
     {
-      files: ['test/**/*.{ts,tsx,cts,mts}'],
+      files: ['src/**/*.test.{ts,tsx,cts,mts}', 'src/test-util/**/*.{ts,tsx,cts,mts}'],
       env: {
         jest: true,
       },
