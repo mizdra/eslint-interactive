@@ -118,4 +118,11 @@ describe('Core', () => {
     });
     expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
   });
+  test('undoTransformation', async () => {
+    const resultsForLint = await core.lint();
+    const resultsForFix = await core.disablePerFile(resultsForLint, ['ban-exponentiation-operator']);
+    expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
+    await core.undoTransformation(resultsForFix);
+    expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
+  });
 });

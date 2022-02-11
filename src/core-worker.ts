@@ -56,6 +56,9 @@ export class SerializableCore {
     const fixableMaker = eval(fixableMakerScript) as FixableMaker;
     return this.core.makeFixableAndFix(results, ruleIds, fixableMaker);
   }
+  async undoTransformation(...args: Parameters<Core['undoTransformation']>): ReturnType<Core['undoTransformation']> {
+    return this.core.undoTransformation(...args);
+  }
 }
 
 // workaround for https://github.com/GoogleChromeLabs/comlink/issues/466

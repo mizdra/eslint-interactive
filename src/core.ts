@@ -113,13 +113,14 @@ export class Core {
    * Run `eslint --fix`.
    * @param ruleIds The rule ids to fix
    */
-  async fix(ruleIds: string[]): Promise<void> {
+  async fix(ruleIds: string[]): Promise<ESLint.LintResult[]> {
     const eslint = new ESLint({
       ...this.baseOptions,
       fix: (message) => message.ruleId !== null && ruleIds.includes(message.ruleId),
     });
     const results = await eslint.lintFiles(this.config.patterns);
     await ESLint.outputFixes(results);
+    return results;
   }
 
   /**
@@ -128,8 +129,12 @@ export class Core {
    * @param ruleIds The rule ids to add disable comments
    * @param description The description of the disable comments
    */
-  async disablePerLine(results: ESLint.LintResult[], ruleIds: string[], description?: string): Promise<void> {
-    await this.transform(results, ruleIds, { name: 'disablePerLine', args: { description } });
+  async disablePerLine(
+    results: ESLint.LintResult[],
+    ruleIds: string[],
+    description?: string,
+  ): Promise<ESLint.LintResult[]> {
+    return await this.transform(results, ruleIds, { name: 'disablePerLine', args: { description } });
   }
 
   /**
@@ -138,8 +143,12 @@ export class Core {
    * @param ruleIds The rule ids to add disable comments
    * @param description The description of the disable comments
    */
-  async disablePerFile(results: ESLint.LintResult[], ruleIds: string[], description?: string): Promise<void> {
-    await this.transform(results, ruleIds, { name: 'disablePerFile', args: { description } });
+  async disablePerFile(
+    results: ESLint.LintResult[],
+    ruleIds: string[],
+    description?: string,
+  ): Promise<ESLint.LintResult[]> {
+    return await this.transform(results, ruleIds, { name: 'disablePerFile', args: { description } });
   }
 
   /**
@@ -148,8 +157,12 @@ export class Core {
    * @param ruleIds The rule ids to apply suggestions
    * @param filter The script to filter suggestions
    * */
-  async applySuggestions(results: ESLint.LintResult[], ruleIds: string[], filter: SuggestionFilter): Promise<void> {
-    await this.transform(results, ruleIds, { name: 'applySuggestions', args: { filter } });
+  async applySuggestions(
+    results: ESLint.LintResult[],
+    ruleIds: string[],
+    filter: SuggestionFilter,
+  ): Promise<ESLint.LintResult[]> {
+    return await this.transform(results, ruleIds, { name: 'applySuggestions', args: { filter } });
   }
 
   /**
@@ -158,15 +171,23 @@ export class Core {
    * @param ruleIds The rule ids to apply suggestions
    * @param fixableMaker The function to make `Linter.LintMessage` forcibly fixable.
    * */
-  async makeFixableAndFix(results: ESLint.LintResult[], ruleIds: string[], fixableMaker: FixableMaker): Promise<void> {
-    await this.transform(results, ruleIds, { name: 'makeFixableAndFix', args: { fixableMaker } });
+  async makeFixableAndFix(
+    results: ESLint.LintResult[],
+    ruleIds: string[],
+    fixableMaker: FixableMaker,
+  ): Promise<ESLint.LintResult[]> {
+    return await this.transform(results, ruleIds, { name: 'makeFixableAndFix', args: { fixableMaker } });
   }
 
   /**
    * Transform source codes.
    * @param transform The transform information to do.
    */
-  private async transform(results: ESLint.LintResult[], ruleIds: string[], transform: Transform) {
+  private async transform(
+    results: ESLint.LintResult[],
+    ruleIds: string[],
+    transform: Transform,
+  ): Promise<ESLint.LintResult[]> {
     const eslint = new ESLint({
       ...this.baseOptions,
       // This is super hack to load ESM plugin/rule.
@@ -184,6 +205,28 @@ export class Core {
       fix: (message) => message.ruleId === 'eslint-interactive/transform',
     });
     const newResults = await eslint.lintFiles(this.config.patterns);
+    await ESLint.outputFixes(newResults);
+    return newResults.map((newResult) => {
+      if (newResult.source) return newResult;
+      const result = results.find((result) => result.filePath === newResult.filePath);
+      if (!result) throw new Error(`The result of ${newResult.filePath} is not found.`);
+      // NOTE: THIS IS HACK.
+      // Usually, the result with `output` property does not contain `source` property.
+      // However, `source` property is required for undoTransformation.
+      // Therefore, `source` property is added here.
+      return { ...newResult, source: result.source };
+    });
+  }
+
+  /**
+   * Undo transformations.
+   * @param results The lint results returned by the transform function.
+   * */
+  async undoTransformation(results: ESLint.LintResult[]): Promise<void> {
+    const newResults = results.map((result) => ({
+      ...result,
+      output: result.source,
+    }));
     await ESLint.outputFixes(newResults);
   }
 }

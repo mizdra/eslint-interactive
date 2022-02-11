@@ -8,7 +8,7 @@ import isInstalledGlobally = require('is-installed-globally');
 import { warn } from '../cli/log.js';
 import { parseArgv } from '../cli/parse-argv.js';
 import { SerializableCore } from '../core-worker.js';
-import { lint, selectAction, selectRuleIds, selectToContinue, NextScene } from '../scenes/index.js';
+import { lint, selectAction, selectRuleIds, checkResults, NextScene } from '../scenes/index.js';
 
 export type Options = {
   argv: string[];
@@ -42,8 +42,8 @@ export async function run(options: Options) {
       nextScene = await selectRuleIds(core, nextScene.args);
     } else if (nextScene.name === 'selectAction') {
       nextScene = await selectAction(core, nextScene.args);
-    } else if (nextScene.name === 'selectToContinue') {
-      nextScene = await selectToContinue();
+    } else if (nextScene.name === 'checkResults') {
+      nextScene = await checkResults(core, nextScene.args);
     }
   }
   await worker.terminate();

@@ -19,6 +19,7 @@ export type Action =
   | 'disablePerLine'
   | 'disablePerFile'
   | 'applySuggestions'
+  | 'makeFixableAndFix'
   | 'reselectRules';
 
 /**
@@ -28,6 +29,11 @@ export type Action =
  * `withoutPager` means that the lint results will be displayed without a pager.
  */
 export type DisplayMode = 'withPager' | 'withoutPager';
+
+/**
+ * The type that represents what to do next.
+ */
+export type NextStep = 'fixOtherRules' | 'exit' | 'undoTheFix';
 
 /**
  * Ask the user for the rule ids to which they want to apply the action.
@@ -55,7 +61,11 @@ export async function promptToInputRuleIds(ruleIdsInResults: string[]): Promise<
  * Ask the user what action they want to perform.
  * @returns The action name
  */
-export async function promptToInputAction(results: ESLint.LintResult[], selectedRuleIds: string[]): Promise<Action> {
+export async function promptToInputAction(
+  results: ESLint.LintResult[],
+  selectedRuleIds: string[],
+  initialAction?: Action,
+): Promise<Action> {
   const ruleStatistics = takeRuleStatistics(results).filter((ruleStatistic) =>
     selectedRuleIds.includes(ruleStatistic.ruleId),
   );
@@ -67,6 +77,23 @@ export async function promptToInputAction(results: ESLint.LintResult[], selected
     { isFixableCount: 0, hasSuggestionsCount: 0 },
   );
 
+  const choices = [
+    { name: 'printResultDetails', message: '🔎 Display details of lint results' },
+    { name: 'fix', message: '🔧 Run `eslint --fix`', disabled: foldedStatistics.isFixableCount === 0 },
+    { name: 'disablePerLine', message: '🔧 Disable per line' },
+    { name: 'disablePerFile', message: '🔧 Disable per file' },
+    {
+      name: 'applySuggestions',
+      message: '🔧 Apply suggestions (experimental, for experts)',
+      disabled: foldedStatistics.hasSuggestionsCount === 0,
+    },
+    {
+      name: 'makeFixableAndFix',
+      message: '🔧 Make forcibly fixable and run `eslint --fix` (experimental, for experts)',
+    },
+    { name: 'reselectRules', message: '↩️  Reselect rules' },
+  ];
+
   const { action } = await prompt<{
     action: Action;
   }>([
@@ -74,22 +101,8 @@ export async function promptToInputAction(results: ESLint.LintResult[], selected
       name: 'action',
       type: 'select',
       message: 'Which action do you want to do?',
-      choices: [
-        { name: 'printResultDetails', message: '🔎 Display details of lint results' },
-        { name: 'fix', message: '🔧 Run `eslint --fix`', disabled: foldedStatistics.isFixableCount === 0 },
-        { name: 'disablePerLine', message: '🔧 Disable per line' },
-        { name: 'disablePerFile', message: '🔧 Disable per file' },
-        {
-          name: 'applySuggestions',
-          message: '🔧 Apply suggestions (experimental, for experts)',
-          disabled: foldedStatistics.hasSuggestionsCount === 0,
-        },
-        {
-          name: 'makeFixableAndFix',
-          message: '🔧 Make forcibly fixable and run `eslint --fix` (experimental, for experts)',
-        },
-        { name: 'reselectRules', message: '↩️  Reselect rules' },
-      ],
+      choices,
+      initial: choices.findIndex((choice) => choice.name === initialAction) ?? 0,
       onCancel,
     },
   ]);
@@ -137,20 +150,24 @@ export async function promptToInputDescription(): Promise<string | undefined> {
 }
 
 /**
- * Ask the user continue running the program or not
- * @returns If it continues, `true`, if not, `false`.
+ * Ask the user what to do next.
+ * @returns What to do next.
  */
-export async function promptToInputContinue(): Promise<boolean> {
-  const { isContinue } = await prompt<{ isContinue: boolean }>([
+export async function promptToInputWhatToDoNext(): Promise<NextStep> {
+  const { nextStep } = await prompt<{ nextStep: NextStep }>([
     {
-      name: 'isContinue',
-      type: 'confirm',
-      message: 'Continue?',
-      initial: true,
+      name: 'nextStep',
+      type: 'select',
+      message: "What's the next step?",
+      choices: [
+        { name: 'fixOtherRules', message: '🔧 Fix other rules' },
+        { name: 'undoTheFix', message: '↩️  Undo the fix' },
+        { name: 'exit', message: '💚 Exit' },
+      ],
       onCancel,
     },
   ]);
-  return isContinue;
+  return nextStep;
 }
 
 /**
