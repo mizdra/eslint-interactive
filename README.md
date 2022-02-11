@@ -61,12 +61,15 @@ $ npx eslint-interactive --help
 eslint-interactive [file.js] [dir]
 
 Options:
-  --help      Show help                                                [boolean]
-  --version   Show version number                                      [boolean]
-  --rulesdir  Use additional rules from this directory                   [array]
-  --ext       Specify JavaScript file extensions                         [array]
-  --format    Specify the format to be used for the `Display problem messages`
-              action                             [string] [default: "codeframe"]
+  --help            Show help                                          [boolean]
+  --version         Show version number                                [boolean]
+  --rulesdir        Use additional rules from this directory             [array]
+  --ext             Specify JavaScript file extensions                   [array]
+  --format          Specify the format to be used for the `Display problem messa
+                    ges` action                  [string] [default: "codeframe"]
+  --cache           Only check changed files           [boolean] [default: true]
+  --cache-location  Path to the cache file or directory
+                                         [string] [default: "/tmp/.eslintcache"]
 
 
 $ # Examples
