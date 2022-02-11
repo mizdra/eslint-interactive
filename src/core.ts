@@ -210,6 +210,7 @@ export class Core {
       if (newResult.source) return newResult;
       const result = results.find((result) => result.filePath === newResult.filePath);
       if (!result) throw new Error(`The result of ${newResult.filePath} is not found.`);
+      // NOTE: THIS IS HACK.
       // Usually, the result with `output` property does not contain `source` property.
       // However, `source` property is required for undoTransformation.
       // Therefore, `source` property is added here.
