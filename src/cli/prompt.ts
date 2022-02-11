@@ -61,7 +61,11 @@ export async function promptToInputRuleIds(ruleIdsInResults: string[]): Promise<
  * Ask the user what action they want to perform.
  * @returns The action name
  */
-export async function promptToInputAction(results: ESLint.LintResult[], selectedRuleIds: string[]): Promise<Action> {
+export async function promptToInputAction(
+  results: ESLint.LintResult[],
+  selectedRuleIds: string[],
+  initialAction?: Action,
+): Promise<Action> {
   const ruleStatistics = takeRuleStatistics(results).filter((ruleStatistic) =>
     selectedRuleIds.includes(ruleStatistic.ruleId),
   );
@@ -73,6 +77,23 @@ export async function promptToInputAction(results: ESLint.LintResult[], selected
     { isFixableCount: 0, hasSuggestionsCount: 0 },
   );
 
+  const choices = [
+    { name: 'printResultDetails', message: '🔎 Display details of lint results' },
+    { name: 'fix', message: '🔧 Run `eslint --fix`', disabled: foldedStatistics.isFixableCount === 0 },
+    { name: 'disablePerLine', message: '🔧 Disable per line' },
+    { name: 'disablePerFile', message: '🔧 Disable per file' },
+    {
+      name: 'applySuggestions',
+      message: '🔧 Apply suggestions (experimental, for experts)',
+      disabled: foldedStatistics.hasSuggestionsCount === 0,
+    },
+    {
+      name: 'makeFixableAndFix',
+      message: '🔧 Make forcibly fixable and run `eslint --fix` (experimental, for experts)',
+    },
+    { name: 'reselectRules', message: '↩️  Reselect rules' },
+  ];
+
   const { action } = await prompt<{
     action: Action;
   }>([
@@ -80,22 +101,8 @@ export async function promptToInputAction(results: ESLint.LintResult[], selected
       name: 'action',
       type: 'select',
       message: 'Which action do you want to do?',
-      choices: [
-        { name: 'printResultDetails', message: '🔎 Display details of lint results' },
-        { name: 'fix', message: '🔧 Run `eslint --fix`', disabled: foldedStatistics.isFixableCount === 0 },
-        { name: 'disablePerLine', message: '🔧 Disable per line' },
-        { name: 'disablePerFile', message: '🔧 Disable per file' },
-        {
-          name: 'applySuggestions',
-          message: '🔧 Apply suggestions (experimental, for experts)',
-          disabled: foldedStatistics.hasSuggestionsCount === 0,
-        },
-        {
-          name: 'makeFixableAndFix',
-          message: '🔧 Make forcibly fixable and run `eslint --fix` (experimental, for experts)',
-        },
-        { name: 'reselectRules', message: '↩️  Reselect rules' },
-      ],
+      choices,
+      initial: choices.findIndex((choice) => choice.name === initialAction) ?? 0,
       onCancel,
     },
   ]);

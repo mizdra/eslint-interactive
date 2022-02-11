@@ -1,6 +1,6 @@
 import { Remote } from 'comlink';
 import { ESLint } from 'eslint';
-import { promptToInputWhatToDoNext } from '../cli/prompt.js';
+import { Action, promptToInputWhatToDoNext } from '../cli/prompt.js';
 import { SerializableCore } from '../core-worker.js';
 import { NextScene } from './index.js';
 
@@ -11,6 +11,8 @@ export type CheckResultsArgs = {
   ruleIdsInResults: string[];
   /** The rule ids to perform the action. */
   selectedRuleIds: string[];
+  /** The selected actions. */
+  selectedAction: Action;
 };
 
 /**
@@ -18,14 +20,17 @@ export type CheckResultsArgs = {
  */
 export async function checkResults(
   core: Remote<SerializableCore>,
-  { results, ruleIdsInResults, selectedRuleIds }: CheckResultsArgs,
+  { results, ruleIdsInResults, selectedRuleIds, selectedAction }: CheckResultsArgs,
 ): Promise<NextScene> {
   console.log();
   const nextStep = await promptToInputWhatToDoNext();
   if (nextStep === 'exit') return { name: 'exit' };
   if (nextStep === 'undoTheFix') {
     await core.undoTransformation(results);
-    return { name: 'selectAction', args: { results, ruleIdsInResults, selectedRuleIds } };
+    return {
+      name: 'selectAction',
+      args: { results, ruleIdsInResults, selectedRuleIds, initialAction: selectedAction },
+    };
   }
   console.log();
   console.log('─'.repeat(process.stdout.columns));
