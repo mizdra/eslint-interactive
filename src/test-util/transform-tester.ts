@@ -1,8 +1,6 @@
 import { resolve } from 'path';
 import { Linter, ESLint } from 'eslint';
-import { TransformArg, TransformName, TransformRuleOption } from '../plugin/index.js';
-import { transformRule } from '../plugin/transform-rule.js';
-import preferAdditionShorthand from './rules/prefer-addition-shorthand.js';
+import { eslintInteractivePlugin, TransformArg, TransformName, TransformRuleOption } from '../plugin/index.js';
 
 const DEFAULT_FILENAME = 'test.js';
 
@@ -84,12 +82,7 @@ export class TransformTester<T extends TransformName> {
     return new ESLint({
       useEslintrc: false,
       plugins: {
-        'eslint-interactive': {
-          rules: {
-            'prefer-addition-shorthand': preferAdditionShorthand,
-            'transform': transformRule,
-          },
-        },
+        'eslint-interactive': eslintInteractivePlugin,
       },
       overrideConfig: {
         plugins: ['eslint-interactive', ...(this.defaultLinterConfig.plugins ?? [])],
