@@ -1,4 +1,5 @@
 import { ESLint } from 'eslint';
+import { fakeLintMessage, fakeLintResult } from '../test-util/eslint.js';
 import {
   scanUsedPluginsFromResults,
   toCommentText,
@@ -6,8 +7,7 @@ import {
   mergeRuleIdsAndDescription,
   findShebang,
   filterResultsByRuleId,
-} from '../../src/util/eslint.js';
-import { fakeLintMessage, fakeLintResult } from '../test-util/eslint.js';
+} from './eslint.js';
 
 const range: [number, number] = [0, 1];
 

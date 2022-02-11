@@ -1,7 +1,7 @@
 import { resolve } from 'path';
 import { Linter, ESLint } from 'eslint';
-import { TransformArg, TransformName, TransformRuleOption } from '../../src/plugin/index.js';
-import { transformRule } from '../../src/plugin/transform-rule.js';
+import { TransformArg, TransformName, TransformRuleOption } from '../plugin/index.js';
+import { transformRule } from '../plugin/transform-rule.js';
 import preferAdditionShorthand from './rules/prefer-addition-shorthand.js';
 
 const DEFAULT_FILENAME = 'test.js';

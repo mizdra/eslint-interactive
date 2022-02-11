@@ -1,8 +1,8 @@
 /* eslint-disable no-irregular-whitespace */
 import { ESLint } from 'eslint';
 import stripAnsi from 'strip-ansi';
-import { formatByRules } from '../../src/formatter/format-by-rules.js';
 import { fakeLintResult, fakeLintMessage, fakeFix, fakeSuggestions } from '../test-util/eslint.js';
+import { formatByRules } from './format-by-rules.js';
 
 describe('formatByRules', () => {
   test('outputs formatted text', () => {

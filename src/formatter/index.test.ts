@@ -1,6 +1,6 @@
 import { ESLint } from 'eslint';
-import { format } from '../../src/formatter/index.js';
 import { fakeLintResult, fakeLintMessage } from '../test-util/eslint.js';
+import { format } from './index.js';
 
 describe('format', () => {
   test('call `formatByFiles` and `formatByRules`', () => {
