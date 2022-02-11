@@ -20,7 +20,16 @@ export type Config = {
   rulePaths?: string[] | undefined;
   extensions?: string[] | undefined;
   formatterName?: string;
+  cache?: boolean;
+  cacheLocation?: string;
   cwd?: string;
+};
+
+/** Default config of `Core` */
+export const DEFAULT_BASE_CONFIG = {
+  cache: true,
+  cacheLocation: join(getCacheDir(), '.eslintcache'),
+  formatterName: 'codeframe',
 };
 
 /**
@@ -35,8 +44,8 @@ export class Core {
   constructor(config: Config) {
     this.config = config;
     this.baseOptions = {
-      cache: true,
-      cacheLocation: join(getCacheDir(), '.eslintcache'),
+      cache: this.config.cache ?? DEFAULT_BASE_CONFIG.cache,
+      cacheLocation: this.config.cacheLocation ?? DEFAULT_BASE_CONFIG.cacheLocation,
       rulePaths: this.config.rulePaths,
       extensions: this.config.extensions,
       cwd: this.config.cwd,
@@ -80,7 +89,7 @@ export class Core {
    */
   async formatResultDetails(results: ESLint.LintResult[], ruleIds: (string | null)[]): Promise<string> {
     const eslint = new ESLint(this.baseOptions);
-    const formatterName = this.config.formatterName ?? 'codeframe';
+    const formatterName = this.config.formatterName ?? DEFAULT_BASE_CONFIG.formatterName;
 
     // When eslint-interactive is installed globally, eslint-formatter-codeframe will also be installed globally.
     // On the other hand, `eslint.loadFormatter` cannot load the globally installed formatter by name. So here it loads them by path.

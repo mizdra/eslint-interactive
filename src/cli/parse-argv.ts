@@ -1,5 +1,5 @@
 import yargs from 'yargs';
-import { Config } from '../core.js';
+import { Config, DEFAULT_BASE_CONFIG } from '../core.js';
 import { VERSION } from './package.js';
 
 /** Parse argv into the config object of eslint-interactive */
@@ -20,7 +20,17 @@ export function parseArgv(argv: string[]): Config {
     .option('format', {
       type: 'string',
       describe: 'Specify the format to be used for the `Display problem messages` action',
-      default: 'codeframe',
+      default: DEFAULT_BASE_CONFIG.formatterName,
+    })
+    .option('cache', {
+      type: 'boolean',
+      describe: 'Only check changed files',
+      default: DEFAULT_BASE_CONFIG.cache,
+    })
+    .option('cache-location', {
+      type: 'string',
+      describe: `Path to the cache file or directory`,
+      default: DEFAULT_BASE_CONFIG.cacheLocation,
     }).argv;
   // NOTE: convert `string` type because yargs convert `'10'` (`string` type) into `10` (`number` type)
   // and `lintFiles` only accepts `string[]`.
@@ -31,5 +41,12 @@ export function parseArgv(argv: string[]): Config {
     // map '.js,.ts' into ['.js', '.ts']
     .flatMap((extension) => extension.split(','));
   const formatterName = parsedArgv.format;
-  return { patterns, rulePaths, extensions, formatterName };
+  return {
+    patterns,
+    rulePaths,
+    extensions,
+    formatterName,
+    cache: parsedArgv.cache,
+    cacheLocation: parsedArgv['cache-location'],
+  };
 }
