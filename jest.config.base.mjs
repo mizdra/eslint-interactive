@@ -15,8 +15,6 @@ export const baseConfig = {
     // Map `./**/xxx.js` to `./**/xxx` (for ESM)
     '^(\\.{1,2}/.*)\\.js$': '$1',
   },
-  // for ESM
-  resolver: join(dir, 'test/test-util/jest/resolver.cjs'),
   // do not transform `import` statements (for ESM)
   transform: {},
   globals: {
