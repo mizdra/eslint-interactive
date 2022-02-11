@@ -1,10 +1,11 @@
-import { tmpdir } from 'os';
 import { join } from 'path';
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+import cachedir = require('cachedir');
 import { VERSION } from '../cli/package.js';
 
 /**
  * Get the path of cache directory for eslint-interactive.
  */
 export function getCacheDir(): string {
-  return join(tmpdir(), `eslint-interactive-${VERSION}`);
+  return join(cachedir('eslint-interactive'), VERSION);
 }
