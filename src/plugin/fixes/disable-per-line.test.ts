@@ -1,6 +1,6 @@
-import { TransformTester } from '../../test-util/fix-tester.js';
+import { FixTester } from '../../test-util/fix-tester.js';
 
-const tester = new TransformTester(
+const tester = new FixTester(
   'disablePerLine',
   {},
   { parserOptions: { ecmaVersion: 2020, ecmaFeatures: { jsx: true } } },
@@ -11,7 +11,7 @@ describe('disable-per-line', () => {
     expect(
       await tester.test({
         code: 'var val',
-        ruleIdsToTransform: ['semi'],
+        ruleIdsToFix: ['semi'],
       }),
     ).toMatchInlineSnapshot(`
       "// eslint-disable-next-line semi
@@ -22,7 +22,7 @@ describe('disable-per-line', () => {
     expect(
       await tester.test({
         code: 'var val',
-        ruleIdsToTransform: ['semi', 'no-var'],
+        ruleIdsToFix: ['semi', 'no-var'],
       }),
     ).toMatchInlineSnapshot(`
       "// eslint-disable-next-line no-var, semi
@@ -33,7 +33,7 @@ describe('disable-per-line', () => {
     expect(
       await tester.test({
         code: ['// eslint-disable-next-line semi', 'var val'],
-        ruleIdsToTransform: ['no-var'],
+        ruleIdsToFix: ['no-var'],
       }),
     ).toMatchInlineSnapshot(`
       "/* eslint-disable-next-line semi, no-var */
@@ -44,7 +44,7 @@ describe('disable-per-line', () => {
     expect(
       await tester.test({
         code: ['// eslint-disable-next-line semi', 'var val'],
-        ruleIdsToTransform: ['semi'],
+        ruleIdsToFix: ['semi'],
       }),
     ).toMatchInlineSnapshot(`null`);
   });
@@ -52,7 +52,7 @@ describe('disable-per-line', () => {
     expect(
       await tester.test({
         code: ['/* eslint-disable-next-line semi */', 'var val'],
-        ruleIdsToTransform: ['no-var'],
+        ruleIdsToFix: ['no-var'],
       }),
     ).toMatchInlineSnapshot(`
       "/* eslint-disable-next-line semi, no-var */
@@ -63,7 +63,7 @@ describe('disable-per-line', () => {
     expect(
       await tester.test({
         code: ['// eslint-disable-next-line semi -- comment', 'var val'],
-        ruleIdsToTransform: ['no-var'],
+        ruleIdsToFix: ['no-var'],
       }),
     ).toMatchInlineSnapshot(`
       "/* eslint-disable-next-line semi, no-var -- comment */
@@ -74,7 +74,7 @@ describe('disable-per-line', () => {
     expect(
       await tester.test({
         code: ['// eslint-disable-next-line semi', 'var val'],
-        ruleIdsToTransform: ['no-var'],
+        ruleIdsToFix: ['no-var'],
         args: { description: 'comment' },
       }),
     ).toMatchInlineSnapshot(`
@@ -86,7 +86,7 @@ describe('disable-per-line', () => {
     expect(
       await tester.test({
         code: ['// eslint-disable-next-line semi -- foo', 'var val'],
-        ruleIdsToTransform: ['no-var'],
+        ruleIdsToFix: ['no-var'],
         args: { description: 'bar' },
       }),
     ).toMatchInlineSnapshot(`
@@ -98,7 +98,7 @@ describe('disable-per-line', () => {
     expect(
       await tester.test({
         code: ['var val1', 'var val2', '', 'var val3'],
-        ruleIdsToTransform: ['no-var'],
+        ruleIdsToFix: ['no-var'],
       }),
     ).toMatchInlineSnapshot(`
       "// eslint-disable-next-line no-var
@@ -125,7 +125,7 @@ describe('disable-per-line', () => {
           '</div>;',
         ],
 
-        ruleIdsToTransform: ['no-var', 'no-void'],
+        ruleIdsToFix: ['no-var', 'no-void'],
       }),
     ).toMatchInlineSnapshot(`
       "// eslint-disable-next-line no-var
@@ -154,7 +154,7 @@ describe('disable-per-line', () => {
           'var val6;',
         ],
 
-        ruleIdsToTransform: ['no-var'],
+        ruleIdsToFix: ['no-var'],
       }),
     ).toMatchInlineSnapshot(`
       "// eslint-disable-next-line no-var

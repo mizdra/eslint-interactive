@@ -1,11 +1,11 @@
 import { ESLint, Rule } from 'eslint';
 import {
-  createTransformToApplySuggestions,
-  createTransformToDisablePerFile,
-  createTransformToDisablePerLine,
-  createTransformToMakeFixableAndFix,
+  createFixToApplySuggestions,
+  createFixToDisablePerFile,
+  createFixToDisablePerLine,
+  createFixToMakeFixableAndFix,
 } from './fixes/index.js';
-import { Fix, TransformContext } from './index.js';
+import { Fix, FixContext } from './index.js';
 
 /**
  * @file The rule to do the fix.
@@ -23,17 +23,13 @@ import { Fix, TransformContext } from './index.js';
 
 const filenameToIsAlreadyFixed = new Map<string, boolean>();
 
-function createFixes(
-  context: Rule.RuleContext,
-  ruleOption: TransformRuleOption,
-  fixer: Rule.RuleFixer,
-): Rule.Fix[] | null {
+function createFixes(context: Rule.RuleContext, ruleOption: FixRuleOption, fixer: Rule.RuleFixer): Rule.Fix[] | null {
   const { fix, results, ruleIds } = ruleOption;
   const result = results.find((result) => result.filePath === context.getFilename());
   if (!result) return null;
   const messages = result.messages.filter((message) => message.ruleId && ruleIds.includes(message.ruleId));
 
-  const transformContext: TransformContext = {
+  const fixContext: FixContext = {
     filename: context.getFilename(),
     sourceCode: context.getSourceCode(),
     messages,
@@ -43,13 +39,13 @@ function createFixes(
 
   let fixes: Rule.Fix[] = [];
   if (fix.name === 'disablePerLine') {
-    fixes = createTransformToDisablePerLine(transformContext, fix.args);
+    fixes = createFixToDisablePerLine(fixContext, fix.args);
   } else if (fix.name === 'disablePerFile') {
-    fixes = createTransformToDisablePerFile(transformContext, fix.args);
+    fixes = createFixToDisablePerFile(fixContext, fix.args);
   } else if (fix.name === 'applySuggestions') {
-    fixes = createTransformToApplySuggestions(transformContext, fix.args);
+    fixes = createFixToApplySuggestions(fixContext, fix.args);
   } else if (fix.name === 'makeFixableAndFix') {
-    fixes = createTransformToMakeFixableAndFix(transformContext, fix.args);
+    fixes = createFixToMakeFixableAndFix(fixContext, fix.args);
   } else {
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions, @typescript-eslint/no-explicit-any
     throw new Error(`Unknown fix: ${(fix as any).name}`);
@@ -65,13 +61,13 @@ function createFixes(
   return sortedFixed;
 }
 
-export type TransformRuleOption = {
+export type FixRuleOption = {
   ruleIds: string[];
   results: ESLint.LintResult[];
   fix: Fix;
 };
 
-export const transformRule: Rule.RuleModule = {
+export const fixRule: Rule.RuleModule = {
   meta: {
     fixable: 'code',
   },
@@ -90,7 +86,7 @@ export const transformRule: Rule.RuleModule = {
       return {};
     }
 
-    const ruleOption = context.options[0] as TransformRuleOption;
+    const ruleOption = context.options[0] as FixRuleOption;
 
     return {
       // eslint-disable-next-line @typescript-eslint/naming-convention

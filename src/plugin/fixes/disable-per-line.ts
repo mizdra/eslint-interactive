@@ -3,9 +3,9 @@ import type { Comment } from 'estree';
 import { groupBy, unique } from '../../util/array.js';
 import { DisableComment, mergeRuleIdsAndDescription, parseDisableComment, toCommentText } from '../../util/eslint.js';
 import { notEmpty } from '../../util/type-check.js';
-import { TransformContext } from '../index.js';
+import { FixContext } from '../index.js';
 
-export type TransformToDisablePerLineArgs = {
+export type FixToDisablePerLineArgs = {
   description?: string;
 };
 
@@ -15,7 +15,7 @@ function findDisableCommentPerLine(commentsInFile: Comment[], line: number): Dis
 }
 
 function generateFixPerLine(
-  context: TransformContext,
+  context: FixContext,
   description: string | undefined,
   line: number,
   messagesInLine: Linter.LintMessage[],
@@ -54,10 +54,7 @@ function generateFixPerLine(
 /**
  * Create fix to add disable comment per line.
  */
-export function createTransformToDisablePerLine(
-  context: TransformContext,
-  args: TransformToDisablePerLineArgs,
-): Rule.Fix[] {
+export function createFixToDisablePerLine(context: FixContext, args: FixToDisablePerLineArgs): Rule.Fix[] {
   const lineToMessages = groupBy(context.messages, (message) => message.line);
   const fixes = [];
   for (const [line, messagesInLine] of lineToMessages) {

@@ -1,20 +1,20 @@
 import { Linter, Rule } from 'eslint';
-import { TransformContext } from '../index.js';
+import { FixContext } from '../index.js';
 
 export type SuggestionFilter = (
   suggestions: Linter.LintSuggestion[],
   message: Linter.LintMessage,
-  context: TransformContext,
+  context: FixContext,
 ) => Linter.LintSuggestion | null | undefined;
 
-export type TransformToApplySuggestionsArgs = {
+export type FixToApplySuggestionsArgs = {
   filter: SuggestionFilter;
 };
 
 function getApplicableSuggestion(
   message: Linter.LintMessage,
   filter: SuggestionFilter,
-  context: TransformContext,
+  context: FixContext,
 ): Linter.LintSuggestion | null {
   if (!message.suggestions || message.suggestions.length === 0) return null;
   const suggestion = filter(message.suggestions, message, context);
@@ -22,7 +22,7 @@ function getApplicableSuggestion(
 }
 
 function generateFixPerMessage(
-  context: TransformContext,
+  context: FixContext,
   filter: SuggestionFilter,
   message: Linter.LintMessage,
 ): Rule.Fix | null {
@@ -34,10 +34,7 @@ function generateFixPerMessage(
 /**
  * Create fix to apply suggestions.
  */
-export function createTransformToApplySuggestions(
-  context: TransformContext,
-  args: TransformToApplySuggestionsArgs,
-): Rule.Fix[] {
+export function createFixToApplySuggestions(context: FixContext, args: FixToApplySuggestionsArgs): Rule.Fix[] {
   const fixes = [];
   for (const message of context.messages) {
     const fix = generateFixPerMessage(context, args.filter, message);

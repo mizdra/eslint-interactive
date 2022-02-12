@@ -4,7 +4,7 @@ import { ESLint } from 'eslint';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 import isInstalledGlobally = require('is-installed-globally');
 import { format } from './formatter/index.js';
-import { eslintInteractivePlugin, TransformRuleOption, FixableMaker, SuggestionFilter, Fix } from './plugin/index.js';
+import { eslintInteractivePlugin, FixRuleOption, FixableMaker, SuggestionFilter, Fix } from './plugin/index.js';
 import { getCacheDir } from './util/cache.js';
 import { filterResultsByRuleId, scanUsedPluginsFromResults } from './util/eslint.js';
 
@@ -204,7 +204,7 @@ export class Core {
       overrideConfig: {
         plugins: ['eslint-interactive'],
         rules: {
-          'eslint-interactive/fix': [2, { results: resultsOfLint, ruleIds, fix } as TransformRuleOption],
+          'eslint-interactive/fix': [2, { results: resultsOfLint, ruleIds, fix } as FixRuleOption],
         },
       },
       // NOTE: Only fix the `fix` rule problems.
