@@ -34,7 +34,7 @@ function generateResultsToUndo(
         if (!resultOfLint) throw new Error(`The result of ${resultToFix.filePath} is not found.`);
         // NOTE: THIS IS HACK.
         // Usually, the result with `output` property does not contain `source` property.
-        // However, `source` property is required for undoTransformation.
+        // However, `source` property is required to undo.
         // Therefore, `source` property is added here.
         return { ...resultToFix, output: resultOfLint.source };
       })
