@@ -93,30 +93,40 @@ describe('Core', () => {
   });
   test('fix', async () => {
     const results = await core.lint();
-    await core.fix(results, ['semi']);
+    const undo = await core.fix(results, ['semi']);
+    expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
+    await undo();
     expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
   });
   test('disablePerLine', async () => {
     const results = await core.lint();
-    await core.disablePerLine(results, ['ban-exponentiation-operator']);
+    const undo = await core.disablePerLine(results, ['ban-exponentiation-operator']);
+    expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
+    await undo();
     expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
   });
   test('disablePerFile', async () => {
     const results = await core.lint();
-    await core.disablePerFile(results, ['ban-exponentiation-operator']);
+    const undo = await core.disablePerFile(results, ['ban-exponentiation-operator']);
+    expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
+    await undo();
     expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
   });
   test('applySuggestions', async () => {
     const results = await core.lint();
-    await core.applySuggestions(results, ['no-unsafe-negation'], (suggestions) => suggestions[0]);
+    const undo = await core.applySuggestions(results, ['no-unsafe-negation'], (suggestions) => suggestions[0]);
+    expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
+    await undo();
     expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
   });
   test('makeFixableAndFix', async () => {
     const results = await core.lint();
-    await core.makeFixableAndFix(results, ['no-unused-vars'], (_message, node) => {
+    const undo = await core.makeFixableAndFix(results, ['no-unused-vars'], (_message, node) => {
       if (!node || !node.range) return null;
       return { range: [node.range[0], node.range[0]], text: '_' };
     });
+    expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
+    await undo();
     expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
   });
 });
