@@ -91,9 +91,9 @@ describe('Core', () => {
     const results = await core.lint();
     expect(await core.formatResultDetails(results, ['import/order', 'ban-exponentiation-operator'])).toMatchSnapshot();
   });
-  test('fix', async () => {
+  test('applyAutoFixes', async () => {
     const results = await core.lint();
-    const undo = await core.fix(results, ['semi']);
+    const undo = await core.applyAutoFixes(results, ['semi']);
     expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
     await undo();
     expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();

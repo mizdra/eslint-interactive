@@ -47,7 +47,7 @@ export async function selectAction(
   if (selectedAction === 'printResultDetails') {
     await doPrintResultDetailsAction(core, results, selectedRuleIds);
     return selectActionScene;
-  } else if (selectedAction === 'fix') {
+  } else if (selectedAction === 'applyAutoFixes') {
     const undo = await doFixAction(core, results, selectedRuleIds);
     return createCheckResultsScene(undo);
   } else if (selectedAction === 'disablePerLine') {

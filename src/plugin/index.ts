@@ -1,52 +1,52 @@
 import { Linter, Rule, SourceCode } from 'eslint';
-import { preferAdditionShorthandRule } from './prefer-addition-shorthand-rule.js';
-import { transformRule, type TransformRuleOption } from './transform-rule.js';
+import { fixRule, type FixRuleOption } from './fix-rule.js';
 import {
   type FixableMaker,
   type SuggestionFilter,
-  type TransformToApplySuggestionsArgs,
-  type TransformToDisablePerFileArgs,
-  type TransformToDisablePerLineArgs,
-  type TransformToMakeFixableAndFixArgs,
-} from './transforms/index.js';
+  type FixToApplySuggestionsArgs,
+  type FixToDisablePerFileArgs,
+  type FixToDisablePerLineArgs,
+  type FixToMakeFixableAndFixArgs,
+} from './fixes/index.js';
+import { preferAdditionShorthandRule } from './prefer-addition-shorthand-rule.js';
 
-export { TransformRuleOption, type FixableMaker, type SuggestionFilter };
+export { FixRuleOption, type FixableMaker, type SuggestionFilter };
 
 export const eslintInteractivePlugin = {
   rules: {
-    'transform': transformRule,
+    'fix': fixRule,
     // for test
     'prefer-addition-shorthand': preferAdditionShorthandRule,
   },
 };
 
 /**
- * The type representing the transform to do.
+ * The type representing the fix to do.
  */
-export type Transform =
-  | { name: 'disablePerLine'; args: TransformArg<'disablePerLine'> }
-  | { name: 'disablePerFile'; args: TransformArg<'disablePerFile'> }
-  | { name: 'applySuggestions'; args: TransformArg<'applySuggestions'> }
-  | { name: 'makeFixableAndFix'; args: TransformArg<'makeFixableAndFix'> };
+export type Fix =
+  | { name: 'disablePerLine'; args: FixArg<'disablePerLine'> }
+  | { name: 'disablePerFile'; args: FixArg<'disablePerFile'> }
+  | { name: 'applySuggestions'; args: FixArg<'applySuggestions'> }
+  | { name: 'makeFixableAndFix'; args: FixArg<'makeFixableAndFix'> };
 
 /** For test */
-export type TransformName = 'disablePerLine' | 'disablePerFile' | 'applySuggestions' | 'makeFixableAndFix';
+export type FixName = 'disablePerLine' | 'disablePerFile' | 'applySuggestions' | 'makeFixableAndFix';
 
 /** For test */
-export type TransformArg<T extends TransformName> = T extends 'disablePerLine'
-  ? TransformToDisablePerLineArgs
+export type FixArg<T extends FixName> = T extends 'disablePerLine'
+  ? FixToDisablePerLineArgs
   : T extends 'disablePerFile'
-  ? TransformToDisablePerFileArgs
+  ? FixToDisablePerFileArgs
   : T extends 'applySuggestions'
-  ? TransformToApplySuggestionsArgs
+  ? FixToApplySuggestionsArgs
   : T extends 'makeFixableAndFix'
-  ? TransformToMakeFixableAndFixArgs
+  ? FixToMakeFixableAndFixArgs
   : never;
 
 /**
- * The type representing the additional information for the transform.
+ * The type representing the additional information for the fix.
  */
-export type TransformContext = {
+export type FixContext = {
   filename: string;
   sourceCode: SourceCode;
   messages: Linter.LintMessage[];
@@ -55,6 +55,6 @@ export type TransformContext = {
 };
 
 /**
- * The type representing the transform function.
+ * The type representing the fix function.
  */
-export type TransformFunction<T> = (context: TransformContext, args: T) => Rule.Fix[];
+export type FixFunction<T> = (context: FixContext, args: T) => Rule.Fix[];

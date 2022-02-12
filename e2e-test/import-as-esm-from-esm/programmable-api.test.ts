@@ -34,6 +34,6 @@ test('Programmable API', async () => {
   const top3RuleIds = ruleIds.slice(0, 3);
   expect(top3RuleIds).toStrictEqual(['semi', 'prefer-const', 'import/order']);
 
-  await core.fix(results, top3RuleIds);
+  await core.applyAutoFixes(results, top3RuleIds);
   expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
 });

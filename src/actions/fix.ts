@@ -11,7 +11,7 @@ export async function doFixAction(
   selectedRuleIds: string[],
 ): Promise<Undo> {
   const fixingSpinner = ora('Fixing...').start();
-  const undo = await core.fix(results, selectedRuleIds);
+  const undo = await core.applyAutoFixes(results, selectedRuleIds);
   fixingSpinner.succeed(chalk.bold('Fixing was successful.'));
   return undo;
 }

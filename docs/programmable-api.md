@@ -68,7 +68,7 @@ const top3RuleIds = ruleIds.slice(0, 3);
 // Fix the top three fixable errors in order.
 for (const ruleId of top3RuleIds) {
   console.log(`Fixing ${ruleId}...`);
-  await core.fix(results, [ruleId]);
+  await core.applyAutoFixes(results, [ruleId]);
   // git commit
   await execPromise(`git commit -am "fix ${ruleId}"`);
 }

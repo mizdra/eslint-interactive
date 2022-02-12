@@ -1,16 +1,16 @@
 import { Linter, Rule, SourceCode } from 'eslint';
 import { traverse } from 'estraverse';
 import type { Node } from 'estree';
-import { TransformContext } from '../../plugin/index.js';
 import { unreachable } from '../../util/type-check.js';
+import { FixContext } from '../index.js';
 
 export type FixableMaker = (
   message: Linter.LintMessage,
   node: Node | null,
-  context: TransformContext,
+  context: FixContext,
 ) => Rule.Fix | null | undefined;
 
-export type TransformToMakeFixableAndFixArgs = {
+export type FixToMakeFixableAndFixArgs = {
   fixableMaker: FixableMaker;
 };
 
@@ -57,7 +57,7 @@ function getMessageToSourceNode(sourceCode: SourceCode, messages: Linter.LintMes
   return result;
 }
 
-function generateFixes(context: TransformContext, args: TransformToMakeFixableAndFixArgs): Rule.Fix[] {
+function generateFixes(context: FixContext, args: FixToMakeFixableAndFixArgs): Rule.Fix[] {
   const messageToNode = getMessageToSourceNode(context.sourceCode, context.messages);
 
   const fixes: Rule.Fix[] = [];
@@ -70,11 +70,8 @@ function generateFixes(context: TransformContext, args: TransformToMakeFixableAn
 }
 
 /**
- * Create transform to make fixable and fix.
+ * Create fix to make fixable and fix.
  */
-export function createTransformToMakeFixableAndFix(
-  context: TransformContext,
-  args: TransformToMakeFixableAndFixArgs,
-): Rule.Fix[] {
+export function createFixToMakeFixableAndFix(context: FixContext, args: FixToMakeFixableAndFixArgs): Rule.Fix[] {
   return generateFixes(context, args);
 }
