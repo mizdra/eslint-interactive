@@ -6,7 +6,7 @@ function pluralize(word: string, count: number): string {
   return count > 1 ? `${word}s` : word;
 }
 
-export const formatByFiles: ESLint.Formatter['format'] = (results) => {
+export function formatByFiles(results: ESLint.LintResult[]): string {
   let errorCount = 0;
   let failureCount = 0;
   let passCount = 0;
@@ -45,4 +45,4 @@ export const formatByFiles: ESLint.Formatter['format'] = (results) => {
   }
 
   return chalk.bold(summary);
-};
+}
