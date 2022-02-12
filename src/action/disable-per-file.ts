@@ -12,8 +12,8 @@ export async function doDisablePerFileAction(
   selectedRuleIds: string[],
 ): Promise<Undo> {
   const description = await promptToInputDescription();
-  const fixingSpinner = ora('Disabling...').start();
+  const fixingSpinner = ora('Fixing...').start();
   const undo = await core.disablePerFile(results, selectedRuleIds, description);
-  fixingSpinner.succeed(chalk.bold('Disabling was successful.'));
+  fixingSpinner.succeed(chalk.bold('Fixing was successful.'));
   return undo;
 }

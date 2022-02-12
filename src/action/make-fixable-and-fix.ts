@@ -36,8 +36,8 @@ export async function doMakeFixableAndFixAction(
   console.log('Opening editor...');
 
   const fixableMakerScript = await editFileWithEditor(fixableMakerScriptFilePath);
-  const fixingSpinner = ora('Making fixable and fixing...').start();
+  const fixingSpinner = ora('Fixing...').start();
   const undo = await core.makeFixableAndFix(results, selectedRuleIds, fixableMakerScript);
-  fixingSpinner.succeed(chalk.bold('Making fixable and fixing was successful.'));
+  fixingSpinner.succeed(chalk.bold('Fixing was successful.'));
   return undo;
 }

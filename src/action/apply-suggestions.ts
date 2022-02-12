@@ -36,8 +36,8 @@ export async function doApplySuggestionsAction(
   console.log('Opening editor...');
 
   const filterScript = await editFileWithEditor(filterScriptFilePath);
-  const fixingSpinner = ora('Applying suggestion...').start();
+  const fixingSpinner = ora('Fixing...').start();
   const undo = await core.applySuggestions(results, selectedRuleIds, filterScript);
-  fixingSpinner.succeed(chalk.bold('Applying suggestion was successful.'));
+  fixingSpinner.succeed(chalk.bold('Fixing was successful.'));
   return undo;
 }
