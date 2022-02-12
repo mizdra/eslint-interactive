@@ -102,7 +102,7 @@ export class Core {
     // Therefore, the function may not exist in versions lower than 7.29.0.
     const rulesMeta: ESLint.LintResultData['rulesMeta'] = eslint.getRulesMetaForResults?.(results) ?? {};
 
-    return format(results, { rulesMeta: rulesMeta });
+    return format(results, { rulesMeta: rulesMeta, cwd: this.config.cwd ?? process.cwd() });
   }
 
   /**

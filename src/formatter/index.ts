@@ -4,6 +4,6 @@ import { formatByRules } from './format-by-rules.js';
 
 export { takeRuleStatistics, type RuleStatistic } from './take-rule-statistics.js';
 
-export const format: ESLint.Formatter['format'] = (results, data) => {
+export function format(results: ESLint.LintResult[], data?: ESLint.LintResultData): string {
   return formatByFiles(results) + '\n' + formatByRules(results, data);
-};
+}

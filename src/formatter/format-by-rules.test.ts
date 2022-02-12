@@ -57,6 +57,7 @@ describe('formatByRules', () => {
       }),
     ];
     const formattedText = formatByRules(results, {
+      cwd: '/tmp',
       rulesMeta: {
         'rule-a': { docs: { url: 'https://example.com/rule-a' } },
         'plugin/rule-c': { docs: { url: 'https://example.com/plugin/rule-c' } },

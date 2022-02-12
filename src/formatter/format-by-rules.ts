@@ -10,7 +10,7 @@ function numCell(num: number): string {
   return num > 0 ? chalk[ERROR_COLOR].bold(num) : num.toString();
 }
 
-export const formatByRules: ESLint.Formatter['format'] = (results, _data) => {
+export function formatByRules(results: ESLint.LintResult[], _data?: ESLint.LintResultData): string {
   const ruleStatistics = takeRuleStatistics(results);
   const table = new Table({
     head: ['Rule', 'Error', 'Warning', 'is fixable', 'has suggestions'],
@@ -34,4 +34,4 @@ export const formatByRules: ESLint.Formatter['format'] = (results, _data) => {
   });
 
   return table.toString();
-};
+}
