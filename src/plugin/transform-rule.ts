@@ -5,7 +5,7 @@ import {
   createTransformToDisablePerFile,
   createTransformToDisablePerLine,
   createTransformToMakeFixableAndFix,
-} from './transforms/index.js';
+} from './fixes/index.js';
 
 /**
  * @file The rule to do the transform.

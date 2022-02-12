@@ -1,6 +1,5 @@
 import { Rule } from 'eslint';
 import type { Comment } from 'estree';
-import { TransformContext } from '../../plugin/index.js';
 import { unique } from '../../util/array.js';
 import {
   DisableComment,
@@ -10,6 +9,7 @@ import {
   toCommentText,
 } from '../../util/eslint.js';
 import { notEmpty } from '../../util/type-check.js';
+import { TransformContext } from '../index.js';
 
 export type TransformToDisablePerFileArgs = {
   description?: string;
