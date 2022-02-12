@@ -1,5 +1,5 @@
 import { parentPort, MessageChannel } from 'worker_threads';
-import { expose } from 'comlink';
+import { expose, proxy } from 'comlink';
 import nodeEndpoint from 'comlink/dist/esm/node-adapter.mjs';
 import { ESLint } from 'eslint';
 import { Core, Config } from './core.js';
@@ -32,13 +32,13 @@ export class SerializableCore {
     return this.core.formatResultDetails(...args);
   }
   async fix(...args: Parameters<Core['fix']>): ReturnType<Core['fix']> {
-    return this.core.fix(...args);
+    return proxy(await this.core.fix(...args));
   }
   async disablePerLine(...args: Parameters<Core['disablePerLine']>): ReturnType<Core['disablePerLine']> {
-    return this.core.disablePerLine(...args);
+    return proxy(await this.core.disablePerLine(...args));
   }
   async disablePerFile(...args: Parameters<Core['disablePerFile']>): ReturnType<Core['disablePerFile']> {
-    return this.core.disablePerFile(...args);
+    return proxy(await this.core.disablePerFile(...args));
   }
   async applySuggestions(
     results: ESLint.LintResult[],
@@ -46,7 +46,7 @@ export class SerializableCore {
     filterScript: string,
   ): ReturnType<Core['applySuggestions']> {
     const filter = eval(filterScript) as SuggestionFilter;
-    return this.core.applySuggestions(results, ruleIds, filter);
+    return proxy(await this.core.applySuggestions(results, ruleIds, filter));
   }
   async makeFixableAndFix(
     results: ESLint.LintResult[],
@@ -54,10 +54,7 @@ export class SerializableCore {
     fixableMakerScript: string,
   ): ReturnType<Core['makeFixableAndFix']> {
     const fixableMaker = eval(fixableMakerScript) as FixableMaker;
-    return this.core.makeFixableAndFix(results, ruleIds, fixableMaker);
-  }
-  async undoTransformation(...args: Parameters<Core['undoTransformation']>): ReturnType<Core['undoTransformation']> {
-    return this.core.undoTransformation(...args);
+    return proxy(await this.core.makeFixableAndFix(results, ruleIds, fixableMaker));
   }
 }
 

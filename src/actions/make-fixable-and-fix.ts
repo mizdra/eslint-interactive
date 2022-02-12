@@ -6,6 +6,7 @@ import { ESLint } from 'eslint';
 import { ora } from '../cli/ora.js';
 import { promptToInputReuseScript } from '../cli/prompt.js';
 import { SerializableCore } from '../core-worker.js';
+import { Undo } from '../core.js';
 import {
   editFileWithEditor,
   generateExampleFixableMakerScriptFilePath,
@@ -16,7 +17,7 @@ export async function doMakeFixableAndFixAction(
   core: Remote<SerializableCore>,
   results: ESLint.LintResult[],
   selectedRuleIds: string[],
-): Promise<void> {
+): Promise<Undo> {
   const exampleScript = await readFile(generateExampleFixableMakerScriptFilePath(), 'utf8');
   const fixableMakerScriptFilePath = generateFixableMakerScriptFilePath(selectedRuleIds);
   const isFixableMakerScriptExist = await access(fixableMakerScriptFilePath)
@@ -36,6 +37,7 @@ export async function doMakeFixableAndFixAction(
 
   const fixableMakerScript = await editFileWithEditor(fixableMakerScriptFilePath);
   const fixingSpinner = ora('Making fixable and fixing...').start();
-  await core.makeFixableAndFix(results, selectedRuleIds, fixableMakerScript);
+  const undo = await core.makeFixableAndFix(results, selectedRuleIds, fixableMakerScript);
   fixingSpinner.succeed(chalk.bold('Making fixable and fixing was successful.'));
+  return undo;
 }

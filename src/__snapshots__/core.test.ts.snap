@@ -15,6 +15,8 @@ if (!('key5' in {})) 0;
 "
 `;
 
+exports[`Core applySuggestions 2`] = `""`;
+
 exports[`Core disablePerFile 1`] = `
 "==> fixtures-tmp/lib/add-disable-comment.jsx <==
 /* eslint-disable ban-exponentiation-operator */
@@ -42,6 +44,8 @@ export function exp(a, b) {
 "
 `;
 
+exports[`Core disablePerFile 2`] = `""`;
+
 exports[`Core disablePerLine 1`] = `
 "==> fixtures-tmp/lib/add-disable-comment.jsx <==
 const a = 0;
@@ -68,6 +72,8 @@ export function exp(a, b) {
 }
 "
 `;
+
+exports[`Core disablePerLine 2`] = `""`;
 
 exports[`Core fix 1`] = `
 "==> fixtures-tmp/index.js <==
@@ -130,6 +136,8 @@ export function sub(a, b) {
 }
 "
 `;
+
+exports[`Core fix 2`] = `""`;
 
 exports[`Core lint 1`] = `
 Array [
@@ -1281,6 +1289,8 @@ function _fn(_arg) {
 "
 `;
 
+exports[`Core makeFixableAndFix 2`] = `""`;
+
 exports[`Core printDetailsOfResults 1`] = `
 "[31merror[39m: [1m\`./lib/add\` import should occur before import of \`./lib/mul\`[22m [2m(import/order)[22m at [32mfixtures-tmp/index.js:2:1[39m:
   1 | import { mul } from './lib/mul'
@@ -1364,32 +1374,3 @@ exports[`Core printSummaryOfResults 1`] = `
 │ no-unsafe-negation          │ [31m[1m5[22m[39m     │ 0       │ 0          │ [31m[1m5[22m[39m               │
 └─────────────────────────────┴───────┴─────────┴────────────┴─────────────────┘"
 `;
-
-exports[`Core undoTransformation 1`] = `
-"==> fixtures-tmp/lib/add-disable-comment.jsx <==
-/* eslint-disable ban-exponentiation-operator */
-const a = 0;
-// eslint-disable-next-line semi
-const b = 0
-/* eslint-disable-next-line semi */
-const c = 0
-// eslint-disable-next-line ban-exponentiation-operator
-const d = 0
-// eslint-disable-next-line no-unused-vars
-const jsx = (
-  <>
-    <div>{2 ** 10}</div>
-    {/* eslint-disable-next-line semi */}
-    <div>{2 ** 10}</div>
-  </>
-);
-
-==> fixtures-tmp/lib/exp.js <==
-/* eslint-disable ban-exponentiation-operator */
-export function exp(a, b) {
-  return a ** b
-}
-"
-`;
-
-exports[`Core undoTransformation 2`] = `""`;

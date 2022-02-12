@@ -6,6 +6,7 @@ import { ESLint } from 'eslint';
 import { ora } from '../cli/ora.js';
 import { promptToInputReuseFilterScript } from '../cli/prompt.js';
 import { SerializableCore } from '../core-worker.js';
+import { Undo } from '../core.js';
 import {
   editFileWithEditor,
   generateExampleFilterScriptFilePath,
@@ -16,7 +17,7 @@ export async function doApplySuggestionsAction(
   core: Remote<SerializableCore>,
   results: ESLint.LintResult[],
   selectedRuleIds: string[],
-): Promise<void> {
+): Promise<Undo> {
   const exampleScript = await readFile(generateExampleFilterScriptFilePath(), 'utf8');
   const filterScriptFilePath = generateFilterScriptFilePath(selectedRuleIds);
   const isFilterScriptExist = await access(filterScriptFilePath)
@@ -36,6 +37,7 @@ export async function doApplySuggestionsAction(
 
   const filterScript = await editFileWithEditor(filterScriptFilePath);
   const fixingSpinner = ora('Applying suggestion...').start();
-  await core.applySuggestions(results, selectedRuleIds, filterScript);
+  const undo = await core.applySuggestions(results, selectedRuleIds, filterScript);
   fixingSpinner.succeed(chalk.bold('Applying suggestion was successful.'));
+  return undo;
 }

@@ -8,6 +8,7 @@ import { doMakeFixableAndFixAction } from '../actions/make-fixable-and-fix.js';
 import { doPrintResultDetailsAction } from '../actions/print-result-details.js';
 import { Action, promptToInputAction } from '../cli/prompt.js';
 import { SerializableCore } from '../core-worker.js';
+import { Undo } from '../core.js';
 import { NextScene } from '../scenes/index.js';
 import { unreachable } from '../util/type-check.js';
 
@@ -33,10 +34,13 @@ export async function selectAction(
 
   const selectRuleIdsScene: NextScene = { name: 'selectRuleIds', args: { results, ruleIdsInResults } };
   const selectActionScene: NextScene = { name: 'selectAction', args: { results, ruleIdsInResults, selectedRuleIds } };
-  const checkResultsScene: NextScene = {
-    name: 'checkResults',
-    args: { results, ruleIdsInResults, selectedRuleIds, selectedAction },
-  };
+
+  function createCheckResultsScene(undo: Undo): NextScene {
+    return {
+      name: 'checkResults',
+      args: { results, ruleIdsInResults, selectedRuleIds, undo, selectedAction },
+    };
+  }
 
   if (selectedAction === 'reselectRules') return selectRuleIdsScene;
 
@@ -44,20 +48,20 @@ export async function selectAction(
     await doPrintResultDetailsAction(core, results, selectedRuleIds);
     return selectActionScene;
   } else if (selectedAction === 'fix') {
-    await doFixAction(core, selectedRuleIds);
-    return checkResultsScene;
+    const undo = await doFixAction(core, results, selectedRuleIds);
+    return createCheckResultsScene(undo);
   } else if (selectedAction === 'disablePerLine') {
-    await doDisablePerLineAction(core, results, selectedRuleIds);
-    return checkResultsScene;
+    const undo = await doDisablePerLineAction(core, results, selectedRuleIds);
+    return createCheckResultsScene(undo);
   } else if (selectedAction === 'disablePerFile') {
-    await doDisablePerFileAction(core, results, selectedRuleIds);
-    return checkResultsScene;
+    const undo = await doDisablePerFileAction(core, results, selectedRuleIds);
+    return createCheckResultsScene(undo);
   } else if (selectedAction === 'applySuggestions') {
-    await doApplySuggestionsAction(core, results, selectedRuleIds);
-    return checkResultsScene;
+    const undo = await doApplySuggestionsAction(core, results, selectedRuleIds);
+    return createCheckResultsScene(undo);
   } else if (selectedAction === 'makeFixableAndFix') {
-    await doMakeFixableAndFixAction(core, results, selectedRuleIds);
-    return checkResultsScene;
+    const undo = await doMakeFixableAndFixAction(core, results, selectedRuleIds);
+    return createCheckResultsScene(undo);
   }
   // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
   return unreachable(`unknown action: ${selectedAction}`);
