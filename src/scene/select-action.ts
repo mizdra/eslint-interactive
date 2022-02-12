@@ -1,11 +1,13 @@
 import { Remote } from 'comlink';
 import { ESLint } from 'eslint';
-import { doApplySuggestionsAction } from '../action/apply-suggestions.js';
-import { doDisablePerFileAction } from '../action/disable-per-file.js';
-import { doDisablePerLineAction } from '../action/disable-per-line.js';
-import { doFixAction } from '../action/fix.js';
-import { doMakeFixableAndFixAction } from '../action/make-fixable-and-fix.js';
-import { doPrintResultDetailsAction } from '../action/print-result-details.js';
+import {
+  doApplySuggestionsAction,
+  doDisablePerFileAction,
+  doDisablePerLineAction,
+  doFixAction,
+  doMakeFixableAndFixAction,
+  doPrintResultDetailsAction,
+} from '../action/index.js';
 import { Action, promptToInputAction } from '../cli/prompt.js';
 import { SerializableCore } from '../core-worker.js';
 import { Undo } from '../core.js';
