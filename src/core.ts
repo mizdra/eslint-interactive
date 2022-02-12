@@ -223,16 +223,4 @@ export class Core {
       await ESLint.outputFixes(resultsToUndo);
     };
   }
-
-  /**
-   * Undo transformations.
-   * @param results The lint results returned by the transform function.
-   * */
-  async undoTransformation(results: ESLint.LintResult[]): Promise<void> {
-    const newResults = results.map((result) => ({
-      ...result,
-      output: result.source,
-    }));
-    await ESLint.outputFixes(newResults);
-  }
 }
