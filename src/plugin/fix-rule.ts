@@ -1,11 +1,11 @@
 import { ESLint, Rule } from 'eslint';
-import { Transform, TransformContext } from '../plugin/index.js';
 import {
   createTransformToApplySuggestions,
   createTransformToDisablePerFile,
   createTransformToDisablePerLine,
   createTransformToMakeFixableAndFix,
 } from './fixes/index.js';
+import { Transform, TransformContext } from './index.js';
 
 /**
  * @file The rule to do the transform.

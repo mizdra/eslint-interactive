@@ -1,5 +1,5 @@
 import { basename } from 'path';
-import { TransformTester } from '../../test-util/transform-tester.js';
+import { TransformTester } from '../../test-util/fix-tester.js';
 
 const tester = new TransformTester(
   'makeFixableAndFix',

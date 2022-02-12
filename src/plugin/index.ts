@@ -1,4 +1,5 @@
 import { Linter, Rule, SourceCode } from 'eslint';
+import { transformRule, type TransformRuleOption } from './fix-rule.js';
 import {
   type FixableMaker,
   type SuggestionFilter,
@@ -8,7 +9,6 @@ import {
   type TransformToMakeFixableAndFixArgs,
 } from './fixes/index.js';
 import { preferAdditionShorthandRule } from './prefer-addition-shorthand-rule.js';
-import { transformRule, type TransformRuleOption } from './transform-rule.js';
 
 export { TransformRuleOption, type FixableMaker, type SuggestionFilter };
 
