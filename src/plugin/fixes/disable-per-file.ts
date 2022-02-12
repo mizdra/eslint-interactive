@@ -45,7 +45,7 @@ function generateFix(context: TransformContext, description?: string): Rule.Fix 
 }
 
 /**
- * Create transform to add disable comment per file.
+ * Create fix to add disable comment per file.
  */
 export function createTransformToDisablePerFile(
   context: TransformContext,

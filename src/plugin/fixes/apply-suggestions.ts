@@ -32,7 +32,7 @@ function generateFixPerMessage(
 }
 
 /**
- * Create transform to apply suggestions.
+ * Create fix to apply suggestions.
  */
 export function createTransformToApplySuggestions(
   context: TransformContext,

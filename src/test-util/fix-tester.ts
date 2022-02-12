@@ -17,11 +17,11 @@ type TestCase<T extends TransformName> = {
    */
   code: string | string[];
   /**
-   * The rule ids to transform.
+   * The rule ids to fix.
    */
   ruleIdsToTransform: string[];
   /**
-   * The arguments to pass to the transform function.
+   * The arguments to pass to the fix function.
    */
   args?: TransformArg<T>;
 };
@@ -29,7 +29,7 @@ type TestCase<T extends TransformName> = {
 type TestResult = string | null;
 
 /**
- * The test utility for the transform.
+ * The test utility for the fix.
  */
 export class TransformTester<T extends TransformName> {
   private transformName: T;
@@ -41,9 +41,9 @@ export class TransformTester<T extends TransformName> {
     this.defaultLinterConfig = defaultLinterConfig;
   }
   /**
-   * Test the transform.
+   * Test the fix.
    * @param testCase The test case.
-   * @returns The transformed code. If the transform skipped, null is returned.
+   * @returns The transformed code. If the fix skipped, null is returned.
    */
   async test(testCase: TestCase<T>): Promise<TestResult> {
     const code = Array.isArray(testCase.code) ? testCase.code.join('\n') : testCase.code;
@@ -59,16 +59,16 @@ export class TransformTester<T extends TransformName> {
 
     const eslintForFix = this.createESLint({
       rules: {
-        'eslint-interactive/transform': [
+        'eslint-interactive/fix': [
           2,
           {
             results: resultsForLint,
             ruleIds: testCase.ruleIdsToTransform,
-            transform: { name: this.transformName, args: { ...this.defaultTransformArgs, ...testCase.args } },
+            fix: { name: this.transformName, args: { ...this.defaultTransformArgs, ...testCase.args } },
           } as TransformRuleOption,
         ],
       },
-      // NOTE: fix with `transform` rule.
+      // NOTE: fix with `fix` rule.
       fix: true,
     });
     const resultsForFix = await eslintForFix.lintText(code, { filePath });

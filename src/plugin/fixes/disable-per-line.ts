@@ -52,7 +52,7 @@ function generateFixPerLine(
 }
 
 /**
- * Create transform to add disable comment per line.
+ * Create fix to add disable comment per line.
  */
 export function createTransformToDisablePerLine(
   context: TransformContext,

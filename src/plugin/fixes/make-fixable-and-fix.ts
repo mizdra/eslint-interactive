@@ -70,7 +70,7 @@ function generateFixes(context: TransformContext, args: TransformToMakeFixableAn
 }
 
 /**
- * Create transform to make fixable and fix.
+ * Create fix to make fixable and fix.
  */
 export function createTransformToMakeFixableAndFix(
   context: TransformContext,

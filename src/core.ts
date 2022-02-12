@@ -4,13 +4,7 @@ import { ESLint } from 'eslint';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 import isInstalledGlobally = require('is-installed-globally');
 import { format } from './formatter/index.js';
-import {
-  eslintInteractivePlugin,
-  TransformRuleOption,
-  FixableMaker,
-  SuggestionFilter,
-  Transform,
-} from './plugin/index.js';
+import { eslintInteractivePlugin, TransformRuleOption, FixableMaker, SuggestionFilter, Fix } from './plugin/index.js';
 import { getCacheDir } from './util/cache.js';
 import { filterResultsByRuleId, scanUsedPluginsFromResults } from './util/eslint.js';
 
@@ -162,7 +156,7 @@ export class Core {
    * @param description The description of the disable comments
    */
   async disablePerLine(results: ESLint.LintResult[], ruleIds: string[], description?: string): Promise<Undo> {
-    return await this.transform(results, ruleIds, { name: 'disablePerLine', args: { description } });
+    return await this.fix(results, ruleIds, { name: 'disablePerLine', args: { description } });
   }
 
   /**
@@ -172,7 +166,7 @@ export class Core {
    * @param description The description of the disable comments
    */
   async disablePerFile(results: ESLint.LintResult[], ruleIds: string[], description?: string): Promise<Undo> {
-    return await this.transform(results, ruleIds, { name: 'disablePerFile', args: { description } });
+    return await this.fix(results, ruleIds, { name: 'disablePerFile', args: { description } });
   }
 
   /**
@@ -182,7 +176,7 @@ export class Core {
    * @param filter The script to filter suggestions
    * */
   async applySuggestions(results: ESLint.LintResult[], ruleIds: string[], filter: SuggestionFilter): Promise<Undo> {
-    return await this.transform(results, ruleIds, { name: 'applySuggestions', args: { filter } });
+    return await this.fix(results, ruleIds, { name: 'applySuggestions', args: { filter } });
   }
 
   /**
@@ -192,14 +186,14 @@ export class Core {
    * @param fixableMaker The function to make `Linter.LintMessage` forcibly fixable.
    * */
   async makeFixableAndFix(results: ESLint.LintResult[], ruleIds: string[], fixableMaker: FixableMaker): Promise<Undo> {
-    return await this.transform(results, ruleIds, { name: 'makeFixableAndFix', args: { fixableMaker } });
+    return await this.fix(results, ruleIds, { name: 'makeFixableAndFix', args: { fixableMaker } });
   }
 
   /**
-   * Transform source codes.
-   * @param transform The transform information to do.
+   * Fix source codes.
+   * @param fix The fix information to do.
    */
-  private async transform(resultsOfLint: ESLint.LintResult[], ruleIds: string[], transform: Transform): Promise<Undo> {
+  private async fix(resultsOfLint: ESLint.LintResult[], ruleIds: string[], fix: Fix): Promise<Undo> {
     const eslint = new ESLint({
       ...this.baseOptions,
       // This is super hack to load ESM plugin/rule.
@@ -210,11 +204,11 @@ export class Core {
       overrideConfig: {
         plugins: ['eslint-interactive'],
         rules: {
-          'eslint-interactive/transform': [2, { results: resultsOfLint, ruleIds, transform } as TransformRuleOption],
+          'eslint-interactive/fix': [2, { results: resultsOfLint, ruleIds, fix } as TransformRuleOption],
         },
       },
-      // NOTE: Only fix the `transform` rule problems.
-      fix: (message) => message.ruleId === 'eslint-interactive/transform',
+      // NOTE: Only fix the `fix` rule problems.
+      fix: (message) => message.ruleId === 'eslint-interactive/fix',
     });
     const resultsToFix = await eslint.lintFiles(this.config.patterns);
     await ESLint.outputFixes(resultsToFix);

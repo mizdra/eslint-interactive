@@ -14,16 +14,16 @@ export { TransformRuleOption, type FixableMaker, type SuggestionFilter };
 
 export const eslintInteractivePlugin = {
   rules: {
-    'transform': transformRule,
+    'fix': transformRule,
     // for test
     'prefer-addition-shorthand': preferAdditionShorthandRule,
   },
 };
 
 /**
- * The type representing the transform to do.
+ * The type representing the fix to do.
  */
-export type Transform =
+export type Fix =
   | { name: 'disablePerLine'; args: TransformArg<'disablePerLine'> }
   | { name: 'disablePerFile'; args: TransformArg<'disablePerFile'> }
   | { name: 'applySuggestions'; args: TransformArg<'applySuggestions'> }
@@ -44,7 +44,7 @@ export type TransformArg<T extends TransformName> = T extends 'disablePerLine'
   : never;
 
 /**
- * The type representing the additional information for the transform.
+ * The type representing the additional information for the fix.
  */
 export type TransformContext = {
   filename: string;
@@ -55,6 +55,6 @@ export type TransformContext = {
 };
 
 /**
- * The type representing the transform function.
+ * The type representing the fix function.
  */
 export type TransformFunction<T> = (context: TransformContext, args: T) => Rule.Fix[];

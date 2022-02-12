@@ -8,7 +8,7 @@ const execPromise = promisify(exec);
 const cwd = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 
 /**
- * Returns a string containing the stitched together contents of the file modified by transform.
+ * Returns a string containing the stitched together contents of the file modified by fix.
  * To make the snapshot easier to read, the name of the file is inserted at the beginning of the contents of each file.
  */
 export async function getSnapshotOfChangedFiles(): Promise<string> {
