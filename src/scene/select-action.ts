@@ -1,16 +1,18 @@
 import { Remote } from 'comlink';
 import { ESLint } from 'eslint';
-import { doApplySuggestionsAction } from '../actions/apply-suggestions.js';
-import { doDisablePerFileAction } from '../actions/disable-per-file.js';
-import { doDisablePerLineAction } from '../actions/disable-per-line.js';
-import { doFixAction } from '../actions/fix.js';
-import { doMakeFixableAndFixAction } from '../actions/make-fixable-and-fix.js';
-import { doPrintResultDetailsAction } from '../actions/print-result-details.js';
+import {
+  doApplySuggestionsAction,
+  doDisablePerFileAction,
+  doDisablePerLineAction,
+  doFixAction,
+  doMakeFixableAndFixAction,
+  doPrintResultDetailsAction,
+} from '../action/index.js';
 import { Action, promptToInputAction } from '../cli/prompt.js';
 import { SerializableCore } from '../core-worker.js';
 import { Undo } from '../core.js';
-import { NextScene } from '../scenes/index.js';
 import { unreachable } from '../util/type-check.js';
+import { NextScene } from './index.js';
 
 export type SelectActionArgs = {
   /** The lint results of the project */

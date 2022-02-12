@@ -7,7 +7,7 @@ import {
   type FixToDisablePerFileArgs,
   type FixToDisablePerLineArgs,
   type FixToMakeFixableAndFixArgs,
-} from './fixes/index.js';
+} from './fix/index.js';
 import { preferAdditionShorthandRule } from './prefer-addition-shorthand-rule.js';
 
 export { FixRuleOption, type FixableMaker, type SuggestionFilter };

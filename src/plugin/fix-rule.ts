@@ -4,7 +4,7 @@ import {
   createFixToDisablePerFile,
   createFixToDisablePerLine,
   createFixToMakeFixableAndFix,
-} from './fixes/index.js';
+} from './fix/index.js';
 import { Fix, FixContext } from './index.js';
 
 /**
