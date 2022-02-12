@@ -1,9 +1,8 @@
 import { access, mkdir, readFile, writeFile } from 'fs/promises';
 import { dirname } from 'path';
-import chalk from 'chalk';
 import { Remote } from 'comlink';
 import { ESLint } from 'eslint';
-import { ora } from '../cli/ora.js';
+import { fixingSpinner } from '../cli/ora.js';
 import { promptToInputReuseScript } from '../cli/prompt.js';
 import { SerializableCore } from '../core-worker.js';
 import { Undo } from '../core.js';
@@ -36,8 +35,6 @@ export async function doMakeFixableAndFixAction(
   console.log('Opening editor...');
 
   const fixableMakerScript = await editFileWithEditor(fixableMakerScriptFilePath);
-  const fixingSpinner = ora('Fixing...').start();
-  const undo = await core.makeFixableAndFix(results, selectedRuleIds, fixableMakerScript);
-  fixingSpinner.succeed(chalk.bold('Fixing was successful.'));
+  const undo = await fixingSpinner(async () => core.makeFixableAndFix(results, selectedRuleIds, fixableMakerScript));
   return undo;
 }

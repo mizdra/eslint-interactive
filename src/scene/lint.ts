@@ -1,7 +1,6 @@
-import chalk from 'chalk';
 import { Remote } from 'comlink';
 import { warn } from '../cli/log.js';
-import { ora } from '../cli/ora.js';
+import { lintingSpinner } from '../cli/ora.js';
 import { SerializableCore } from '../core-worker.js';
 import { unique } from '../util/array.js';
 import { notEmpty } from '../util/type-check.js';
@@ -11,9 +10,7 @@ import { NextScene } from './index.js';
  * Run the scene to lint.
  */
 export async function lint(core: Remote<SerializableCore>): Promise<NextScene> {
-  const lintingSpinner = ora('Linting...').start();
-  const results = await core.lint();
-  lintingSpinner.succeed(chalk.bold('Linting was successful.'));
+  const results = await lintingSpinner(async () => core.lint());
   console.log();
 
   const ruleIdsInResults = unique(
