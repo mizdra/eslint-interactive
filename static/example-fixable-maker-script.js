@@ -16,7 +16,7 @@
  * A function to convert `Linter.LintMessage` to `Rule.Fix`.
  * @param {import('eslint').Linter.LintMessage} message - The `Linter.LintMessage` to be converted.
  * @param {import('estree').Node | null} node - The node corresponding to the message.
- * @param {import('@mizdra/eslint-interactive').TransformContext} context - The context of the transformation.
+ * @param {import('@mizdra/eslint-interactive').TransformContext} context - The context of the fix.
  * @returns {import('eslint').Rule.Fix | null | undefined} The `Rule.Fix` converted from `Linter.LintMessage`. If null or undefined, the message is not fixable.
  */
 function fixableMaker(message, node, context) {

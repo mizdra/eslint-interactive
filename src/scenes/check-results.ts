@@ -17,7 +17,7 @@ export type CheckResultsArgs = {
 };
 
 /**
- * Run the scene where a user check the transformation results.
+ * Run the scene where a user check the fix results.
  */
 export async function checkResults({
   results,
