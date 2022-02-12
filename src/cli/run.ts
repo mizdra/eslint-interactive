@@ -43,7 +43,7 @@ export async function run(options: Options) {
     } else if (nextScene.name === 'selectAction') {
       nextScene = await selectAction(core, nextScene.args);
     } else if (nextScene.name === 'checkResults') {
-      nextScene = await checkResults(core, nextScene.args);
+      nextScene = await checkResults(nextScene.args);
     }
   }
   await worker.terminate();

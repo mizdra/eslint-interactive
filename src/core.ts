@@ -14,6 +14,35 @@ import {
 import { getCacheDir } from './util/cache.js';
 import { filterResultsByRuleId, scanUsedPluginsFromResults } from './util/eslint.js';
 
+/**
+ * Generate results to undo.
+ * @param resultsOfLint The results of lint.
+ * @param resultsToFix The results to fix.
+ * @returns The results to undo.
+ */
+function generateResultsToUndo(
+  resultsOfLint: ESLint.LintResult[],
+  resultsToFix: ESLint.LintResult[],
+): ESLint.LintResult[] {
+  return (
+    resultsToFix
+      // Exclude results for unmodified files for performance
+      .filter((resultToFix) => resultToFix.output)
+      .map((resultToFix) => {
+        // NOTE: O(n^2)
+        const resultOfLint = resultsOfLint.find((resultOfLint) => resultOfLint.filePath === resultToFix.filePath);
+        if (!resultOfLint) throw new Error(`The result of ${resultToFix.filePath} is not found.`);
+        // NOTE: THIS IS HACK.
+        // Usually, the result with `output` property does not contain `source` property.
+        // However, `source` property is required for undoTransformation.
+        // Therefore, `source` property is added here.
+        return { ...resultToFix, output: resultOfLint.source };
+      })
+  );
+}
+
+export type Undo = () => Promise<void>;
+
 /** The config of eslint-interactive */
 export type Config = {
   patterns: string[];
@@ -113,14 +142,17 @@ export class Core {
    * Run `eslint --fix`.
    * @param ruleIds The rule ids to fix
    */
-  async fix(ruleIds: string[]): Promise<ESLint.LintResult[]> {
+  async fix(resultsOfLint: ESLint.LintResult[], ruleIds: string[]): Promise<Undo> {
     const eslint = new ESLint({
       ...this.baseOptions,
       fix: (message) => message.ruleId !== null && ruleIds.includes(message.ruleId),
     });
-    const results = await eslint.lintFiles(this.config.patterns);
-    await ESLint.outputFixes(results);
-    return results;
+    const resultsToFix = await eslint.lintFiles(this.config.patterns);
+    await ESLint.outputFixes(resultsToFix);
+    return async () => {
+      const resultsToUndo = generateResultsToUndo(resultsOfLint, resultsToFix);
+      await ESLint.outputFixes(resultsToUndo);
+    };
   }
 
   /**
@@ -129,11 +161,7 @@ export class Core {
    * @param ruleIds The rule ids to add disable comments
    * @param description The description of the disable comments
    */
-  async disablePerLine(
-    results: ESLint.LintResult[],
-    ruleIds: string[],
-    description?: string,
-  ): Promise<ESLint.LintResult[]> {
+  async disablePerLine(results: ESLint.LintResult[], ruleIds: string[], description?: string): Promise<Undo> {
     return await this.transform(results, ruleIds, { name: 'disablePerLine', args: { description } });
   }
 
@@ -143,11 +171,7 @@ export class Core {
    * @param ruleIds The rule ids to add disable comments
    * @param description The description of the disable comments
    */
-  async disablePerFile(
-    results: ESLint.LintResult[],
-    ruleIds: string[],
-    description?: string,
-  ): Promise<ESLint.LintResult[]> {
+  async disablePerFile(results: ESLint.LintResult[], ruleIds: string[], description?: string): Promise<Undo> {
     return await this.transform(results, ruleIds, { name: 'disablePerFile', args: { description } });
   }
 
@@ -157,11 +181,7 @@ export class Core {
    * @param ruleIds The rule ids to apply suggestions
    * @param filter The script to filter suggestions
    * */
-  async applySuggestions(
-    results: ESLint.LintResult[],
-    ruleIds: string[],
-    filter: SuggestionFilter,
-  ): Promise<ESLint.LintResult[]> {
+  async applySuggestions(results: ESLint.LintResult[], ruleIds: string[], filter: SuggestionFilter): Promise<Undo> {
     return await this.transform(results, ruleIds, { name: 'applySuggestions', args: { filter } });
   }
 
@@ -171,11 +191,7 @@ export class Core {
    * @param ruleIds The rule ids to apply suggestions
    * @param fixableMaker The function to make `Linter.LintMessage` forcibly fixable.
    * */
-  async makeFixableAndFix(
-    results: ESLint.LintResult[],
-    ruleIds: string[],
-    fixableMaker: FixableMaker,
-  ): Promise<ESLint.LintResult[]> {
+  async makeFixableAndFix(results: ESLint.LintResult[], ruleIds: string[], fixableMaker: FixableMaker): Promise<Undo> {
     return await this.transform(results, ruleIds, { name: 'makeFixableAndFix', args: { fixableMaker } });
   }
 
@@ -183,11 +199,7 @@ export class Core {
    * Transform source codes.
    * @param transform The transform information to do.
    */
-  private async transform(
-    results: ESLint.LintResult[],
-    ruleIds: string[],
-    transform: Transform,
-  ): Promise<ESLint.LintResult[]> {
+  private async transform(resultsOfLint: ESLint.LintResult[], ruleIds: string[], transform: Transform): Promise<Undo> {
     const eslint = new ESLint({
       ...this.baseOptions,
       // This is super hack to load ESM plugin/rule.
@@ -198,24 +210,18 @@ export class Core {
       overrideConfig: {
         plugins: ['eslint-interactive'],
         rules: {
-          'eslint-interactive/transform': [2, { results, ruleIds, transform } as TransformRuleOption],
+          'eslint-interactive/transform': [2, { results: resultsOfLint, ruleIds, transform } as TransformRuleOption],
         },
       },
       // NOTE: Only fix the `transform` rule problems.
       fix: (message) => message.ruleId === 'eslint-interactive/transform',
     });
-    const newResults = await eslint.lintFiles(this.config.patterns);
-    await ESLint.outputFixes(newResults);
-    return newResults.map((newResult) => {
-      if (newResult.source) return newResult;
-      const result = results.find((result) => result.filePath === newResult.filePath);
-      if (!result) throw new Error(`The result of ${newResult.filePath} is not found.`);
-      // NOTE: THIS IS HACK.
-      // Usually, the result with `output` property does not contain `source` property.
-      // However, `source` property is required for undoTransformation.
-      // Therefore, `source` property is added here.
-      return { ...newResult, source: result.source };
-    });
+    const resultsToFix = await eslint.lintFiles(this.config.patterns);
+    await ESLint.outputFixes(resultsToFix);
+    return async () => {
+      const resultsToUndo = generateResultsToUndo(resultsOfLint, resultsToFix);
+      await ESLint.outputFixes(resultsToUndo);
+    };
   }
 
   /**

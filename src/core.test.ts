@@ -92,7 +92,8 @@ describe('Core', () => {
     expect(await core.formatResultDetails(results, ['import/order', 'ban-exponentiation-operator'])).toMatchSnapshot();
   });
   test('fix', async () => {
-    await core.fix(['semi']);
+    const results = await core.lint();
+    await core.fix(results, ['semi']);
     expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
   });
   test('disablePerLine', async () => {
