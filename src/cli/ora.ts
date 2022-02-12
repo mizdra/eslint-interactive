@@ -15,3 +15,11 @@ export async function fixingSpinner<T>(cb: () => Promise<T>): Promise<T> {
     successText: 'Fixing was successful.',
   });
 }
+
+export async function undoingSpinner<T>(cb: () => Promise<T>): Promise<T> {
+  return oraPromise(cb, {
+    text: 'Undoing...',
+    spinner: 'moon',
+    successText: 'Undoing was successful.',
+  });
+}
