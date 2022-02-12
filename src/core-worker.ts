@@ -31,8 +31,8 @@ export class SerializableCore {
   async formatResultDetails(...args: Parameters<Core['formatResultDetails']>): ReturnType<Core['formatResultDetails']> {
     return this.core.formatResultDetails(...args);
   }
-  async fix(...args: Parameters<Core['fix']>): ReturnType<Core['fix']> {
-    return proxy(await this.core.fix(...args));
+  async applyAutoFixes(...args: Parameters<Core['applyAutoFixes']>): ReturnType<Core['applyAutoFixes']> {
+    return proxy(await this.core.applyAutoFixes(...args));
   }
   async disablePerLine(...args: Parameters<Core['disablePerLine']>): ReturnType<Core['disablePerLine']> {
     return proxy(await this.core.disablePerLine(...args));

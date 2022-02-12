@@ -1,5 +1,69 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Core applyAutoFixes 1`] = `
+"==> fixtures-tmp/index.js <==
+import { mul } from './lib/mul';
+import { add } from './lib/add';
+import { sub } from './lib/sub';
+import { exp } from './lib/exp';
+import { strictEqual } from 'assert';
+
+const numA=add(1, 2);
+let numB=add(3, 4);
+let numC=sub(5, 6);
+let numD=exp(2, 2);
+let numE=mul(numA, numB, numC, numD);
+
+strictEqual(numD, -84);
+
+==> fixtures-tmp/lib/add-disable-comment.jsx <==
+const a = 0;
+// eslint-disable-next-line semi
+const b = 0
+/* eslint-disable-next-line semi */
+const c = 0
+// eslint-disable-next-line ban-exponentiation-operator
+const d = 0;
+// eslint-disable-next-line no-unused-vars
+const jsx = (
+  <>
+    <div>{2 ** 10}</div>
+    {/* eslint-disable-next-line semi */}
+    <div>{2 ** 10}</div>
+  </>
+);
+
+==> fixtures-tmp/lib/add.js <==
+/* eslint semi: 1 */
+
+export function add(a, b) {
+  return a + b;
+}
+
+==> fixtures-tmp/lib/exp.js <==
+export function exp(a, b) {
+  return a ** b;
+}
+
+==> fixtures-tmp/lib/mul.js <==
+export function mul(a, b) {
+  return a * b;
+}
+
+==> fixtures-tmp/lib/shebang.js <==
+#!/usr/bin/env node
+
+console.log();
+
+==> fixtures-tmp/lib/sub.mjs <==
+export function sub(a, b) {
+  return a - b;
+}
+"
+`;
+
+exports[`Core applyAutoFixes 2`] = `""`;
+
 exports[`Core applySuggestions 1`] = `
 "\\"\\\\'\\";
 '\\\\\\"';
@@ -74,70 +138,6 @@ export function exp(a, b) {
 `;
 
 exports[`Core disablePerLine 2`] = `""`;
-
-exports[`Core fix 1`] = `
-"==> fixtures-tmp/index.js <==
-import { mul } from './lib/mul';
-import { add } from './lib/add';
-import { sub } from './lib/sub';
-import { exp } from './lib/exp';
-import { strictEqual } from 'assert';
-
-const numA=add(1, 2);
-let numB=add(3, 4);
-let numC=sub(5, 6);
-let numD=exp(2, 2);
-let numE=mul(numA, numB, numC, numD);
-
-strictEqual(numD, -84);
-
-==> fixtures-tmp/lib/add-disable-comment.jsx <==
-const a = 0;
-// eslint-disable-next-line semi
-const b = 0
-/* eslint-disable-next-line semi */
-const c = 0
-// eslint-disable-next-line ban-exponentiation-operator
-const d = 0;
-// eslint-disable-next-line no-unused-vars
-const jsx = (
-  <>
-    <div>{2 ** 10}</div>
-    {/* eslint-disable-next-line semi */}
-    <div>{2 ** 10}</div>
-  </>
-);
-
-==> fixtures-tmp/lib/add.js <==
-/* eslint semi: 1 */
-
-export function add(a, b) {
-  return a + b;
-}
-
-==> fixtures-tmp/lib/exp.js <==
-export function exp(a, b) {
-  return a ** b;
-}
-
-==> fixtures-tmp/lib/mul.js <==
-export function mul(a, b) {
-  return a * b;
-}
-
-==> fixtures-tmp/lib/shebang.js <==
-#!/usr/bin/env node
-
-console.log();
-
-==> fixtures-tmp/lib/sub.mjs <==
-export function sub(a, b) {
-  return a - b;
-}
-"
-`;
-
-exports[`Core fix 2`] = `""`;
 
 exports[`Core lint 1`] = `
 Array [

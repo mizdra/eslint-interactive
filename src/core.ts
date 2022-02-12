@@ -142,7 +142,7 @@ export class Core {
    * Run `eslint --fix`.
    * @param ruleIds The rule ids to fix
    */
-  async fix(resultsOfLint: ESLint.LintResult[], ruleIds: string[]): Promise<Undo> {
+  async applyAutoFixes(resultsOfLint: ESLint.LintResult[], ruleIds: string[]): Promise<Undo> {
     const eslint = new ESLint({
       ...this.baseOptions,
       fix: (message) => message.ruleId !== null && ruleIds.includes(message.ruleId),

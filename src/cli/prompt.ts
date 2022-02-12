@@ -15,7 +15,7 @@ const onCancel = () => process.exit();
  */
 export type Action =
   | 'printResultDetails'
-  | 'fix'
+  | 'applyAutoFixes'
   | 'disablePerLine'
   | 'disablePerFile'
   | 'applySuggestions'
@@ -79,7 +79,7 @@ export async function promptToInputAction(
 
   const choices = [
     { name: 'printResultDetails', message: '🔎 Display details of lint results' },
-    { name: 'fix', message: '🔧 Run `eslint --fix`', disabled: foldedStatistics.isFixableCount === 0 },
+    { name: 'applyAutoFixes', message: '🔧 Run `eslint --fix`', disabled: foldedStatistics.isFixableCount === 0 },
     { name: 'disablePerLine', message: '🔧 Disable per line' },
     { name: 'disablePerFile', message: '🔧 Disable per file' },
     {
