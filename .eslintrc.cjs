@@ -81,5 +81,12 @@ module.exports = {
         'import/no-extraneous-dependencies': ['error', { packageDir: ['.', './e2e-test/import-as-esm-from-esm'] }],
       },
     },
+    // for benchmark
+    {
+      files: ['benchmark/**/*.{ts,tsx,cts,mts,js}'],
+      rules: {
+        'no-restricted-imports': 'off',
+      },
+    },
   ],
 };

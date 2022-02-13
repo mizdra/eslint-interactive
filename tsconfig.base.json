@@ -1,6 +1,6 @@
 {
   // "include": ["src/**/*"],
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules", "benchmark/fixtures", "fixtures-tmp"],
   "compilerOptions": {
     /* Basic Options */
     // "outDir": "./dist", // 継承先で上書きする
