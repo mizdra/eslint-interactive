@@ -18,7 +18,8 @@
     "lint:eslint": "eslint --ignore-pattern '/fixtures/' --ignore-pattern '/e2e-test/' .",
     "lint:prettier": "prettier --check .",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest --colors",
-    "postbuild:test": "./run-e2e-test.sh"
+    "postbuild:test": "./run-e2e-test.sh",
+    "postbuild:benchmark": "node benchmark/run.js"
   },
   "prettier": "@mizdra/prettier-config-mizdra",
   "renovate": "github>mizdra/renovate-config-mizdra",

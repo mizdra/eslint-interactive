@@ -7,8 +7,8 @@ const dir = join(dirname(fileURLToPath(import.meta.url)));
 /** @type import('@jest/types').Config.InitialOptions */
 export const baseConfig = {
   preset: 'ts-jest/presets/default-esm',
-  // Since fixtures-tmp are rewritten during testing, if they are in the watch target, the test will be retrying infinitely.
-  watchPathIgnorePatterns: [join(dir, 'fixtures-tmp')],
+  // Since fixtures-tmp and benchmark/fixtures are rewritten during testing, if they are in the watch target, the test will be retrying infinitely.
+  watchPathIgnorePatterns: [join(dir, 'fixtures-tmp'), join(dir, 'benchmark/fixtures')],
   // ESLint v8 では `pkg.exports` を利用したモジュールに依存しているが、jest は `pkg.exports` を解釈できないため、
   // そのままだと jest がコケてしまう。そこで `moduleNameMapper` を使って無理やりモジュール名を解決している。
   moduleNameMapper: {
