@@ -137,6 +137,7 @@ export class Core {
    * @param ruleIds The rule ids to fix
    */
   async applyAutoFixes(resultsOfLint: ESLint.LintResult[], ruleIds: string[]): Promise<Undo> {
+    // NOTE: Extract only necessary results and files for performance
     const filteredResults = filterResultsByRuleId(resultsOfLint, ruleIds);
     const targetFilePaths = filteredResults.map((result) => result.filePath);
 
@@ -197,6 +198,7 @@ export class Core {
    * @param fix The fix information to do.
    */
   private async fix(resultsOfLint: ESLint.LintResult[], ruleIds: string[], fix: Fix): Promise<Undo> {
+    // NOTE: Extract only necessary results and files for performance
     const filteredResults = filterResultsByRuleId(resultsOfLint, ruleIds);
     const targetFilePaths = filteredResults.map((result) => result.filePath);
 
