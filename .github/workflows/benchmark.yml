@@ -54,9 +54,7 @@ jobs:
           tool: customSmallerIsBetter
           output-file-path: benchmark/result.json
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          # main では GitHub Pages に結果を push する
-          auto-push: true
+          auto-push: ${{ github.ref == 'refs/heads/main' }}
           comment-on-alert: true
-          # fail-on-alert: true
-          # alert-threshold: '150%'
-          comment-always: true
+          fail-on-alert: true
+          alert-threshold: '150%'
