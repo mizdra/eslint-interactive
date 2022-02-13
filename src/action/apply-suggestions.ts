@@ -1,9 +1,8 @@
 import { access, mkdir, readFile, writeFile } from 'fs/promises';
 import { dirname } from 'path';
-import chalk from 'chalk';
 import { Remote } from 'comlink';
 import { ESLint } from 'eslint';
-import { ora } from '../cli/ora.js';
+import { fixingSpinner } from '../cli/ora.js';
 import { promptToInputReuseFilterScript } from '../cli/prompt.js';
 import { SerializableCore } from '../core-worker.js';
 import { Undo } from '../core.js';
@@ -36,8 +35,6 @@ export async function doApplySuggestionsAction(
   console.log('Opening editor...');
 
   const filterScript = await editFileWithEditor(filterScriptFilePath);
-  const fixingSpinner = ora('Applying suggestion...').start();
-  const undo = await core.applySuggestions(results, selectedRuleIds, filterScript);
-  fixingSpinner.succeed(chalk.bold('Applying suggestion was successful.'));
+  const undo = await fixingSpinner(async () => core.applySuggestions(results, selectedRuleIds, filterScript));
   return undo;
 }

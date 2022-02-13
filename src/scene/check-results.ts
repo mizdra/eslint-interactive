@@ -1,4 +1,5 @@
 import { ESLint } from 'eslint';
+import { undoingSpinner } from '../cli/ora.js';
 import { Action, promptToInputWhatToDoNext } from '../cli/prompt.js';
 import { Undo } from '../core.js';
 import { NextScene } from './index.js';
@@ -29,7 +30,7 @@ export async function checkResults({
   const nextStep = await promptToInputWhatToDoNext();
   if (nextStep === 'exit') return { name: 'exit' };
   if (nextStep === 'undoTheFix') {
-    await undo();
+    await undoingSpinner(async () => undo());
     return {
       name: 'selectAction',
       args: { results, ruleIdsInResults, selectedRuleIds, initialAction: selectedAction },
