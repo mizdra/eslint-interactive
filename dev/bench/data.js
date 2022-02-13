@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1644754806379,
+  "lastUpdate": 1644755666682,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -315,6 +315,105 @@ window.BENCHMARK_DATA = {
           {
             "name": "fix-all-of-huge-files (makeFixableAndFix)",
             "value": 1231,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-all-of-huge-files (undo)",
+            "value": 0,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "pp.mizdra@gmail.com",
+            "name": "mizdra",
+            "username": "mizdra"
+          },
+          "committer": {
+            "email": "pp.mizdra@gmail.com",
+            "name": "mizdra",
+            "username": "mizdra"
+          },
+          "distinct": true,
+          "id": "a0005ad4fa81743a091d23c692e162c2698b15ff",
+          "message": "test: change testset",
+          "timestamp": "2022-02-13T21:29:29+09:00",
+          "tree_id": "bbb05857123ff9886dcd0a6bb1ad99196a6b682e",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/a0005ad4fa81743a091d23c692e162c2698b15ff"
+        },
+        "date": 1644755666263,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "fix-a-few-of-many-files (applyAutoFixes)",
+            "value": 1450,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-a-few-of-many-files (disablePerLine)",
+            "value": 1743,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-a-few-of-many-files (disablePerFile)",
+            "value": 1722,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-a-few-of-many-files (makeFixableAndFix)",
+            "value": 1655,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-a-few-of-many-files (undo)",
+            "value": 156,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-all-of-many-files (applyAutoFixes)",
+            "value": 1769,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-all-of-many-files (disablePerLine)",
+            "value": 2287,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-all-of-many-files (disablePerFile)",
+            "value": 2217,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-all-of-many-files (makeFixableAndFix)",
+            "value": 2118,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-all-of-many-files (undo)",
+            "value": 357,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-all-of-huge-files (applyAutoFixes)",
+            "value": 1,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-all-of-huge-files (disablePerLine)",
+            "value": 6884,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-all-of-huge-files (disablePerFile)",
+            "value": 6962,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-all-of-huge-files (makeFixableAndFix)",
+            "value": 6760,
             "unit": "ms"
           },
           {
