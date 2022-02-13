@@ -38,6 +38,9 @@ test('filterResultsByRuleId', () => {
     fakeLintResult({
       messages: [fakeLintMessage({ ruleId: 'a' })],
     }),
+    fakeLintResult({
+      messages: [fakeLintMessage({ ruleId: 'b' })],
+    }),
   ];
   const actual = filterResultsByRuleId(results, ['a', null]);
   const expected: ESLint.LintResult[] = [

@@ -137,14 +137,18 @@ export class Core {
    * @param ruleIds The rule ids to fix
    */
   async applyAutoFixes(resultsOfLint: ESLint.LintResult[], ruleIds: string[]): Promise<Undo> {
+    // NOTE: Extract only necessary results and files for performance
+    const filteredResults = filterResultsByRuleId(resultsOfLint, ruleIds);
+    const targetFilePaths = filteredResults.map((result) => result.filePath);
+
     const eslint = new ESLint({
       ...this.baseOptions,
       fix: (message) => message.ruleId !== null && ruleIds.includes(message.ruleId),
     });
-    const resultsToFix = await eslint.lintFiles(this.config.patterns);
+    const resultsToFix = await eslint.lintFiles(targetFilePaths);
     await ESLint.outputFixes(resultsToFix);
     return async () => {
-      const resultsToUndo = generateResultsToUndo(resultsOfLint, resultsToFix);
+      const resultsToUndo = generateResultsToUndo(filteredResults, resultsToFix);
       await ESLint.outputFixes(resultsToUndo);
     };
   }
@@ -194,6 +198,10 @@ export class Core {
    * @param fix The fix information to do.
    */
   private async fix(resultsOfLint: ESLint.LintResult[], ruleIds: string[], fix: Fix): Promise<Undo> {
+    // NOTE: Extract only necessary results and files for performance
+    const filteredResults = filterResultsByRuleId(resultsOfLint, ruleIds);
+    const targetFilePaths = filteredResults.map((result) => result.filePath);
+
     const eslint = new ESLint({
       ...this.baseOptions,
       // This is super hack to load ESM plugin/rule.
@@ -204,16 +212,16 @@ export class Core {
       overrideConfig: {
         plugins: ['eslint-interactive'],
         rules: {
-          'eslint-interactive/fix': [2, { results: resultsOfLint, ruleIds, fix } as FixRuleOption],
+          'eslint-interactive/fix': [2, { results: filteredResults, ruleIds, fix } as FixRuleOption],
         },
       },
       // NOTE: Only fix the `fix` rule problems.
       fix: (message) => message.ruleId === 'eslint-interactive/fix',
     });
-    const resultsToFix = await eslint.lintFiles(this.config.patterns);
+    const resultsToFix = await eslint.lintFiles(targetFilePaths);
     await ESLint.outputFixes(resultsToFix);
     return async () => {
-      const resultsToUndo = generateResultsToUndo(resultsOfLint, resultsToFix);
+      const resultsToUndo = generateResultsToUndo(filteredResults, resultsToFix);
       await ESLint.outputFixes(resultsToUndo);
     };
   }

@@ -104,12 +104,14 @@ export function toCommentText({ type, scope, ruleIds, description }: Omit<Disabl
  * @returns The results with only messages with the specified rule ids
  */
 export function filterResultsByRuleId(results: ESLint.LintResult[], ruleIds: (string | null)[]): ESLint.LintResult[] {
-  return results.map((result) => {
-    return {
-      ...result,
-      messages: result.messages.filter((message) => ruleIds.includes(message.ruleId)),
-    };
-  });
+  return results
+    .map((result) => {
+      return {
+        ...result,
+        messages: result.messages.filter((message) => ruleIds.includes(message.ruleId)),
+      };
+    })
+    .filter((result) => result.messages.length > 0);
 }
 
 /**
