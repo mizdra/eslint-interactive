@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1644749787748,
+  "lastUpdate": 1644750041134,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -73,6 +73,80 @@ window.BENCHMARK_DATA = {
           {
             "name": "fix-all-of-many-files (undo)",
             "value": 315.4428373999952,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "pp.mizdra@gmail.com",
+            "name": "mizdra",
+            "username": "mizdra"
+          },
+          "committer": {
+            "email": "pp.mizdra@gmail.com",
+            "name": "mizdra",
+            "username": "mizdra"
+          },
+          "distinct": true,
+          "id": "b84749941a1284944fbf616ef70cc2c48dbf80e3",
+          "message": "chore: run benchmark",
+          "timestamp": "2022-02-13T19:58:16+09:00",
+          "tree_id": "5b4e28d2f0532d195b2ef53e6729a20f88e7ab94",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/b84749941a1284944fbf616ef70cc2c48dbf80e3"
+        },
+        "date": 1644750040251,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "fix-a-few-of-many-files (applyAutoFixes)",
+            "value": 1247.256900599999,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-a-few-of-many-files (disablePerLine)",
+            "value": 1528.0463949999976,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-a-few-of-many-files (disablePerFile)",
+            "value": 1556.262089000002,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-a-few-of-many-files (makeFixableAndFix)",
+            "value": 1455.743050800002,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-a-few-of-many-files (undo)",
+            "value": 146.2650227999984,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-all-of-many-files (applyAutoFixes)",
+            "value": 1596.4065854000044,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-all-of-many-files (disablePerLine)",
+            "value": 2053.254685200004,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-all-of-many-files (disablePerFile)",
+            "value": 2042.3821243999932,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-all-of-many-files (makeFixableAndFix)",
+            "value": 1949.6039541999985,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-all-of-many-files (undo)",
+            "value": 362.803762800002,
             "unit": "ms"
           }
         ]
