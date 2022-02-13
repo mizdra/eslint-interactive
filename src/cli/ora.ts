@@ -4,7 +4,7 @@ export async function lintingSpinner<T>(cb: () => Promise<T>): Promise<T> {
   return oraPromise(cb, {
     text: 'Linting...',
     spinner: 'clock',
-    successText: 'Linting was successful.',
+    successText: 'Linting done.',
   });
 }
 
@@ -12,7 +12,7 @@ export async function fixingSpinner<T>(cb: () => Promise<T>): Promise<T> {
   return oraPromise(cb, {
     text: 'Fixing...',
     spinner: 'clock',
-    successText: 'Fixing was successful.',
+    successText: 'Fixing done.',
   });
 }
 
@@ -20,6 +20,6 @@ export async function undoingSpinner<T>(cb: () => Promise<T>): Promise<T> {
   return oraPromise(cb, {
     text: 'Undoing...',
     spinner: 'timeTravel',
-    successText: 'Undoing was successful.',
+    successText: 'Undoing done.',
   });
 }
