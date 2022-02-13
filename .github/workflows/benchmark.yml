@@ -58,3 +58,4 @@ jobs:
           comment-on-alert: true
           fail-on-alert: true
           alert-threshold: '150%'
+          comment-always: true
