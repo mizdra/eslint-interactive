@@ -40,6 +40,19 @@ export async function logBenchmarkResult(benchmarkResult) {
 }
 
 /**
+ * @param {number[]} nums
+ * @returns {number}
+ */
+export function median(nums) {
+  const sortedNums = [...nums].sort((a, b) => a - b);
+  const half = Math.floor(sortedNums.length / 2);
+  if (sortedNums.length % 2 === 1) {
+    return sortedNums[half];
+  }
+  return (sortedNums[half - 1] + sortedNums[half]) / 2;
+}
+
+/**
  * @template T
  * @template U
  * @typedef {{
@@ -68,7 +81,8 @@ export async function runBenchmark(args) {
     if (afterEach) await afterEach(fnResult);
   }
   const progressThreshold = Math.max(1, Math.trunc(args.repeat / 10));
-  let sum = 0;
+  /** @type {number[]} */
+  const data = [];
   for (let i = 1; i <= repeat; i++) {
     if (i % progressThreshold === 0) {
       console.log(`Running "${args.name}" (warmup: ${warmup}/${warmup}, repeat: ${i}/${args.repeat})`);
@@ -79,13 +93,13 @@ export async function runBenchmark(args) {
       const start = performance.now();
       const fnResult = await fn(beforeResult);
       const end = performance.now();
-      sum += end - start;
+      data.push(end - start);
       if (afterEach) await afterEach(fnResult);
     }
   }
   await logBenchmarkResult({
     name,
-    value: sum / repeat,
+    value: median(data),
     unit: 'ms',
   });
 }
