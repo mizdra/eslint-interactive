@@ -91,27 +91,20 @@ async function main() {
   ]);
   await runBenchmarkForEachFix('fix-a-few-of-many-files', core);
 
-  await createFixtures(join(cwd, 'fixtures'), [{ label: 'target', source: '0\n', amount: 2000 }]);
+  await createFixtures(join(cwd, 'fixtures'), [{ label: 'target', source: '0\n', amount: 1000 }]);
   await runBenchmarkForEachFix('fix-all-of-many-files', core);
 
   // huge AST
-  const lineWithoutSemicolon = '('.repeat(511) + '0' + ')'.repeat(511) + '\n'; // 1KB
-  const lineWithSemicolon = '('.repeat(511) + '0' + ')'.repeat(511) + ';\n'; // 1KB + 1B ~= 1KB
+  const deepLine = '{'.repeat(100) + '0' + '}'.repeat(100) + '\n';
+  const broadLine = '{' + ';'.repeat(100) + '0' + '}' + '\n';
   await createFixtures(join(cwd, 'fixtures'), [
     {
       label: 'target',
-      // 1023KB + 1KB = 1MB
-      source: lineWithoutSemicolon.repeat(1024) + lineWithSemicolon,
+      source: (deepLine + broadLine).repeat(500),
       amount: 1,
     },
   ]);
-  await runBenchmarkForEachFix('fix-all-of-huge-files', core, {
-    applyAutoFixes: 100,
-    disablePerLine: 1,
-    disablePerFile: 1,
-    makeFixableAndFix: 1,
-    undo: 1000,
-  });
+  await runBenchmarkForEachFix('fix-all-of-huge-files', core);
 }
 
 main();
