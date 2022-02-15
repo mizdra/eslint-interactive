@@ -7,6 +7,7 @@ import {
   type FixToDisablePerFileArgs,
   type FixToDisablePerLineArgs,
   type FixToMakeFixableAndFixArgs,
+  type FixToApplyAutoFixesArgs,
 } from './fix/index.js';
 import { preferAdditionShorthandRule } from './prefer-addition-shorthand-rule.js';
 
@@ -24,16 +25,19 @@ export const eslintInteractivePlugin = {
  * The type representing the fix to do.
  */
 export type Fix =
+  | { name: 'applyAutoFixes'; args: FixArg<'applyAutoFixes'> }
   | { name: 'disablePerLine'; args: FixArg<'disablePerLine'> }
   | { name: 'disablePerFile'; args: FixArg<'disablePerFile'> }
   | { name: 'applySuggestions'; args: FixArg<'applySuggestions'> }
   | { name: 'makeFixableAndFix'; args: FixArg<'makeFixableAndFix'> };
 
 /** For test */
-export type FixName = 'disablePerLine' | 'disablePerFile' | 'applySuggestions' | 'makeFixableAndFix';
+export type FixName = 'applyAutoFixes' | 'disablePerLine' | 'disablePerFile' | 'applySuggestions' | 'makeFixableAndFix';
 
 /** For test */
-export type FixArg<T extends FixName> = T extends 'disablePerLine'
+export type FixArg<T extends FixName> = T extends 'applyAutoFixes'
+  ? FixToApplyAutoFixesArgs
+  : T extends 'disablePerLine'
   ? FixToDisablePerLineArgs
   : T extends 'disablePerFile'
   ? FixToDisablePerFileArgs
