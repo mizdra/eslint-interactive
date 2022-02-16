@@ -33,13 +33,6 @@ const jsx = (
   </>
 );
 
-==> fixtures-tmp/lib/add.js <==
-/* eslint semi: 1 */
-
-export function add(a, b) {
-  return a + b;
-}
-
 ==> fixtures-tmp/lib/shebang.js <==
 #!/usr/bin/env node
 
@@ -48,6 +41,13 @@ console.log();
 ==> fixtures-tmp/lib/sub.mjs <==
 export function sub(a, b) {
   return a - b;
+}
+
+==> fixtures-tmp/lib/warning.js <==
+/* eslint semi: 1 */
+
+export function add(a, b) {
+  return a + b;
 }
 "
 `;
@@ -551,37 +551,6 @@ import { exp } from './lib/exp'
     "suppressedMessages": "omitted",
     "usedDeprecatedRules": Array [],
     "warningCount": 0,
-  },
-  Object {
-    "errorCount": 0,
-    "fatalErrorCount": NaN,
-    "filePath": "/fixtures-tmp/lib/add.js",
-    "fixableErrorCount": 0,
-    "fixableWarningCount": 1,
-    "messages": Array [
-      Object {
-        "column": 15,
-        "endColumn": 1,
-        "endLine": 5,
-        "fix": Object {
-          "range": Array [
-            64,
-            64,
-          ],
-          "text": ";",
-        },
-        "line": 4,
-        "message": "Missing semicolon.",
-        "messageId": "missingSemi",
-        "nodeType": "ReturnStatement",
-        "ruleId": "semi",
-        "severity": 1,
-      },
-    ],
-    "source": "ommitted",
-    "suppressedMessages": "omitted",
-    "usedDeprecatedRules": Array [],
-    "warningCount": 1,
   },
   Object {
     "errorCount": 10,
@@ -1130,6 +1099,37 @@ key4
     "suppressedMessages": "omitted",
     "usedDeprecatedRules": Array [],
     "warningCount": 0,
+  },
+  Object {
+    "errorCount": 0,
+    "fatalErrorCount": NaN,
+    "filePath": "/fixtures-tmp/lib/warning.js",
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 1,
+    "messages": Array [
+      Object {
+        "column": 15,
+        "endColumn": 1,
+        "endLine": 5,
+        "fix": Object {
+          "range": Array [
+            64,
+            64,
+          ],
+          "text": ";",
+        },
+        "line": 4,
+        "message": "Missing semicolon.",
+        "messageId": "missingSemi",
+        "nodeType": "ReturnStatement",
+        "ruleId": "semi",
+        "severity": 1,
+      },
+    ],
+    "source": "ommitted",
+    "suppressedMessages": "omitted",
+    "usedDeprecatedRules": Array [],
+    "warningCount": 1,
   },
   Object {
     "errorCount": 0,

@@ -120,16 +120,16 @@ const numE=mul(numA, numB, numC, numD);
 
 strictEqual(numD, -84);
 
-==> fixtures-tmp/lib/add.js <==
+==> fixtures-tmp/lib/shebang.js <==
+#!/usr/bin/env node
+
+console.log();
+
+==> fixtures-tmp/lib/warning.js <==
 /* eslint semi: 1 */
 
 export function add(a, b) {
   return a + b;
 }
-
-==> fixtures-tmp/lib/shebang.js <==
-#!/usr/bin/env node
-
-console.log();
 "
 `;
