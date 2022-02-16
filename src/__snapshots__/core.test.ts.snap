@@ -40,16 +40,6 @@ export function add(a, b) {
   return a + b;
 }
 
-==> fixtures-tmp/lib/exp.js <==
-export function exp(a, b) {
-  return a ** b;
-}
-
-==> fixtures-tmp/lib/mul.js <==
-export function mul(a, b) {
-  return a * b;
-}
-
 ==> fixtures-tmp/lib/shebang.js <==
 #!/usr/bin/env node
 
@@ -82,8 +72,7 @@ if (!('key5' in {})) 0;
 exports[`Core applySuggestions 2`] = `""`;
 
 exports[`Core disablePerFile 1`] = `
-"==> fixtures-tmp/lib/add-disable-comment.jsx <==
-/* eslint-disable ban-exponentiation-operator */
+"/* eslint-disable ban-exponentiation-operator */
 const a = 0;
 // eslint-disable-next-line semi
 const b = 0
@@ -99,20 +88,13 @@ const jsx = (
     <div>{2 ** 10}</div>
   </>
 );
-
-==> fixtures-tmp/lib/exp.js <==
-/* eslint-disable ban-exponentiation-operator */
-export function exp(a, b) {
-  return a ** b
-}
 "
 `;
 
 exports[`Core disablePerFile 2`] = `""`;
 
 exports[`Core disablePerLine 1`] = `
-"==> fixtures-tmp/lib/add-disable-comment.jsx <==
-const a = 0;
+"const a = 0;
 // eslint-disable-next-line semi
 const b = 0
 /* eslint-disable-next-line semi */
@@ -128,12 +110,6 @@ const jsx = (
     <div>{2 ** 10}</div>
   </>
 );
-
-==> fixtures-tmp/lib/exp.js <==
-export function exp(a, b) {
-// eslint-disable-next-line ban-exponentiation-operator
-  return a ** b
-}
 "
 `;
 
@@ -1015,47 +991,6 @@ key4
     "warningCount": 0,
   },
   Object {
-    "errorCount": 2,
-    "fatalErrorCount": NaN,
-    "filePath": "/fixtures-tmp/lib/exp.js",
-    "fixableErrorCount": 1,
-    "fixableWarningCount": 0,
-    "messages": Array [
-      Object {
-        "column": 10,
-        "endColumn": 16,
-        "endLine": 2,
-        "line": 2,
-        "message": "Ban exponentiation operator",
-        "nodeType": "BinaryExpression",
-        "ruleId": "ban-exponentiation-operator",
-        "severity": 2,
-      },
-      Object {
-        "column": 16,
-        "endColumn": 1,
-        "endLine": 3,
-        "fix": Object {
-          "range": Array [
-            43,
-            43,
-          ],
-          "text": ";",
-        },
-        "line": 2,
-        "message": "Missing semicolon.",
-        "messageId": "missingSemi",
-        "nodeType": "ReturnStatement",
-        "ruleId": "semi",
-        "severity": 2,
-      },
-    ],
-    "source": "ommitted",
-    "suppressedMessages": "omitted",
-    "usedDeprecatedRules": Array [],
-    "warningCount": 0,
-  },
-  Object {
     "errorCount": 6,
     "fatalErrorCount": NaN,
     "filePath": "/fixtures-tmp/lib/make-fixable-and-fix.js",
@@ -1126,37 +1061,6 @@ key4
         "messageId": "unusedVar",
         "nodeType": "Identifier",
         "ruleId": "no-unused-vars",
-        "severity": 2,
-      },
-    ],
-    "source": "ommitted",
-    "suppressedMessages": "omitted",
-    "usedDeprecatedRules": Array [],
-    "warningCount": 0,
-  },
-  Object {
-    "errorCount": 1,
-    "fatalErrorCount": NaN,
-    "filePath": "/fixtures-tmp/lib/mul.js",
-    "fixableErrorCount": 1,
-    "fixableWarningCount": 0,
-    "messages": Array [
-      Object {
-        "column": 15,
-        "endColumn": 1,
-        "endLine": 3,
-        "fix": Object {
-          "range": Array [
-            42,
-            42,
-          ],
-          "text": ";",
-        },
-        "line": 2,
-        "message": "Missing semicolon.",
-        "messageId": "missingSemi",
-        "nodeType": "ReturnStatement",
-        "ruleId": "semi",
         "severity": 2,
       },
     ],
@@ -1341,25 +1245,17 @@ exports[`Core printDetailsOfResults 1`] = `
   16 | 
 
 
-[31merror[39m: [1mBan exponentiation operator[22m [2m(ban-exponentiation-operator)[22m at [32mfixtures-tmp/lib/exp.js:2:10[39m:
-  1 | export function exp(a, b) {
-> 2 |   return a ** b
-    |          ^
-  3 | }
-  4 | 
-
-
-[31m[1m28 errors found.[22m[39m[31m[1m[22m[39m
-[31m[1m20 errors potentially fixable with the \`--fix\` option.[22m[39m"
+[31m[1m26 errors found.[22m[39m[31m[1m[22m[39m
+[31m[1m19 errors potentially fixable with the \`--fix\` option.[22m[39m"
 `;
 
 exports[`Core printSummaryOfResults 1`] = `
-"[1m- 12 files (2 files passed, [91m10 files failed[39m) checked.[22m
-[1m- 49 problems ([31m48 errors[39m, [33m1 warning[39m) found.[22m
+"[1m- 10 files (2 files passed, [91m8 files failed[39m) checked.[22m
+[1m- 46 problems ([31m45 errors[39m, [33m1 warning[39m) found.[22m
 ┌─────────────────────────────┬───────┬─────────┬────────────┬─────────────────┐
 │ Rule                        │ Error │ Warning │ is fixable │ has suggestions │
 ├─────────────────────────────┼───────┼─────────┼────────────┼─────────────────┤
-│ semi                        │ [31m[1m16[22m[39m    │ [31m[1m1[22m[39m       │ [31m[1m17[22m[39m         │ 0               │
+│ semi                        │ [31m[1m14[22m[39m    │ [31m[1m1[22m[39m       │ [31m[1m15[22m[39m         │ 0               │
 ├─────────────────────────────┼───────┼─────────┼────────────┼─────────────────┤
 │ import/order                │ [31m[1m3[22m[39m     │ 0       │ [31m[1m3[22m[39m          │ 0               │
 ├─────────────────────────────┼───────┼─────────┼────────────┼─────────────────┤
@@ -1367,7 +1263,7 @@ exports[`Core printSummaryOfResults 1`] = `
 ├─────────────────────────────┼───────┼─────────┼────────────┼─────────────────┤
 │ no-unused-vars              │ [31m[1m11[22m[39m    │ 0       │ 0          │ 0               │
 ├─────────────────────────────┼───────┼─────────┼────────────┼─────────────────┤
-│ ban-exponentiation-operator │ [31m[1m3[22m[39m     │ 0       │ 0          │ 0               │
+│ ban-exponentiation-operator │ [31m[1m2[22m[39m     │ 0       │ 0          │ 0               │
 ├─────────────────────────────┼───────┼─────────┼────────────┼─────────────────┤
 │ no-useless-escape           │ [31m[1m5[22m[39m     │ 0       │ 0          │ [31m[1m5[22m[39m               │
 ├─────────────────────────────┼───────┼─────────┼────────────┼─────────────────┤
