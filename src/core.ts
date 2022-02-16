@@ -136,8 +136,21 @@ export class Core {
    * Run `eslint --fix`.
    * @param ruleIds The rule ids to fix
    */
-  async applyAutoFixes(results: ESLint.LintResult[], ruleIds: string[]): Promise<Undo> {
-    return await this.fix(results, ruleIds, { name: 'applyAutoFixes', args: {} });
+  async applyAutoFixes(resultsOfLint: ESLint.LintResult[], ruleIds: string[]): Promise<Undo> {
+    // NOTE: Extract only necessary results and files for performance
+    const filteredResults = filterResultsByRuleId(resultsOfLint, ruleIds);
+    const targetFilePaths = filteredResults.map((result) => result.filePath);
+
+    const eslint = new ESLint({
+      ...this.baseOptions,
+      fix: (message) => message.ruleId !== null && ruleIds.includes(message.ruleId),
+    });
+    const resultsToFix = await eslint.lintFiles(targetFilePaths);
+    await ESLint.outputFixes(resultsToFix);
+    return async () => {
+      const resultsToUndo = generateResultsToUndo(filteredResults, resultsToFix);
+      await ESLint.outputFixes(resultsToUndo);
+    };
   }
 
   /**
