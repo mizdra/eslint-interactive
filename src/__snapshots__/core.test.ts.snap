@@ -54,6 +54,35 @@ export function add(a, b) {
 
 exports[`Core applyAutoFixes basic 2`] = `""`;
 
+exports[`Core applyAutoFixes fix overlapped problems 1`] = `
+"() => {return (
+  () => {return (
+    () => {return (
+      () => {return (
+        () => {return (
+          () => {return (
+            () => {return (
+              () => {return (
+                () => {return (
+                  () => {return (
+                    () => (
+                      () => (
+                        0
+                      )
+                    )
+                  )}
+                )}
+              )}
+            )}
+          )}
+        )}
+      )}
+    )}
+  )}
+)};
+"
+`;
+
 exports[`Core applySuggestions 1`] = `
 "\\"\\\\'\\";
 '\\\\\\"';
