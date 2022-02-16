@@ -30,5 +30,6 @@ module.exports = {
     'ban-exponentiation-operator': 2,
     'no-useless-escape': 2,
     'no-unsafe-negation': 2,
+    'arrow-body-style': [2, 'always'],
   },
 };
