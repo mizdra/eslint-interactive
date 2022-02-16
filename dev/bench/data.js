@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1644852498007,
+  "lastUpdate": 1645020671368,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -395,6 +395,105 @@ window.BENCHMARK_DATA = {
           {
             "name": "fix-all-of-huge-files (undo, loop: 1)",
             "value": 0.5897160000167787,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "pp.mizdra@gmail.com",
+            "name": "mizdra",
+            "username": "mizdra"
+          },
+          "committer": {
+            "email": "pp.mizdra@gmail.com",
+            "name": "mizdra",
+            "username": "mizdra"
+          },
+          "distinct": true,
+          "id": "a89779383fa8fd4ee7a431bdb8cec1648d60f0d6",
+          "message": "refactor: refactor `applyAutoFixes`",
+          "timestamp": "2022-02-16T01:56:15+09:00",
+          "tree_id": "05225cb9a499a978356bac1671460647097afa18",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/a89779383fa8fd4ee7a431bdb8cec1648d60f0d6"
+        },
+        "date": 1645020670554,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "fix-a-few-of-many-files (applyAutoFixes, loop: 1)",
+            "value": 751.1799249999895,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-a-few-of-many-files (disablePerLine, loop: 1)",
+            "value": 795.7752709999913,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-a-few-of-many-files (disablePerFile, loop: 1)",
+            "value": 752.4032880000013,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-a-few-of-many-files (makeFixableAndFix, loop: 1)",
+            "value": 733.8379240000068,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-a-few-of-many-files (undo, loop: 1)",
+            "value": 142.6616229999927,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-all-of-many-files (applyAutoFixes, loop: 1)",
+            "value": 649.5321260000055,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-all-of-many-files (disablePerLine, loop: 1)",
+            "value": 700.7557860000234,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-all-of-many-files (disablePerFile, loop: 1)",
+            "value": 684.7064079999982,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-all-of-many-files (makeFixableAndFix, loop: 1)",
+            "value": 653.3184360000014,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-all-of-many-files (undo, loop: 1)",
+            "value": 97.5669329999946,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-all-of-huge-files (applyAutoFixes, loop: 1)",
+            "value": 756.2812350000022,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-all-of-huge-files (disablePerLine, loop: 1)",
+            "value": 817.7656700000225,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-all-of-huge-files (disablePerFile, loop: 1)",
+            "value": 768.347901000001,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-all-of-huge-files (makeFixableAndFix, loop: 1)",
+            "value": 3305.766992000019,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-all-of-huge-files (undo, loop: 1)",
+            "value": 0.6010959999985062,
             "unit": "ms"
           }
         ]
