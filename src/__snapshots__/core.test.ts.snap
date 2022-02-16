@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Core applyAutoFixes 1`] = `
+exports[`Core applyAutoFixes basic 1`] = `
 "==> fixtures-tmp/index.js <==
 import { mul } from './lib/mul';
 import { add } from './lib/add';
@@ -52,7 +52,7 @@ export function add(a, b) {
 "
 `;
 
-exports[`Core applyAutoFixes 2`] = `""`;
+exports[`Core applyAutoFixes basic 2`] = `""`;
 
 exports[`Core applySuggestions 1`] = `
 "\\"\\\\'\\";
@@ -1531,7 +1531,7 @@ key4
 ]
 `;
 
-exports[`Core makeFixableAndFix 1`] = `
+exports[`Core makeFixableAndFix basic 1`] = `
 "==> fixtures-tmp/index.js <==
 import { mul } from './lib/mul'
 import { add } from './lib/add'
@@ -1578,7 +1578,7 @@ function _fn(_arg) {
 "
 `;
 
-exports[`Core makeFixableAndFix 2`] = `""`;
+exports[`Core makeFixableAndFix basic 2`] = `""`;
 
 exports[`Core printDetailsOfResults 1`] = `
 "[31merror[39m: [1m\`./lib/add\` import should occur before import of \`./lib/mul\`[22m [2m(import/order)[22m at [32mfixtures-tmp/index.js:2:1[39m:

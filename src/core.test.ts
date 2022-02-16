@@ -91,12 +91,14 @@ describe('Core', () => {
     const results = await core.lint();
     expect(await core.formatResultDetails(results, ['import/order', 'ban-exponentiation-operator'])).toMatchSnapshot();
   });
-  test('applyAutoFixes', async () => {
-    const results = await core.lint();
-    const undo = await core.applyAutoFixes(results, ['semi']);
-    expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
-    await undo();
-    expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
+  describe('applyAutoFixes', () => {
+    test('basic', async () => {
+      const results = await core.lint();
+      const undo = await core.applyAutoFixes(results, ['semi']);
+      expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
+      await undo();
+      expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
+    });
   });
   test('disablePerLine', async () => {
     const results = await core.lint();
@@ -119,7 +121,8 @@ describe('Core', () => {
     await undo();
     expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
   });
-  test('makeFixableAndFix', async () => {
+  describe('makeFixableAndFix', () => {
+    test('basic', async () => {
     const results = await core.lint();
     const undo = await core.makeFixableAndFix(results, ['no-unused-vars'], (_message, node) => {
       if (!node || !node.range) return null;
@@ -128,5 +131,6 @@ describe('Core', () => {
     expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
     await undo();
     expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
+    });
   });
 });
