@@ -83,6 +83,8 @@ exports[`Core applyAutoFixes fix overlapped problems 1`] = `
 "
 `;
 
+exports[`Core applyAutoFixes fix overlapped problems 2`] = `""`;
+
 exports[`Core applySuggestions 1`] = `
 "\\"\\\\'\\";
 '\\\\\\"';
@@ -1608,6 +1610,37 @@ function _fn(_arg) {
 `;
 
 exports[`Core makeFixableAndFix basic 2`] = `""`;
+
+exports[`Core makeFixableAndFix fix overlapped problems 1`] = `
+"() => {return (
+  () => {return (
+    () => {return (
+      () => {return (
+        () => {return (
+          () => {return (
+            () => {return (
+              () => {return (
+                () => {return (
+                  () => {return (
+                    () => (
+                      () => (
+                        0
+                      )
+                    )
+                  )}
+                )}
+              )}
+            )}
+          )}
+        )}
+      )}
+    )}
+  )}
+)};
+"
+`;
+
+exports[`Core makeFixableAndFix fix overlapped problems 2`] = `""`;
 
 exports[`Core printDetailsOfResults 1`] = `
 "[31merror[39m: [1m\`./lib/add\` import should occur before import of \`./lib/mul\`[22m [2m(import/order)[22m at [32mfixtures-tmp/index.js:2:1[39m:

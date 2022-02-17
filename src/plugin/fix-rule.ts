@@ -8,6 +8,11 @@ import {
 import { ruleFixer } from './rule-fixer.js';
 import { Fix, FixContext } from './index.js';
 
+// from: https://github.com/eslint/eslint/blob/58840ac844a61c72eabb603ecfb761812b82a7ed/lib/linter/report-translator.js#L136
+function compareFixesByRange(a: Rule.Fix, b: Rule.Fix): number {
+  return a.range[0] - b.range[0] || a.range[1] - b.range[1];
+}
+
 /**
  * @file The rule to do the fix.
  * The fix function returns the `Rule.Fix` that describes how to fix the code.
@@ -22,7 +27,7 @@ import { Fix, FixContext } from './index.js';
  * to a fixable problem.
  */
 
-const filenameToIsAlreadyFixed = new Map<string, boolean>();
+const fileStatusMap = new Map<string, { isAlreadyFixed: boolean; hasOverlappedProblem: boolean }>();
 
 function createFixes(context: Rule.RuleContext, ruleOption: FixRuleOption, fixer: Rule.RuleFixer): Rule.Fix[] | null {
   const { fix, results, ruleIds } = ruleOption;
@@ -67,39 +72,63 @@ export const fixRule: Rule.RuleModule = {
     fixable: 'code',
   },
   create(context: Rule.RuleContext) {
-    const filename = context.getFilename();
-
-    // 🤯🤯🤯 THIS IS SUPER HACK!!! 🤯🤯🤯
-    // fix するとコードが変わり、また別の lint エラーが発生する可能性があるため、eslint は `context.report` で
-    // 報告されたエラーの fix がすべて終わったら、再び create を呼び出し、また `context.report` で fix 可能なエラーが
-    // 報告されないかを確認する仕様になっている (これは `context.report` で fix 可能なものがなくなるまで続く)。
-    // そのため、ここでは2回目以降 create が呼び出された時に、誤って再び fix してしまわないよう、fix 済み
-    // であれば early return するようにしている。
-    const isAlreadyFixed = filenameToIsAlreadyFixed.get(filename) ?? false;
-    if (isAlreadyFixed) {
-      filenameToIsAlreadyFixed.set(filename, false); // 念の為戻しておく
-      return {};
-    }
-
-    const ruleOption = context.options[0] as FixRuleOption;
-
     return {
       // eslint-disable-next-line @typescript-eslint/naming-convention
       Program: () => {
+        const filename = context.getFilename();
+
+        // 🤯🤯🤯 THIS IS SUPER HACK!!! 🤯🤯🤯
+        // fix するとコードが変わり、また別の lint エラーが発生する可能性があるため、eslint は `context.report` で
+        // 報告されたエラーの fix がすべて終わったら、再び create を呼び出し、また `context.report` で fix 可能なエラーが
+        // 報告されないかを確認する仕様になっている (これは `context.report` で fix 可能なものがなくなるまで続く)。
+        // そのため、ここでは2回目以降 create が呼び出された時に、誤って再び fix してしまわないよう、fix 済み
+        // であれば early return するようにしている。
+        const status = fileStatusMap.get(filename) ?? { isAlreadyFixed: false, hasOverlappedProblem: false };
+        if (status.isAlreadyFixed) {
+          fileStatusMap.delete(filename); // Reset just in case.
+          if (status.hasOverlappedProblem) {
+            context.report({
+              loc: {
+                // The location is required, so set dummy values.
+                line: 0,
+                column: 0,
+              },
+              message: `overlapped`,
+            });
+          }
+          return;
+        }
+
+        const ruleOption = context.options[0] as FixRuleOption;
+        const newStatus = {
+          isAlreadyFixed: true,
+          hasOverlappedProblem: false,
+        };
+
+        const fixes = createFixes(context, ruleOption, ruleFixer);
+        if (!fixes) return;
+        fixes.sort(compareFixesByRange);
+
+        let lastPos = 0;
+        const fixesToReport: Rule.Fix[] = [];
+        for (const fix of fixes) {
+          if (fix.range[0] < lastPos) {
+            newStatus.hasOverlappedProblem = true;
+            continue;
+          }
+          fixesToReport.push(fix);
+          lastPos = fix.range[1];
+        }
+        fileStatusMap.set(filename, newStatus);
+
         context.report({
           loc: {
-            // エラー位置の指定が必須なので、仕方なく設定する。
-            // どうせユーザにはエラーメッセージを見せることはないので、適当に設定しておく。
+            // The location is required, so set dummy values.
             line: 0,
             column: 0,
           },
           message: `fix`,
-          fix: () => {
-            const fixes = createFixes(context, ruleOption, ruleFixer);
-            // if `fixes` is null, do not set the flag.
-            if (fixes) filenameToIsAlreadyFixed.set(filename, true);
-            return fixes;
-          },
+          fix: () => fixesToReport,
         });
       },
     };
