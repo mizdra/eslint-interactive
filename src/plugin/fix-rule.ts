@@ -1,5 +1,6 @@
 import { ESLint, Rule } from 'eslint';
 import {
+  createFixToApplyAutoFixes,
   createFixToApplySuggestions,
   createFixToDisablePerFile,
   createFixToDisablePerLine,
@@ -46,7 +47,9 @@ function createFixes(context: Rule.RuleContext, ruleOption: FixRuleOption, fixer
   };
 
   let fixes: Rule.Fix[] = [];
-  if (fix.name === 'disablePerLine') {
+  if (fix.name === 'applyAutoFixes') {
+    fixes = createFixToApplyAutoFixes(fixContext, fix.args);
+  } else if (fix.name === 'disablePerLine') {
     fixes = createFixToDisablePerLine(fixContext, fix.args);
   } else if (fix.name === 'disablePerFile') {
     fixes = createFixToDisablePerFile(fixContext, fix.args);
