@@ -1,8 +1,10 @@
+// copy from: https://github.com/eslint/eslint/blob/219aecb78bc646d44bad27dc775a9b3d3dc58232/lib/linter/rule-fixer.js
+// ESLint does not export the RuleFixer. So, I've copied the implementation.
+
 /**
  * @fileoverview An object that creates fix commands for rules.
  * @author Nicholas C. Zakas
  */
-'use strict';
 
 //------------------------------------------------------------------------------
 // Requirements
@@ -14,6 +16,9 @@
 // Helpers
 //------------------------------------------------------------------------------
 
+import { AST, Rule } from 'eslint';
+import type { Node } from 'estree';
+
 /**
  * Creates a fix command that inserts text at the specified index in the source text.
  * @param {int} index The 0-based index at which to insert the new text.
@@ -21,7 +26,7 @@
  * @returns {Object} The fix command.
  * @private
  */
-function insertTextAt(index, text) {
+function insertTextAt(index: number, text: string): Rule.Fix {
   return {
     range: [index, index],
     text,
@@ -36,6 +41,7 @@ function insertTextAt(index, text) {
  * Creates code fixing commands for rules.
  */
 
+/** @type {import('eslint').Rule.RuleFixer} */
 const ruleFixer = Object.freeze({
   /**
    * Creates a fix command that inserts text after the given node or token.
@@ -44,8 +50,9 @@ const ruleFixer = Object.freeze({
    * @param {string} text The text to insert.
    * @returns {Object} The fix command.
    */
-  insertTextAfter(nodeOrToken, text) {
-    return this.insertTextAfterRange(nodeOrToken.range, text);
+  insertTextAfter(nodeOrToken: Node | AST.Token, text: string): Rule.Fix {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return this.insertTextAfterRange(nodeOrToken.range!, text);
   },
 
   /**
@@ -56,7 +63,7 @@ const ruleFixer = Object.freeze({
    * @param {string} text The text to insert.
    * @returns {Object} The fix command.
    */
-  insertTextAfterRange(range, text) {
+  insertTextAfterRange(range: AST.Range, text: string): Rule.Fix {
     return insertTextAt(range[1], text);
   },
 
@@ -67,8 +74,9 @@ const ruleFixer = Object.freeze({
    * @param {string} text The text to insert.
    * @returns {Object} The fix command.
    */
-  insertTextBefore(nodeOrToken, text) {
-    return this.insertTextBeforeRange(nodeOrToken.range, text);
+  insertTextBefore(nodeOrToken: Node | AST.Token, text: string): Rule.Fix {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return this.insertTextBeforeRange(nodeOrToken.range!, text);
   },
 
   /**
@@ -79,7 +87,7 @@ const ruleFixer = Object.freeze({
    * @param {string} text The text to insert.
    * @returns {Object} The fix command.
    */
-  insertTextBeforeRange(range, text) {
+  insertTextBeforeRange(range: AST.Range, text: string): Rule.Fix {
     return insertTextAt(range[0], text);
   },
 
@@ -90,8 +98,9 @@ const ruleFixer = Object.freeze({
    * @param {string} text The text to insert.
    * @returns {Object} The fix command.
    */
-  replaceText(nodeOrToken, text) {
-    return this.replaceTextRange(nodeOrToken.range, text);
+  replaceText(nodeOrToken: Node | AST.Token, text: string): Rule.Fix {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return this.replaceTextRange(nodeOrToken.range!, text);
   },
 
   /**
@@ -102,7 +111,7 @@ const ruleFixer = Object.freeze({
    * @param {string} text The text to insert.
    * @returns {Object} The fix command.
    */
-  replaceTextRange(range, text) {
+  replaceTextRange(range: AST.Range, text: string): Rule.Fix {
     return {
       range,
       text,
@@ -115,8 +124,9 @@ const ruleFixer = Object.freeze({
    * @param {ASTNode|Token} nodeOrToken The node or token to remove.
    * @returns {Object} The fix command.
    */
-  remove(nodeOrToken) {
-    return this.removeRange(nodeOrToken.range);
+  remove(nodeOrToken: Node | AST.Token): Rule.Fix {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return this.removeRange(nodeOrToken.range!);
   },
 
   /**
@@ -126,7 +136,7 @@ const ruleFixer = Object.freeze({
    *      is end of range.
    * @returns {Object} The fix command.
    */
-  removeRange(range) {
+  removeRange(range: AST.Range): Rule.Fix {
     return {
       range,
       text: '',
@@ -134,4 +144,4 @@ const ruleFixer = Object.freeze({
   },
 });
 
-module.exports = ruleFixer;
+export { ruleFixer };

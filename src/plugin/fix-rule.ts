@@ -5,6 +5,7 @@ import {
   createFixToDisablePerLine,
   createFixToMakeFixableAndFix,
 } from './fix/index.js';
+import { ruleFixer } from './rule-fixer.js';
 import { Fix, FixContext } from './index.js';
 
 /**
@@ -93,8 +94,8 @@ export const fixRule: Rule.RuleModule = {
             column: 0,
           },
           message: `fix`,
-          fix: (fixer) => {
-            const fixes = createFixes(context, ruleOption, fixer);
+          fix: () => {
+            const fixes = createFixes(context, ruleOption, ruleFixer);
             // if `fixes` is null, do not set the flag.
             if (fixes) filenameToIsAlreadyFixed.set(filename, true);
             return fixes;
