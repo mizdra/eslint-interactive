@@ -20,8 +20,8 @@ export type FixToMakeFixableAndFixArgs = {
 function isMessageSourceNode(sourceCode: SourceCode, node: Node, message: Linter.LintMessage): boolean {
   if (message.nodeType === undefined) return false;
 
-  // If `nodeType` is exists, `endLine` and `endColumn` must be exists.
-  if (message.endLine === undefined || message.endColumn === undefined) return unreachable();
+  // In some cases there may be no `endLine` or `endColumn`.
+  if (message.endLine === undefined || message.endColumn === undefined) return false;
   // If `nodeType` is exists, `range` must be exists.
   if (node.range === undefined) return unreachable();
 

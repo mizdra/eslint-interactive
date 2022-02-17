@@ -1,14 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Programmable API 1`] = `
-"- 9 files (0 file passed, 9 files failed) checked.
-- 48 problems (47 errors, 1 warning) found.
+"- 8 files (0 file passed, 8 files failed) checked.
+- 57 problems (56 errors, 1 warning) found.
 ┌─────────────────────────────┬───────┬─────────┬────────────┬─────────────────┐
 │ Rule                        │ Error │ Warning │ is fixable │ has suggestions │
 ├─────────────────────────────┼───────┼─────────┼────────────┼─────────────────┤
-│ ban-exponentiation-operator │ 9     │ 0       │ 0          │ 0               │
+│ ban-exponentiation-operator │ 8     │ 0       │ 0          │ 0               │
 ├─────────────────────────────┼───────┼─────────┼────────────┼─────────────────┤
-│ semi                        │ 14    │ 1       │ 15         │ 0               │
+│ semi                        │ 12    │ 1       │ 13         │ 0               │
 ├─────────────────────────────┼───────┼─────────┼────────────┼─────────────────┤
 │ import/order                │ 3     │ 0       │ 3          │ 0               │
 ├─────────────────────────────┼───────┼─────────┼────────────┼─────────────────┤
@@ -19,13 +19,15 @@ exports[`Programmable API 1`] = `
 │ no-useless-escape           │ 5     │ 0       │ 0          │ 5               │
 ├─────────────────────────────┼───────┼─────────┼────────────┼─────────────────┤
 │ no-unsafe-negation          │ 5     │ 0       │ 0          │ 5               │
+├─────────────────────────────┼───────┼─────────┼────────────┼─────────────────┤
+│ arrow-body-style            │ 12    │ 0       │ 12         │ 0               │
 └─────────────────────────────┴───────┴─────────┴────────────┴─────────────────┘"
 `;
 
 exports[`Programmable API 2`] = `
 Array [
   Object {
-    "errorCount": 9,
+    "errorCount": 8,
     "hasSuggestionsCount": 0,
     "hasSuggestionsErrorCount": 0,
     "hasSuggestionsWarningCount": 0,
@@ -36,12 +38,12 @@ Array [
     "warningCount": 0,
   },
   Object {
-    "errorCount": 14,
+    "errorCount": 12,
     "hasSuggestionsCount": 0,
     "hasSuggestionsErrorCount": 0,
     "hasSuggestionsWarningCount": 0,
-    "isFixableCount": 15,
-    "isFixableErrorCount": 14,
+    "isFixableCount": 13,
+    "isFixableErrorCount": 12,
     "isFixableWarningCount": 1,
     "ruleId": "semi",
     "warningCount": 1,
@@ -101,45 +103,46 @@ Array [
     "ruleId": "no-unsafe-negation",
     "warningCount": 0,
   },
+  Object {
+    "errorCount": 12,
+    "hasSuggestionsCount": 0,
+    "hasSuggestionsErrorCount": 0,
+    "hasSuggestionsWarningCount": 0,
+    "isFixableCount": 12,
+    "isFixableErrorCount": 12,
+    "isFixableWarningCount": 0,
+    "ruleId": "arrow-body-style",
+    "warningCount": 0,
+  },
 ]
 `;
 
 exports[`Programmable API 3`] = `
 "==> fixtures-tmp/index.js <==
-import { strictEqual } from 'assert';
-import { add } from './lib/add';
-import { exp } from './lib/exp';
 import { mul } from './lib/mul';
+import { add } from './lib/add';
 import { sub } from './lib/sub';
+import { exp } from './lib/exp';
+import { strictEqual } from 'assert';
 
 const numA=add(1, 2);
-const numB=add(3, 4);
-const numC=sub(5, 6);
-const numD=exp(2, 2);
-const numE=mul(numA, numB, numC, numD);
+let numB=add(3, 4);
+let numC=sub(5, 6);
+let numD=exp(2, 2);
+let numE=mul(numA, numB, numC, numD);
 
 strictEqual(numD, -84);
-
-==> fixtures-tmp/lib/add.js <==
-/* eslint semi: 1 */
-
-export function add(a, b) {
-  return a + b;
-}
-
-==> fixtures-tmp/lib/exp.js <==
-export function exp(a, b) {
-  return a ** b;
-}
-
-==> fixtures-tmp/lib/mul.js <==
-export function mul(a, b) {
-  return a * b;
-}
 
 ==> fixtures-tmp/lib/shebang.js <==
 #!/usr/bin/env node
 
 console.log();
+
+==> fixtures-tmp/lib/warning.js <==
+/* eslint semi: 1 */
+
+export function add(a, b) {
+  return a + b;
+}
 "
 `;

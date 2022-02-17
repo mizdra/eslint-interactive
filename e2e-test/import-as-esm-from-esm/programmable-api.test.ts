@@ -23,17 +23,6 @@ test('Programmable API', async () => {
   const statistics = takeRuleStatistics(results);
   expect(statistics).toMatchSnapshot();
 
-  const sortedStatistics = statistics
-    // Exclude non-fixable statistic
-    .filter((statistic) => statistic.isFixableCount > 0)
-    // Sort by descending order of fixable count
-    .sort((a, b) => b.isFixableCount - a.isFixableCount);
-
-  const ruleIds = sortedStatistics.map((statistic) => statistic.ruleId);
-
-  const top3RuleIds = ruleIds.slice(0, 3);
-  expect(top3RuleIds).toStrictEqual(['semi', 'prefer-const', 'import/order']);
-
-  await core.applyAutoFixes(results, top3RuleIds);
+  await core.applyAutoFixes(results, ['semi']);
   expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
 });

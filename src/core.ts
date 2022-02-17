@@ -4,35 +4,33 @@ import { ESLint } from 'eslint';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 import isInstalledGlobally = require('is-installed-globally');
 import { format } from './formatter/index.js';
-import { eslintInteractivePlugin, FixRuleOption, FixableMaker, SuggestionFilter, Fix } from './plugin/index.js';
+import {
+  eslintInteractivePlugin,
+  FixRuleOption,
+  FixableMaker,
+  SuggestionFilter,
+  Fix,
+  OVERLAPPED_PROBLEM_MESSAGE,
+} from './plugin/index.js';
 import { getCacheDir } from './util/cache.js';
 import { filterResultsByRuleId, scanUsedPluginsFromResults } from './util/eslint.js';
+
+const MAX_AUTOFIX_PASSES = 10;
 
 /**
  * Generate results to undo.
  * @param resultsOfLint The results of lint.
- * @param resultsToFix The results to fix.
  * @returns The results to undo.
  */
-function generateResultsToUndo(
-  resultsOfLint: ESLint.LintResult[],
-  resultsToFix: ESLint.LintResult[],
-): ESLint.LintResult[] {
-  return (
-    resultsToFix
-      // Exclude results for unmodified files for performance
-      .filter((resultToFix) => resultToFix.output)
-      .map((resultToFix) => {
-        // NOTE: O(n^2)
-        const resultOfLint = resultsOfLint.find((resultOfLint) => resultOfLint.filePath === resultToFix.filePath);
-        if (!resultOfLint) throw new Error(`The result of ${resultToFix.filePath} is not found.`);
-        // NOTE: THIS IS HACK.
-        // Usually, the result with `output` property does not contain `source` property.
-        // However, `source` property is required to undo.
-        // Therefore, `source` property is added here.
-        return { ...resultToFix, output: resultOfLint.source };
-      })
-  );
+function generateResultsToUndo(resultsOfLint: ESLint.LintResult[]): ESLint.LintResult[] {
+  return resultsOfLint.map((resultOfLint) => {
+    // NOTE: THIS IS HACK.
+    return { ...resultOfLint, output: resultOfLint.source };
+  });
+}
+
+function hasOverlappedProblems(results: ESLint.LintResult[]): boolean {
+  return results.flatMap((result) => result.messages).some((message) => message.message === OVERLAPPED_PROBLEM_MESSAGE);
 }
 
 export type Undo = () => Promise<void>;
@@ -148,7 +146,7 @@ export class Core {
     const resultsToFix = await eslint.lintFiles(targetFilePaths);
     await ESLint.outputFixes(resultsToFix);
     return async () => {
-      const resultsToUndo = generateResultsToUndo(filteredResults, resultsToFix);
+      const resultsToUndo = generateResultsToUndo(filteredResults);
       await ESLint.outputFixes(resultsToUndo);
     };
   }
@@ -199,29 +197,36 @@ export class Core {
    */
   private async fix(resultsOfLint: ESLint.LintResult[], ruleIds: string[], fix: Fix): Promise<Undo> {
     // NOTE: Extract only necessary results and files for performance
-    const filteredResults = filterResultsByRuleId(resultsOfLint, ruleIds);
-    const targetFilePaths = filteredResults.map((result) => result.filePath);
+    const filteredResultsOfLint = filterResultsByRuleId(resultsOfLint, ruleIds);
+    const targetFilePaths = filteredResultsOfLint.map((result) => result.filePath);
 
-    const eslint = new ESLint({
-      ...this.baseOptions,
-      // This is super hack to load ESM plugin/rule.
-      // ref: https://github.com/eslint/eslint/issues/15453#issuecomment-1001200953
-      plugins: {
-        'eslint-interactive': eslintInteractivePlugin,
-      },
-      overrideConfig: {
-        plugins: ['eslint-interactive'],
-        rules: {
-          'eslint-interactive/fix': [2, { results: filteredResults, ruleIds, fix } as FixRuleOption],
+    // TODO: refactor
+    let results = filteredResultsOfLint;
+    for (let i = 0; i < MAX_AUTOFIX_PASSES; i++) {
+      const eslint = new ESLint({
+        ...this.baseOptions,
+        // This is super hack to load ESM plugin/rule.
+        // ref: https://github.com/eslint/eslint/issues/15453#issuecomment-1001200953
+        plugins: {
+          'eslint-interactive': eslintInteractivePlugin,
         },
-      },
-      // NOTE: Only fix the `fix` rule problems.
-      fix: (message) => message.ruleId === 'eslint-interactive/fix',
-    });
-    const resultsToFix = await eslint.lintFiles(targetFilePaths);
-    await ESLint.outputFixes(resultsToFix);
+        overrideConfig: {
+          plugins: ['eslint-interactive'],
+          rules: {
+            'eslint-interactive/fix': [2, { results, ruleIds, fix } as FixRuleOption],
+          },
+        },
+        // NOTE: Only fix the `fix` rule problems.
+        fix: (message) => message.ruleId === 'eslint-interactive/fix',
+      });
+      const resultsToFix = await eslint.lintFiles(targetFilePaths);
+      await ESLint.outputFixes(resultsToFix);
+      if (!hasOverlappedProblems(resultsToFix)) break;
+      results = await this.lint();
+    }
+
     return async () => {
-      const resultsToUndo = generateResultsToUndo(filteredResults, resultsToFix);
+      const resultsToUndo = generateResultsToUndo(filteredResultsOfLint);
       await ESLint.outputFixes(resultsToUndo);
     };
   }

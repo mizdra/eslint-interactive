@@ -10,6 +10,8 @@ import {
 } from './fix/index.js';
 import { preferAdditionShorthandRule } from './prefer-addition-shorthand-rule.js';
 
+export { OVERLAPPED_PROBLEM_MESSAGE } from './fix-rule.js';
+
 export { FixRuleOption, type FixableMaker, type SuggestionFilter };
 
 export const eslintInteractivePlugin = {

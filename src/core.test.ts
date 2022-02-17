@@ -8,10 +8,16 @@ const cwd = join(dirname(fileURLToPath(import.meta.url)), '..');
 
 // Normalize `message` for the snapshot.
 function normalizeMessage(message: Linter.LintMessage): Linter.LintMessage {
-  // Exclude field because of the different format of `fix` in prefer-const in ESLint v7.0.0
+  // Exclude field because of the different format of `fix`, `endLine` and `endColumn` in prefer-const in ESLint v7.0.0
   if (message.ruleId === 'prefer-const') {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     delete (message as any).fix;
+  }
+  if (message.ruleId === 'arrow-body-style') {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    delete (message as any).endLine;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    delete (message as any).endColumn;
   }
   return message;
 }
@@ -91,12 +97,23 @@ describe('Core', () => {
     const results = await core.lint();
     expect(await core.formatResultDetails(results, ['import/order', 'ban-exponentiation-operator'])).toMatchSnapshot();
   });
-  test('applyAutoFixes', async () => {
-    const results = await core.lint();
-    const undo = await core.applyAutoFixes(results, ['semi']);
-    expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
-    await undo();
-    expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
+  describe('applyAutoFixes', () => {
+    test('basic', async () => {
+      const results = await core.lint();
+      const undo = await core.applyAutoFixes(results, ['semi']);
+      expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
+      await undo();
+      expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
+    });
+    test('fix overlapped problems', async () => {
+      // NOTE: It can fix up to 11 overlapping errors. This is due to a constraints imposed by ESLint to prevent infinite loops.
+      // ref: https://github.com/eslint/eslint/blob/5d60812d440762dff72420714273c714c4c5d074/lib/linter/linter.js#L44
+      const results = await core.lint();
+      const undo = await core.applyAutoFixes(results, ['arrow-body-style']);
+      expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
+      await undo();
+      expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
+    });
   });
   test('disablePerLine', async () => {
     const results = await core.lint();
@@ -119,14 +136,26 @@ describe('Core', () => {
     await undo();
     expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
   });
-  test('makeFixableAndFix', async () => {
-    const results = await core.lint();
-    const undo = await core.makeFixableAndFix(results, ['no-unused-vars'], (_message, node) => {
-      if (!node || !node.range) return null;
-      return { range: [node.range[0], node.range[0]], text: '_' };
+  describe('makeFixableAndFix', () => {
+    test('basic', async () => {
+      const results = await core.lint();
+      const undo = await core.makeFixableAndFix(results, ['no-unused-vars'], (_message, node) => {
+        if (!node || !node.range) return null;
+        return { range: [node.range[0], node.range[0]], text: '_' };
+      });
+      expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
+      await undo();
+      expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
     });
-    expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
-    await undo();
-    expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
+    test('fix overlapped problems', async () => {
+      // NOTE: eslint-interactive only fixes up to 11 overlapping errors to prevent infinite loops.
+      // This follows the limitations of ESLint.
+      // ref: https://github.com/eslint/eslint/blob/5d60812d440762dff72420714273c714c4c5d074/lib/linter/linter.js#L44
+      const results = await core.lint();
+      const undo = await core.makeFixableAndFix(results, ['arrow-body-style'], (message) => message.fix);
+      expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
+      await undo();
+      expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
+    });
   });
 });

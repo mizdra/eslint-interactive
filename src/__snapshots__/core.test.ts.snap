@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Core applyAutoFixes 1`] = `
+exports[`Core applyAutoFixes basic 1`] = `
 "==> fixtures-tmp/index.js <==
 import { mul } from './lib/mul';
 import { add } from './lib/add';
@@ -33,23 +33,6 @@ const jsx = (
   </>
 );
 
-==> fixtures-tmp/lib/add.js <==
-/* eslint semi: 1 */
-
-export function add(a, b) {
-  return a + b;
-}
-
-==> fixtures-tmp/lib/exp.js <==
-export function exp(a, b) {
-  return a ** b;
-}
-
-==> fixtures-tmp/lib/mul.js <==
-export function mul(a, b) {
-  return a * b;
-}
-
 ==> fixtures-tmp/lib/shebang.js <==
 #!/usr/bin/env node
 
@@ -59,10 +42,48 @@ console.log();
 export function sub(a, b) {
   return a - b;
 }
+
+==> fixtures-tmp/lib/warning.js <==
+/* eslint semi: 1 */
+
+export function add(a, b) {
+  return a + b;
+}
 "
 `;
 
-exports[`Core applyAutoFixes 2`] = `""`;
+exports[`Core applyAutoFixes basic 2`] = `""`;
+
+exports[`Core applyAutoFixes fix overlapped problems 1`] = `
+"() => {return (
+  () => {return (
+    () => {return (
+      () => {return (
+        () => {return (
+          () => {return (
+            () => {return (
+              () => {return (
+                () => {return (
+                  () => {return (
+                    () => (
+                      () => (
+                        0
+                      )
+                    )
+                  )}
+                )}
+              )}
+            )}
+          )}
+        )}
+      )}
+    )}
+  )}
+)};
+"
+`;
+
+exports[`Core applyAutoFixes fix overlapped problems 2`] = `""`;
 
 exports[`Core applySuggestions 1`] = `
 "\\"\\\\'\\";
@@ -82,8 +103,7 @@ if (!('key5' in {})) 0;
 exports[`Core applySuggestions 2`] = `""`;
 
 exports[`Core disablePerFile 1`] = `
-"==> fixtures-tmp/lib/add-disable-comment.jsx <==
-/* eslint-disable ban-exponentiation-operator */
+"/* eslint-disable ban-exponentiation-operator */
 const a = 0;
 // eslint-disable-next-line semi
 const b = 0
@@ -99,20 +119,13 @@ const jsx = (
     <div>{2 ** 10}</div>
   </>
 );
-
-==> fixtures-tmp/lib/exp.js <==
-/* eslint-disable ban-exponentiation-operator */
-export function exp(a, b) {
-  return a ** b
-}
 "
 `;
 
 exports[`Core disablePerFile 2`] = `""`;
 
 exports[`Core disablePerLine 1`] = `
-"==> fixtures-tmp/lib/add-disable-comment.jsx <==
-const a = 0;
+"const a = 0;
 // eslint-disable-next-line semi
 const b = 0
 /* eslint-disable-next-line semi */
@@ -128,12 +141,6 @@ const jsx = (
     <div>{2 ** 10}</div>
   </>
 );
-
-==> fixtures-tmp/lib/exp.js <==
-export function exp(a, b) {
-// eslint-disable-next-line ban-exponentiation-operator
-  return a ** b
-}
 "
 `;
 
@@ -577,37 +584,6 @@ import { exp } from './lib/exp'
     "warningCount": 0,
   },
   Object {
-    "errorCount": 0,
-    "fatalErrorCount": NaN,
-    "filePath": "/fixtures-tmp/lib/add.js",
-    "fixableErrorCount": 0,
-    "fixableWarningCount": 1,
-    "messages": Array [
-      Object {
-        "column": 15,
-        "endColumn": 1,
-        "endLine": 5,
-        "fix": Object {
-          "range": Array [
-            64,
-            64,
-          ],
-          "text": ";",
-        },
-        "line": 4,
-        "message": "Missing semicolon.",
-        "messageId": "missingSemi",
-        "nodeType": "ReturnStatement",
-        "ruleId": "semi",
-        "severity": 1,
-      },
-    ],
-    "source": "ommitted",
-    "suppressedMessages": "omitted",
-    "usedDeprecatedRules": Array [],
-    "warningCount": 1,
-  },
-  Object {
     "errorCount": 10,
     "fatalErrorCount": NaN,
     "filePath": "/fixtures-tmp/lib/apply-suggestion.js",
@@ -1015,47 +991,6 @@ key4
     "warningCount": 0,
   },
   Object {
-    "errorCount": 2,
-    "fatalErrorCount": NaN,
-    "filePath": "/fixtures-tmp/lib/exp.js",
-    "fixableErrorCount": 1,
-    "fixableWarningCount": 0,
-    "messages": Array [
-      Object {
-        "column": 10,
-        "endColumn": 16,
-        "endLine": 2,
-        "line": 2,
-        "message": "Ban exponentiation operator",
-        "nodeType": "BinaryExpression",
-        "ruleId": "ban-exponentiation-operator",
-        "severity": 2,
-      },
-      Object {
-        "column": 16,
-        "endColumn": 1,
-        "endLine": 3,
-        "fix": Object {
-          "range": Array [
-            43,
-            43,
-          ],
-          "text": ";",
-        },
-        "line": 2,
-        "message": "Missing semicolon.",
-        "messageId": "missingSemi",
-        "nodeType": "ReturnStatement",
-        "ruleId": "semi",
-        "severity": 2,
-      },
-    ],
-    "source": "ommitted",
-    "suppressedMessages": "omitted",
-    "usedDeprecatedRules": Array [],
-    "warningCount": 0,
-  },
-  Object {
     "errorCount": 6,
     "fatalErrorCount": NaN,
     "filePath": "/fixtures-tmp/lib/make-fixable-and-fix.js",
@@ -1135,28 +1070,358 @@ key4
     "warningCount": 0,
   },
   Object {
-    "errorCount": 1,
+    "errorCount": 12,
     "fatalErrorCount": NaN,
-    "filePath": "/fixtures-tmp/lib/mul.js",
-    "fixableErrorCount": 1,
+    "filePath": "/fixtures-tmp/lib/overlapped.js",
+    "fixableErrorCount": 12,
     "fixableWarningCount": 0,
     "messages": Array [
       Object {
-        "column": 15,
-        "endColumn": 1,
-        "endLine": 3,
+        "column": 3,
+        "fix": Object {
+          "range": Array [
+            6,
+            409,
+          ],
+          "text": "{return (
+  () => (
+    () => (
+      () => (
+        () => (
+          () => (
+            () => (
+              () => (
+                () => (
+                  () => (
+                    () => (
+                      () => (
+                        0
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+  )
+)}",
+        },
+        "line": 2,
+        "message": "Expected block statement surrounding arrow body.",
+        "messageId": "expectedBlock",
+        "nodeType": "ArrowFunctionExpression",
+        "ruleId": "arrow-body-style",
+        "severity": 2,
+      },
+      Object {
+        "column": 5,
+        "fix": Object {
+          "range": Array [
+            16,
+            407,
+          ],
+          "text": "{return (
+    () => (
+      () => (
+        () => (
+          () => (
+            () => (
+              () => (
+                () => (
+                  () => (
+                    () => (
+                      () => (
+                        0
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+  )}",
+        },
+        "line": 3,
+        "message": "Expected block statement surrounding arrow body.",
+        "messageId": "expectedBlock",
+        "nodeType": "ArrowFunctionExpression",
+        "ruleId": "arrow-body-style",
+        "severity": 2,
+      },
+      Object {
+        "column": 7,
+        "fix": Object {
+          "range": Array [
+            28,
+            403,
+          ],
+          "text": "{return (
+      () => (
+        () => (
+          () => (
+            () => (
+              () => (
+                () => (
+                  () => (
+                    () => (
+                      () => (
+                        0
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
+    )}",
+        },
+        "line": 4,
+        "message": "Expected block statement surrounding arrow body.",
+        "messageId": "expectedBlock",
+        "nodeType": "ArrowFunctionExpression",
+        "ruleId": "arrow-body-style",
+        "severity": 2,
+      },
+      Object {
+        "column": 9,
         "fix": Object {
           "range": Array [
             42,
-            42,
+            397,
           ],
-          "text": ";",
+          "text": "{return (
+        () => (
+          () => (
+            () => (
+              () => (
+                () => (
+                  () => (
+                    () => (
+                      () => (
+                        0
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+      )}",
         },
-        "line": 2,
-        "message": "Missing semicolon.",
-        "messageId": "missingSemi",
-        "nodeType": "ReturnStatement",
-        "ruleId": "semi",
+        "line": 5,
+        "message": "Expected block statement surrounding arrow body.",
+        "messageId": "expectedBlock",
+        "nodeType": "ArrowFunctionExpression",
+        "ruleId": "arrow-body-style",
+        "severity": 2,
+      },
+      Object {
+        "column": 11,
+        "fix": Object {
+          "range": Array [
+            58,
+            389,
+          ],
+          "text": "{return (
+          () => (
+            () => (
+              () => (
+                () => (
+                  () => (
+                    () => (
+                      () => (
+                        0
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )}",
+        },
+        "line": 6,
+        "message": "Expected block statement surrounding arrow body.",
+        "messageId": "expectedBlock",
+        "nodeType": "ArrowFunctionExpression",
+        "ruleId": "arrow-body-style",
+        "severity": 2,
+      },
+      Object {
+        "column": 13,
+        "fix": Object {
+          "range": Array [
+            76,
+            379,
+          ],
+          "text": "{return (
+            () => (
+              () => (
+                () => (
+                  () => (
+                    () => (
+                      () => (
+                        0
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )}",
+        },
+        "line": 7,
+        "message": "Expected block statement surrounding arrow body.",
+        "messageId": "expectedBlock",
+        "nodeType": "ArrowFunctionExpression",
+        "ruleId": "arrow-body-style",
+        "severity": 2,
+      },
+      Object {
+        "column": 15,
+        "fix": Object {
+          "range": Array [
+            96,
+            367,
+          ],
+          "text": "{return (
+              () => (
+                () => (
+                  () => (
+                    () => (
+                      () => (
+                        0
+                      )
+                    )
+                  )
+                )
+              )
+            )}",
+        },
+        "line": 8,
+        "message": "Expected block statement surrounding arrow body.",
+        "messageId": "expectedBlock",
+        "nodeType": "ArrowFunctionExpression",
+        "ruleId": "arrow-body-style",
+        "severity": 2,
+      },
+      Object {
+        "column": 17,
+        "fix": Object {
+          "range": Array [
+            118,
+            353,
+          ],
+          "text": "{return (
+                () => (
+                  () => (
+                    () => (
+                      () => (
+                        0
+                      )
+                    )
+                  )
+                )
+              )}",
+        },
+        "line": 9,
+        "message": "Expected block statement surrounding arrow body.",
+        "messageId": "expectedBlock",
+        "nodeType": "ArrowFunctionExpression",
+        "ruleId": "arrow-body-style",
+        "severity": 2,
+      },
+      Object {
+        "column": 19,
+        "fix": Object {
+          "range": Array [
+            142,
+            337,
+          ],
+          "text": "{return (
+                  () => (
+                    () => (
+                      () => (
+                        0
+                      )
+                    )
+                  )
+                )}",
+        },
+        "line": 10,
+        "message": "Expected block statement surrounding arrow body.",
+        "messageId": "expectedBlock",
+        "nodeType": "ArrowFunctionExpression",
+        "ruleId": "arrow-body-style",
+        "severity": 2,
+      },
+      Object {
+        "column": 21,
+        "fix": Object {
+          "range": Array [
+            168,
+            319,
+          ],
+          "text": "{return (
+                    () => (
+                      () => (
+                        0
+                      )
+                    )
+                  )}",
+        },
+        "line": 11,
+        "message": "Expected block statement surrounding arrow body.",
+        "messageId": "expectedBlock",
+        "nodeType": "ArrowFunctionExpression",
+        "ruleId": "arrow-body-style",
+        "severity": 2,
+      },
+      Object {
+        "column": 23,
+        "fix": Object {
+          "range": Array [
+            196,
+            299,
+          ],
+          "text": "{return (
+                      () => (
+                        0
+                      )
+                    )}",
+        },
+        "line": 12,
+        "message": "Expected block statement surrounding arrow body.",
+        "messageId": "expectedBlock",
+        "nodeType": "ArrowFunctionExpression",
+        "ruleId": "arrow-body-style",
+        "severity": 2,
+      },
+      Object {
+        "column": 25,
+        "fix": Object {
+          "range": Array [
+            226,
+            277,
+          ],
+          "text": "{return (
+                        0
+                      )}",
+        },
+        "line": 13,
+        "message": "Expected block statement surrounding arrow body.",
+        "messageId": "expectedBlock",
+        "nodeType": "ArrowFunctionExpression",
+        "ruleId": "arrow-body-style",
         "severity": 2,
       },
     ],
@@ -1230,6 +1495,37 @@ key4
   Object {
     "errorCount": 0,
     "fatalErrorCount": NaN,
+    "filePath": "/fixtures-tmp/lib/warning.js",
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 1,
+    "messages": Array [
+      Object {
+        "column": 15,
+        "endColumn": 1,
+        "endLine": 5,
+        "fix": Object {
+          "range": Array [
+            64,
+            64,
+          ],
+          "text": ";",
+        },
+        "line": 4,
+        "message": "Missing semicolon.",
+        "messageId": "missingSemi",
+        "nodeType": "ReturnStatement",
+        "ruleId": "semi",
+        "severity": 1,
+      },
+    ],
+    "source": "ommitted",
+    "suppressedMessages": "omitted",
+    "usedDeprecatedRules": Array [],
+    "warningCount": 1,
+  },
+  Object {
+    "errorCount": 0,
+    "fatalErrorCount": NaN,
     "filePath": "/fixtures-tmp/rules/ban-exponentiation-operator.js",
     "fixableErrorCount": 0,
     "fixableWarningCount": 0,
@@ -1242,7 +1538,7 @@ key4
 ]
 `;
 
-exports[`Core makeFixableAndFix 1`] = `
+exports[`Core makeFixableAndFix basic 1`] = `
 "==> fixtures-tmp/index.js <==
 import { mul } from './lib/mul'
 import { add } from './lib/add'
@@ -1289,7 +1585,38 @@ function _fn(_arg) {
 "
 `;
 
-exports[`Core makeFixableAndFix 2`] = `""`;
+exports[`Core makeFixableAndFix basic 2`] = `""`;
+
+exports[`Core makeFixableAndFix fix overlapped problems 1`] = `
+"() => {return (
+  () => {return (
+    () => {return (
+      () => {return (
+        () => {return (
+          () => {return (
+            () => {return (
+              () => {return (
+                () => {return (
+                  () => {return (
+                    () => (
+                      () => (
+                        0
+                      )
+                    )
+                  )}
+                )}
+              )}
+            )}
+          )}
+        )}
+      )}
+    )}
+  )}
+)};
+"
+`;
+
+exports[`Core makeFixableAndFix fix overlapped problems 2`] = `""`;
 
 exports[`Core printDetailsOfResults 1`] = `
 "[31merror[39m: [1m\`./lib/add\` import should occur before import of \`./lib/mul\`[22m [2m(import/order)[22m at [32mfixtures-tmp/index.js:2:1[39m:
@@ -1341,25 +1668,17 @@ exports[`Core printDetailsOfResults 1`] = `
   16 | 
 
 
-[31merror[39m: [1mBan exponentiation operator[22m [2m(ban-exponentiation-operator)[22m at [32mfixtures-tmp/lib/exp.js:2:10[39m:
-  1 | export function exp(a, b) {
-> 2 |   return a ** b
-    |          ^
-  3 | }
-  4 | 
-
-
-[31m[1m28 errors found.[22m[39m[31m[1m[22m[39m
-[31m[1m20 errors potentially fixable with the \`--fix\` option.[22m[39m"
+[31m[1m26 errors found.[22m[39m[31m[1m[22m[39m
+[31m[1m19 errors potentially fixable with the \`--fix\` option.[22m[39m"
 `;
 
 exports[`Core printSummaryOfResults 1`] = `
-"[1m- 12 files (2 files passed, [91m10 files failed[39m) checked.[22m
-[1m- 49 problems ([31m48 errors[39m, [33m1 warning[39m) found.[22m
+"[1m- 11 files (2 files passed, [91m9 files failed[39m) checked.[22m
+[1m- 58 problems ([31m57 errors[39m, [33m1 warning[39m) found.[22m
 ┌─────────────────────────────┬───────┬─────────┬────────────┬─────────────────┐
 │ Rule                        │ Error │ Warning │ is fixable │ has suggestions │
 ├─────────────────────────────┼───────┼─────────┼────────────┼─────────────────┤
-│ semi                        │ [31m[1m16[22m[39m    │ [31m[1m1[22m[39m       │ [31m[1m17[22m[39m         │ 0               │
+│ semi                        │ [31m[1m14[22m[39m    │ [31m[1m1[22m[39m       │ [31m[1m15[22m[39m         │ 0               │
 ├─────────────────────────────┼───────┼─────────┼────────────┼─────────────────┤
 │ import/order                │ [31m[1m3[22m[39m     │ 0       │ [31m[1m3[22m[39m          │ 0               │
 ├─────────────────────────────┼───────┼─────────┼────────────┼─────────────────┤
@@ -1367,10 +1686,12 @@ exports[`Core printSummaryOfResults 1`] = `
 ├─────────────────────────────┼───────┼─────────┼────────────┼─────────────────┤
 │ no-unused-vars              │ [31m[1m11[22m[39m    │ 0       │ 0          │ 0               │
 ├─────────────────────────────┼───────┼─────────┼────────────┼─────────────────┤
-│ ban-exponentiation-operator │ [31m[1m3[22m[39m     │ 0       │ 0          │ 0               │
+│ ban-exponentiation-operator │ [31m[1m2[22m[39m     │ 0       │ 0          │ 0               │
 ├─────────────────────────────┼───────┼─────────┼────────────┼─────────────────┤
 │ no-useless-escape           │ [31m[1m5[22m[39m     │ 0       │ 0          │ [31m[1m5[22m[39m               │
 ├─────────────────────────────┼───────┼─────────┼────────────┼─────────────────┤
 │ no-unsafe-negation          │ [31m[1m5[22m[39m     │ 0       │ 0          │ [31m[1m5[22m[39m               │
+├─────────────────────────────┼───────┼─────────┼────────────┼─────────────────┤
+│ arrow-body-style            │ [31m[1m12[22m[39m    │ 0       │ [31m[1m12[22m[39m         │ 0               │
 └─────────────────────────────┴───────┴─────────┴────────────┴─────────────────┘"
 `;
