@@ -1078,8 +1078,6 @@ key4
     "messages": Array [
       Object {
         "column": 3,
-        "endColumn": 4,
-        "endLine": 24,
         "fix": Object {
           "range": Array [
             6,
@@ -1120,8 +1118,6 @@ key4
       },
       Object {
         "column": 5,
-        "endColumn": 6,
-        "endLine": 23,
         "fix": Object {
           "range": Array [
             16,
@@ -1160,8 +1156,6 @@ key4
       },
       Object {
         "column": 7,
-        "endColumn": 8,
-        "endLine": 22,
         "fix": Object {
           "range": Array [
             28,
@@ -1198,8 +1192,6 @@ key4
       },
       Object {
         "column": 9,
-        "endColumn": 10,
-        "endLine": 21,
         "fix": Object {
           "range": Array [
             42,
@@ -1234,8 +1226,6 @@ key4
       },
       Object {
         "column": 11,
-        "endColumn": 12,
-        "endLine": 20,
         "fix": Object {
           "range": Array [
             58,
@@ -1268,8 +1258,6 @@ key4
       },
       Object {
         "column": 13,
-        "endColumn": 14,
-        "endLine": 19,
         "fix": Object {
           "range": Array [
             76,
@@ -1300,8 +1288,6 @@ key4
       },
       Object {
         "column": 15,
-        "endColumn": 16,
-        "endLine": 18,
         "fix": Object {
           "range": Array [
             96,
@@ -1330,8 +1316,6 @@ key4
       },
       Object {
         "column": 17,
-        "endColumn": 18,
-        "endLine": 17,
         "fix": Object {
           "range": Array [
             118,
@@ -1358,8 +1342,6 @@ key4
       },
       Object {
         "column": 19,
-        "endColumn": 20,
-        "endLine": 16,
         "fix": Object {
           "range": Array [
             142,
@@ -1384,8 +1366,6 @@ key4
       },
       Object {
         "column": 21,
-        "endColumn": 22,
-        "endLine": 15,
         "fix": Object {
           "range": Array [
             168,
@@ -1408,8 +1388,6 @@ key4
       },
       Object {
         "column": 23,
-        "endColumn": 24,
-        "endLine": 14,
         "fix": Object {
           "range": Array [
             196,
@@ -1430,8 +1408,6 @@ key4
       },
       Object {
         "column": 25,
-        "endColumn": 26,
-        "endLine": 13,
         "fix": Object {
           "range": Array [
             226,

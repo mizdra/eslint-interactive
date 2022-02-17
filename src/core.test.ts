@@ -8,10 +8,16 @@ const cwd = join(dirname(fileURLToPath(import.meta.url)), '..');
 
 // Normalize `message` for the snapshot.
 function normalizeMessage(message: Linter.LintMessage): Linter.LintMessage {
-  // Exclude field because of the different format of `fix` in prefer-const in ESLint v7.0.0
+  // Exclude field because of the different format of `fix`, `endLine` and `endColumn` in prefer-const in ESLint v7.0.0
   if (message.ruleId === 'prefer-const') {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     delete (message as any).fix;
+  }
+  if (message.ruleId === 'arrow-body-style') {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    delete (message as any).endLine;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    delete (message as any).endColumn;
   }
   return message;
 }
