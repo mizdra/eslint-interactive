@@ -27,7 +27,7 @@ async function runBenchmarkForEachFix(benchmarkName, core, loopSet) {
     repeat: DEFAULT_REPEAT,
     loop: loopSet.applyAutoFixes,
     fn: async () => {
-      return await core.applyAutoFixes(results, ['semi']);
+      return await core.applyAutoFixes(results, ['semi', 'arrow-body-style']);
     },
     afterEach: async (undo) => {
       await undo();
@@ -38,7 +38,7 @@ async function runBenchmarkForEachFix(benchmarkName, core, loopSet) {
     repeat: DEFAULT_REPEAT,
     loop: loopSet.disablePerLine,
     fn: async () => {
-      return await core.disablePerLine(results, ['semi']);
+      return await core.disablePerLine(results, ['semi', 'arrow-body-style']);
     },
     afterEach: async (undo) => {
       await undo();
@@ -49,7 +49,7 @@ async function runBenchmarkForEachFix(benchmarkName, core, loopSet) {
     repeat: DEFAULT_REPEAT,
     loop: loopSet.disablePerFile,
     fn: async () => {
-      return await core.disablePerFile(results, ['semi']);
+      return await core.disablePerFile(results, ['semi', 'arrow-body-style']);
     },
     afterEach: async (undo) => {
       await undo();
@@ -60,7 +60,7 @@ async function runBenchmarkForEachFix(benchmarkName, core, loopSet) {
     repeat: DEFAULT_REPEAT,
     loop: loopSet.makeFixableAndFix,
     fn: async () => {
-      return await core.makeFixableAndFix(results, ['semi'], (message) => {
+      return await core.makeFixableAndFix(results, ['semi', 'arrow-body-style'], (message) => {
         return message.fix;
       });
     },
@@ -73,7 +73,7 @@ async function runBenchmarkForEachFix(benchmarkName, core, loopSet) {
     repeat: DEFAULT_REPEAT,
     loop: loopSet.undo,
     beforeEach: async () => {
-      return await core.applyAutoFixes(results, ['semi']);
+      return await core.applyAutoFixes(results, ['semi', 'arrow-body-style']);
     },
     fn: async (undo) => {
       return await undo();
@@ -105,6 +105,18 @@ async function main() {
     },
   ]);
   await runBenchmarkForEachFix('fix-all-of-huge-files', core);
+
+  // overlapped
+  await createFixtures(join(cwd, 'fixtures'), [
+    {
+      label: 'target',
+      source:
+        '/* eslint arrow-body-style: [2, "always"] */\n' +
+        ('() => ('.repeat(10) + '0' + ')'.repeat(10) + ';\n').repeat(100),
+      amount: 1,
+    },
+  ]);
+  await runBenchmarkForEachFix('fix-overlapped-problems', core);
 }
 
 main();
