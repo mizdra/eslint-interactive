@@ -4,7 +4,14 @@ import { ESLint } from 'eslint';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 import isInstalledGlobally = require('is-installed-globally');
 import { format } from './formatter/index.js';
-import { eslintInteractivePlugin, FixRuleOption, FixableMaker, SuggestionFilter, Fix } from './plugin/index.js';
+import {
+  eslintInteractivePlugin,
+  FixRuleOption,
+  FixableMaker,
+  SuggestionFilter,
+  Fix,
+  OVERLAPPED_PROBLEM_MESSAGE,
+} from './plugin/index.js';
 import { getCacheDir } from './util/cache.js';
 import { filterResultsByRuleId, scanUsedPluginsFromResults } from './util/eslint.js';
 
@@ -22,8 +29,8 @@ function generateResultsToUndo(resultsOfLint: ESLint.LintResult[]): ESLint.LintR
   });
 }
 
-function hasOverlappedProblem(results: ESLint.LintResult[]): boolean {
-  return results.flatMap((result) => result.messages).some((message) => message.message === 'overlapped');
+function hasOverlappedProblems(results: ESLint.LintResult[]): boolean {
+  return results.flatMap((result) => result.messages).some((message) => message.message === OVERLAPPED_PROBLEM_MESSAGE);
 }
 
 export type Undo = () => Promise<void>;
@@ -193,6 +200,7 @@ export class Core {
     const filteredResultsOfLint = filterResultsByRuleId(resultsOfLint, ruleIds);
     const targetFilePaths = filteredResultsOfLint.map((result) => result.filePath);
 
+    // TODO: refactor
     let results = filteredResultsOfLint;
     for (let i = 0; i < MAX_AUTOFIX_PASSES; i++) {
       const eslint = new ESLint({
@@ -213,7 +221,7 @@ export class Core {
       });
       const resultsToFix = await eslint.lintFiles(targetFilePaths);
       await ESLint.outputFixes(resultsToFix);
-      if (!hasOverlappedProblem(resultsToFix)) break;
+      if (!hasOverlappedProblems(resultsToFix)) break;
       results = await this.lint();
     }
 

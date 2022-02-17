@@ -8,6 +8,8 @@ import {
 import { ruleFixer } from './rule-fixer.js';
 import { Fix, FixContext } from './index.js';
 
+export const OVERLAPPED_PROBLEM_MESSAGE = 'overlapped';
+
 // from: https://github.com/eslint/eslint/blob/58840ac844a61c72eabb603ecfb761812b82a7ed/lib/linter/report-translator.js#L136
 function compareFixesByRange(a: Rule.Fix, b: Rule.Fix): number {
   return a.range[0] - b.range[0] || a.range[1] - b.range[1];
@@ -72,6 +74,7 @@ export const fixRule: Rule.RuleModule = {
     fixable: 'code',
   },
   create(context: Rule.RuleContext) {
+    // TODO: refactor
     return {
       // eslint-disable-next-line @typescript-eslint/naming-convention
       Program: () => {
@@ -93,7 +96,7 @@ export const fixRule: Rule.RuleModule = {
                 line: 0,
                 column: 0,
               },
-              message: `overlapped`,
+              message: OVERLAPPED_PROBLEM_MESSAGE,
             });
           }
           return;
