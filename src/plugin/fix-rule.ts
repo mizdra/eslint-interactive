@@ -52,13 +52,7 @@ function createFixes(context: Rule.RuleContext, ruleOption: FixRuleOption, fixer
   }
 
   if (fixes.length === 0) return null;
-
-  // 🤯🤯🤯 THIS IS SUPER HACK!!! 🤯🤯🤯
-  // `disablePerFile` などでは、1つ message を修正する度に、disable comment が 1 行追加されて、message に格納されている位置情報と、
-  // 本来修正するべきコードの位置が 1 行ずれてしまう。そこで、ファイルの後ろ側の行の message から修正していくことで、
-  // message の位置情報と本来修正するべきコードの位置情報がずれないようにしている。
-  const sortedFixed = fixes.sort((a, b) => b.range[0] - a.range[0]);
-  return sortedFixed;
+  return fixes;
 }
 
 export type FixRuleOption = {
