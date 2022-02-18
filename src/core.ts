@@ -12,6 +12,7 @@ import {
   Fix,
   OVERLAPPED_PROBLEM_MESSAGE,
 } from './plugin/index.js';
+import { unique } from './util/array.js';
 import { getCacheDir } from './util/cache.js';
 import { filterResultsByRuleId, scanUsedPluginsFromResults } from './util/eslint.js';
 
@@ -31,6 +32,20 @@ function generateResultsToUndo(resultsOfLint: ESLint.LintResult[]): ESLint.LintR
 
 function hasOverlappedProblems(results: ESLint.LintResult[]): boolean {
   return results.flatMap((result) => result.messages).some((message) => message.message === OVERLAPPED_PROBLEM_MESSAGE);
+}
+
+/**
+ * Get all the rules loaded from eslintrc.
+ * @param targetFilePaths The target file paths.
+ * @param options The eslint option.
+ * @returns The rule ids loaded from eslintrc.
+ */
+async function getUsedRuleIds(targetFilePaths: string[], options: ESLint.Options): Promise<string[]> {
+  const eslintToGetRules = new ESLint(options);
+  const configs = await Promise.all(
+    targetFilePaths.map(async (filePath) => eslintToGetRules.calculateConfigForFile(filePath)),
+  );
+  return unique(configs.map((config) => config.rules).flatMap((rules) => Object.keys(rules)));
 }
 
 export type Undo = () => Promise<void>;
@@ -186,6 +201,7 @@ export class Core {
     // NOTE: Extract only necessary results and files for performance
     const filteredResultsOfLint = filterResultsByRuleId(resultsOfLint, ruleIds);
     const targetFilePaths = filteredResultsOfLint.map((result) => result.filePath);
+    const usedRuleIds = await getUsedRuleIds(targetFilePaths, this.baseOptions);
 
     // TODO: refactor
     let results = filteredResultsOfLint;
@@ -201,10 +217,14 @@ export class Core {
           plugins: ['eslint-interactive'],
           rules: {
             'eslint-interactive/fix': [2, { results, ruleIds, fix } as FixRuleOption],
+            // Turn off all rules except `eslint-interactive/fix` when fixing for performance.
+            ...Object.fromEntries(usedRuleIds.map((ruleId) => [ruleId, 'off'])),
           },
         },
         // NOTE: Only fix the `fix` rule problems.
         fix: (message) => message.ruleId === 'eslint-interactive/fix',
+        // Don't interpret lintFiles arguments as glob patterns for performance.
+        globInputPaths: false,
       });
       const resultsToFix = await eslint.lintFiles(targetFilePaths);
       await ESLint.outputFixes(resultsToFix);
