@@ -205,6 +205,8 @@ export class Core {
         },
         // NOTE: Only fix the `fix` rule problems.
         fix: (message) => message.ruleId === 'eslint-interactive/fix',
+        // Don't interpret lintFiles arguments as glob patterns for performance.
+        globInputPaths: false,
       });
       const resultsToFix = await eslint.lintFiles(targetFilePaths);
       await ESLint.outputFixes(resultsToFix);
