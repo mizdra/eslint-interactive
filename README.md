@@ -43,11 +43,11 @@ It also supports the following actions in addition to `eslint --fix`. All action
 
 ```console
 $ # For npm
-$ npm i -D @mizdra/eslint-interactive
+$ npm i -D eslint-interactive
 $ npx eslint-interactive --help
 
 $ # For yarn
-$ yarn add -D @mizdra/eslint-interactive
+$ yarn add -D eslint-interactive
 $ yarn eslint-interactive --help
 ```
 

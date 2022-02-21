@@ -17,7 +17,7 @@
  * and selects the suggestion to be applied from the list and returns it.
  * @param {import('eslint').Linter.LintSuggestion[]} suggestions - The list of suggestions that can be applied to the problem
  * @param {import('eslint').Linter.LintMessage} message - The `message` that contained a `suggestion`
- * @param {import('@mizdra/eslint-interactive').FixContext} context - The context of the fix.
+ * @param {import('eslint-interactive').FixContext} context - The context of the fix.
  * @returns {import('eslint').Linter.LintSuggestion | null | undefined} Suggestion to apply. If null or undefined is returned, do not apply any suggestion.
  */
 function filterSuggestions(suggestions, message, context) {

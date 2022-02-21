@@ -12,7 +12,7 @@ It allows the user to perform complex fix operations :sunglasses:
 import { resolve } from 'path';
 import { promisify } from 'util';
 import { exec } from 'child_process';
-import { Core, takeRuleStatistics } from '@mizdra/eslint-interactive';
+import { Core, takeRuleStatistics } from 'eslint-interactive';
 
 const core = new Core({
   patterns: ['fixtures'],
