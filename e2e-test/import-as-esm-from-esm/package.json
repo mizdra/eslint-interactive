@@ -1,6 +1,6 @@
 {
   "type": "module",
   "dependencies": {
-    "@mizdra/eslint-interactive": "../../"
+    "eslint-interactive": "../../"
   }
 }

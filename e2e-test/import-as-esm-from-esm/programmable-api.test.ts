@@ -1,6 +1,6 @@
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
-import { Core, takeRuleStatistics } from '@mizdra/eslint-interactive';
+import { Core, takeRuleStatistics } from 'eslint-interactive';
 import stripAnsi from 'strip-ansi';
 import { cleanupFixturesCopy, getSnapshotOfChangedFiles, setupFixturesCopy } from '../../src/test-util/fixtures.js';
 

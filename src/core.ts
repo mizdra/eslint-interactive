@@ -136,7 +136,7 @@ export class Core {
             await import.meta.resolve(
               'eslint-formatter-codeframe',
               // @ts-expect-error
-              await import.meta.resolve('@mizdra/eslint-interactive'),
+              await import.meta.resolve('eslint-interactive'),
             ),
           )
         : formatterName;

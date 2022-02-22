@@ -61,4 +61,4 @@ Cargo.lock
 .netlify
 *.tsbuildinfo
 /fixtures-tmp
-mizdra-eslint-interactive-*.tgz
+eslint-interactive-*.tgz
