@@ -1,10 +1,18 @@
 import chalk from 'chalk';
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-import Table = require('cli-table');
 import { ESLint } from 'eslint';
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+import table = require('table');
 // import terminalLink from 'terminal-link';
 import { ERROR_COLOR } from './colors.js';
 import { takeRuleStatistics } from './take-rule-statistics.js';
+
+type Row = [
+  ruleCell: string,
+  errorCount: string,
+  warningCount: string,
+  isFixableCount: string,
+  hasSuggestionsCount: string,
+];
 
 function numCell(num: number): string {
   return num > 0 ? chalk[ERROR_COLOR].bold(num) : num.toString();
@@ -12,9 +20,11 @@ function numCell(num: number): string {
 
 export function formatByRules(results: ESLint.LintResult[], _data?: ESLint.LintResultData): string {
   const ruleStatistics = takeRuleStatistics(results);
-  const table = new Table({
-    head: ['Rule', 'Error', 'Warning', 'is fixable', 'has suggestions'],
-  });
+
+  const rows: Row[] = [];
+
+  // header
+  rows.push(['Rule', 'Error', 'Warning', 'is fixable', 'has suggestions']);
 
   ruleStatistics.forEach((ruleStatistic) => {
     const { ruleId, errorCount, warningCount, isFixableCount, hasSuggestionsCount } = ruleStatistic;
@@ -24,7 +34,7 @@ export function formatByRules(results: ESLint.LintResult[], _data?: ESLint.LintR
     // const ruleMetaData = data?.rulesMeta[ruleId];
     // const ruleCell = ruleMetaData?.docs?.url ? terminalLink(ruleId, ruleMetaData?.docs.url) : ruleId;
     const ruleCell = ruleId;
-    table.push([
+    rows.push([
       ruleCell,
       numCell(errorCount),
       numCell(warningCount),
@@ -33,5 +43,5 @@ export function formatByRules(results: ESLint.LintResult[], _data?: ESLint.LintR
     ]);
   });
 
-  return table.toString();
+  return table.table(rows);
 }
