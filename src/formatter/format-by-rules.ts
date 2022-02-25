@@ -32,7 +32,7 @@ export function formatByRules(results: ESLint.LintResult[], data?: ESLint.LintRe
     // NOTE: Disable documentation links temporarily due to problems with cli-table.
     // ref: https://github.com/mizdra/eslint-interactive/issues/81
     const ruleMetaData = data?.rulesMeta[ruleId];
-    const ruleCell = ruleMetaData?.docs?.url ? terminalLink.stderr(ruleId, ruleMetaData?.docs.url) : ruleId;
+    const ruleCell = ruleMetaData?.docs?.url ? terminalLink(ruleId, ruleMetaData?.docs.url) : ruleId;
     rows.push([
       ruleCell,
       numCell(errorCount),
