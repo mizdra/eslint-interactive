@@ -28,13 +28,8 @@ export function formatByRules(results: ESLint.LintResult[], data?: ESLint.LintRe
 
   ruleStatistics.forEach((ruleStatistic) => {
     const { ruleId, errorCount, warningCount, isFixableCount, hasSuggestionsCount } = ruleStatistic;
-
-    // NOTE: Disable documentation links temporarily due to problems with cli-table.
-    // ref: https://github.com/mizdra/eslint-interactive/issues/81
-    const ruleMetaData = data?.rulesMeta[ruleId];
-    const ruleCell = ruleMetaData?.docs?.url ? terminalLink(ruleId, ruleMetaData?.docs.url) : ruleId;
     rows.push([
-      ruleCell,
+      ruleId,
       numCell(errorCount),
       numCell(warningCount),
       numCell(isFixableCount),
@@ -42,5 +37,19 @@ export function formatByRules(results: ESLint.LintResult[], data?: ESLint.LintRe
     ]);
   });
 
-  return table.table(rows);
+  // The `table` package does not print the terminal link correctly. So eslint-interactive avoids
+  // this by first printing the table in the `table` package without the link,
+  // then converting it to a link by replacement.
+  // ref: https://github.com/gajus/table/issues/113
+  let result = table.table(rows);
+  ruleStatistics.forEach((ruleStatistic) => {
+    const { ruleId } = ruleStatistic;
+    const ruleMetaData = data?.rulesMeta[ruleId];
+    const ruleCell = ruleMetaData?.docs?.url
+      ? terminalLink(ruleId, ruleMetaData?.docs.url, { fallback: false })
+      : ruleId;
+    result = result.replace(` ${ruleId} `, ` ${ruleCell} `);
+  });
+
+  return result;
 }
