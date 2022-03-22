@@ -41,6 +41,8 @@ export async function run(options: Options) {
       // ref: https://github.com/chalk/supports-color/issues/97, https://github.com/nodejs/node/issues/26946
       FORCE_HYPERLINK: terminalLink.isSupported ? '1' : '0',
     },
+    // NOTE: Pass CLI options (--experimental-import-meta-resolve, etc.) to the worker
+    execArgv: process.execArgv,
   });
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const ProxiedCore = wrap<typeof SerializableCore>((nodeEndpoint as any)(worker));
