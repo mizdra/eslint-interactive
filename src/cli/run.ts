@@ -5,6 +5,7 @@ import { wrap } from 'comlink';
 import nodeEndpoint from 'comlink/dist/esm/node-adapter.mjs';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 import isInstalledGlobally = require('is-installed-globally');
+import terminalLink from 'terminal-link';
 import { warn } from '../cli/log.js';
 import { parseArgv } from '../cli/parse-argv.js';
 import { SerializableCore } from '../core-worker.js';
@@ -29,7 +30,20 @@ export async function run(options: Options) {
 
   // Directly executing the Core API will hog the main thread and halt the spinner.
   // So we wrap it with comlink and run it on the Worker.
-  const worker = new Worker(join(dirname(fileURLToPath(import.meta.url)), '..', 'core-worker.js'));
+  const worker = new Worker(join(dirname(fileURLToPath(import.meta.url)), '..', 'core-worker.js'), {
+    env: {
+      ...process.env,
+      // NOTE:
+      // - `terminal-link` uses `supports-hyperlinks` and `supports-color` to determine if a terminal that supports hyperlinks is in use.
+      // - If the terminal does not support hyperlinks, it will fallback to not print the link.
+      // - However, due to the specifications of Node.js, the decision does not work well on worker_threads.
+      // - So here we use a special environment variable to force the printing mode to be switched.
+      // ref: https://github.com/chalk/supports-color/issues/97, https://github.com/nodejs/node/issues/26946
+      FORCE_HYPERLINK: terminalLink.isSupported ? '1' : '0',
+    },
+    // NOTE: Pass CLI options (--experimental-import-meta-resolve, etc.) to the worker
+    execArgv: process.execArgv,
+  });
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const ProxiedCore = wrap<typeof SerializableCore>((nodeEndpoint as any)(worker));
   const core = await new ProxiedCore(config);

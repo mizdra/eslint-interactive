@@ -4,6 +4,8 @@ import { ESLint, Linter } from 'eslint';
 import { Core, DEFAULT_BASE_CONFIG } from './core.js';
 import { cleanupFixturesCopy, getSnapshotOfChangedFiles, setupFixturesCopy } from './test-util/fixtures.js';
 
+const testIf = (condition: boolean) => (condition ? test : test.skip);
+
 const cwd = join(dirname(fileURLToPath(import.meta.url)), '..');
 
 // Normalize `message` for the snapshot.
@@ -89,7 +91,8 @@ describe('Core', () => {
     const results = await core.lint();
     expect(normalizeResults(results)).toMatchSnapshot();
   });
-  test('printSummaryOfResults', async () => {
+  // This test fails because the documentation url is not supported in eslint 7.0.0. Therefore, ignore this test.
+  testIf(ESLint.version !== '7.0.0')('printSummaryOfResults', async () => {
     const results = await core.lint();
     expect(core.formatResultSummary(results)).toMatchSnapshot();
   });
