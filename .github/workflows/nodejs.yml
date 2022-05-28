@@ -64,6 +64,11 @@ jobs:
       - name: Change ESLint version
         run: yarn add -D eslint@${{ matrix.eslint }}
 
+      - name: debug
+        run: |
+          ls node_modules/strip-ansi || true
+          cat node_modules/strip-ansi/index.d.ts || true
+
       - name: yarn run test
         run: yarn run test
 
