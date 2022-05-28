@@ -1,8 +1,7 @@
 import { join } from 'path';
 import { fileURLToPath } from 'url';
 import { ESLint } from 'eslint';
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-import isInstalledGlobally = require('is-installed-globally');
+import isInstalledGlobally from 'is-installed-globally';
 import { format } from './formatter/index.js';
 import {
   eslintInteractivePlugin,
