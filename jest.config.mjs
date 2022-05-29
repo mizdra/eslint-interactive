@@ -7,13 +7,6 @@ import { baseConfig } from './jest.config.base.mjs';
 const config = {
   ...baseConfig,
   testMatch: ['<rootDir>/src/**/*.test.ts?(x)'],
-  globals: {
-    ...baseConfig.globals,
-    'ts-jest': {
-      ...baseConfig.globals['ts-jest'],
-      tsconfig: '<rootDir>/tsconfig.test.json',
-    },
-  },
 };
 
 // eslint-disable-next-line import/no-default-export
