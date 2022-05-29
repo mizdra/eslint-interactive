@@ -82,7 +82,7 @@ See [src/index.ts](https://github.com/mizdra/eslint-interactive/blob/main/src/in
 
 ## Limitation
 
-- Only the ESM version is available.
-  - CJS version is not yet available.
-- If you want to use TypeScript, you have to enable `module: node12` or `module: nodenext` in `tsconfig.json`.
-  - This means that you need to use TypeScript nightly.
+- `eslint-interactive` is Pure ESM.
+  - CJS version is not supported.
+- If you want to use TypeScript, you have to enable `module: Node16` or `module: NodeNext` in `tsconfig.json`.
+  - This means that you need to use TypeScript v4.7.0+.
