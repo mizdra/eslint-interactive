@@ -24,6 +24,7 @@
   "prettier": "@mizdra/prettier-config-mizdra",
   "renovate": "github>mizdra/renovate-config-mizdra",
   "devDependencies": {
+    "@babel/preset-typescript": "^7.17.12",
     "@jest/types": "^27.5.1",
     "@mizdra/eslint-config-mizdra": "^1.1.0",
     "@mizdra/prettier-config-mizdra": "^0.4.0",
