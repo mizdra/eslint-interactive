@@ -1,7 +1,6 @@
 import chalk from 'chalk';
 import { ESLint } from 'eslint';
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-import table = require('table');
+import table from 'table';
 import terminalLink from 'terminal-link';
 import { ERROR_COLOR } from './colors.js';
 import { takeRuleStatistics } from './take-rule-statistics.js';
