@@ -46,7 +46,7 @@
     "@typescript-eslint/eslint-plugin": "^5.16.0",
     "@typescript-eslint/parser": "^5.16.0",
     "babel-jest": "^28.1.0",
-    "enhanced-resolve": "^5.8.3",
+    "enhanced-resolve": "^5.9.3",
     "eslint": "^8.11.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.25.4",
