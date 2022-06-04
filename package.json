@@ -29,7 +29,12 @@
     "postbuild:benchmark": "node benchmark/run.js"
   },
   "prettier": "@mizdra/prettier-config-mizdra",
-  "renovate": "github>mizdra/renovate-config-mizdra",
+  "renovate": {
+    "extends": [
+      "github>mizdra/renovate-config-mizdra:default.json5",
+      "github>mizdra/renovate-config-mizdra:+lib.json5"
+    ]
+  },
   "devDependencies": {
     "@babel/core": "~7.18.2",
     "@babel/preset-typescript": "^7.17.12",
