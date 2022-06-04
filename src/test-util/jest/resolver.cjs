@@ -1,17 +1,29 @@
-// ref: https://github.com/facebook/jest/issues/9771#issuecomment-974750103
-const importResolver = require('enhanced-resolve').create.sync({
-  conditionNames: ['import', 'node', 'default'],
-  extensions: ['.js', '.json', '.node', '.ts'],
-});
-const requireResolver = require('enhanced-resolve').create.sync({
-  conditionNames: ['require', 'node', 'default'],
-  extensions: ['.js', '.json', '.node', '.ts'],
-});
+// @ts-check
 
-module.exports = function (request, options) {
-  let resolver = requireResolver;
-  if (options.conditions?.includes('import')) {
-    resolver = importResolver;
+const { dirname, resolve } = require('path');
+const resolveFrom = require('resolve-from');
+
+/**
+ * @typedef {{
+ * basedir: string;
+ * conditions?: Array<string>;
+ * defaultResolver: (path: string, options: ResolverOptions) => string;
+ * extensions?: Array<string>;
+ * moduleDirectory?: Array<string>;
+ * paths?: Array<string>;
+ * packageFilter?: (pkg: any, file: string, dir: string) => any;
+ * pathFilter?: (pkg: any, path: string, relativePath: string) => string;
+ * rootDir?: string;
+ * }} ResolverOptions
+ * */
+
+/** @type {(path: string, options: ResolverOptions) => string} */
+module.exports = (path, options) => {
+  // workaround for https://github.com/facebook/jest/issues/12270
+  if (path === '#ansi-styles' || path === '#supports-color') {
+    const chalkRoot = resolve(dirname(resolveFrom(options.basedir, 'chalk')), '../');
+    const subPkgName = path.slice(1);
+    return `${chalkRoot}/source/vendor/${subPkgName}/index.js`;
   }
-  return resolver(options.basedir, request);
+  return options.defaultResolver(path, options);
 };
