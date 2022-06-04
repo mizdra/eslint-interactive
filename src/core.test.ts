@@ -7,6 +7,9 @@ import { cleanupFixturesCopy, getSnapshotOfChangedFiles, setupFixturesCopy } fro
 const testIf = (condition: boolean) => (condition ? test : test.skip);
 
 const cwd = join(dirname(fileURLToPath(import.meta.url)), '..');
+// For some reason, the test fails if `formatterName === 'codeframe'`.
+// So here we overwrite it with `formatterName === 'eslint-formatter-codeframe'`.
+const formatterName = 'eslint-formatter-codeframe';
 
 // Normalize `message` for the snapshot.
 function normalizeMessage(message: Linter.LintMessage): Linter.LintMessage {
@@ -56,7 +59,7 @@ describe('Core', () => {
     patterns: ['fixtures-tmp'],
     rulePaths: ['fixtures-tmp/rules'],
     extensions: ['.js', '.jsx', '.mjs'],
-    formatterName: 'codeframe',
+    formatterName,
     cwd,
   });
   test('baseOptions', () => {
@@ -64,7 +67,7 @@ describe('Core', () => {
       patterns: ['pattern-a', 'pattern-b'],
       rulePaths: ['rule-path-a', 'rule-path-b'],
       extensions: ['.js', '.jsx'],
-      formatterName: 'codeframe',
+      formatterName,
       cache: false,
       cacheLocation: '.eslintcache',
       cwd: '/tmp/cwd',
