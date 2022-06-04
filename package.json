@@ -33,7 +33,7 @@
     "@babel/core": "~7.18.2",
     "@babel/preset-typescript": "^7.17.12",
     "@jest/types": "^28.1.0",
-    "@mizdra/eslint-config-mizdra": "^1.1.0",
+    "@mizdra/eslint-config-mizdra": "^1.2.0",
     "@mizdra/prettier-config-mizdra": "^0.4.0",
     "@types/eslint": "^8.4.1",
     "@types/estraverse": "^5.1.1",
