@@ -29,6 +29,7 @@
     "postbuild:benchmark": "node benchmark/run.js"
   },
   "prettier": "@mizdra/prettier-config-mizdra",
+  "packageManager": "pnpm@7.1.7",
   "devDependencies": {
     "@babel/core": "~7.18.2",
     "@babel/preset-typescript": "^7.17.12",
