@@ -49,6 +49,10 @@ $ npx eslint-interactive --help
 $ # For yarn
 $ yarn add -D eslint-interactive
 $ yarn eslint-interactive --help
+
+$ # For pnpm
+$ pnpm add -D eslint-interactive
+$ pnpm exec eslint-interactive --help
 ```
 
 ## Usage
