@@ -38,7 +38,7 @@
   "[markdown]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "jest.jestCommandLine": "yarn run test",
+  "jest.jestCommandLine": "pnpm run test",
   // VSCode の起動時に自動で jest のテストを走らせないように。
   // VSCode 起動時は色々な拡張機能の初期化処理が走っているので、
   // あまりカジュアルに起動時に処理を実行したくない、という狙いがある。

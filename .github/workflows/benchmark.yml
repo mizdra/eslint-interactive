@@ -16,34 +16,21 @@ jobs:
     timeout-minutes: 15
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+      - uses: actions/setup-node@v3
         with:
           # Fix the version to stabilize results.
           node-version: 16.14.0
+          cache: 'pnpm'
 
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - run: pnpm install
 
-      - uses: actions/cache@v2
-        id: cache
-        with:
-          path: |
-            **/node_modules
-            ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: v1-${{ runner.os }}-16.14.0-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: v1-${{ runner.OS }}-16.14.0-yarn-
+      - name: pnpm run build
+        run: pnpm run build
 
-      - name: yarn install --frozen-lockfile
-        run: yarn install --frozen-lockfile
-        if: steps.cache.outputs.cache-hit != 'true'
-
-      - name: yarn run build
-        run: yarn run build
-
-      - name: yarn run postbuild:benchmark
-        run: yarn run postbuild:benchmark
+      - name: pnpm run postbuild:benchmark
+        run: pnpm run postbuild:benchmark
 
       - name: Convert jsonl to json
         run: jq -s '.' benchmark/result.jsonl > benchmark/result.json
