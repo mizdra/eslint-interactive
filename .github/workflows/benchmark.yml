@@ -24,6 +24,10 @@ jobs:
           node-version: 16.14.0
           cache: 'pnpm'
 
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+
       - run: pnpm install
 
       - name: pnpm run build
@@ -32,18 +36,18 @@ jobs:
       - name: pnpm run postbuild:benchmark
         run: pnpm run postbuild:benchmark
 
-      - name: Convert jsonl to json
-        run: jq -s '.' benchmark/result.jsonl > benchmark/result.json
+      # - name: Convert jsonl to json
+      #   run: jq -s '.' benchmark/result.jsonl > benchmark/result.json
 
-      - name: Upload benchmark
-        uses: benchmark-action/github-action-benchmark@v1
-        with:
-          tool: customSmallerIsBetter
-          output-file-path: benchmark/result.json
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          auto-push: ${{ github.ref == 'refs/heads/main' }}
-          comment-on-alert: true
-          fail-on-alert: true
-          alert-threshold: '150%'
-          # for test
-          # comment-always: true
+      # - name: Upload benchmark
+      #   uses: benchmark-action/github-action-benchmark@v1
+      #   with:
+      #     tool: customSmallerIsBetter
+      #     output-file-path: benchmark/result.json
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      #     auto-push: ${{ github.ref == 'refs/heads/main' }}
+      #     comment-on-alert: true
+      #     fail-on-alert: true
+      #     alert-threshold: '150%'
+      #     # for test
+      #     # comment-always: true
