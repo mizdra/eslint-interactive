@@ -26,7 +26,7 @@
     "lint:prettier": "prettier --check .",
     "test": "FORCE_HYPERLINK=1 NODE_OPTIONS=\"--experimental-vm-modules --experimental-import-meta-resolve $NODE_OPTIONS\" jest --colors",
     "postbuild:test": "./run-e2e-test.sh",
-    "postbuild:benchmark": "deno run --compat --unstable --allow-env --allow-read --allow-write benchmark/run-on-deno.mjs"
+    "postbuild:benchmark": "deno run --compat --unstable --import-map=benchmark/import_map.json --allow-env --allow-read --allow-write benchmark/run-on-deno.mjs"
   },
   "prettier": "@mizdra/prettier-config-mizdra",
   "packageManager": "pnpm@7.1.7",
