@@ -55,6 +55,7 @@ export type Config = {
   rulePaths?: string[] | undefined;
   extensions?: string[] | undefined;
   formatterName?: string;
+  quiet?: boolean;
   cache?: boolean;
   cacheLocation?: string;
   cwd?: string;
@@ -65,6 +66,7 @@ export const DEFAULT_BASE_CONFIG = {
   cache: true,
   cacheLocation: join(getCacheDir(), '.eslintcache'),
   formatterName: 'codeframe',
+  quiet: false,
 };
 
 /**
