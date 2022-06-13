@@ -2,6 +2,7 @@ import { ESLint, Rule } from 'eslint';
 import {
   createFixToApplyAutoFixes,
   createFixToApplySuggestions,
+  createFixToConvertErrorToWarningPerFile,
   createFixToDisablePerFile,
   createFixToDisablePerLine,
   createFixToMakeFixableAndFix,
@@ -53,6 +54,8 @@ function createFixes(context: Rule.RuleContext, ruleOption: FixRuleOption, fixer
     fixes = createFixToDisablePerLine(fixContext, fix.args);
   } else if (fix.name === 'disablePerFile') {
     fixes = createFixToDisablePerFile(fixContext, fix.args);
+  } else if (fix.name === 'convertErrorToWarningPerFile') {
+    fixes = createFixToConvertErrorToWarningPerFile(fixContext, fix.args);
   } else if (fix.name === 'applySuggestions') {
     fixes = createFixToApplySuggestions(fixContext, fix.args);
   } else if (fix.name === 'makeFixableAndFix') {

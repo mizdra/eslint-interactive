@@ -40,6 +40,11 @@ export class SerializableCore {
   async disablePerFile(...args: Parameters<Core['disablePerFile']>): ReturnType<Core['disablePerFile']> {
     return proxy(await this.core.disablePerFile(...args));
   }
+  async convertErrorToWarningPerFile(
+    ...args: Parameters<Core['convertErrorToWarningPerFile']>
+  ): ReturnType<Core['convertErrorToWarningPerFile']> {
+    return proxy(await this.core.convertErrorToWarningPerFile(...args));
+  }
   async applySuggestions(
     results: ESLint.LintResult[],
     ruleIds: string[],

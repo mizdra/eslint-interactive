@@ -18,6 +18,7 @@ export type Action =
   | 'applyAutoFixes'
   | 'disablePerLine'
   | 'disablePerFile'
+  | 'convertErrorToWarningPerFile'
   | 'applySuggestions'
   | 'makeFixableAndFix'
   | 'reselectRules';

@@ -2,6 +2,7 @@ import { Remote } from 'comlink';
 import { ESLint } from 'eslint';
 import {
   doApplySuggestionsAction,
+  doConvertErrorToWarningPerFileAction,
   doDisablePerFileAction,
   doDisablePerLineAction,
   doFixAction,
@@ -57,6 +58,9 @@ export async function selectAction(
     return createCheckResultsScene(undo);
   } else if (selectedAction === 'disablePerFile') {
     const undo = await doDisablePerFileAction(core, results, selectedRuleIds);
+    return createCheckResultsScene(undo);
+  } else if (selectedAction === 'convertErrorToWarningPerFile') {
+    const undo = await doConvertErrorToWarningPerFileAction(core, results, selectedRuleIds);
     return createCheckResultsScene(undo);
   } else if (selectedAction === 'applySuggestions') {
     const undo = await doApplySuggestionsAction(core, results, selectedRuleIds);
