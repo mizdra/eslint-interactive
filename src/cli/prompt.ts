@@ -142,7 +142,7 @@ export async function promptToInputDescription(): Promise<string | undefined> {
     {
       name: 'description',
       type: 'input',
-      message: 'Leave a code comment with your reason for disabling (Optional)',
+      message: 'Leave a code comment with your reason for fixing (Optional)',
       onCancel,
     },
   ]);
