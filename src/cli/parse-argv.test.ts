@@ -25,6 +25,10 @@ describe('parseArgv', () => {
     expect(parseArgv([...baseArgs, '--format', 'foo']).formatterName).toBe('foo');
     expect(parseArgv([...baseArgs, '--format', '1']).formatterName).toBe('1');
   });
+  test('--quiet', () => {
+    expect(parseArgv([...baseArgs, '--quiet']).quiet).toBe(true);
+    expect(parseArgv([...baseArgs, '--no-quiet']).quiet).toBe(false);
+  });
   test('--cache', () => {
     expect(parseArgv([...baseArgs, '--cache']).cache).toBe(true);
     expect(parseArgv([...baseArgs, '--no-cache']).cache).toBe(false);

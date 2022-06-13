@@ -55,6 +55,7 @@ export type Config = {
   rulePaths?: string[] | undefined;
   extensions?: string[] | undefined;
   formatterName?: string;
+  quiet?: boolean;
   cache?: boolean;
   cacheLocation?: string;
   cwd?: string;
@@ -65,6 +66,7 @@ export const DEFAULT_BASE_CONFIG = {
   cache: true,
   cacheLocation: join(getCacheDir(), '.eslintcache'),
   formatterName: 'codeframe',
+  quiet: false,
 };
 
 /**
@@ -93,7 +95,8 @@ export class Core {
    */
   async lint(): Promise<ESLint.LintResult[]> {
     const eslint = new ESLint(this.baseOptions);
-    const results = await eslint.lintFiles(this.config.patterns);
+    let results = await eslint.lintFiles(this.config.patterns);
+    if (this.config.quiet) results = ESLint.getErrorResults(results);
     return results;
   }
 

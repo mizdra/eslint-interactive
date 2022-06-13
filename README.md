@@ -71,6 +71,7 @@ Options:
   --ext             Specify JavaScript file extensions                   [array]
   --format          Specify the format to be used for the `Display problem messa
                     ges` action                  [string] [default: "codeframe"]
+  --quiet           Report errors only                [boolean] [default: false]
   --cache           Only check changed files           [boolean] [default: true]
   --cache-location  Path to the cache file or directory
                                          [string] [default: "/tmp/.eslintcache"]

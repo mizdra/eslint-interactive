@@ -46,6 +46,10 @@ function normalizeResults(results: ESLint.LintResult[]): ESLint.LintResult[] {
   });
 }
 
+function countWarnings(results: ESLint.LintResult[]): number {
+  return results.map((result) => result.warningCount).reduce((acc, num) => acc + num, 0);
+}
+
 beforeEach(async () => {
   await setupFixturesCopy();
 });
@@ -90,9 +94,26 @@ describe('Core', () => {
       cwd: undefined,
     });
   });
-  test('lint', async () => {
-    const results = await core.lint();
-    expect(normalizeResults(results)).toMatchSnapshot();
+  describe('lint', () => {
+    test('returns lint results', async () => {
+      const results = await core.lint();
+      expect(normalizeResults(results)).toMatchSnapshot();
+    });
+    test('filters warnings with --quiet option', async () => {
+      const coreWithoutQuiet = new Core({
+        ...core.config,
+        quiet: false,
+      });
+      const resultsWithoutQuiet = await coreWithoutQuiet.lint();
+      expect(countWarnings(resultsWithoutQuiet)).not.toEqual(0);
+
+      const coreWithQuiet = new Core({
+        ...core.config,
+        quiet: true,
+      });
+      const resultsWithQuiet = await coreWithQuiet.lint();
+      expect(countWarnings(resultsWithQuiet)).toEqual(0);
+    });
   });
   // This test fails because the documentation url is not supported in eslint 7.0.0. Therefore, ignore this test.
   testIf(ESLint.version !== '7.0.0')('printSummaryOfResults', async () => {

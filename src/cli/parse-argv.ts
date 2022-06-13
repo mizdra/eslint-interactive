@@ -22,6 +22,11 @@ export function parseArgv(argv: string[]): Config {
       describe: 'Specify the format to be used for the `Display problem messages` action',
       default: DEFAULT_BASE_CONFIG.formatterName,
     })
+    .option('quiet', {
+      type: 'boolean',
+      describe: 'Report errors only',
+      default: DEFAULT_BASE_CONFIG.quiet,
+    })
     .option('cache', {
       type: 'boolean',
       describe: 'Only check changed files',
@@ -46,6 +51,7 @@ export function parseArgv(argv: string[]): Config {
     rulePaths,
     extensions,
     formatterName,
+    quiet: parsedArgv.quiet,
     cache: parsedArgv.cache,
     cacheLocation: parsedArgv['cache-location'],
   };
