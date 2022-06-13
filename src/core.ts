@@ -95,7 +95,8 @@ export class Core {
    */
   async lint(): Promise<ESLint.LintResult[]> {
     const eslint = new ESLint(this.baseOptions);
-    const results = await eslint.lintFiles(this.config.patterns);
+    let results = await eslint.lintFiles(this.config.patterns);
+    if (this.config.quiet) results = ESLint.getErrorResults(results);
     return results;
   }
 

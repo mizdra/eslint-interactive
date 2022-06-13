@@ -146,7 +146,7 @@ const jsx = (
 
 exports[`Core disablePerLine 2`] = `""`;
 
-exports[`Core lint 1`] = `
+exports[`Core lint returns lint results 1`] = `
 Array [
   Object {
     "errorCount": 0,
