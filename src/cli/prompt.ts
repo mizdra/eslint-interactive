@@ -83,6 +83,7 @@ export async function promptToInputAction(
     { name: 'applyAutoFixes', message: '🔧 Run `eslint --fix`', disabled: foldedStatistics.isFixableCount === 0 },
     { name: 'disablePerLine', message: '🔧 Disable per line' },
     { name: 'disablePerFile', message: '🔧 Disable per file' },
+    { name: 'convertErrorToWarningPerFile', message: '🔧 Convert error to warning per file' },
     {
       name: 'applySuggestions',
       message: '🔧 Apply suggestions (experimental, for experts)',
@@ -133,7 +134,7 @@ export async function promptToInputDisplayMode(): Promise<DisplayMode> {
 }
 
 /**
- * Ask the user a description to leave in disable comment.
+ * Ask the user a description to leave in directive.
  * @returns The description
  */
 export async function promptToInputDescription(): Promise<string | undefined> {
