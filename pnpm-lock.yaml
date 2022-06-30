@@ -11,7 +11,7 @@ specifiers:
   '@mizdra/prettier-config-mizdra': ^1.0.0
   '@types/eslint': ^8.4.1
   '@types/estraverse': ^5.1.1
-  '@types/estree': ^0.0.51
+  '@types/estree': ^0.0.52
   '@types/jest': ^27.4.1
   '@types/node': ^14.14.10
   '@types/terminal-link': ^1.2.0
@@ -67,7 +67,7 @@ devDependencies:
   '@mizdra/prettier-config-mizdra': 1.0.0_prettier@2.6.0
   '@types/eslint': 8.4.1
   '@types/estraverse': 5.1.1
-  '@types/estree': 0.0.51
+  '@types/estree': 0.0.52
   '@types/jest': 27.4.1
   '@types/node': 14.14.17
   '@types/terminal-link': 1.2.0
@@ -909,18 +909,18 @@ packages:
   /@types/eslint/8.4.1:
     resolution: {integrity: sha512-GE44+DNEyxxh2Kc6ro/VkIj+9ma0pO0bwv9+uHSyBrikYOHr8zYcdPvnBOp1aw8s+CjRvuSx7CyWqRrNFQ59mA==}
     dependencies:
-      '@types/estree': 0.0.51
+      '@types/estree': 0.0.52
       '@types/json-schema': 7.0.9
     dev: true
 
   /@types/estraverse/5.1.1:
     resolution: {integrity: sha512-AUnklMz90PdmlN4TFqnHC5hP9eRwNQdXgI8aXsSVVMMr2U6Nwo7n4QJxzOiUtVZy/0JFg5oA4PxVh8UBtUELyw==}
     dependencies:
-      '@types/estree': 0.0.51
+      '@types/estree': 0.0.52
     dev: true
 
-  /@types/estree/0.0.51:
-    resolution: {integrity: sha512-CuPgU6f3eT/XgKKPqKd/gLZV1Xmvf1a2R5POBOGQa6uv82xpls89HU5zKeVoyR8XzHd1RGNOlQlvUe3CFkjWNQ==}
+  /@types/estree/0.0.52:
+    resolution: {integrity: sha512-BZWrtCU0bMVAIliIV+HJO1f1PR41M7NKjfxrFJwwhKI1KwhwOxYw1SXg9ao+CIMt774nFuGiG6eU+udtbEI9oQ==}
     dev: true
 
   /@types/graceful-fs/4.1.5:
