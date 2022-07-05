@@ -176,6 +176,20 @@ export class Core {
   }
 
   /**
+   * Convert error to warning per file.
+   * @param results The lint results of the project to convert
+   * @param ruleIds The rule ids to convert
+   * @param description The comment explaining the reason for converting
+   */
+  async convertErrorToWarningPerFile(
+    results: ESLint.LintResult[],
+    ruleIds: string[],
+    description?: string,
+  ): Promise<Undo> {
+    return await this.fix(results, ruleIds, { name: 'convertErrorToWarningPerFile', args: { description } });
+  }
+
+  /**
    * Apply suggestions.
    * @param results The lint results of the project to apply suggestions
    * @param ruleIds The rule ids to apply suggestions

@@ -7,6 +7,10 @@ export { type FixToApplyAutoFixesArgs, createFixToApplyAutoFixes } from './apply
 export { type FixToDisablePerFileArgs, createFixToDisablePerFile } from './disable-per-file.js';
 export { type FixToDisablePerLineArgs, createFixToDisablePerLine } from './disable-per-line.js';
 export {
+  type FixToConvertErrorToWarningPerFileArgs,
+  createFixToConvertErrorToWarningPerFile,
+} from './convert-error-to-warning-per-file.js';
+export {
   type FixableMaker,
   type FixToMakeFixableAndFixArgs,
   createFixToMakeFixableAndFix,

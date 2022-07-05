@@ -7,6 +7,7 @@ import {
   mergeRuleIdsAndDescription,
   findShebang,
   filterResultsByRuleId,
+  toInlineConfigCommentText,
 } from './eslint.js';
 
 const range: [number, number] = [0, 1];
@@ -207,7 +208,7 @@ describe('parseCommentAsESLintDisableComment', () => {
   });
 });
 
-describe('createCommentNodeText', () => {
+describe('toCommentText', () => {
   test('Line 形式のコメントが作成できる', () => {
     expect(toCommentText({ type: 'Line', scope: 'next-line', ruleIds: ['a', 'b'] })).toMatchInlineSnapshot(
       `"// eslint-disable-next-line a, b"`,
@@ -229,6 +230,22 @@ describe('createCommentNodeText', () => {
       toCommentText({ type: 'Line', scope: 'file', ruleIds: ['a', 'b'], description: 'foo' }),
     ).toMatchInlineSnapshot(`"// eslint-disable a, b -- foo"`);
   });
+});
+
+test('toInlineConfigCommentText', () => {
+  expect(toInlineConfigCommentText({ rulesRecord: { a: 0, b: 1, c: 2 } })).toMatchInlineSnapshot(
+    `"/* eslint a: 0, b: 1, c: 2 */"`,
+  );
+  expect(
+    toInlineConfigCommentText({
+      rulesRecord: { a: 'off', b: ['warn'], c: ['error', 'option1', 'option2'] },
+    }),
+  ).toMatchInlineSnapshot(`"/* eslint a: \\"off\\", b: [\\"warn\\"], c: [\\"error\\",\\"option1\\",\\"option2\\"] */"`);
+  expect(
+    toInlineConfigCommentText({
+      rulesRecord: { 'plugin/a': 0, 'foo-bar/b': 0, '@baz/c': 0 },
+    }),
+  ).toMatchInlineSnapshot(`"/* eslint plugin/a: 0, foo-bar/b: 0, @baz/c: 0 */"`);
 });
 
 describe('filterResultsByRuleId', () => {

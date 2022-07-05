@@ -1,4 +1,4 @@
-import { AST, ESLint } from 'eslint';
+import { AST, ESLint, Linter } from 'eslint';
 import type { Comment } from 'estree';
 import { unique } from './array.js';
 import { notEmpty } from './type-check.js';
@@ -94,6 +94,30 @@ export function toCommentText({ type, scope, ruleIds, description }: Omit<Disabl
     } else {
       return `/* ${header} ${ruleList} -- ${description} */`;
     }
+  }
+}
+
+export type InlineConfigComment = {
+  description?: string;
+  rulesRecord: Partial<Linter.RulesRecord>;
+  range: [number, number];
+};
+
+/**
+ * Convert `InlineConfigComment` to comment text.
+ */
+export function toInlineConfigCommentText({ rulesRecord, description }: Omit<InlineConfigComment, 'range'>): string {
+  const header = 'eslint';
+  const rulesRecordText = Object.entries(rulesRecord)
+    .map(([ruleId, ruleEntry]) => {
+      // TODO: Inherit options of the rule set by the user in eslintrc if the option exists.
+      return `${ruleId}: ${JSON.stringify(ruleEntry)}`;
+    })
+    .join(', ');
+  if (description === undefined) {
+    return `/* ${header} ${rulesRecordText} */`;
+  } else {
+    return `/* ${header} ${rulesRecordText} -- ${description} */`;
   }
 }
 
