@@ -110,6 +110,7 @@ export function toInlineConfigCommentText({ rulesRecord, description }: Omit<Inl
   const header = 'eslint';
   const rulesRecordText = Object.entries(rulesRecord)
     .map(([ruleId, ruleEntry]) => {
+      // TODO: Inherit options of the rule set by the user in eslintrc if the option exists.
       return `${ruleId}: ${JSON.stringify(ruleEntry)}`;
     })
     .join(', ');
