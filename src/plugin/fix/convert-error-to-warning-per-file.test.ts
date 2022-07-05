@@ -41,6 +41,18 @@ describe('convert-error-to-warning-per-file', () => {
       var val"
     `);
   });
+  test('combines directives into one', async () => {
+    expect(
+      await tester.test({
+        code: ['var val', 'var val'],
+        ruleIdsToFix: ['semi'],
+      }),
+    ).toMatchInlineSnapshot(`
+      "/* eslint semi: 1 */
+      var val
+      var val"
+    `);
+  });
   test('`eslint` directive has precedence over `@ts-check`', async () => {
     expect(
       await tester.test({
