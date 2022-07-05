@@ -9,7 +9,13 @@ export type FixToConvertErrorToWarningPerFileArgs = {
 };
 
 function generateFix(context: FixContext, description?: string): Rule.Fix | null {
-  const ruleIdsToConverting = unique(context.messages.map((message) => message.ruleId).filter(notEmpty));
+  const ruleIdsToConverting = unique(
+    context.messages
+      // Ignore warnings
+      .filter((message) => message.severity === 2)
+      .map((message) => message.ruleId)
+      .filter(notEmpty),
+  );
   if (ruleIdsToConverting.length === 0) return null;
 
   const rulesRecordToConverting: Partial<Linter.RulesRecord> = Object.fromEntries(

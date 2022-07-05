@@ -41,6 +41,14 @@ describe('convert-error-to-warning-per-file', () => {
       var val"
     `);
   });
+  test('ignores warnings', async () => {
+    expect(
+      await tester.test({
+        code: ['/* eslint semi: 1 */', 'var val'],
+        ruleIdsToFix: ['semi'],
+      }),
+    ).toMatchInlineSnapshot(`null`);
+  });
   test('combines directives into one', async () => {
     expect(
       await tester.test({
