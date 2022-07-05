@@ -207,7 +207,7 @@ describe('parseCommentAsESLintDisableComment', () => {
   });
 });
 
-describe('createCommentNodeText', () => {
+describe('toCommentText', () => {
   test('Line 形式のコメントが作成できる', () => {
     expect(toCommentText({ type: 'Line', scope: 'next-line', ruleIds: ['a', 'b'] })).toMatchInlineSnapshot(
       `"// eslint-disable-next-line a, b"`,
