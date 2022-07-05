@@ -34,6 +34,7 @@ It also supports the following actions in addition to `eslint --fix`. All action
 - Run `eslint --fix`
 - Disable per line (by `// eslint-disable-next-line <rule-name>`)
 - Disable per file (`/* eslint-disable <rule-name> */`)
+- Convert error to warning per file (`/* eslint <rule-name>: 1 */`)
 - Apply suggestions
 - Make forcibly fixable and run `eslint --fix`
 
@@ -97,6 +98,8 @@ Actions can be executed per rule.
   - Add disable comments (`// eslint-disable-next-line <rule-name>`) per line.
 - Disable per file
   - Add disable comments (`// eslint-disable <rule-name>`) per file.
+- Convert error to warning per file
+  - Add inline config comments (`/* eslint <rule-name>: 1 */`) per file.
 - Apply suggestions (experimental, for experts)
   - Select one of the applicable suggestions and apply it. ([What's _suggestions_?](#whats-suggestions))
   - Users can write JavaScript code to programmatically select the suggestion to be applied.
