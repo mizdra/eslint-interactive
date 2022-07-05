@@ -68,8 +68,8 @@ export class FixTester<T extends FixName> {
           } as FixRuleOption,
         ],
       },
-      // NOTE: fix with `fix` rule.
-      fix: true,
+      // NOTE: Only fix the `fix` rule problems.
+      fix: (message) => message.ruleId === 'eslint-interactive/fix',
     });
     const resultsForFix = await eslintForFix.lintText(code, { filePath });
 

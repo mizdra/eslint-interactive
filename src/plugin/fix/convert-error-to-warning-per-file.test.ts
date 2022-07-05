@@ -15,8 +15,7 @@ describe('convert-error-to-warning-per-file', () => {
       }),
     ).toMatchInlineSnapshot(`
       "/* eslint semi: 1 */
-      /* eslint semi: 1 */
-      var val;"
+      var val"
     `);
   });
   test('fixes multiple rules', async () => {
@@ -27,8 +26,7 @@ describe('convert-error-to-warning-per-file', () => {
       }),
     ).toMatchInlineSnapshot(`
       "/* eslint no-var: 1, semi: 1 */
-      /* eslint no-var: 1, semi: 1 */
-      var val;"
+      var val"
     `);
   });
   test('can add description', async () => {
@@ -40,8 +38,7 @@ describe('convert-error-to-warning-per-file', () => {
       }),
     ).toMatchInlineSnapshot(`
       "/* eslint semi: 1 -- comment */
-      /* eslint semi: 1 -- comment */
-      var val;"
+      var val"
     `);
   });
   test('`eslint` directive has precedence over `@ts-check`', async () => {
