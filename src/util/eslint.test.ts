@@ -1,6 +1,5 @@
 import { ESLint } from 'eslint';
 import { fakeLintMessage, fakeLintResult } from '../test-util/eslint.js';
-import { toInlineConfigCommentText } from './eslint';
 import {
   scanUsedPluginsFromResults,
   toCommentText,
@@ -8,6 +7,7 @@ import {
   mergeRuleIdsAndDescription,
   findShebang,
   filterResultsByRuleId,
+  toInlineConfigCommentText,
 } from './eslint.js';
 
 const range: [number, number] = [0, 1];
@@ -238,9 +238,9 @@ test('toInlineConfigCommentText', () => {
   );
   expect(
     toInlineConfigCommentText({
-      rulesRecord: { a: '0', b: 'warning', c: ['error', 'option1', 'option2'] },
+      rulesRecord: { a: 'off', b: ['warn'], c: ['error', 'option1', 'option2'] },
     }),
-  ).toMatchInlineSnapshot(`"/* eslint a: \\"0\\", b: \\"warning\\", c: [\\"error\\",\\"option1\\",\\"option2\\"] */"`);
+  ).toMatchInlineSnapshot(`"/* eslint a: \\"off\\", b: [\\"warn\\"], c: [\\"error\\",\\"option1\\",\\"option2\\"] */"`);
   expect(
     toInlineConfigCommentText({
       rulesRecord: { 'plugin/a': 0, 'foo-bar/b': 0, '@baz/c': 0 },
