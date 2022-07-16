@@ -39,7 +39,7 @@ function normalizeResults(results: ESLint.LintResult[]): ESLint.LintResult[] {
       // Remove the source because the snapshot will be large
       source: 'ommitted',
       // Remove the suppressedMessages because this field is supported in eslint v8.8.0+
-      suppressedMessages: 'omitted',
+      suppressedMessages: [],
       // Remove because this field is not supported in eslint v7.0.0
       fatalErrorCount: NaN,
     };
