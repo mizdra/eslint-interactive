@@ -1,10 +1,7 @@
 lockfileVersion: 5.4
 
-overrides:
-  '@babel/core': ~7.18.6
-
 specifiers:
-  '@babel/core': ~7.18.6
+  '@babel/core': ^7.18.6
   '@babel/preset-typescript': ^7.18.6
   '@jest/types': ^28.1.0
   '@mizdra/eslint-config-mizdra': ^1.2.0
