@@ -36,7 +36,8 @@ export function parseArgv(argv: string[]): Config {
       type: 'string',
       describe: `Path to the cache file or directory`,
       default: DEFAULT_BASE_CONFIG.cacheLocation,
-    }).argv;
+    })
+    .parseSync();
   // NOTE: convert `string` type because yargs convert `'10'` (`string` type) into `10` (`number` type)
   // and `lintFiles` only accepts `string[]`.
   const patterns = parsedArgv._.map((pattern) => pattern.toString());

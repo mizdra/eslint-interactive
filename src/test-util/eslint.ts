@@ -29,6 +29,7 @@ export function fakeLintResult(arg?: Partial<ESLint.LintResult>): ESLint.LintRes
     fixableErrorCount: 0,
     fixableWarningCount: 0,
     usedDeprecatedRules: [],
+    suppressedMessages: [],
     ...arg,
   };
 }
