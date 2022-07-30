@@ -5,7 +5,7 @@
   "build": {
     "dockerfile": "Dockerfile",
     "args": {
-      "VARIANT": "hirsute"
+      "VARIANT": "jammy"
     }
   },
   // Mac では OS のファイルシステムと Docker の相性が悪く、Docker コンテナ内からのホストのファイルの読み書きが
@@ -32,6 +32,6 @@
   "features": {
     "git": "latest",
     "github-cli": "latest",
-    "node": "16.13.1"
+    "node": "18"
   }
 }
