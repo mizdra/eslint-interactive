@@ -39,7 +39,7 @@
     "@types/eslint": "^8.4.5",
     "@types/estraverse": "^5.1.1",
     "@types/estree": "^1.0.0",
-    "@types/jest": "^28.1.6",
+    "@types/jest": "^28.1.8",
     "@types/node": "^18.0.5",
     "@types/terminal-link": "^1.2.0",
     "@types/yargs": "^17.0.10",
