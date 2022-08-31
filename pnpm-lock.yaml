@@ -9,7 +9,7 @@ specifiers:
   '@types/eslint': ^8.4.5
   '@types/estraverse': ^5.1.1
   '@types/estree': ^1.0.0
-  '@types/jest': ^28.1.6
+  '@types/jest': ^28.1.8
   '@types/node': ^18.0.5
   '@types/terminal-link': ^1.2.0
   '@types/yargs': ^17.0.10
@@ -65,7 +65,7 @@ devDependencies:
   '@types/eslint': 8.4.5
   '@types/estraverse': 5.1.1
   '@types/estree': 1.0.0
-  '@types/jest': 28.1.6
+  '@types/jest': 28.1.8
   '@types/node': 18.0.5
   '@types/terminal-link': 1.2.0
   '@types/yargs': 17.0.10
@@ -994,10 +994,10 @@ packages:
       '@types/istanbul-lib-report': 3.0.0
     dev: true
 
-  /@types/jest/28.1.6:
-    resolution: {integrity: sha512-0RbGAFMfcBJKOmqRazM8L98uokwuwD5F8rHrv/ZMbrZBwVOWZUyPG6VFNscjYr/vjM3Vu4fRrCPbOs42AfemaQ==}
+  /@types/jest/28.1.8:
+    resolution: {integrity: sha512-8TJkV++s7B6XqnDrzR1m/TT0A0h948Pnl/097veySPN67VRAgQ4gZ7n2KfJo2rVq6njQjdxU3GCCyDvAeuHoiw==}
     dependencies:
-      jest-matcher-utils: 28.1.3
+      expect: 28.1.3
       pretty-format: 28.1.3
     dev: true
 
