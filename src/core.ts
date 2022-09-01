@@ -1,6 +1,6 @@
 import { join } from 'path';
 import { fileURLToPath } from 'url';
-import { ESLint } from 'eslint';
+import { ESLint, Linter } from 'eslint';
 import isInstalledGlobally from 'is-installed-globally';
 import { format } from './formatter/index.js';
 import {
@@ -50,23 +50,24 @@ async function getUsedRuleIds(targetFilePaths: string[], options: ESLint.Options
 export type Undo = () => Promise<void>;
 
 /** The config of eslint-interactive */
-export type Config = {
+export type Config = Pick<
+  ESLint.Options,
+  'extensions' | 'rulePaths' | 'cache' | 'cacheLocation' | 'useEslintrc' | 'overrideConfig' | 'cwd'
+> & {
   patterns: string[];
-  rulePaths?: string[] | undefined;
-  extensions?: string[] | undefined;
   formatterName?: string;
   quiet?: boolean;
-  cache?: boolean;
-  cacheLocation?: string;
-  cwd?: string;
 };
 
 /** Default config of `Core` */
-export const DEFAULT_BASE_CONFIG = {
+export const DEFAULT_BASE_CONFIG: Partial<Config> = {
+  cwd: undefined,
   cache: true,
   cacheLocation: join(getCacheDir(), '.eslintcache'),
+  extensions: undefined,
   formatterName: 'codeframe',
   quiet: false,
+  rulePaths: undefined,
 };
 
 /**
@@ -79,14 +80,12 @@ export class Core {
   readonly baseOptions: ESLint.Options;
 
   constructor(config: Config) {
-    this.config = config;
-    this.baseOptions = {
-      cache: this.config.cache ?? DEFAULT_BASE_CONFIG.cache,
-      cacheLocation: this.config.cacheLocation ?? DEFAULT_BASE_CONFIG.cacheLocation,
-      rulePaths: this.config.rulePaths,
-      extensions: this.config.extensions,
-      cwd: this.config.cwd,
+    this.config = {
+      ...DEFAULT_BASE_CONFIG,
+      ...config,
     };
+    const { patterns, formatterName, quiet, ...baseOptions } = this.config;
+    this.baseOptions = baseOptions;
   }
 
   /**
@@ -111,7 +110,7 @@ export class Core {
     // get `rulesMeta` from `results`
     const eslint = new ESLint({
       ...this.baseOptions,
-      overrideConfig: { plugins },
+      overrideConfig: { ...this.baseOptions.overrideConfig, plugins },
     });
     // NOTE: `getRulesMetaForResults` is a feature added in ESLint 7.29.0.
     // Therefore, the function may not exist in versions lower than 7.29.0.
