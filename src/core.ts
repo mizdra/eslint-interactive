@@ -1,6 +1,6 @@
 import { join } from 'path';
 import { fileURLToPath } from 'url';
-import { ESLint, Linter } from 'eslint';
+import { ESLint } from 'eslint';
 import isInstalledGlobally from 'is-installed-globally';
 import { format } from './formatter/index.js';
 import {
