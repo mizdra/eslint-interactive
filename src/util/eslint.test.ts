@@ -240,7 +240,7 @@ test('toInlineConfigCommentText', () => {
     toInlineConfigCommentText({
       rulesRecord: { a: 'off', b: ['warn'], c: ['error', 'option1', 'option2'] },
     }),
-  ).toMatchInlineSnapshot(`"/* eslint a: \\"off\\", b: [\\"warn\\"], c: [\\"error\\",\\"option1\\",\\"option2\\"] */"`);
+  ).toMatchInlineSnapshot(`"/* eslint a: "off", b: ["warn"], c: ["error","option1","option2"] */"`);
   expect(
     toInlineConfigCommentText({
       rulesRecord: { 'plugin/a': 0, 'foo-bar/b': 0, '@baz/c': 0 },

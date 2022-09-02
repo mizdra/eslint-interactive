@@ -86,16 +86,16 @@ exports[`Core applyAutoFixes fix overlapped problems 1`] = `
 exports[`Core applyAutoFixes fix overlapped problems 2`] = `""`;
 
 exports[`Core applySuggestions 1`] = `
-"\\"\\\\'\\";
-'\\\\\\"';
+""\\'";
+'\\"';
 if (!('key1' in {})) 0;
-if (!('key2' in {})) \\"\\\\'\\";
+if (!('key2' in {})) "\\'";
 if (!(\`
 key3
-\` in {})) \\"\\\\'\\";
+\` in {})) "\\'";
 if (!(\`
 key4
-\` in {})) \\"\\\\'\\";
+\` in {})) "\\'";
 if (!('key5' in {})) 0;
 "
 `;
@@ -147,32 +147,32 @@ const jsx = (
 exports[`Core disablePerLine 2`] = `""`;
 
 exports[`Core lint returns lint results 1`] = `
-Array [
-  Object {
+[
+  {
     "errorCount": 0,
     "fatalErrorCount": NaN,
     "filePath": "/fixtures-tmp/.eslintrc.js",
     "fixableErrorCount": 0,
     "fixableWarningCount": 0,
-    "messages": Array [],
+    "messages": [],
     "source": "ommitted",
-    "suppressedMessages": Array [],
-    "usedDeprecatedRules": Array [],
+    "suppressedMessages": [],
+    "usedDeprecatedRules": [],
     "warningCount": 0,
   },
-  Object {
+  {
     "errorCount": 19,
     "fatalErrorCount": NaN,
     "filePath": "/fixtures-tmp/index.js",
     "fixableErrorCount": 18,
     "fixableWarningCount": 0,
-    "messages": Array [
-      Object {
+    "messages": [
+      {
         "column": 32,
         "endColumn": 1,
         "endLine": 2,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             31,
             31,
           ],
@@ -185,12 +185,12 @@ Array [
         "ruleId": "semi",
         "severity": 2,
       },
-      Object {
+      {
         "column": 1,
         "endColumn": 32,
         "endLine": 2,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             0,
             64,
           ],
@@ -204,12 +204,12 @@ import { mul } from './lib/mul'
         "ruleId": "import/order",
         "severity": 2,
       },
-      Object {
+      {
         "column": 32,
         "endColumn": 1,
         "endLine": 3,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             63,
             63,
           ],
@@ -222,12 +222,12 @@ import { mul } from './lib/mul'
         "ruleId": "semi",
         "severity": 2,
       },
-      Object {
+      {
         "column": 32,
         "endColumn": 1,
         "endLine": 4,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             95,
             95,
           ],
@@ -240,12 +240,12 @@ import { mul } from './lib/mul'
         "ruleId": "semi",
         "severity": 2,
       },
-      Object {
+      {
         "column": 1,
         "endColumn": 32,
         "endLine": 4,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             0,
             128,
           ],
@@ -261,12 +261,12 @@ import { sub } from './lib/sub'
         "ruleId": "import/order",
         "severity": 2,
       },
-      Object {
+      {
         "column": 32,
         "endColumn": 1,
         "endLine": 5,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             127,
             127,
           ],
@@ -279,12 +279,12 @@ import { sub } from './lib/sub'
         "ruleId": "semi",
         "severity": 2,
       },
-      Object {
+      {
         "column": 1,
         "endColumn": 37,
         "endLine": 5,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             0,
             165,
           ],
@@ -301,12 +301,12 @@ import { exp } from './lib/exp'
         "ruleId": "import/order",
         "severity": 2,
       },
-      Object {
+      {
         "column": 37,
         "endColumn": 1,
         "endLine": 6,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             164,
             164,
           ],
@@ -319,12 +319,12 @@ import { exp } from './lib/exp'
         "ruleId": "semi",
         "severity": 2,
       },
-      Object {
+      {
         "column": 21,
         "endColumn": 1,
         "endLine": 8,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             186,
             186,
           ],
@@ -337,7 +337,7 @@ import { exp } from './lib/exp'
         "ruleId": "semi",
         "severity": 2,
       },
-      Object {
+      {
         "column": 5,
         "endColumn": 9,
         "endLine": 8,
@@ -348,12 +348,12 @@ import { exp } from './lib/exp'
         "ruleId": "prefer-const",
         "severity": 2,
       },
-      Object {
+      {
         "column": 19,
         "endColumn": 1,
         "endLine": 9,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             205,
             205,
           ],
@@ -366,7 +366,7 @@ import { exp } from './lib/exp'
         "ruleId": "semi",
         "severity": 2,
       },
-      Object {
+      {
         "column": 5,
         "endColumn": 9,
         "endLine": 9,
@@ -377,12 +377,12 @@ import { exp } from './lib/exp'
         "ruleId": "prefer-const",
         "severity": 2,
       },
-      Object {
+      {
         "column": 19,
         "endColumn": 1,
         "endLine": 10,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             224,
             224,
           ],
@@ -395,7 +395,7 @@ import { exp } from './lib/exp'
         "ruleId": "semi",
         "severity": 2,
       },
-      Object {
+      {
         "column": 5,
         "endColumn": 9,
         "endLine": 10,
@@ -406,12 +406,12 @@ import { exp } from './lib/exp'
         "ruleId": "prefer-const",
         "severity": 2,
       },
-      Object {
+      {
         "column": 19,
         "endColumn": 1,
         "endLine": 11,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             243,
             243,
           ],
@@ -424,7 +424,7 @@ import { exp } from './lib/exp'
         "ruleId": "semi",
         "severity": 2,
       },
-      Object {
+      {
         "column": 5,
         "endColumn": 9,
         "endLine": 11,
@@ -435,7 +435,7 @@ import { exp } from './lib/exp'
         "ruleId": "prefer-const",
         "severity": 2,
       },
-      Object {
+      {
         "column": 5,
         "endColumn": 9,
         "endLine": 11,
@@ -446,12 +446,12 @@ import { exp } from './lib/exp'
         "ruleId": "no-unused-vars",
         "severity": 2,
       },
-      Object {
+      {
         "column": 37,
         "endColumn": 1,
         "endLine": 12,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             280,
             280,
           ],
@@ -464,12 +464,12 @@ import { exp } from './lib/exp'
         "ruleId": "semi",
         "severity": 2,
       },
-      Object {
+      {
         "column": 23,
         "endColumn": 1,
         "endLine": 14,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             304,
             304,
           ],
@@ -484,18 +484,18 @@ import { exp } from './lib/exp'
       },
     ],
     "source": "ommitted",
-    "suppressedMessages": Array [],
-    "usedDeprecatedRules": Array [],
+    "suppressedMessages": [],
+    "usedDeprecatedRules": [],
     "warningCount": 0,
   },
-  Object {
+  {
     "errorCount": 7,
     "fatalErrorCount": NaN,
     "filePath": "/fixtures-tmp/lib/add-disable-comment.jsx",
     "fixableErrorCount": 1,
     "fixableWarningCount": 0,
-    "messages": Array [
-      Object {
+    "messages": [
+      {
         "column": 7,
         "endColumn": 8,
         "endLine": 1,
@@ -506,7 +506,7 @@ import { exp } from './lib/exp'
         "ruleId": "no-unused-vars",
         "severity": 2,
       },
-      Object {
+      {
         "column": 7,
         "endColumn": 8,
         "endLine": 3,
@@ -517,7 +517,7 @@ import { exp } from './lib/exp'
         "ruleId": "no-unused-vars",
         "severity": 2,
       },
-      Object {
+      {
         "column": 7,
         "endColumn": 8,
         "endLine": 5,
@@ -528,7 +528,7 @@ import { exp } from './lib/exp'
         "ruleId": "no-unused-vars",
         "severity": 2,
       },
-      Object {
+      {
         "column": 7,
         "endColumn": 8,
         "endLine": 7,
@@ -539,12 +539,12 @@ import { exp } from './lib/exp'
         "ruleId": "no-unused-vars",
         "severity": 2,
       },
-      Object {
+      {
         "column": 12,
         "endColumn": 1,
         "endLine": 8,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             173,
             173,
           ],
@@ -557,7 +557,7 @@ import { exp } from './lib/exp'
         "ruleId": "semi",
         "severity": 2,
       },
-      Object {
+      {
         "column": 11,
         "endColumn": 18,
         "endLine": 11,
@@ -567,7 +567,7 @@ import { exp } from './lib/exp'
         "ruleId": "ban-exponentiation-operator",
         "severity": 2,
       },
-      Object {
+      {
         "column": 11,
         "endColumn": 18,
         "endLine": 13,
@@ -579,32 +579,32 @@ import { exp } from './lib/exp'
       },
     ],
     "source": "ommitted",
-    "suppressedMessages": Array [],
-    "usedDeprecatedRules": Array [],
+    "suppressedMessages": [],
+    "usedDeprecatedRules": [],
     "warningCount": 0,
   },
-  Object {
+  {
     "errorCount": 10,
     "fatalErrorCount": NaN,
     "filePath": "/fixtures-tmp/lib/apply-suggestion.js",
     "fixableErrorCount": 0,
     "fixableWarningCount": 0,
-    "messages": Array [
-      Object {
+    "messages": [
+      {
         "column": 2,
         "endColumn": 3,
         "endLine": 1,
         "line": 1,
-        "message": "Unnecessary escape character: \\\\'.",
+        "message": "Unnecessary escape character: \\'.",
         "messageId": "unnecessaryEscape",
         "nodeType": "Literal",
         "ruleId": "no-useless-escape",
         "severity": 2,
-        "suggestions": Array [
-          Object {
-            "desc": "Remove the \`\\\\\`. This maintains the current functionality.",
-            "fix": Object {
-              "range": Array [
+        "suggestions": [
+          {
+            "desc": "Remove the \`\\\`. This maintains the current functionality.",
+            "fix": {
+              "range": [
                 1,
                 2,
               ],
@@ -612,34 +612,34 @@ import { exp } from './lib/exp'
             },
             "messageId": "removeEscape",
           },
-          Object {
-            "desc": "Replace the \`\\\\\` with \`\\\\\\\\\` to include the actual backslash character.",
-            "fix": Object {
-              "range": Array [
+          {
+            "desc": "Replace the \`\\\` with \`\\\\\` to include the actual backslash character.",
+            "fix": {
+              "range": [
                 1,
                 1,
               ],
-              "text": "\\\\",
+              "text": "\\",
             },
             "messageId": "escapeBackslash",
           },
         ],
       },
-      Object {
+      {
         "column": 2,
         "endColumn": 3,
         "endLine": 2,
         "line": 2,
-        "message": "Unnecessary escape character: \\\\\\".",
+        "message": "Unnecessary escape character: \\".",
         "messageId": "unnecessaryEscape",
         "nodeType": "Literal",
         "ruleId": "no-useless-escape",
         "severity": 2,
-        "suggestions": Array [
-          Object {
-            "desc": "Remove the \`\\\\\`. This maintains the current functionality.",
-            "fix": Object {
-              "range": Array [
+        "suggestions": [
+          {
+            "desc": "Remove the \`\\\`. This maintains the current functionality.",
+            "fix": {
+              "range": [
                 7,
                 8,
               ],
@@ -647,20 +647,20 @@ import { exp } from './lib/exp'
             },
             "messageId": "removeEscape",
           },
-          Object {
-            "desc": "Replace the \`\\\\\` with \`\\\\\\\\\` to include the actual backslash character.",
-            "fix": Object {
-              "range": Array [
+          {
+            "desc": "Replace the \`\\\` with \`\\\\\` to include the actual backslash character.",
+            "fix": {
+              "range": [
                 7,
                 7,
               ],
-              "text": "\\\\",
+              "text": "\\",
             },
             "messageId": "escapeBackslash",
           },
         ],
       },
-      Object {
+      {
         "column": 5,
         "endColumn": 12,
         "endLine": 3,
@@ -670,14 +670,14 @@ import { exp } from './lib/exp'
         "nodeType": "BinaryExpression",
         "ruleId": "no-unsafe-negation",
         "severity": 2,
-        "suggestions": Array [
-          Object {
-            "data": Object {
+        "suggestions": [
+          {
+            "data": {
               "operator": "in",
             },
             "desc": "Negate 'in' expression instead of its left operand. This changes the current behavior.",
-            "fix": Object {
-              "range": Array [
+            "fix": {
+              "range": [
                 17,
                 29,
               ],
@@ -685,10 +685,10 @@ import { exp } from './lib/exp'
             },
             "messageId": "suggestNegatedExpression",
           },
-          Object {
+          {
             "desc": "Wrap negation in '()' to make the intention explicit. This preserves the current behavior.",
-            "fix": Object {
-              "range": Array [
+            "fix": {
+              "range": [
                 16,
                 23,
               ],
@@ -698,7 +698,7 @@ import { exp } from './lib/exp'
           },
         ],
       },
-      Object {
+      {
         "column": 5,
         "endColumn": 12,
         "endLine": 4,
@@ -708,14 +708,14 @@ import { exp } from './lib/exp'
         "nodeType": "BinaryExpression",
         "ruleId": "no-unsafe-negation",
         "severity": 2,
-        "suggestions": Array [
-          Object {
-            "data": Object {
+        "suggestions": [
+          {
+            "data": {
               "operator": "in",
             },
             "desc": "Negate 'in' expression instead of its left operand. This changes the current behavior.",
-            "fix": Object {
-              "range": Array [
+            "fix": {
+              "range": [
                 39,
                 51,
               ],
@@ -723,10 +723,10 @@ import { exp } from './lib/exp'
             },
             "messageId": "suggestNegatedExpression",
           },
-          Object {
+          {
             "desc": "Wrap negation in '()' to make the intention explicit. This preserves the current behavior.",
-            "fix": Object {
-              "range": Array [
+            "fix": {
+              "range": [
                 38,
                 45,
               ],
@@ -736,21 +736,21 @@ import { exp } from './lib/exp'
           },
         ],
       },
-      Object {
+      {
         "column": 21,
         "endColumn": 22,
         "endLine": 4,
         "line": 4,
-        "message": "Unnecessary escape character: \\\\'.",
+        "message": "Unnecessary escape character: \\'.",
         "messageId": "unnecessaryEscape",
         "nodeType": "Literal",
         "ruleId": "no-useless-escape",
         "severity": 2,
-        "suggestions": Array [
-          Object {
-            "desc": "Remove the \`\\\\\`. This maintains the current functionality.",
-            "fix": Object {
-              "range": Array [
+        "suggestions": [
+          {
+            "desc": "Remove the \`\\\`. This maintains the current functionality.",
+            "fix": {
+              "range": [
                 54,
                 55,
               ],
@@ -758,20 +758,20 @@ import { exp } from './lib/exp'
             },
             "messageId": "removeEscape",
           },
-          Object {
-            "desc": "Replace the \`\\\\\` with \`\\\\\\\\\` to include the actual backslash character.",
-            "fix": Object {
-              "range": Array [
+          {
+            "desc": "Replace the \`\\\` with \`\\\\\` to include the actual backslash character.",
+            "fix": {
+              "range": [
                 54,
                 54,
               ],
-              "text": "\\\\",
+              "text": "\\",
             },
             "messageId": "escapeBackslash",
           },
         ],
       },
-      Object {
+      {
         "column": 5,
         "endColumn": 2,
         "endLine": 7,
@@ -781,14 +781,14 @@ import { exp } from './lib/exp'
         "nodeType": "BinaryExpression",
         "ruleId": "no-unsafe-negation",
         "severity": 2,
-        "suggestions": Array [
-          Object {
-            "data": Object {
+        "suggestions": [
+          {
+            "data": {
               "operator": "in",
             },
             "desc": "Negate 'in' expression instead of its left operand. This changes the current behavior.",
-            "fix": Object {
-              "range": Array [
+            "fix": {
+              "range": [
                 64,
                 78,
               ],
@@ -798,10 +798,10 @@ key3
             },
             "messageId": "suggestNegatedExpression",
           },
-          Object {
+          {
             "desc": "Wrap negation in '()' to make the intention explicit. This preserves the current behavior.",
-            "fix": Object {
-              "range": Array [
+            "fix": {
+              "range": [
                 63,
                 72,
               ],
@@ -813,21 +813,21 @@ key3
           },
         ],
       },
-      Object {
+      {
         "column": 11,
         "endColumn": 12,
         "endLine": 7,
         "line": 7,
-        "message": "Unnecessary escape character: \\\\'.",
+        "message": "Unnecessary escape character: \\'.",
         "messageId": "unnecessaryEscape",
         "nodeType": "Literal",
         "ruleId": "no-useless-escape",
         "severity": 2,
-        "suggestions": Array [
-          Object {
-            "desc": "Remove the \`\\\\\`. This maintains the current functionality.",
-            "fix": Object {
-              "range": Array [
+        "suggestions": [
+          {
+            "desc": "Remove the \`\\\`. This maintains the current functionality.",
+            "fix": {
+              "range": [
                 81,
                 82,
               ],
@@ -835,20 +835,20 @@ key3
             },
             "messageId": "removeEscape",
           },
-          Object {
-            "desc": "Replace the \`\\\\\` with \`\\\\\\\\\` to include the actual backslash character.",
-            "fix": Object {
-              "range": Array [
+          {
+            "desc": "Replace the \`\\\` with \`\\\\\` to include the actual backslash character.",
+            "fix": {
+              "range": [
                 81,
                 81,
               ],
-              "text": "\\\\",
+              "text": "\\",
             },
             "messageId": "escapeBackslash",
           },
         ],
       },
-      Object {
+      {
         "column": 5,
         "endColumn": 2,
         "endLine": 10,
@@ -858,14 +858,14 @@ key3
         "nodeType": "BinaryExpression",
         "ruleId": "no-unsafe-negation",
         "severity": 2,
-        "suggestions": Array [
-          Object {
-            "data": Object {
+        "suggestions": [
+          {
+            "data": {
               "operator": "in",
             },
             "desc": "Negate 'in' expression instead of its left operand. This changes the current behavior.",
-            "fix": Object {
-              "range": Array [
+            "fix": {
+              "range": [
                 91,
                 105,
               ],
@@ -875,10 +875,10 @@ key4
             },
             "messageId": "suggestNegatedExpression",
           },
-          Object {
+          {
             "desc": "Wrap negation in '()' to make the intention explicit. This preserves the current behavior.",
-            "fix": Object {
-              "range": Array [
+            "fix": {
+              "range": [
                 90,
                 99,
               ],
@@ -890,21 +890,21 @@ key4
           },
         ],
       },
-      Object {
+      {
         "column": 11,
         "endColumn": 12,
         "endLine": 10,
         "line": 10,
-        "message": "Unnecessary escape character: \\\\'.",
+        "message": "Unnecessary escape character: \\'.",
         "messageId": "unnecessaryEscape",
         "nodeType": "Literal",
         "ruleId": "no-useless-escape",
         "severity": 2,
-        "suggestions": Array [
-          Object {
-            "desc": "Remove the \`\\\\\`. This maintains the current functionality.",
-            "fix": Object {
-              "range": Array [
+        "suggestions": [
+          {
+            "desc": "Remove the \`\\\`. This maintains the current functionality.",
+            "fix": {
+              "range": [
                 108,
                 109,
               ],
@@ -912,20 +912,20 @@ key4
             },
             "messageId": "removeEscape",
           },
-          Object {
-            "desc": "Replace the \`\\\\\` with \`\\\\\\\\\` to include the actual backslash character.",
-            "fix": Object {
-              "range": Array [
+          {
+            "desc": "Replace the \`\\\` with \`\\\\\` to include the actual backslash character.",
+            "fix": {
+              "range": [
                 108,
                 108,
               ],
-              "text": "\\\\",
+              "text": "\\",
             },
             "messageId": "escapeBackslash",
           },
         ],
       },
-      Object {
+      {
         "column": 5,
         "endColumn": 12,
         "endLine": 11,
@@ -935,14 +935,14 @@ key4
         "nodeType": "BinaryExpression",
         "ruleId": "no-unsafe-negation",
         "severity": 2,
-        "suggestions": Array [
-          Object {
-            "data": Object {
+        "suggestions": [
+          {
+            "data": {
               "operator": "in",
             },
             "desc": "Negate 'in' expression instead of its left operand. This changes the current behavior.",
-            "fix": Object {
-              "range": Array [
+            "fix": {
+              "range": [
                 118,
                 130,
               ],
@@ -950,10 +950,10 @@ key4
             },
             "messageId": "suggestNegatedExpression",
           },
-          Object {
+          {
             "desc": "Wrap negation in '()' to make the intention explicit. This preserves the current behavior.",
-            "fix": Object {
-              "range": Array [
+            "fix": {
+              "range": [
                 117,
                 124,
               ],
@@ -965,18 +965,18 @@ key4
       },
     ],
     "source": "ommitted",
-    "suppressedMessages": Array [],
-    "usedDeprecatedRules": Array [],
+    "suppressedMessages": [],
+    "usedDeprecatedRules": [],
     "warningCount": 0,
   },
-  Object {
+  {
     "errorCount": 1,
     "fatalErrorCount": NaN,
     "filePath": "/fixtures-tmp/lib/eslint-core-problem.mjs",
     "fixableErrorCount": 0,
     "fixableWarningCount": 0,
-    "messages": Array [
-      Object {
+    "messages": [
+      {
         "column": 9,
         "fatal": true,
         "line": 1,
@@ -986,18 +986,18 @@ key4
       },
     ],
     "source": "ommitted",
-    "suppressedMessages": Array [],
-    "usedDeprecatedRules": Array [],
+    "suppressedMessages": [],
+    "usedDeprecatedRules": [],
     "warningCount": 0,
   },
-  Object {
+  {
     "errorCount": 6,
     "fatalErrorCount": NaN,
     "filePath": "/fixtures-tmp/lib/make-fixable-and-fix.js",
     "fixableErrorCount": 0,
     "fixableWarningCount": 0,
-    "messages": Array [
-      Object {
+    "messages": [
+      {
         "column": 10,
         "endColumn": 18,
         "endLine": 1,
@@ -1008,7 +1008,7 @@ key4
         "ruleId": "no-unused-vars",
         "severity": 2,
       },
-      Object {
+      {
         "column": 16,
         "endColumn": 23,
         "endLine": 2,
@@ -1019,7 +1019,7 @@ key4
         "ruleId": "no-unused-vars",
         "severity": 2,
       },
-      Object {
+      {
         "column": 7,
         "endColumn": 8,
         "endLine": 4,
@@ -1030,7 +1030,7 @@ key4
         "ruleId": "no-unused-vars",
         "severity": 2,
       },
-      Object {
+      {
         "column": 7,
         "endColumn": 8,
         "endLine": 5,
@@ -1041,7 +1041,7 @@ key4
         "ruleId": "no-unused-vars",
         "severity": 2,
       },
-      Object {
+      {
         "column": 10,
         "endColumn": 12,
         "endLine": 7,
@@ -1052,7 +1052,7 @@ key4
         "ruleId": "no-unused-vars",
         "severity": 2,
       },
-      Object {
+      {
         "column": 13,
         "endColumn": 16,
         "endLine": 7,
@@ -1065,21 +1065,21 @@ key4
       },
     ],
     "source": "ommitted",
-    "suppressedMessages": Array [],
-    "usedDeprecatedRules": Array [],
+    "suppressedMessages": [],
+    "usedDeprecatedRules": [],
     "warningCount": 0,
   },
-  Object {
+  {
     "errorCount": 12,
     "fatalErrorCount": NaN,
     "filePath": "/fixtures-tmp/lib/overlapped.js",
     "fixableErrorCount": 12,
     "fixableWarningCount": 0,
-    "messages": Array [
-      Object {
+    "messages": [
+      {
         "column": 3,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             6,
             409,
           ],
@@ -1116,10 +1116,10 @@ key4
         "ruleId": "arrow-body-style",
         "severity": 2,
       },
-      Object {
+      {
         "column": 5,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             16,
             407,
           ],
@@ -1154,10 +1154,10 @@ key4
         "ruleId": "arrow-body-style",
         "severity": 2,
       },
-      Object {
+      {
         "column": 7,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             28,
             403,
           ],
@@ -1190,10 +1190,10 @@ key4
         "ruleId": "arrow-body-style",
         "severity": 2,
       },
-      Object {
+      {
         "column": 9,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             42,
             397,
           ],
@@ -1224,10 +1224,10 @@ key4
         "ruleId": "arrow-body-style",
         "severity": 2,
       },
-      Object {
+      {
         "column": 11,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             58,
             389,
           ],
@@ -1256,10 +1256,10 @@ key4
         "ruleId": "arrow-body-style",
         "severity": 2,
       },
-      Object {
+      {
         "column": 13,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             76,
             379,
           ],
@@ -1286,10 +1286,10 @@ key4
         "ruleId": "arrow-body-style",
         "severity": 2,
       },
-      Object {
+      {
         "column": 15,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             96,
             367,
           ],
@@ -1314,10 +1314,10 @@ key4
         "ruleId": "arrow-body-style",
         "severity": 2,
       },
-      Object {
+      {
         "column": 17,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             118,
             353,
           ],
@@ -1340,10 +1340,10 @@ key4
         "ruleId": "arrow-body-style",
         "severity": 2,
       },
-      Object {
+      {
         "column": 19,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             142,
             337,
           ],
@@ -1364,10 +1364,10 @@ key4
         "ruleId": "arrow-body-style",
         "severity": 2,
       },
-      Object {
+      {
         "column": 21,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             168,
             319,
           ],
@@ -1386,10 +1386,10 @@ key4
         "ruleId": "arrow-body-style",
         "severity": 2,
       },
-      Object {
+      {
         "column": 23,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             196,
             299,
           ],
@@ -1406,10 +1406,10 @@ key4
         "ruleId": "arrow-body-style",
         "severity": 2,
       },
-      Object {
+      {
         "column": 25,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             226,
             277,
           ],
@@ -1426,23 +1426,23 @@ key4
       },
     ],
     "source": "ommitted",
-    "suppressedMessages": Array [],
-    "usedDeprecatedRules": Array [],
+    "suppressedMessages": [],
+    "usedDeprecatedRules": [],
     "warningCount": 0,
   },
-  Object {
+  {
     "errorCount": 1,
     "fatalErrorCount": NaN,
     "filePath": "/fixtures-tmp/lib/shebang.js",
     "fixableErrorCount": 1,
     "fixableWarningCount": 0,
-    "messages": Array [
-      Object {
+    "messages": [
+      {
         "column": 14,
         "endColumn": 1,
         "endLine": 4,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             34,
             34,
           ],
@@ -1457,23 +1457,23 @@ key4
       },
     ],
     "source": "ommitted",
-    "suppressedMessages": Array [],
-    "usedDeprecatedRules": Array [],
+    "suppressedMessages": [],
+    "usedDeprecatedRules": [],
     "warningCount": 0,
   },
-  Object {
+  {
     "errorCount": 1,
     "fatalErrorCount": NaN,
     "filePath": "/fixtures-tmp/lib/sub.mjs",
     "fixableErrorCount": 1,
     "fixableWarningCount": 0,
-    "messages": Array [
-      Object {
+    "messages": [
+      {
         "column": 15,
         "endColumn": 1,
         "endLine": 3,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             42,
             42,
           ],
@@ -1488,23 +1488,23 @@ key4
       },
     ],
     "source": "ommitted",
-    "suppressedMessages": Array [],
-    "usedDeprecatedRules": Array [],
+    "suppressedMessages": [],
+    "usedDeprecatedRules": [],
     "warningCount": 0,
   },
-  Object {
+  {
     "errorCount": 0,
     "fatalErrorCount": NaN,
     "filePath": "/fixtures-tmp/lib/warning.js",
     "fixableErrorCount": 0,
     "fixableWarningCount": 1,
-    "messages": Array [
-      Object {
+    "messages": [
+      {
         "column": 15,
         "endColumn": 1,
         "endLine": 5,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             64,
             64,
           ],
@@ -1519,20 +1519,20 @@ key4
       },
     ],
     "source": "ommitted",
-    "suppressedMessages": Array [],
-    "usedDeprecatedRules": Array [],
+    "suppressedMessages": [],
+    "usedDeprecatedRules": [],
     "warningCount": 1,
   },
-  Object {
+  {
     "errorCount": 0,
     "fatalErrorCount": NaN,
     "filePath": "/fixtures-tmp/rules/ban-exponentiation-operator.js",
     "fixableErrorCount": 0,
     "fixableWarningCount": 0,
-    "messages": Array [],
+    "messages": [],
     "source": "ommitted",
-    "suppressedMessages": Array [],
-    "usedDeprecatedRules": Array [],
+    "suppressedMessages": [],
+    "usedDeprecatedRules": [],
     "warningCount": 0,
   },
 ]
@@ -1698,32 +1698,32 @@ exports[`Core printSummaryOfResults 1`] = `
 `;
 
 exports[`Core with overrideConfig returns lint results 1`] = `
-Array [
-  Object {
+[
+  {
     "errorCount": 0,
     "fatalErrorCount": NaN,
     "filePath": "/fixtures-tmp/.eslintrc.js",
     "fixableErrorCount": 0,
     "fixableWarningCount": 0,
-    "messages": Array [],
+    "messages": [],
     "source": "ommitted",
-    "suppressedMessages": Array [],
-    "usedDeprecatedRules": Array [],
+    "suppressedMessages": [],
+    "usedDeprecatedRules": [],
     "warningCount": 0,
   },
-  Object {
+  {
     "errorCount": 11,
     "fatalErrorCount": NaN,
     "filePath": "/fixtures-tmp/index.js",
     "fixableErrorCount": 11,
     "fixableWarningCount": 0,
-    "messages": Array [
-      Object {
+    "messages": [
+      {
         "column": 32,
         "endColumn": 1,
         "endLine": 2,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             31,
             31,
           ],
@@ -1736,12 +1736,12 @@ Array [
         "ruleId": "semi",
         "severity": 2,
       },
-      Object {
+      {
         "column": 32,
         "endColumn": 1,
         "endLine": 3,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             63,
             63,
           ],
@@ -1754,12 +1754,12 @@ Array [
         "ruleId": "semi",
         "severity": 2,
       },
-      Object {
+      {
         "column": 32,
         "endColumn": 1,
         "endLine": 4,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             95,
             95,
           ],
@@ -1772,12 +1772,12 @@ Array [
         "ruleId": "semi",
         "severity": 2,
       },
-      Object {
+      {
         "column": 32,
         "endColumn": 1,
         "endLine": 5,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             127,
             127,
           ],
@@ -1790,12 +1790,12 @@ Array [
         "ruleId": "semi",
         "severity": 2,
       },
-      Object {
+      {
         "column": 37,
         "endColumn": 1,
         "endLine": 6,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             164,
             164,
           ],
@@ -1808,12 +1808,12 @@ Array [
         "ruleId": "semi",
         "severity": 2,
       },
-      Object {
+      {
         "column": 21,
         "endColumn": 1,
         "endLine": 8,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             186,
             186,
           ],
@@ -1826,12 +1826,12 @@ Array [
         "ruleId": "semi",
         "severity": 2,
       },
-      Object {
+      {
         "column": 19,
         "endColumn": 1,
         "endLine": 9,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             205,
             205,
           ],
@@ -1844,12 +1844,12 @@ Array [
         "ruleId": "semi",
         "severity": 2,
       },
-      Object {
+      {
         "column": 19,
         "endColumn": 1,
         "endLine": 10,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             224,
             224,
           ],
@@ -1862,12 +1862,12 @@ Array [
         "ruleId": "semi",
         "severity": 2,
       },
-      Object {
+      {
         "column": 19,
         "endColumn": 1,
         "endLine": 11,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             243,
             243,
           ],
@@ -1880,12 +1880,12 @@ Array [
         "ruleId": "semi",
         "severity": 2,
       },
-      Object {
+      {
         "column": 37,
         "endColumn": 1,
         "endLine": 12,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             280,
             280,
           ],
@@ -1898,12 +1898,12 @@ Array [
         "ruleId": "semi",
         "severity": 2,
       },
-      Object {
+      {
         "column": 23,
         "endColumn": 1,
         "endLine": 14,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             304,
             304,
           ],
@@ -1918,23 +1918,23 @@ Array [
       },
     ],
     "source": "ommitted",
-    "suppressedMessages": Array [],
-    "usedDeprecatedRules": Array [],
+    "suppressedMessages": [],
+    "usedDeprecatedRules": [],
     "warningCount": 0,
   },
-  Object {
+  {
     "errorCount": 1,
     "fatalErrorCount": NaN,
     "filePath": "/fixtures-tmp/lib/add-disable-comment.jsx",
     "fixableErrorCount": 1,
     "fixableWarningCount": 0,
-    "messages": Array [
-      Object {
+    "messages": [
+      {
         "column": 12,
         "endColumn": 1,
         "endLine": 8,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             173,
             173,
           ],
@@ -1949,30 +1949,30 @@ Array [
       },
     ],
     "source": "ommitted",
-    "suppressedMessages": Array [],
-    "usedDeprecatedRules": Array [],
+    "suppressedMessages": [],
+    "usedDeprecatedRules": [],
     "warningCount": 0,
   },
-  Object {
+  {
     "errorCount": 0,
     "fatalErrorCount": NaN,
     "filePath": "/fixtures-tmp/lib/apply-suggestion.js",
     "fixableErrorCount": 0,
     "fixableWarningCount": 0,
-    "messages": Array [],
+    "messages": [],
     "source": "ommitted",
-    "suppressedMessages": Array [],
-    "usedDeprecatedRules": Array [],
+    "suppressedMessages": [],
+    "usedDeprecatedRules": [],
     "warningCount": 0,
   },
-  Object {
+  {
     "errorCount": 1,
     "fatalErrorCount": NaN,
     "filePath": "/fixtures-tmp/lib/eslint-core-problem.mjs",
     "fixableErrorCount": 0,
     "fixableWarningCount": 0,
-    "messages": Array [
-      Object {
+    "messages": [
+      {
         "column": 9,
         "fatal": true,
         "line": 1,
@@ -1982,47 +1982,47 @@ Array [
       },
     ],
     "source": "ommitted",
-    "suppressedMessages": Array [],
-    "usedDeprecatedRules": Array [],
+    "suppressedMessages": [],
+    "usedDeprecatedRules": [],
     "warningCount": 0,
   },
-  Object {
+  {
     "errorCount": 0,
     "fatalErrorCount": NaN,
     "filePath": "/fixtures-tmp/lib/make-fixable-and-fix.js",
     "fixableErrorCount": 0,
     "fixableWarningCount": 0,
-    "messages": Array [],
+    "messages": [],
     "source": "ommitted",
-    "suppressedMessages": Array [],
-    "usedDeprecatedRules": Array [],
+    "suppressedMessages": [],
+    "usedDeprecatedRules": [],
     "warningCount": 0,
   },
-  Object {
+  {
     "errorCount": 0,
     "fatalErrorCount": NaN,
     "filePath": "/fixtures-tmp/lib/overlapped.js",
     "fixableErrorCount": 0,
     "fixableWarningCount": 0,
-    "messages": Array [],
+    "messages": [],
     "source": "ommitted",
-    "suppressedMessages": Array [],
-    "usedDeprecatedRules": Array [],
+    "suppressedMessages": [],
+    "usedDeprecatedRules": [],
     "warningCount": 0,
   },
-  Object {
+  {
     "errorCount": 1,
     "fatalErrorCount": NaN,
     "filePath": "/fixtures-tmp/lib/shebang.js",
     "fixableErrorCount": 1,
     "fixableWarningCount": 0,
-    "messages": Array [
-      Object {
+    "messages": [
+      {
         "column": 14,
         "endColumn": 1,
         "endLine": 4,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             34,
             34,
           ],
@@ -2037,23 +2037,23 @@ Array [
       },
     ],
     "source": "ommitted",
-    "suppressedMessages": Array [],
-    "usedDeprecatedRules": Array [],
+    "suppressedMessages": [],
+    "usedDeprecatedRules": [],
     "warningCount": 0,
   },
-  Object {
+  {
     "errorCount": 1,
     "fatalErrorCount": NaN,
     "filePath": "/fixtures-tmp/lib/sub.mjs",
     "fixableErrorCount": 1,
     "fixableWarningCount": 0,
-    "messages": Array [
-      Object {
+    "messages": [
+      {
         "column": 15,
         "endColumn": 1,
         "endLine": 3,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             42,
             42,
           ],
@@ -2068,23 +2068,23 @@ Array [
       },
     ],
     "source": "ommitted",
-    "suppressedMessages": Array [],
-    "usedDeprecatedRules": Array [],
+    "suppressedMessages": [],
+    "usedDeprecatedRules": [],
     "warningCount": 0,
   },
-  Object {
+  {
     "errorCount": 0,
     "fatalErrorCount": NaN,
     "filePath": "/fixtures-tmp/lib/warning.js",
     "fixableErrorCount": 0,
     "fixableWarningCount": 1,
-    "messages": Array [
-      Object {
+    "messages": [
+      {
         "column": 15,
         "endColumn": 1,
         "endLine": 5,
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             64,
             64,
           ],
@@ -2099,20 +2099,20 @@ Array [
       },
     ],
     "source": "ommitted",
-    "suppressedMessages": Array [],
-    "usedDeprecatedRules": Array [],
+    "suppressedMessages": [],
+    "usedDeprecatedRules": [],
     "warningCount": 1,
   },
-  Object {
+  {
     "errorCount": 0,
     "fatalErrorCount": NaN,
     "filePath": "/fixtures-tmp/rules/ban-exponentiation-operator.js",
     "fixableErrorCount": 0,
     "fixableWarningCount": 0,
-    "messages": Array [],
+    "messages": [],
     "source": "ommitted",
-    "suppressedMessages": Array [],
-    "usedDeprecatedRules": Array [],
+    "suppressedMessages": [],
+    "usedDeprecatedRules": [],
     "warningCount": 0,
   },
 ]

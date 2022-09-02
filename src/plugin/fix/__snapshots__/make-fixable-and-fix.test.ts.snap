@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`make-fixable-and-fix \`fixableMaker\` receives the message and node. 1`] = `
-Object {
-  "context": Object {
+{
+  "context": {
     "filename": "test.js",
-    "fixer": Object {
+    "fixer": {
       "insertTextAfter": [Function],
       "insertTextAfterRange": [Function],
       "insertTextBefore": [Function],
@@ -14,8 +14,8 @@ Object {
       "replaceText": [Function],
       "replaceTextRange": [Function],
     },
-    "messages": Array [
-      Object {
+    "messages": [
+      {
         "column": 7,
         "endColumn": 8,
         "endLine": 1,
@@ -27,14 +27,14 @@ Object {
         "severity": 2,
       },
     ],
-    "ruleIds": Array [
+    "ruleIds": [
       "no-unused-vars",
     ],
-    "sourceCode": Object {
+    "sourceCode": {
       "text": "const a = 1;",
     },
   },
-  "message": Object {
+  "message": {
     "column": 7,
     "endColumn": 8,
     "endLine": 1,
@@ -74,7 +74,7 @@ Object {
           },
         },
         "parent": [Circular],
-        "range": Array [
+        "range": [
           10,
           11,
         ],
@@ -94,7 +94,7 @@ Object {
         },
       },
       "parent": Node {
-        "declarations": Array [
+        "declarations": [
           [Circular],
         ],
         "end": 12,
@@ -110,10 +110,10 @@ Object {
           },
         },
         "parent": Node {
-          "body": Array [
+          "body": [
             [Circular],
           ],
-          "comments": Array [],
+          "comments": [],
           "end": 12,
           "loc": SourceLocation {
             "end": Position {
@@ -126,13 +126,13 @@ Object {
             },
           },
           "parent": null,
-          "range": Array [
+          "range": [
             0,
             12,
           ],
           "sourceType": "script",
           "start": 0,
-          "tokens": Array [
+          "tokens": [
             Token {
               "end": 5,
               "loc": SourceLocation {
@@ -145,7 +145,7 @@ Object {
                   "line": 1,
                 },
               },
-              "range": Array [
+              "range": [
                 0,
                 5,
               ],
@@ -165,7 +165,7 @@ Object {
                   "line": 1,
                 },
               },
-              "range": Array [
+              "range": [
                 6,
                 7,
               ],
@@ -185,7 +185,7 @@ Object {
                   "line": 1,
                 },
               },
-              "range": Array [
+              "range": [
                 8,
                 9,
               ],
@@ -205,7 +205,7 @@ Object {
                   "line": 1,
                 },
               },
-              "range": Array [
+              "range": [
                 10,
                 11,
               ],
@@ -225,7 +225,7 @@ Object {
                   "line": 1,
                 },
               },
-              "range": Array [
+              "range": [
                 11,
                 12,
               ],
@@ -236,21 +236,21 @@ Object {
           ],
           "type": "Program",
         },
-        "range": Array [
+        "range": [
           0,
           12,
         ],
         "start": 0,
         "type": "VariableDeclaration",
       },
-      "range": Array [
+      "range": [
         6,
         11,
       ],
       "start": 6,
       "type": "VariableDeclarator",
     },
-    "range": Array [
+    "range": [
       6,
       7,
     ],
