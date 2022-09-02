@@ -50,23 +50,24 @@ async function getUsedRuleIds(targetFilePaths: string[], options: ESLint.Options
 export type Undo = () => Promise<void>;
 
 /** The config of eslint-interactive */
-export type Config = {
+export type Config = Pick<
+  ESLint.Options,
+  'extensions' | 'rulePaths' | 'cache' | 'cacheLocation' | 'useEslintrc' | 'overrideConfig' | 'cwd'
+> & {
   patterns: string[];
-  rulePaths?: string[] | undefined;
-  extensions?: string[] | undefined;
   formatterName?: string;
   quiet?: boolean;
-  cache?: boolean;
-  cacheLocation?: string;
-  cwd?: string;
 };
 
 /** Default config of `Core` */
-export const DEFAULT_BASE_CONFIG = {
+export const DEFAULT_BASE_CONFIG: Partial<Config> = {
+  cwd: undefined,
   cache: true,
   cacheLocation: join(getCacheDir(), '.eslintcache'),
+  extensions: undefined,
   formatterName: 'codeframe',
   quiet: false,
+  rulePaths: undefined,
 };
 
 /**
@@ -76,17 +77,15 @@ export const DEFAULT_BASE_CONFIG = {
 export class Core {
   readonly config: Config;
   /** The base options of ESLint */
-  readonly baseOptions: ESLint.Options;
+  readonly baseESLintOptions: ESLint.Options;
 
   constructor(config: Config) {
-    this.config = config;
-    this.baseOptions = {
-      cache: this.config.cache ?? DEFAULT_BASE_CONFIG.cache,
-      cacheLocation: this.config.cacheLocation ?? DEFAULT_BASE_CONFIG.cacheLocation,
-      rulePaths: this.config.rulePaths,
-      extensions: this.config.extensions,
-      cwd: this.config.cwd,
+    this.config = {
+      ...DEFAULT_BASE_CONFIG,
+      ...config,
     };
+    const { patterns, formatterName, quiet, ...baseOptions } = this.config;
+    this.baseESLintOptions = baseOptions;
   }
 
   /**
@@ -94,7 +93,7 @@ export class Core {
    * @returns The results of linting
    */
   async lint(): Promise<ESLint.LintResult[]> {
-    const eslint = new ESLint(this.baseOptions);
+    const eslint = new ESLint(this.baseESLintOptions);
     let results = await eslint.lintFiles(this.config.patterns);
     if (this.config.quiet) results = ESLint.getErrorResults(results);
     return results;
@@ -110,8 +109,8 @@ export class Core {
 
     // get `rulesMeta` from `results`
     const eslint = new ESLint({
-      ...this.baseOptions,
-      overrideConfig: { plugins },
+      ...this.baseESLintOptions,
+      overrideConfig: { ...this.baseESLintOptions.overrideConfig, plugins },
     });
     // NOTE: `getRulesMetaForResults` is a feature added in ESLint 7.29.0.
     // Therefore, the function may not exist in versions lower than 7.29.0.
@@ -126,7 +125,7 @@ export class Core {
    * @param ruleIds The rule ids to print details
    */
   async formatResultDetails(results: ESLint.LintResult[], ruleIds: (string | null)[]): Promise<string> {
-    const eslint = new ESLint(this.baseOptions);
+    const eslint = new ESLint(this.baseESLintOptions);
     const formatterName = this.config.formatterName ?? DEFAULT_BASE_CONFIG.formatterName;
 
     // When eslint-interactive is installed globally, eslint-formatter-codeframe will also be installed globally.
@@ -217,13 +216,13 @@ export class Core {
     // NOTE: Extract only necessary results and files for performance
     const filteredResultsOfLint = filterResultsByRuleId(resultsOfLint, ruleIds);
     const targetFilePaths = filteredResultsOfLint.map((result) => result.filePath);
-    const usedRuleIds = await getUsedRuleIds(targetFilePaths, this.baseOptions);
+    const usedRuleIds = await getUsedRuleIds(targetFilePaths, this.baseESLintOptions);
 
     // TODO: refactor
     let results = filteredResultsOfLint;
     for (let i = 0; i < MAX_AUTOFIX_PASSES; i++) {
       const eslint = new ESLint({
-        ...this.baseOptions,
+        ...this.baseESLintOptions,
         // This is super hack to load ESM plugin/rule.
         // ref: https://github.com/eslint/eslint/issues/15453#issuecomment-1001200953
         plugins: {
