@@ -1,3 +1,4 @@
+/* eslint-disable no-irregular-whitespace */
 import { FixTester } from '../../test-util/fix-tester.js';
 
 const tester = new FixTester(
@@ -165,6 +166,38 @@ describe('disable-per-line', () => {
       var val5;
       /* a */ /* eslint-disable-next-line semi, no-var */ /* b */
       var val6;"
+    `);
+  });
+  test('supports auto-indent', async () => {
+    expect(
+      await tester.test({
+        code: [
+          '{',
+          '  void 0;',
+          '};',
+          '{',
+          '\u{0009}\u{000B}\u{000C}\u{FEFF}\u{0020}\u{00A0}void 0;',
+          '};',
+          '<div>',
+          '  {void 0}',
+          '</div>',
+        ],
+
+        ruleIdsToFix: ['no-void'],
+      }),
+    ).toMatchInlineSnapshot(`
+      "{
+        // eslint-disable-next-line no-void
+        void 0;
+      };
+      {
+      	﻿  // eslint-disable-next-line no-void
+      	﻿  void 0;
+      };
+      <div>
+        {/* eslint-disable-next-line no-void */}
+        {void 0}
+      </div>"
     `);
   });
 });
