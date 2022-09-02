@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`apply-suggestions filter には suggestions, message が渡ってくる 1`] = `
-Object {
-  "context": Object {
+{
+  "context": {
     "filename": "test.js",
-    "fixer": Object {
+    "fixer": {
       "insertTextAfter": [Function],
       "insertTextAfterRange": [Function],
       "insertTextBefore": [Function],
@@ -14,8 +14,8 @@ Object {
       "replaceText": [Function],
       "replaceTextRange": [Function],
     },
-    "messages": Array [
-      Object {
+    "messages": [
+      {
         "column": 1,
         "endColumn": 10,
         "endLine": 1,
@@ -24,31 +24,31 @@ Object {
         "nodeType": "AssignmentExpression",
         "ruleId": "eslint-interactive/prefer-addition-shorthand",
         "severity": 2,
-        "suggestions": Array [
-          Object {
+        "suggestions": [
+          {
             "desc": "Use \`val += 1\` instead.",
-            "fix": Object {
-              "range": Array [
+            "fix": {
+              "range": [
                 0,
                 9,
               ],
               "text": "a += 1",
             },
           },
-          Object {
+          {
             "desc": "Use \`val++\` instead.",
-            "fix": Object {
-              "range": Array [
+            "fix": {
+              "range": [
                 0,
                 9,
               ],
               "text": "a++",
             },
           },
-          Object {
+          {
             "desc": "Use \`++val\` instead.",
-            "fix": Object {
-              "range": Array [
+            "fix": {
+              "range": [
                 0,
                 9,
               ],
@@ -58,14 +58,14 @@ Object {
         ],
       },
     ],
-    "ruleIds": Array [
+    "ruleIds": [
       "eslint-interactive/prefer-addition-shorthand",
     ],
-    "sourceCode": Object {
+    "sourceCode": {
       "text": "a = a + 1;",
     },
   },
-  "message": Object {
+  "message": {
     "column": 1,
     "endColumn": 10,
     "endLine": 1,
@@ -74,31 +74,31 @@ Object {
     "nodeType": "AssignmentExpression",
     "ruleId": "eslint-interactive/prefer-addition-shorthand",
     "severity": 2,
-    "suggestions": Array [
-      Object {
+    "suggestions": [
+      {
         "desc": "Use \`val += 1\` instead.",
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             0,
             9,
           ],
           "text": "a += 1",
         },
       },
-      Object {
+      {
         "desc": "Use \`val++\` instead.",
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             0,
             9,
           ],
           "text": "a++",
         },
       },
-      Object {
+      {
         "desc": "Use \`++val\` instead.",
-        "fix": Object {
-          "range": Array [
+        "fix": {
+          "range": [
             0,
             9,
           ],
@@ -107,31 +107,31 @@ Object {
       },
     ],
   },
-  "suggestions": Array [
-    Object {
+  "suggestions": [
+    {
       "desc": "Use \`val += 1\` instead.",
-      "fix": Object {
-        "range": Array [
+      "fix": {
+        "range": [
           0,
           9,
         ],
         "text": "a += 1",
       },
     },
-    Object {
+    {
       "desc": "Use \`val++\` instead.",
-      "fix": Object {
-        "range": Array [
+      "fix": {
+        "range": [
           0,
           9,
         ],
         "text": "a++",
       },
     },
-    Object {
+    {
       "desc": "Use \`++val\` instead.",
-      "fix": Object {
-        "range": Array [
+      "fix": {
+        "range": [
           0,
           9,
         ],
