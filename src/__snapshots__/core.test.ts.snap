@@ -135,7 +135,7 @@ const d = 0
 // eslint-disable-next-line no-unused-vars
 const jsx = (
   <>
-{/* eslint-disable-next-line ban-exponentiation-operator */}
+    {/* eslint-disable-next-line ban-exponentiation-operator */}
     <div>{2 ** 10}</div>
     {/* eslint-disable-next-line semi, ban-exponentiation-operator */}
     <div>{2 ** 10}</div>

@@ -131,12 +131,12 @@ describe('disable-per-line', () => {
       "// eslint-disable-next-line no-var
       var jsx = <div>
         <span>text1</span>
-      {/* eslint-disable-next-line no-void */}
+        {/* eslint-disable-next-line no-void */}
         <span>{void 2}</span>
         {/* eslint-disable-next-line semi, no-void */}
         <span>{void 3}</span>
         {() => {
-      // eslint-disable-next-line no-var
+          // eslint-disable-next-line no-var
           var val;
         }}
       </div>;"
