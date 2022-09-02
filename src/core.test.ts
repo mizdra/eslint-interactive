@@ -76,7 +76,7 @@ describe('Core', () => {
       cacheLocation: '.eslintcache',
       cwd: '/tmp/cwd',
     });
-    expect(core1.baseOptions).toStrictEqual<ESLint.Options>({
+    expect(core1.baseESLintOptions).toStrictEqual<ESLint.Options>({
       cache: false,
       cacheLocation: '.eslintcache',
       rulePaths: ['rule-path-a', 'rule-path-b'],
@@ -86,7 +86,7 @@ describe('Core', () => {
     const core2 = new Core({
       patterns: ['pattern-a', 'pattern-b'],
     });
-    expect(core2.baseOptions).toStrictEqual<ESLint.Options>({
+    expect(core2.baseESLintOptions).toStrictEqual<ESLint.Options>({
       cache: DEFAULT_BASE_CONFIG.cache,
       cacheLocation: DEFAULT_BASE_CONFIG.cacheLocation,
       rulePaths: undefined,
