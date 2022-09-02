@@ -40,13 +40,24 @@ function generateFixPerLine(
     const headNode = context.sourceCode.getNodeByRangeIndex(headNodeIndex);
     if (headNode === null) return null; // For some reason, it seems to be null sometimes.
 
+    // Extract the same indent as the line we want to fix
+    const indent = context.sourceCode.text.slice(
+      headNodeIndex,
+      headNodeIndex +
+        context.sourceCode.text
+          .slice(headNodeIndex)
+          // ref: https://tc39.es/ecma262/#sec-white-space
+          // eslint-disable-next-line no-control-regex
+          .search(/[^\u{0009}\u{000B}\u{000C}\u{FEFF}\p{gc=Space_Separator}]/u),
+    );
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if ((headNode.type as any) === 'JSXText') {
       const commentText = toCommentText({ type: 'Block', scope: 'next-line', ruleIds: ruleIdsToDisable, description });
-      return context.fixer.insertTextBeforeRange([headNodeIndex, headNodeIndex], '{' + commentText + '}\n');
+      return context.fixer.insertTextBeforeRange([headNodeIndex, headNodeIndex], indent + '{' + commentText + '}\n');
     } else {
       const commentText = toCommentText({ type: 'Line', scope: 'next-line', ruleIds: ruleIdsToDisable, description });
-      return context.fixer.insertTextBeforeRange([headNodeIndex, headNodeIndex], commentText + '\n');
+      return context.fixer.insertTextBeforeRange([headNodeIndex, headNodeIndex], indent + commentText + '\n');
     }
   }
 }
