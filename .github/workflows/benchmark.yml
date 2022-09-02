@@ -44,6 +44,6 @@ jobs:
           auto-push: ${{ github.ref == 'refs/heads/main' }}
           comment-on-alert: true
           fail-on-alert: true
-          alert-threshold: '300%'
+          alert-threshold: '800%'
           # for test
           # comment-always: true
