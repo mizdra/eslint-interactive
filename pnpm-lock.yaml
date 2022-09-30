@@ -12,7 +12,7 @@ specifiers:
   '@types/jest': ^29.0.0
   '@types/node': ^18.0.5
   '@types/terminal-link': ^1.2.0
-  '@types/yargs': ^17.0.10
+  '@types/yargs': ^17.0.13
   '@typescript-eslint/eslint-plugin': ^5.30.6
   '@typescript-eslint/parser': ^5.30.6
   babel-jest: ^29.0.1
@@ -68,7 +68,7 @@ devDependencies:
   '@types/jest': 29.0.0
   '@types/node': 18.0.5
   '@types/terminal-link': 1.2.0
-  '@types/yargs': 17.0.10
+  '@types/yargs': 17.0.13
   '@typescript-eslint/eslint-plugin': 5.30.6_az2suxxb4hjqq7t257rgjxedby
   '@typescript-eslint/parser': 5.30.6_yqf6kl63nyoq5megxukfnom5rm
   babel-jest: 29.0.1_@babel+core@7.18.13
@@ -805,7 +805,7 @@ packages:
       '@types/istanbul-lib-coverage': 2.0.4
       '@types/istanbul-reports': 3.0.0
       '@types/node': 18.0.5
-      '@types/yargs': 17.0.10
+      '@types/yargs': 17.0.13
       chalk: 4.1.2
     dev: true
 
@@ -1036,8 +1036,8 @@ packages:
     resolution: {integrity: sha512-iO9ZQHkZxHn4mSakYV0vFHAVDyEOIJQrV2uZ06HxEPcx+mt8swXoZHIbaaJ2crJYFfErySgktuTZ3BeLz+XmFA==}
     dev: true
 
-  /@types/yargs/17.0.10:
-    resolution: {integrity: sha512-gmEaFwpj/7f/ROdtIlci1R1VYU1J4j95m8T+Tj3iBgiBFKg1foE/PSl93bBd5T9LDXNPo8UlNN6W0qwD8O5OaA==}
+  /@types/yargs/17.0.13:
+    resolution: {integrity: sha512-9sWaruZk2JGxIQU+IhI1fhPYRcQ0UuTNuKuCW9bR5fp7qi2Llf7WDzNa17Cy7TKnh3cdxDOiyTu6gaLS0eDatg==}
     dependencies:
       '@types/yargs-parser': 21.0.0
     dev: true
