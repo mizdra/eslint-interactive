@@ -42,7 +42,7 @@
     "@types/jest": "^29.0.0",
     "@types/node": "^18.0.5",
     "@types/terminal-link": "^1.2.0",
-    "@types/yargs": "^17.0.10",
+    "@types/yargs": "^17.0.13",
     "@typescript-eslint/eslint-plugin": "^5.30.6",
     "@typescript-eslint/parser": "^5.30.6",
     "babel-jest": "^29.0.1",
