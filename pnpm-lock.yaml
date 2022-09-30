@@ -7,7 +7,7 @@ specifiers:
   '@mizdra/eslint-config-mizdra': ^1.2.0
   '@mizdra/prettier-config-mizdra': ^1.0.0
   '@types/eslint': ^8.4.6
-  '@types/estraverse': ^5.1.1
+  '@types/estraverse': ^5.1.2
   '@types/estree': ^1.0.0
   '@types/jest': ^29.0.0
   '@types/node': ^18.0.5
@@ -63,7 +63,7 @@ devDependencies:
   '@mizdra/eslint-config-mizdra': 1.2.0_xt2b4vj7sido5yjzvvj4cnqnhe
   '@mizdra/prettier-config-mizdra': 1.0.0_prettier@2.7.1
   '@types/eslint': 8.4.6
-  '@types/estraverse': 5.1.1
+  '@types/estraverse': 5.1.2
   '@types/estree': 1.0.0
   '@types/jest': 29.0.0
   '@types/node': 18.0.5
@@ -966,8 +966,8 @@ packages:
       '@types/json-schema': 7.0.11
     dev: true
 
-  /@types/estraverse/5.1.1:
-    resolution: {integrity: sha512-AUnklMz90PdmlN4TFqnHC5hP9eRwNQdXgI8aXsSVVMMr2U6Nwo7n4QJxzOiUtVZy/0JFg5oA4PxVh8UBtUELyw==}
+  /@types/estraverse/5.1.2:
+    resolution: {integrity: sha512-3Rndn7sxqRc57WCN+LEaTmwgHAxrGUylgUk5zZsKzqioCbXpk7nSBxDWjPLoE96ZeykGFORMJ45V7N1TFaPg6A==}
     dependencies:
       '@types/estree': 1.0.0
     dev: true
