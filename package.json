@@ -69,7 +69,7 @@
     "is-installed-globally": "^0.4.0",
     "node-pager": "^0.3.6",
     "ora": "^6.1.2",
-    "table": "^6.8.0",
+    "table": "^6.8.1",
     "terminal-link": "^3.0.0",
     "yargs": "^17.5.1"
   },
