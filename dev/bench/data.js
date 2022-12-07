@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1670426600937,
+  "lastUpdate": 1670426867526,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -7487,6 +7487,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "fix-overlapped-problems (undo, loop: 1)",
             "value": 0.4527040000539273,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "pp.mizdra@gmail.com",
+            "name": "mizdra",
+            "username": "mizdra"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "75f61641714c2bf9fc245e7434f767436a6fca57",
+          "message": "Merge pull request #245 from mizdra/change-vscode-jest-option\n\nImprove the performance of vscode-jest",
+          "timestamp": "2022-12-08T00:25:01+09:00",
+          "tree_id": "67f686e8067f2ebcf0dde3c96d799f70466a3cde",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/75f61641714c2bf9fc245e7434f767436a6fca57"
+        },
+        "date": 1670426866791,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "fix-a-few-of-many-files (applyAutoFixes, loop: 1)",
+            "value": 943.7109709999932,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-a-few-of-many-files (disablePerLine, loop: 1)",
+            "value": 988.0770350000239,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-a-few-of-many-files (disablePerFile, loop: 1)",
+            "value": 945.1799940000055,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-a-few-of-many-files (makeFixableAndFix, loop: 1)",
+            "value": 898.763512000005,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-a-few-of-many-files (undo, loop: 1)",
+            "value": 113.12262699997518,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-all-of-many-files (applyAutoFixes, loop: 1)",
+            "value": 803.2545969999919,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-all-of-many-files (disablePerLine, loop: 1)",
+            "value": 851.1766989999742,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-all-of-many-files (disablePerFile, loop: 1)",
+            "value": 849.446013000008,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-all-of-many-files (makeFixableAndFix, loop: 1)",
+            "value": 800.4215740000072,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-all-of-many-files (undo, loop: 1)",
+            "value": 97.72756100000697,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-all-of-huge-files (applyAutoFixes, loop: 1)",
+            "value": 875.5161270000099,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-all-of-huge-files (disablePerLine, loop: 1)",
+            "value": 919.3878840000252,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-all-of-huge-files (disablePerFile, loop: 1)",
+            "value": 856.7714399999822,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-all-of-huge-files (makeFixableAndFix, loop: 1)",
+            "value": 4607.159283000015,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-all-of-huge-files (undo, loop: 1)",
+            "value": 0.5299040000245441,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-overlapped-problems (applyAutoFixes, loop: 1)",
+            "value": 944.4633639999956,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-overlapped-problems (disablePerLine, loop: 1)",
+            "value": 56.943986999976914,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-overlapped-problems (disablePerFile, loop: 1)",
+            "value": 51.41273999999976,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-overlapped-problems (makeFixableAndFix, loop: 1)",
+            "value": 1325.9593539999914,
+            "unit": "ms"
+          },
+          {
+            "name": "fix-overlapped-problems (undo, loop: 1)",
+            "value": 0.33830300002591684,
             "unit": "ms"
           }
         ]
