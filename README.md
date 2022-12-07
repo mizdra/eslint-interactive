@@ -70,6 +70,7 @@ Options:
   --version         Show version number                                [boolean]
   --rulesdir        Use additional rules from this directory             [array]
   --ext             Specify JavaScript file extensions                   [array]
+  --ignore-path     Specify path of ignore file                         [string]
   --format          Specify the format to be used for the `Display problem messa
                     ges` action                  [string] [default: "codeframe"]
   --quiet           Report errors only                [boolean] [default: false]

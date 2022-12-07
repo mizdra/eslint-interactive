@@ -16,6 +16,12 @@ export function parseArgv(argv: string[]): Config {
       type: 'array',
       describe: 'Specify JavaScript file extensions',
     })
+    // Following ESLint, --ignore-path accepts only one path. However, this limitation may be relaxed in the future.
+    // ref: https://github.com/eslint/eslint/issues/9794
+    .option('ignore-path', {
+      type: 'string',
+      describe: 'Specify path of ignore file',
+    })
     .nargs('ext', 1)
     .option('format', {
       type: 'string',
@@ -50,6 +56,7 @@ export function parseArgv(argv: string[]): Config {
   return {
     patterns,
     rulePaths,
+    ignorePath: parsedArgv.ignorePath,
     extensions,
     formatterName,
     quiet: parsedArgv.quiet,

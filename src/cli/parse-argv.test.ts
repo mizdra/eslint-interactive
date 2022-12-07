@@ -14,6 +14,10 @@ describe('parseArgv', () => {
     expect(parseArgv([...baseArgs, '--rulesdir', 'foo', 'bar']).rulePaths).toStrictEqual(['foo']);
     expect(parseArgv([...baseArgs, '--rulesdir', '1', '--rulesdir', 'true']).rulePaths).toStrictEqual(['1', 'true']);
   });
+  test('--ignore-path', () => {
+    expect(parseArgv([...baseArgs]).ignorePath).toStrictEqual(undefined);
+    expect(parseArgv([...baseArgs, '--ignore-path', 'foo']).ignorePath).toStrictEqual('foo');
+  });
   test('--ext', () => {
     expect(parseArgv([...baseArgs, '--ext', 'js']).extensions).toStrictEqual(['js']);
     expect(parseArgv([...baseArgs, '--ext', 'js', '--ext', 'ts']).extensions).toStrictEqual(['js', 'ts']);

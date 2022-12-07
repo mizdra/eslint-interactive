@@ -114,6 +114,20 @@ describe('Core', () => {
       const resultsWithQuiet = await coreWithQuiet.lint();
       expect(countWarnings(resultsWithQuiet)).toEqual(0);
     });
+    test('ignores files with --ignore-path option', async () => {
+      const coreWithoutIgnorePath = new Core({
+        ...core.config,
+      });
+      const resultsWithoutIgnorePath = await coreWithoutIgnorePath.lint();
+      expect(countWarnings(resultsWithoutIgnorePath)).not.toEqual(0);
+
+      const coreWithIgnorePath = new Core({
+        ...core.config,
+        ignorePath: 'fixtures-tmp/.customignore',
+      });
+      const resultsWithIgnorePath = await coreWithIgnorePath.lint();
+      expect(countWarnings(resultsWithIgnorePath)).toEqual(0);
+    });
   });
   // This test fails because the documentation url is not supported in eslint 7.0.0. Therefore, ignore this test.
   testIf(ESLint.version !== '7.0.0')('printSummaryOfResults', async () => {
