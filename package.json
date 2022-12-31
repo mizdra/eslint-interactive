@@ -59,7 +59,7 @@
     "typescript": "^4.8.4"
   },
   "dependencies": {
-    "boxen": "^7.0.0",
+    "boxen": "^7.0.1",
     "cachedir": "^2.3.0",
     "chalk": "^5.0.1",
     "comlink": "^4.3.1",
