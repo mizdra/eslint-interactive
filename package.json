@@ -1,7 +1,7 @@
 {
   "name": "eslint-interactive",
   "description": "The CLI tool to run `eslint --fix` for each rule",
-  "version": "10.3.0",
+  "version": "10.4.0",
   "repository": "https://github.com/mizdra/eslint-interactive.git",
   "author": "mizdra <pp.mizdra@gmail.com>",
   "license": "MIT",
