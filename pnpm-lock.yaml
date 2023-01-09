@@ -9,6 +9,7 @@ specifiers:
   '@types/eslint': ^8.4.6
   '@types/estraverse': ^5.1.2
   '@types/estree': ^1.0.0
+  '@types/fs-extra': ^11.0.0
   '@types/jest': ^29.0.0
   '@types/node': ^18.0.5
   '@types/terminal-link': ^1.2.0
@@ -20,12 +21,14 @@ specifiers:
   cachedir: ^2.3.0
   chalk: ^5.0.1
   comlink: ^4.3.1
+  cross-env: ^7.0.3
   enquirer: ^2.3.6
   eslint: ^8.23.0
   eslint-config-prettier: ^8.5.0
   eslint-formatter-codeframe: ^7.32.1
   eslint-plugin-import: ^2.26.0
   estraverse: ^5.3.0
+  fs-extra: ^11.1.0
   is-installed-globally: ^0.4.0
   jest: ^29.0.1
   jest-mock-process: ^2.0.0
@@ -65,6 +68,7 @@ devDependencies:
   '@types/eslint': 8.4.6
   '@types/estraverse': 5.1.2
   '@types/estree': 1.0.0
+  '@types/fs-extra': 11.0.0
   '@types/jest': 29.0.0
   '@types/node': 18.0.5
   '@types/terminal-link': 1.2.0
@@ -72,9 +76,11 @@ devDependencies:
   '@typescript-eslint/eslint-plugin': 5.30.6_dqgtq56deqpi5kkuirj5qi37h4
   '@typescript-eslint/parser': 5.30.6_nwctkcr5uyxf47tw7zkgamxmfq
   babel-jest: 29.0.1_@babel+core@7.20.7
+  cross-env: 7.0.3
   eslint: 8.23.0
   eslint-config-prettier: 8.5.0_eslint@8.23.0
   eslint-plugin-import: 2.26.0_g5lqoiq7vlempwjqpbordtvyyu
+  fs-extra: 11.1.0
   jest: 29.0.1_@types+node@18.0.5
   jest-mock-process: 2.0.0_jest@29.0.1
   npm-run-all: 4.1.5
@@ -961,6 +967,13 @@ packages:
     resolution: {integrity: sha512-WulqXMDUTYAXCjZnk6JtIHPigp55cVtDgDrO2gHRwhyJto21+1zbVCtOYB2L1F9w4qCQ0rOGWBnBe0FNTiEJIQ==}
     dev: true
 
+  /@types/fs-extra/11.0.0:
+    resolution: {integrity: sha512-zdV5odfHf95B4qr6bdpshG4VMm/3xgnPhSJLa3xh75CYr35e34k+4FQli82Q48sPqwHazJGy+6+jl4T+Vw1AMg==}
+    dependencies:
+      '@types/jsonfile': 6.1.1
+      '@types/node': 18.0.5
+    dev: true
+
   /@types/graceful-fs/4.1.5:
     resolution: {integrity: sha512-anKkLmZZ+xm4p8JWBf4hElkM4XR+EZeA2M9BAkkTldmcyDY4mbdIJnRghDJH3Ov5ooY7/UAoENtmdMSkaAd7Cw==}
     dependencies:
@@ -996,6 +1009,12 @@ packages:
 
   /@types/json5/0.0.29:
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
+    dev: true
+
+  /@types/jsonfile/6.1.1:
+    resolution: {integrity: sha512-GSgiRCVeapDN+3pqA35IkQwasaCh/0YFH5dEF6S88iDvEn901DjOeH3/QPY+XYP1DFzDZPvIvfeEgk+7br5png==}
+    dependencies:
+      '@types/node': 18.0.5
     dev: true
 
   /@types/node/18.0.5:
@@ -1566,6 +1585,14 @@ packages:
       safe-buffer: 5.1.2
     dev: true
 
+  /cross-env/7.0.3:
+    resolution: {integrity: sha512-+/HKd6EgcQCJGh2PSjZuUitQBQynKor4wrFbRg4DtAgS1aWO+gU52xpH7M9ScGgXSYmAVS9bIJ8EzuaGw0oNAw==}
+    engines: {node: '>=10.14', npm: '>=6', yarn: '>=1'}
+    hasBin: true
+    dependencies:
+      cross-spawn: 7.0.3
+    dev: true
+
   /cross-spawn/6.0.5:
     resolution: {integrity: sha512-eTVLrBSt7fjbDygz805pMnstIs2VTBNkRm0qxZd+M7A5XDdxVRWO5MxGBXZhjY4cqLYLdtrGqRf8mBPmzwSpWQ==}
     engines: {node: '>=4.8'}
@@ -2105,6 +2132,15 @@ packages:
 
   /from/0.1.7:
     resolution: {integrity: sha512-twe20eF1OxVxp/ML/kq2p1uc6KvFK/+vs8WjEbeKmV2He22MKm7YF2ANIt+EOqhJ5L3K/SuuPhk0hWQDjOM23g==}
+    dev: true
+
+  /fs-extra/11.1.0:
+    resolution: {integrity: sha512-0rcTq621PD5jM/e0a3EJoGC/1TC5ZBCERW82LQuwfGnCa1V8w7dpYH1yNu+SLb6E5dkeCBzKEyLGlFrnr+dUyw==}
+    engines: {node: '>=14.14'}
+    dependencies:
+      graceful-fs: 4.2.10
+      jsonfile: 6.1.0
+      universalify: 2.0.0
     dev: true
 
   /fs.realpath/1.0.0:
@@ -2987,6 +3023,14 @@ packages:
     hasBin: true
     dev: true
 
+  /jsonfile/6.1.0:
+    resolution: {integrity: sha512-5dgndWOriYSm5cnYaJNhalLNDKOqFwyDB/rr1E9ZsGciGvKPs8R2xYGCacuf3z6K1YKDz182fd+fY3cn3pMqXQ==}
+    dependencies:
+      universalify: 2.0.0
+    optionalDependencies:
+      graceful-fs: 4.2.10
+    dev: true
+
   /kleur/3.0.3:
     resolution: {integrity: sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==}
     engines: {node: '>=6'}
@@ -3587,7 +3631,7 @@ packages:
     dev: true
 
   /shebang-command/1.2.0:
-    resolution: {integrity: sha1-RKrGW2lbAzmJaMOfNj/uXer98eo=}
+    resolution: {integrity: sha512-EV3L1+UQWGor21OmnvojK36mhg+TyIKDh3iFBKBohr5xeXIhNBcx8oWdgkTEEQ+BEFFYdLRuqMfd5L84N1V5Vg==}
     engines: {node: '>=0.10.0'}
     dependencies:
       shebang-regex: 1.0.0
@@ -3969,6 +4013,11 @@ packages:
       has-bigints: 1.0.1
       has-symbols: 1.0.2
       which-boxed-primitive: 1.0.2
+    dev: true
+
+  /universalify/2.0.0:
+    resolution: {integrity: sha512-hAZsKq7Yy11Zu1DE0OzWjw7nnLZmJZYTDZZyEFHZdUhV8FkH5MCfoU1XMaxXovpyW5nq5scPqq0ZDP9Zyl04oQ==}
+    engines: {node: '>= 10.0.0'}
     dev: true
 
   /update-browserslist-db/1.0.10_browserslist@4.21.4:

@@ -1,10 +1,23 @@
-#!/usr/bin/env -S node --enable-source-maps --unhandled-rejections=strict --experimental-import-meta-resolve
+#!/usr/bin/env node
+// @ts-check
 
-import { run } from '../dist/index.js';
+import { spawnSync } from 'child_process';
+import { resolve } from 'path';
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
 
-run({
-  argv: process.argv,
-}).catch((error) => {
-  console.error(error);
-  process.exit(1);
-});
+const dir = join(dirname(fileURLToPath(import.meta.url)));
+
+const scriptFile = resolve(dir, '_eslint-interactive.js');
+
+spawnSync(
+  'node',
+  [
+    '--enable-source-maps',
+    '--unhandled-rejections=strict',
+    '--experimental-import-meta-resolve',
+    scriptFile,
+    ...process.argv.slice(2),
+  ],
+  { stdio: 'inherit' },
+);

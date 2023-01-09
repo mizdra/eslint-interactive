@@ -1,7 +1,9 @@
 import { exec } from 'child_process';
-import { dirname, join } from 'path';
+import { rm } from 'fs/promises';
+import { dirname, join, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { promisify } from 'util';
+import fse from 'fs-extra/esm';
 
 const execPromise = promisify(exec);
 
@@ -19,9 +21,10 @@ export async function getSnapshotOfChangedFiles(): Promise<string> {
 }
 
 export async function setupFixturesCopy() {
-  await execPromise(`rm -rf fixtures-tmp && cp -r fixtures fixtures-tmp`, { cwd });
+  await rm(resolve(cwd, 'fixtures-tmp'), { recursive: true, force: true });
+  await fse.copy(resolve(cwd, 'fixtures'), resolve(cwd, 'fixtures-tmp'));
 }
 
 export async function cleanupFixturesCopy() {
-  await execPromise(`rm -rf fixtures-tmp`, { cwd });
+  await rm(resolve(cwd, 'fixtures-tmp'), { recursive: true, force: true });
 }
