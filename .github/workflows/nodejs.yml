@@ -26,6 +26,10 @@ jobs:
         os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
+      # To avoid differences in snapshot tests.
+      - run: git config --global core.autocrlf false
+        if: ${{ matrix.os == 'windows-latest' }}
+
       - uses: actions/checkout@v3
       - uses: pnpm/action-setup@v2
       - uses: actions/setup-node@v3
