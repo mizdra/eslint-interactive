@@ -23,7 +23,8 @@ jobs:
       matrix:
         node: [14, 16]
         eslint: ['7.0.0', '^7.0.0', '8.0.0', '^8.0.0']
-    runs-on: ubuntu-latest
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
       - uses: pnpm/action-setup@v2
