@@ -20,6 +20,7 @@ specifiers:
   cachedir: ^2.3.0
   chalk: ^5.0.1
   comlink: ^4.3.1
+  cross-env: ^7.0.3
   enquirer: ^2.3.6
   eslint: ^8.23.0
   eslint-config-prettier: ^8.5.0
@@ -72,6 +73,7 @@ devDependencies:
   '@typescript-eslint/eslint-plugin': 5.30.6_dqgtq56deqpi5kkuirj5qi37h4
   '@typescript-eslint/parser': 5.30.6_nwctkcr5uyxf47tw7zkgamxmfq
   babel-jest: 29.0.1_@babel+core@7.20.7
+  cross-env: 7.0.3
   eslint: 8.23.0
   eslint-config-prettier: 8.5.0_eslint@8.23.0
   eslint-plugin-import: 2.26.0_g5lqoiq7vlempwjqpbordtvyyu
@@ -1564,6 +1566,14 @@ packages:
     resolution: {integrity: sha512-+OQdjP49zViI/6i7nIJpA8rAl4sV/JdPfU9nZs3VqOwGIgizICvuN2ru6fMd+4llL0tar18UYJXfZ/TWtmhUjA==}
     dependencies:
       safe-buffer: 5.1.2
+    dev: true
+
+  /cross-env/7.0.3:
+    resolution: {integrity: sha512-+/HKd6EgcQCJGh2PSjZuUitQBQynKor4wrFbRg4DtAgS1aWO+gU52xpH7M9ScGgXSYmAVS9bIJ8EzuaGw0oNAw==}
+    engines: {node: '>=10.14', npm: '>=6', yarn: '>=1'}
+    hasBin: true
+    dependencies:
+      cross-spawn: 7.0.3
     dev: true
 
   /cross-spawn/6.0.5:
@@ -3587,7 +3597,7 @@ packages:
     dev: true
 
   /shebang-command/1.2.0:
-    resolution: {integrity: sha1-RKrGW2lbAzmJaMOfNj/uXer98eo=}
+    resolution: {integrity: sha512-EV3L1+UQWGor21OmnvojK36mhg+TyIKDh3iFBKBohr5xeXIhNBcx8oWdgkTEEQ+BEFFYdLRuqMfd5L84N1V5Vg==}
     engines: {node: '>=0.10.0'}
     dependencies:
       shebang-regex: 1.0.0
