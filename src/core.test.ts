@@ -34,7 +34,10 @@ function normalizeResults(results: ESLint.LintResult[]): ESLint.LintResult[] {
       ...result,
       // Usually, `filePath` changes depending on the environment, and the snapshot will fail.
       // So, remove the current directory from `filePath`.
-      filePath: result.filePath.replace(process.cwd(), ''),
+      filePath: result.filePath
+        .replace(process.cwd(), '')
+        // for windows
+        .replace(/\\/g, '/'),
       messages: result.messages.map(normalizeMessage),
       // Remove the source because the snapshot will be large
       source: 'ommitted',
@@ -136,7 +139,11 @@ describe('Core', () => {
   });
   test('printDetailsOfResults', async () => {
     const results = await core.lint();
-    expect(await core.formatResultDetails(results, ['import/order', 'ban-exponentiation-operator'])).toMatchSnapshot();
+    expect(
+      (await core.formatResultDetails(results, ['import/order', 'ban-exponentiation-operator']))
+        // for windows
+        .replace(/\\/g, '/'),
+    ).toMatchSnapshot();
   });
   describe('applyAutoFixes', () => {
     test('basic', async () => {
