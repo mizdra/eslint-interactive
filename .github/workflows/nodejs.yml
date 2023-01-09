@@ -23,7 +23,7 @@ jobs:
       matrix:
         node: [14, 16]
         eslint: ['7.0.0', '^7.0.0', '8.0.0', '^8.0.0']
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
       # To avoid differences in snapshot tests.
