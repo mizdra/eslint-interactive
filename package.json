@@ -24,7 +24,7 @@
     "lint:tsc:test": "tsc -p tsconfig.test.json --noEmit",
     "lint:eslint": "eslint --ignore-pattern '/fixtures/' --ignore-pattern '/e2e-test/' .",
     "lint:prettier": "prettier --check .",
-    "test": "FORCE_HYPERLINK=1 NODE_OPTIONS=\"--experimental-vm-modules --experimental-import-meta-resolve $NODE_OPTIONS\" jest --colors",
+    "test": "cross-env FORCE_HYPERLINK=1 NODE_OPTIONS=\"--experimental-vm-modules --experimental-import-meta-resolve $NODE_OPTIONS\" jest --colors",
     "postbuild:test": "./run-e2e-test.sh",
     "postbuild:benchmark": "node benchmark/run.js"
   },
