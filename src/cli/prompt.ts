@@ -26,10 +26,11 @@ export type Action =
 /**
  * The type representing how to display the lint results.
  *
- * `withPager` means that the lint results will be displayed with a pager (like `less` command).
- * `withoutPager` means that the lint results will be displayed without a pager.
+ * `printInTerminal` means to print the lint results in the terminal.
+ * `printInTerminalWithPager` means to print the lint results in the terminal with a pager (e.g. `less`).
+ * `writeToFile` means to write the lint results to a file.
  */
-export type DisplayMode = 'withPager' | 'withoutPager';
+export type DisplayMode = 'printInTerminal' | 'printInTerminalWithPager' | 'writeToFile';
 
 /**
  * The type that represents what to do next.
@@ -122,10 +123,11 @@ export async function promptToInputDisplayMode(): Promise<DisplayMode> {
     {
       name: 'displayMode',
       type: 'select',
-      message: 'What format do you want to display the problem message in?',
+      message: 'In what way are the details displayed?',
       choices: [
-        { name: 'withPager', message: '↕️  Display with pager' },
-        { name: 'withoutPager', message: '📃 Display without pager' },
+        { name: 'printInTerminal', message: '🖨  Print in terminal' },
+        { name: 'printInTerminalWithPager', message: '↕️  Print in terminal with pager' },
+        { name: 'writeToFile', message: '📝 Write to file' },
       ],
       onCancel,
     },
