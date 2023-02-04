@@ -9,6 +9,7 @@ specifiers:
   '@types/eslint': ^8.4.6
   '@types/estraverse': ^5.1.2
   '@types/estree': ^1.0.0
+  '@types/find-cache-dir': ^3.2.1
   '@types/fs-extra': ^11.0.0
   '@types/jest': ^29.0.0
   '@types/node': ^18.0.5
@@ -70,6 +71,7 @@ devDependencies:
   '@types/eslint': 8.4.6
   '@types/estraverse': 5.1.2
   '@types/estree': 1.0.0
+  '@types/find-cache-dir': 3.2.1
   '@types/fs-extra': 11.0.0
   '@types/jest': 29.0.0
   '@types/node': 18.0.5
@@ -967,6 +969,10 @@ packages:
 
   /@types/estree/1.0.0:
     resolution: {integrity: sha512-WulqXMDUTYAXCjZnk6JtIHPigp55cVtDgDrO2gHRwhyJto21+1zbVCtOYB2L1F9w4qCQ0rOGWBnBe0FNTiEJIQ==}
+    dev: true
+
+  /@types/find-cache-dir/3.2.1:
+    resolution: {integrity: sha512-frsJrz2t/CeGifcu/6uRo4b+SzAwT4NYCVPu1GN8IB9XTzrpPkGuV0tmh9mN+/L0PklAlsC3u5Fxt0ju00LXIw==}
     dev: true
 
   /@types/fs-extra/11.0.0:
