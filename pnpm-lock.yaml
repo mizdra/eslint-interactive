@@ -19,7 +19,6 @@ specifiers:
   '@typescript-eslint/parser': ^5.30.6
   babel-jest: ^29.0.1
   boxen: ^7.0.1
-  cachedir: ^2.3.0
   chalk: ^5.0.1
   comlink: ^4.3.1
   cross-env: ^7.0.3
@@ -48,7 +47,6 @@ specifiers:
 
 dependencies:
   boxen: 7.0.1
-  cachedir: 2.3.0
   chalk: 5.0.1
   comlink: 4.3.1
   enquirer: 2.3.6
@@ -1454,11 +1452,6 @@ packages:
     dependencies:
       base64-js: 1.5.1
       ieee754: 1.2.1
-    dev: false
-
-  /cachedir/2.3.0:
-    resolution: {integrity: sha512-A+Fezp4zxnit6FanDmv9EqXNAi3vt9DWp51/71UEhXukb7QUuvtv9344h91dyAxuTLoSYJFU299qzR3tzwPAhw==}
-    engines: {node: '>=6'}
     dev: false
 
   /call-bind/1.0.2:
