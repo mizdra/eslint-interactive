@@ -2,15 +2,6 @@
 
 // Edit this file to customize how the suggestion is applied.
 // Save and close this file to apply the suggestion.
-//
-// NOTE(For VSCode user):
-// In the Restricted Mode of VSCode, the close event of the file is not notified to eslint-interactive.
-// Therefore, eslint-interactive will not start applying suggestions even if the file is closed, and eslint-interactive will freeze.
-// If you open a file in VSCode Restricted Mode, please follow the steps below:
-// 1. Trust the workspace
-// 2. Close the open file
-// 3. exit the frozen eslint-interactive with Ctrl+C
-// 4. Restart eslint-interactive and try to apply the suggestion again
 
 /**
  * A function that takes a list of suggestions that can be applied to a problem as arguments,
