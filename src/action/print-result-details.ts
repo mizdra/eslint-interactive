@@ -1,7 +1,9 @@
 import { writeFile } from 'fs/promises';
 import { join } from 'path';
+import chalk from 'chalk';
 import { Remote } from 'comlink';
 import { ESLint } from 'eslint';
+import stripAnsi from 'strip-ansi';
 import { pager } from '../cli/pager.js';
 import { promptToInputDisplayMode } from '../cli/prompt.js';
 import { SerializableCore } from '../core-worker.js';
@@ -21,8 +23,8 @@ export async function doPrintResultDetailsAction(
     await pager(formattedResultDetails);
   } else if (displayMode === 'writeToFile') {
     const filePath = join(getCacheDir(), 'lint-result-details.txt');
-    await writeFile(filePath, formattedResultDetails, 'utf8');
-    console.log(`Wrote to ${filePath}`);
+    await writeFile(filePath, stripAnsi(formattedResultDetails), 'utf8');
+    console.log(chalk.cyan(`Wrote to ${filePath}`));
   } else {
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
     unreachable(`Unknown display mode: ${displayMode}`);
