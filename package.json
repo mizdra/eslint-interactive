@@ -58,7 +58,6 @@
     "npm-run-all": "^4.1.5",
     "prettier": "2.7.1",
     "resolve-from": "^5.0.0",
-    "strip-ansi": "^7.0.1",
     "tsc-watch": "^5.0.3",
     "typescript": "^4.8.4"
   },
@@ -72,6 +71,7 @@
     "find-cache-dir": "^4.0.0",
     "is-installed-globally": "^0.4.0",
     "ora": "^6.1.2",
+    "strip-ansi": "^7.0.1",
     "table": "^6.8.1",
     "terminal-link": "^3.0.0",
     "yargs": "^17.5.1"

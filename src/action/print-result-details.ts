@@ -1,8 +1,14 @@
+import { writeFile } from 'fs/promises';
+import { join } from 'path';
+import chalk from 'chalk';
 import { Remote } from 'comlink';
 import { ESLint } from 'eslint';
+import stripAnsi from 'strip-ansi';
 import { pager } from '../cli/pager.js';
 import { promptToInputDisplayMode } from '../cli/prompt.js';
 import { SerializableCore } from '../core-worker.js';
+import { getCacheDir } from '../util/cache.js';
+import { unreachable } from '../util/type-check.js';
 
 export async function doPrintResultDetailsAction(
   core: Remote<SerializableCore>,
@@ -10,9 +16,17 @@ export async function doPrintResultDetailsAction(
   selectedRuleIds: string[],
 ) {
   const displayMode = await promptToInputDisplayMode();
-  if (displayMode === 'withPager') {
-    await pager(await core.formatResultDetails(results, selectedRuleIds));
+  const formattedResultDetails = await core.formatResultDetails(results, selectedRuleIds);
+  if (displayMode === 'printInTerminal') {
+    console.log(formattedResultDetails);
+  } else if (displayMode === 'printInTerminalWithPager') {
+    await pager(formattedResultDetails);
+  } else if (displayMode === 'writeToFile') {
+    const filePath = join(getCacheDir(), 'lint-result-details.txt');
+    await writeFile(filePath, stripAnsi(formattedResultDetails), 'utf8');
+    console.log(chalk.cyan(`Wrote to ${filePath}`));
   } else {
-    console.log(await core.formatResultDetails(results, selectedRuleIds));
+    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+    unreachable(`Unknown display mode: ${displayMode}`);
   }
 }
