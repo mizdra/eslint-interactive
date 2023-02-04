@@ -28,17 +28,17 @@ async function readStream(stream) {
   );
 
   await wait(2000);
-  child.stdin.write(' ');
+  child.stdin.write(' '); // Select `semi` rule
   await wait(500);
-  child.stdin.write(LF);
+  child.stdin.write(LF); // Confirm the choice
   await wait(500);
-  child.stdin.write(LF);
+  child.stdin.write(LF); // Select `Display details of lint results`
   await wait(500);
-  child.stdin.write('1');
+  child.stdin.write('0'); // Focus on `Print in terminal`
   await wait(500);
-  child.stdin.write(LF);
+  child.stdin.write(LF); // Confirm the choice
   await wait(500);
-  child.stdin.write(ETX);
+  child.stdin.write(ETX); // Exit
 
   const output = await readStream(child.stdout);
   console.log(output); // for debug
