@@ -1,6 +1,6 @@
 import { Remote } from 'comlink';
 import { ESLint } from 'eslint';
-import pager from 'node-pager';
+import { pager } from '../cli/pager.js';
 import { promptToInputDisplayMode } from '../cli/prompt.js';
 import { SerializableCore } from '../core-worker.js';
 
