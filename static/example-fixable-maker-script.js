@@ -2,15 +2,6 @@
 
 // Edit this file to customize how  you want to convert `Linter.LintMessage` to `Rule.Fix`.
 // Save and close this file to run `eslint --fix`.
-//
-// NOTE(For VSCode user):
-// In the Restricted Mode of VSCode, the close event of the file is not notified to eslint-interactive.
-// Therefore, eslint-interactive will not start applying suggestions even if the file is closed, and eslint-interactive will freeze.
-// If you open a file in VSCode Restricted Mode, please follow the steps below:
-// 1. Trust the workspace
-// 2. Close the open file
-// 3. exit the frozen eslint-interactive with Ctrl+C
-// 4. Restart eslint-interactive and try to apply the suggestion again
 
 /**
  * A function to convert `Linter.LintMessage` to `Rule.Fix`.
