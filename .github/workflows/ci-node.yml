@@ -22,7 +22,6 @@ jobs:
           cache: 'pnpm'
 
       - run: pnpm install
-
       - run: pnpm run lint
 
   test:
@@ -48,16 +47,6 @@ jobs:
       - name: Change ESLint version
         run: pnpm add -D eslint@${{ matrix.eslint }}
 
-      - name: pnpm run test
-        run: pnpm run test
-
-      - name: pnpm run build
-        run: pnpm run build
-
-      - name: pnpm run postbuild:test
-        run: pnpm run postbuild:test
-        # Currently the E2E test is written in bash shell script,
-        # so it is difficult to run on windows. Therefore,
-        # we are temporarily skipping the E2E test on windows.
-        # TODO: Enable E2E test on windows.
-        if: ${{ matrix.os != 'windows-latest' }}
+      - run: pnpm run test
+      - run: pnpm run build
+      - run: pnpm run postbuild:test

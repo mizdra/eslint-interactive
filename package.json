@@ -25,7 +25,7 @@
     "lint:eslint": "eslint --ignore-pattern '/fixtures/' --ignore-pattern '/e2e-test/' .",
     "lint:prettier": "prettier --check .",
     "test": "cross-env FORCE_HYPERLINK=1 NODE_OPTIONS=\"--experimental-vm-modules --experimental-import-meta-resolve $NODE_OPTIONS\" jest --colors",
-    "postbuild:test": "./run-e2e-test.sh",
+    "postbuild:test": "cross-env NODE_OPTIONS=\"--experimental-vm-modules --experimental-import-meta-resolve $NODE_OPTIONS\" jest -c e2e-test/jest.config.mjs --runInBand",
     "postbuild:benchmark": "node benchmark/run.js"
   },
   "prettier": "@mizdra/prettier-config-mizdra",
@@ -58,6 +58,7 @@
     "npm-run-all": "^4.1.5",
     "prettier": "2.7.1",
     "resolve-from": "^5.0.0",
+    "stream-match": "^3.0.0",
     "tsc-watch": "^5.0.3",
     "typescript": "^4.8.4"
   },

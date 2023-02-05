@@ -1,8 +1,15 @@
+import { execSync } from 'child_process';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
-import { Core, takeRuleStatistics } from 'eslint-interactive';
 import stripAnsi from 'strip-ansi';
+// eslint-disable-next-line no-restricted-imports
 import { cleanupFixturesCopy, getSnapshotOfChangedFiles, setupFixturesCopy } from '../../src/test-util/fixtures.js';
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+execSync('pnpm install --no-lockfile', { stdio: 'inherit', cwd: __dirname });
+const { Core, takeRuleStatistics } = await import('eslint-interactive');
 
 beforeEach(async () => {
   await setupFixturesCopy();
