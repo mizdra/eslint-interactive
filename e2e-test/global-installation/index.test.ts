@@ -1,29 +1,14 @@
 import { execSync, spawn } from 'child_process';
 import { dirname } from 'path';
-import stripAnsi from 'strip-ansi';
 import { fileURLToPath } from 'url';
 import { VERSION } from '../../src/cli/package.js';
 import { ESLint } from 'eslint';
-import { jest } from '@jest/globals';
-
-jest.setTimeout(10 * 1000);
+import streamMatch from 'stream-match';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const ETX = String.fromCharCode(0x03); // ^C
 const LF = String.fromCharCode(0x0a); // \n
-
-async function wait(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-async function readStream(stream: NodeJS.ReadableStream) {
-  let result = '';
-  for await (const line of stream) {
-    result += line;
-  }
-  return result;
-}
 
 beforeAll(() => {
   process.stderr.write('🤖  Installing eslint globally...\n');
@@ -48,23 +33,17 @@ test('can print error with eslint-formatter-codeframe', async () => {
       // merge stderr to stdout
       '2>&1',
     ],
-    { shell: true, stdio: ['pipe', 'pipe', 'pipe'], cwd: __dirname },
+    { shell: true, stdio: 'pipe', cwd: __dirname },
   );
 
-  await wait(3000);
+  await streamMatch(child.stdout, 'Which rules would you like to apply action?');
   child.stdin.write(' '); // Select `semi` rule
-  await wait(1000);
   child.stdin.write(LF); // Confirm the choice
-  await wait(1000);
+  await streamMatch(child.stdout, 'Which action do you want to do?');
   child.stdin.write(LF); // Select `Display details of lint results`
-  await wait(1000);
+  await streamMatch(child.stdout, 'In what way are the details displayed?');
   child.stdin.write('0'); // Focus on `Print in terminal`
-  await wait(1000);
   child.stdin.write(LF); // Confirm the choice
-  await wait(1000);
+  await streamMatch(child.stdout, 'error: Missing semicolon (semi) at failed.js:2:2:'); // formatted by eslint-formatter-codeframe
   child.stdin.write(ETX); // Exit
-
-  const output = await readStream(child.stdout);
-
-  expect(stripAnsi(output)).toEqual(expect.stringContaining('error: Missing semicolon (semi) at failed.js:2:2:'));
 });
