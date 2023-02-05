@@ -22,7 +22,6 @@ jobs:
           cache: 'pnpm'
 
       - run: pnpm install
-
       - run: pnpm run lint
 
   test:
