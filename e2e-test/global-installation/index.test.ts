@@ -4,6 +4,7 @@ import stripAnsi from 'strip-ansi';
 import { fileURLToPath } from 'url';
 import { VERSION } from '../../src/cli/package.js';
 import { ESLint } from 'eslint';
+import { jest } from '@jest/globals';
 
 jest.setTimeout(10 * 1000);
 
