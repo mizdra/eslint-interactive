@@ -123,4 +123,5 @@ def combined_instruction_estimate(counts: Dict[str, int]) -> int:
 
 
 if __name__ == "__main__":
-    print(combined_instruction_estimate(get_counts(run_with_cachegrind(sys.argv[1:]))))
+    print(combined_instruction_estimate(
+        get_counts(run_with_cachegrind(sys.argv[1:]))))
