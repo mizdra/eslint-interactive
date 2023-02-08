@@ -58,7 +58,13 @@ jobs:
                 --predictable-gc-schedule \
                 benchmark/run-cachegrind-benchmarking.js \
           )
-          echo \{\"name\": \"cachegrind-benchmarking\", \"unit\": \"instructions\", \"value\": $RESULT \} >> benchmark/result.jsonl
+          echo \
+            \{ \
+              \"name\": \"cachegrind-benchmarking\", \
+              \"unit\": \"instructions\", \
+              \"value\": $RESULT \
+            \} \
+            >> benchmark/result.jsonl
 
       - name: Convert jsonl to json
         run: jq -s '.' benchmark/result.jsonl > benchmark/result.json
