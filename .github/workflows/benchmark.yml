@@ -69,6 +69,8 @@ jobs:
           auto-push: ${{ github.ref == 'refs/heads/main' }}
           comment-on-alert: true
           fail-on-alert: true
-          alert-threshold: '800%'
+          # There is always an error of about 5%.
+          # Considering this, the alert threshold is set at 30%.
+          alert-threshold: '130%'
           # for test
           comment-always: true
