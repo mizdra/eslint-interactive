@@ -16,7 +16,7 @@ permissions:
 jobs:
   benchmark:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 60
 
     steps:
       - uses: actions/checkout@v3
@@ -60,7 +60,259 @@ jobs:
           )
           echo \
             \{ \
-              \"name\": \"cachegrind-benchmarking\", \
+              \"name\": \"cachegrind-benchmarking-1\", \
+              \"unit\": \"instructions\", \
+              \"value\": $RESULT \
+            \} \
+            >> benchmark/result.jsonl
+
+      - name: Run cachegrind-benchmarking
+        run: |
+          # NOTE: Some options are passed to the node command to get consistent results.
+          # ref: https://pythonspeed.com/articles/consistent-benchmarking-in-ci/#consistent-benchmarking-is-hard-and-its-even-harder-in-the-cloud
+          # ref: https://github.com/v8/v8/blob/d55d51a2427b5c60b94cf5a9f2bbfbacdfe19b8c/src/flags/flag-definitions.h#L2349-L2372
+          RESULT=$( \
+            python3 \
+              third-party/cachegrind-benchmarking/cachegrind.py \
+              node \
+                --random-gc-interval=0 \
+                --no-randomize-all-allocations \
+                --hash-seed=0 \
+                --random-seed=0 \
+                --fuzzer-random-seed=0 \
+                --no-turbo-stress-instruction-scheduling \
+                --no-stress-compaction-random \
+                --predictable \
+                --predictable-gc-schedule \
+                benchmark/run-cachegrind-benchmarking.js \
+          )
+          echo \
+            \{ \
+              \"name\": \"cachegrind-benchmarking-2\", \
+              \"unit\": \"instructions\", \
+              \"value\": $RESULT \
+            \} \
+            >> benchmark/result.jsonl
+
+      - name: Run cachegrind-benchmarking
+        run: |
+          # NOTE: Some options are passed to the node command to get consistent results.
+          # ref: https://pythonspeed.com/articles/consistent-benchmarking-in-ci/#consistent-benchmarking-is-hard-and-its-even-harder-in-the-cloud
+          # ref: https://github.com/v8/v8/blob/d55d51a2427b5c60b94cf5a9f2bbfbacdfe19b8c/src/flags/flag-definitions.h#L2349-L2372
+          RESULT=$( \
+            python3 \
+              third-party/cachegrind-benchmarking/cachegrind.py \
+              node \
+                --random-gc-interval=0 \
+                --no-randomize-all-allocations \
+                --hash-seed=0 \
+                --random-seed=0 \
+                --fuzzer-random-seed=0 \
+                --no-turbo-stress-instruction-scheduling \
+                --no-stress-compaction-random \
+                --predictable \
+                --predictable-gc-schedule \
+                benchmark/run-cachegrind-benchmarking.js \
+          )
+          echo \
+            \{ \
+              \"name\": \"cachegrind-benchmarking-3\", \
+              \"unit\": \"instructions\", \
+              \"value\": $RESULT \
+            \} \
+            >> benchmark/result.jsonl
+
+      - name: Run cachegrind-benchmarking
+        run: |
+          # NOTE: Some options are passed to the node command to get consistent results.
+          # ref: https://pythonspeed.com/articles/consistent-benchmarking-in-ci/#consistent-benchmarking-is-hard-and-its-even-harder-in-the-cloud
+          # ref: https://github.com/v8/v8/blob/d55d51a2427b5c60b94cf5a9f2bbfbacdfe19b8c/src/flags/flag-definitions.h#L2349-L2372
+          RESULT=$( \
+            python3 \
+              third-party/cachegrind-benchmarking/cachegrind.py \
+              node \
+                --random-gc-interval=0 \
+                --no-randomize-all-allocations \
+                --hash-seed=0 \
+                --random-seed=0 \
+                --fuzzer-random-seed=0 \
+                --no-turbo-stress-instruction-scheduling \
+                --no-stress-compaction-random \
+                --predictable \
+                --predictable-gc-schedule \
+                benchmark/run-cachegrind-benchmarking.js \
+          )
+          echo \
+            \{ \
+              \"name\": \"cachegrind-benchmarking-4\", \
+              \"unit\": \"instructions\", \
+              \"value\": $RESULT \
+            \} \
+            >> benchmark/result.jsonl
+
+      - name: Run cachegrind-benchmarking
+        run: |
+          # NOTE: Some options are passed to the node command to get consistent results.
+          # ref: https://pythonspeed.com/articles/consistent-benchmarking-in-ci/#consistent-benchmarking-is-hard-and-its-even-harder-in-the-cloud
+          # ref: https://github.com/v8/v8/blob/d55d51a2427b5c60b94cf5a9f2bbfbacdfe19b8c/src/flags/flag-definitions.h#L2349-L2372
+          RESULT=$( \
+            python3 \
+              third-party/cachegrind-benchmarking/cachegrind.py \
+              node \
+                --random-gc-interval=0 \
+                --no-randomize-all-allocations \
+                --hash-seed=0 \
+                --random-seed=0 \
+                --fuzzer-random-seed=0 \
+                --no-turbo-stress-instruction-scheduling \
+                --no-stress-compaction-random \
+                --predictable \
+                --predictable-gc-schedule \
+                benchmark/run-cachegrind-benchmarking.js \
+          )
+          echo \
+            \{ \
+              \"name\": \"cachegrind-benchmarking-5\", \
+              \"unit\": \"instructions\", \
+              \"value\": $RESULT \
+            \} \
+            >> benchmark/result.jsonl
+
+      - name: Run cachegrind-benchmarking
+        run: |
+          # NOTE: Some options are passed to the node command to get consistent results.
+          # ref: https://pythonspeed.com/articles/consistent-benchmarking-in-ci/#consistent-benchmarking-is-hard-and-its-even-harder-in-the-cloud
+          # ref: https://github.com/v8/v8/blob/d55d51a2427b5c60b94cf5a9f2bbfbacdfe19b8c/src/flags/flag-definitions.h#L2349-L2372
+          RESULT=$( \
+            python3 \
+              third-party/cachegrind-benchmarking/cachegrind.py \
+              node \
+                --random-gc-interval=0 \
+                --no-randomize-all-allocations \
+                --hash-seed=0 \
+                --random-seed=0 \
+                --fuzzer-random-seed=0 \
+                --no-turbo-stress-instruction-scheduling \
+                --no-stress-compaction-random \
+                --predictable \
+                --predictable-gc-schedule \
+                benchmark/run-cachegrind-benchmarking.js \
+          )
+          echo \
+            \{ \
+              \"name\": \"cachegrind-benchmarking-6\", \
+              \"unit\": \"instructions\", \
+              \"value\": $RESULT \
+            \} \
+            >> benchmark/result.jsonl
+
+      - name: Run cachegrind-benchmarking
+        run: |
+          # NOTE: Some options are passed to the node command to get consistent results.
+          # ref: https://pythonspeed.com/articles/consistent-benchmarking-in-ci/#consistent-benchmarking-is-hard-and-its-even-harder-in-the-cloud
+          # ref: https://github.com/v8/v8/blob/d55d51a2427b5c60b94cf5a9f2bbfbacdfe19b8c/src/flags/flag-definitions.h#L2349-L2372
+          RESULT=$( \
+            python3 \
+              third-party/cachegrind-benchmarking/cachegrind.py \
+              node \
+                --random-gc-interval=0 \
+                --no-randomize-all-allocations \
+                --hash-seed=0 \
+                --random-seed=0 \
+                --fuzzer-random-seed=0 \
+                --no-turbo-stress-instruction-scheduling \
+                --no-stress-compaction-random \
+                --predictable \
+                --predictable-gc-schedule \
+                benchmark/run-cachegrind-benchmarking.js \
+          )
+          echo \
+            \{ \
+              \"name\": \"cachegrind-benchmarking-7\", \
+              \"unit\": \"instructions\", \
+              \"value\": $RESULT \
+            \} \
+            >> benchmark/result.jsonl
+
+      - name: Run cachegrind-benchmarking
+        run: |
+          # NOTE: Some options are passed to the node command to get consistent results.
+          # ref: https://pythonspeed.com/articles/consistent-benchmarking-in-ci/#consistent-benchmarking-is-hard-and-its-even-harder-in-the-cloud
+          # ref: https://github.com/v8/v8/blob/d55d51a2427b5c60b94cf5a9f2bbfbacdfe19b8c/src/flags/flag-definitions.h#L2349-L2372
+          RESULT=$( \
+            python3 \
+              third-party/cachegrind-benchmarking/cachegrind.py \
+              node \
+                --random-gc-interval=0 \
+                --no-randomize-all-allocations \
+                --hash-seed=0 \
+                --random-seed=0 \
+                --fuzzer-random-seed=0 \
+                --no-turbo-stress-instruction-scheduling \
+                --no-stress-compaction-random \
+                --predictable \
+                --predictable-gc-schedule \
+                benchmark/run-cachegrind-benchmarking.js \
+          )
+          echo \
+            \{ \
+              \"name\": \"cachegrind-benchmarking-8\", \
+              \"unit\": \"instructions\", \
+              \"value\": $RESULT \
+            \} \
+            >> benchmark/result.jsonl
+
+      - name: Run cachegrind-benchmarking
+        run: |
+          # NOTE: Some options are passed to the node command to get consistent results.
+          # ref: https://pythonspeed.com/articles/consistent-benchmarking-in-ci/#consistent-benchmarking-is-hard-and-its-even-harder-in-the-cloud
+          # ref: https://github.com/v8/v8/blob/d55d51a2427b5c60b94cf5a9f2bbfbacdfe19b8c/src/flags/flag-definitions.h#L2349-L2372
+          RESULT=$( \
+            python3 \
+              third-party/cachegrind-benchmarking/cachegrind.py \
+              node \
+                --random-gc-interval=0 \
+                --no-randomize-all-allocations \
+                --hash-seed=0 \
+                --random-seed=0 \
+                --fuzzer-random-seed=0 \
+                --no-turbo-stress-instruction-scheduling \
+                --no-stress-compaction-random \
+                --predictable \
+                --predictable-gc-schedule \
+                benchmark/run-cachegrind-benchmarking.js \
+          )
+          echo \
+            \{ \
+              \"name\": \"cachegrind-benchmarking-9\", \
+              \"unit\": \"instructions\", \
+              \"value\": $RESULT \
+            \} \
+            >> benchmark/result.jsonl
+
+      - name: Run cachegrind-benchmarking
+        run: |
+          # NOTE: Some options are passed to the node command to get consistent results.
+          # ref: https://pythonspeed.com/articles/consistent-benchmarking-in-ci/#consistent-benchmarking-is-hard-and-its-even-harder-in-the-cloud
+          # ref: https://github.com/v8/v8/blob/d55d51a2427b5c60b94cf5a9f2bbfbacdfe19b8c/src/flags/flag-definitions.h#L2349-L2372
+          RESULT=$( \
+            python3 \
+              third-party/cachegrind-benchmarking/cachegrind.py \
+              node \
+                --random-gc-interval=0 \
+                --no-randomize-all-allocations \
+                --hash-seed=0 \
+                --random-seed=0 \
+                --fuzzer-random-seed=0 \
+                --no-turbo-stress-instruction-scheduling \
+                --no-stress-compaction-random \
+                --predictable \
+                --predictable-gc-schedule \
+                benchmark/run-cachegrind-benchmarking.js \
+          )
+          echo \
+            \{ \
+              \"name\": \"cachegrind-benchmarking-10\", \
               \"unit\": \"instructions\", \
               \"value\": $RESULT \
             \} \
