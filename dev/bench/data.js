@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1675603096846,
+  "lastUpdate": 1676111801270,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -8976,6 +8976,35 @@ window.BENCHMARK_DATA = {
             "name": "fix-overlapped-problems (undo, loop: 1)",
             "value": 0.4572080000070855,
             "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "pp.mizdra@gmail.com",
+            "name": "mizdra",
+            "username": "mizdra"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "28b87a00207f20aadd7de29673e239d52a16de78",
+          "message": "Merge pull request #264 from mizdra/stabilize-benchmark\n\nReliable benchmarking in noisy environments",
+          "timestamp": "2023-02-11T19:33:05+09:00",
+          "tree_id": "364f9d635527575fdd9aacf416315da002ea3ebc",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/28b87a00207f20aadd7de29673e239d52a16de78"
+        },
+        "date": 1676111800169,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "cachegrind-benchmarking",
+            "value": 21451213443,
+            "unit": "instructions"
           }
         ]
       }
