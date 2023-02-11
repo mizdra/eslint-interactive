@@ -13,10 +13,13 @@ permissions:
   # contents permission to update benchmark contents in gh-pages branch
   contents: write
 
+env:
+  VALGRIND_VERSION: '1:3.18.1-1ubuntu2'
+
 jobs:
   benchmark:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
 
     steps:
       - uses: actions/checkout@v3
@@ -32,8 +35,55 @@ jobs:
       - name: pnpm run build
         run: pnpm run build
 
-      - name: pnpm run postbuild:benchmark
-        run: pnpm run postbuild:benchmark
+      # ref: https://stackoverflow.com/a/59277514
+      - name: Cache valgrind
+        uses: actions/cache@v3
+        id: cache-valgrind
+        with:
+          path: '~/valgrind'
+          key: ${{ runner.os }}-${{ env.VALGRIND_VERSION}}
+      - name: Install valgrind
+        env:
+          CACHE_HIT: ${{steps.cache-valgrind.outputs.cache-hit}}
+        run: |
+          if [[ "$CACHE_HIT" == 'true' ]]; then
+            sudo cp --verbose --force --recursive ~/valgrind/* /
+          else
+            sudo apt-get install --yes valgrind="$VALGRIND_VERSION"
+            mkdir -p ~/valgrind
+            sudo dpkg -L valgrind | while IFS= read -r f; do if test -f $f; then echo $f; fi; done | xargs cp --parents --target-directory ~/valgrind/
+          fi
+
+      - name: Setup cachegrind-benchmarking
+        run: node benchmark/setup-cachegrind-benchmarking.js
+
+      - name: Run cachegrind-benchmarking
+        run: |
+          # NOTE: Some options are passed to the node command to get consistent results.
+          # ref: https://pythonspeed.com/articles/consistent-benchmarking-in-ci/#consistent-benchmarking-is-hard-and-its-even-harder-in-the-cloud
+          # ref: https://github.com/v8/v8/blob/d55d51a2427b5c60b94cf5a9f2bbfbacdfe19b8c/src/flags/flag-definitions.h#L2349-L2372
+          RESULT=$( \
+            python3 \
+              third-party/cachegrind-benchmarking/cachegrind.py \
+              node \
+                --random-gc-interval=0 \
+                --no-randomize-all-allocations \
+                --hash-seed=0 \
+                --random-seed=0 \
+                --fuzzer-random-seed=0 \
+                --no-turbo-stress-instruction-scheduling \
+                --no-stress-compaction-random \
+                --predictable \
+                --predictable-gc-schedule \
+                benchmark/run-cachegrind-benchmarking.js \
+          )
+          echo \
+            \{ \
+              \"name\": \"cachegrind-benchmarking\", \
+              \"unit\": \"instructions\", \
+              \"value\": $RESULT \
+            \} \
+            >> benchmark/result.jsonl
 
       - name: Convert jsonl to json
         run: jq -s '.' benchmark/result.jsonl > benchmark/result.json
@@ -47,6 +97,11 @@ jobs:
           auto-push: ${{ github.ref == 'refs/heads/main' }}
           comment-on-alert: true
           fail-on-alert: true
-          alert-threshold: '800%'
+          # Alerts when a 115% performance degradation occurs.
+          #
+          # There is 3.6% noise (maximum score is 3.68% greater than minimum score) for 30 runs.
+          # This noise is a little loud but negligible in most situations.
+          # ref: https://github.com/mizdra/eslint-interactive/commit/b751cfdef788ac6eb6b39d2d015494123cae51c1#comments
+          alert-threshold: '115%'
           # for test
           # comment-always: true
