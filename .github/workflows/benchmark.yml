@@ -104,4 +104,4 @@ jobs:
           # ref: https://github.com/mizdra/eslint-interactive/commit/b751cfdef788ac6eb6b39d2d015494123cae51c1#comments
           alert-threshold: '130%'
           # for test
-          comment-always: true
+          # comment-always: true
