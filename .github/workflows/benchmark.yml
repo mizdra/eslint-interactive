@@ -56,6 +56,7 @@ jobs:
                 --no-stress-compaction-random \
                 --predictable \
                 --predictable-gc-schedule \
+                --jitless \
                 benchmark/run-cachegrind-benchmarking.js \
           )
           echo \
@@ -84,6 +85,7 @@ jobs:
                 --no-stress-compaction-random \
                 --predictable \
                 --predictable-gc-schedule \
+                --jitless \
                 benchmark/run-cachegrind-benchmarking.js \
           )
           echo \
@@ -112,6 +114,7 @@ jobs:
                 --no-stress-compaction-random \
                 --predictable \
                 --predictable-gc-schedule \
+                --jitless \
                 benchmark/run-cachegrind-benchmarking.js \
           )
           echo \
@@ -140,6 +143,7 @@ jobs:
                 --no-stress-compaction-random \
                 --predictable \
                 --predictable-gc-schedule \
+                --jitless \
                 benchmark/run-cachegrind-benchmarking.js \
           )
           echo \
@@ -168,6 +172,7 @@ jobs:
                 --no-stress-compaction-random \
                 --predictable \
                 --predictable-gc-schedule \
+                --jitless \
                 benchmark/run-cachegrind-benchmarking.js \
           )
           echo \
@@ -196,6 +201,7 @@ jobs:
                 --no-stress-compaction-random \
                 --predictable \
                 --predictable-gc-schedule \
+                --jitless \
                 benchmark/run-cachegrind-benchmarking.js \
           )
           echo \
@@ -224,6 +230,7 @@ jobs:
                 --no-stress-compaction-random \
                 --predictable \
                 --predictable-gc-schedule \
+                --jitless \
                 benchmark/run-cachegrind-benchmarking.js \
           )
           echo \
@@ -252,6 +259,7 @@ jobs:
                 --no-stress-compaction-random \
                 --predictable \
                 --predictable-gc-schedule \
+                --jitless \
                 benchmark/run-cachegrind-benchmarking.js \
           )
           echo \
@@ -280,6 +288,7 @@ jobs:
                 --no-stress-compaction-random \
                 --predictable \
                 --predictable-gc-schedule \
+                --jitless \
                 benchmark/run-cachegrind-benchmarking.js \
           )
           echo \
@@ -308,6 +317,7 @@ jobs:
                 --no-stress-compaction-random \
                 --predictable \
                 --predictable-gc-schedule \
+                --jitless \
                 benchmark/run-cachegrind-benchmarking.js \
           )
           echo \
