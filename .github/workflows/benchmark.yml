@@ -19,7 +19,7 @@ env:
 jobs:
   benchmark:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
 
     steps:
       - uses: actions/checkout@v3
@@ -97,8 +97,11 @@ jobs:
           auto-push: ${{ github.ref == 'refs/heads/main' }}
           comment-on-alert: true
           fail-on-alert: true
-          # There is always an error of about 5%.
-          # Considering this, the alert threshold is set at 30%.
+          # Alerts when a 130% performance degradation occurs.
+          #
+          # There is 3.6% noise (maximum score is 3.68% greater than minimum score) for 30 runs.
+          # This noise is a little loud but negligible in most situations.
+          # ref: https://github.com/mizdra/eslint-interactive/commit/b751cfdef788ac6eb6b39d2d015494123cae51c1#comments
           alert-threshold: '130%'
           # for test
-          comment-always: true
+          # comment-always: true
