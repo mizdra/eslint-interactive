@@ -33,7 +33,7 @@ export async function createFixtures(fixturesDirPath, cases) {
 /**
  * @param {Core} core
  */
-export async function runBenchmarkForEachFix(core) {
+export async function runAllFixes(core) {
   const results = await core.lint();
   {
     const undo = await core.applyAutoFixes(results, ['semi', 'arrow-body-style']);
