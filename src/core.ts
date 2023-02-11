@@ -39,6 +39,7 @@ function hasOverlappedProblems(results: ESLint.LintResult[]): boolean {
  * @param options The eslint option.
  * @returns The rule ids loaded from eslintrc.
  */
+// @ts-ignore
 async function getUsedRuleIds(targetFilePaths: string[], options: ESLint.Options): Promise<string[]> {
   const eslintToGetRules = new ESLint(options);
   const configs = await Promise.all(
@@ -214,12 +215,12 @@ export class Core {
    */
   private async fix(resultsOfLint: ESLint.LintResult[], ruleIds: string[], fix: Fix): Promise<Undo> {
     // NOTE: Extract only necessary results and files for performance
-    const filteredResultsOfLint = filterResultsByRuleId(resultsOfLint, ruleIds);
-    const targetFilePaths = filteredResultsOfLint.map((result) => result.filePath);
-    const usedRuleIds = await getUsedRuleIds(targetFilePaths, this.baseESLintOptions);
+    // const filteredResultsOfLint = filterResultsByRuleId(resultsOfLint, ruleIds);
+    // const targetFilePaths = filteredResultsOfLint.map((result) => result.filePath);
+    // const usedRuleIds = await getUsedRuleIds(targetFilePaths, this.baseESLintOptions);
 
     // TODO: refactor
-    let results = filteredResultsOfLint;
+    let results = resultsOfLint;
     for (let i = 0; i < MAX_AUTOFIX_PASSES; i++) {
       const eslint = new ESLint({
         ...this.baseESLintOptions,
@@ -233,22 +234,22 @@ export class Core {
           rules: {
             'eslint-interactive/fix': [2, { results, ruleIds, fix } as FixRuleOption],
             // Turn off all rules except `eslint-interactive/fix` when fixing for performance.
-            ...Object.fromEntries(usedRuleIds.map((ruleId) => [ruleId, 'off'])),
+            // ...Object.fromEntries(usedRuleIds.map((ruleId) => [ruleId, 'off'])),
           },
         },
         // NOTE: Only fix the `fix` rule problems.
         fix: (message) => message.ruleId === 'eslint-interactive/fix',
         // Don't interpret lintFiles arguments as glob patterns for performance.
-        globInputPaths: false,
+        // globInputPaths: false,
       });
-      const resultsToFix = await eslint.lintFiles(targetFilePaths);
+      const resultsToFix = await eslint.lintFiles(this.config.patterns);
       await ESLint.outputFixes(resultsToFix);
       if (!hasOverlappedProblems(resultsToFix)) break;
       results = await this.lint();
     }
 
     return async () => {
-      const resultsToUndo = generateResultsToUndo(filteredResultsOfLint);
+      const resultsToUndo = generateResultsToUndo(resultsOfLint);
       await ESLint.outputFixes(resultsToUndo);
     };
   }
