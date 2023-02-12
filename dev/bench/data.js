@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1676188812283,
+  "lastUpdate": 1676188976600,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -9220,6 +9220,33 @@ window.BENCHMARK_DATA = {
           {
             "name": "cachegrind-benchmarking",
             "value": 20901389901,
+            "unit": "instructions"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "name": "mizdra",
+            "username": "mizdra",
+            "email": "pp.mizdra@gmail.com"
+          },
+          "committer": {
+            "name": "GitHub",
+            "username": "web-flow",
+            "email": "noreply@github.com"
+          },
+          "id": "28b87a00207f20aadd7de29673e239d52a16de78",
+          "message": "Merge pull request #264 from mizdra/stabilize-benchmark\n\nReliable benchmarking in noisy environments",
+          "timestamp": "2023-02-11T10:33:05Z",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/28b87a00207f20aadd7de29673e239d52a16de78"
+        },
+        "date": 1676188975513,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "cachegrind-benchmarking",
+            "value": 21455200364,
             "unit": "instructions"
           }
         ]
