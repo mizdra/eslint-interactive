@@ -1,37 +1,31 @@
 // @ts-check
 
-import { mkdir, writeFile, rm, appendFile } from 'fs/promises';
-import { dirname, join } from 'path';
-import { fileURLToPath } from 'url';
-import { Core } from '../dist/core.js';
+import { join } from 'path';
 
 /** @typedef {{ label: string, source: string, amount: number }} Case */
 
 /**
+ * @param {import('memfs').Volume} vol
  * @param {string} fixturesDirPath
  * @param {Case[]} cases
  */
-export async function createFixtures(fixturesDirPath, cases) {
+export async function createFixtures(vol, fixturesDirPath, cases) {
   // remove old fixtures
-  await rm(fixturesDirPath, { recursive: true, force: true });
+  vol.rmSync(fixturesDirPath, { recursive: true, force: true });
 
   // create fixtures directory
-  await mkdir(fixturesDirPath, { recursive: true });
+  vol.mkdirSync(fixturesDirPath, { recursive: true });
 
   // create fixtures
-  /** @type {Promise<void>[]} */
-  const promises = [];
   for (const c of cases) {
     for (let i = 0; i < c.amount; i++) {
-      const promise = writeFile(join(fixturesDirPath, `${c.label}-${i + 1}.js`), c.source);
-      promises.push(promise);
+      vol.writeFileSync(join(fixturesDirPath, `${c.label}-${i + 1}.js`), c.source);
     }
   }
-  await Promise.all(promises);
 }
 
 /**
- * @param {Core} core
+ * @param {import('../dist/core.js').Core} core
  */
 export async function runAllFixes(core) {
   const results = await core.lint();
