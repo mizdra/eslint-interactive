@@ -30,9 +30,11 @@ specifiers:
   estraverse: ^5.3.0
   find-cache-dir: ^4.0.0
   fs-extra: ^11.1.0
+  fs-monkey: ^1.0.3
   is-installed-globally: ^0.4.0
   jest: ^29.0.1
   jest-mock-process: ^2.0.0
+  memfs: ^3.4.13
   npm-run-all: ^4.1.5
   ora: ^6.1.2
   prettier: 2.7.1
@@ -43,6 +45,7 @@ specifiers:
   terminal-link: ^3.0.0
   tsc-watch: ^5.0.3
   typescript: ^4.8.4
+  unionfs: ^4.4.0
   yargs: ^17.5.1
 
 dependencies:
@@ -83,14 +86,17 @@ devDependencies:
   eslint-config-prettier: 8.5.0_eslint@8.23.0
   eslint-plugin-import: 2.26.0_g5lqoiq7vlempwjqpbordtvyyu
   fs-extra: 11.1.0
+  fs-monkey: 1.0.3
   jest: 29.0.1_@types+node@18.0.5
   jest-mock-process: 2.0.0_jest@29.0.1
+  memfs: 3.4.13
   npm-run-all: 4.1.5
   prettier: 2.7.1
   resolve-from: 5.0.0
   stream-match: 3.0.0
   tsc-watch: 5.0.3_typescript@4.8.4
   typescript: 4.8.4
+  unionfs: 4.4.0
 
 packages:
 
@@ -2285,6 +2291,10 @@ packages:
       universalify: 2.0.0
     dev: true
 
+  /fs-monkey/1.0.3:
+    resolution: {integrity: sha512-cybjIfiiE+pTWicSCLFHSrXZ6EilF30oh91FDP9S2B051prEa7QWfrVTQm10/dDpswBDXZugPa1Ogu8Yh+HV0Q==}
+    dev: true
+
   /fs.realpath/1.0.0:
     resolution: {integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==}
     dev: true
@@ -3410,6 +3420,13 @@ packages:
     resolution: {integrity: sha512-CkYQrPYZfWnu/DAmVCpTSX/xHpKZ80eKh2lAkyA6AJTef6bW+6JpbQZN5rofum7da+SyN1bi5ctTm+lTfcCW3g==}
     dev: true
 
+  /memfs/3.4.13:
+    resolution: {integrity: sha512-omTM41g3Skpvx5dSYeZIbXKcXoAVc/AoMNwn9TKx++L/gaen/+4TTttmu8ZSch5vfVJ8uJvGbroTsIlslRg6lg==}
+    engines: {node: '>= 4.0.0'}
+    dependencies:
+      fs-monkey: 1.0.3
+    dev: true
+
   /memorystream/0.3.1:
     resolution: {integrity: sha512-S3UwM3yj5mtUSEfP41UZmt/0SCoVYUcU1rkXv+BQ5Ig8ndL4sPoJNBUJERafdPb5jjHJGuMgytgKvKIf58XNBw==}
     engines: {node: '>= 0.10.0'}
@@ -4323,6 +4340,12 @@ packages:
       has-bigints: 1.0.1
       has-symbols: 1.0.2
       which-boxed-primitive: 1.0.2
+    dev: true
+
+  /unionfs/4.4.0:
+    resolution: {integrity: sha512-N+TuJHJ3PjmzIRCE1d2N3VN4qg/P78eh/nxzwHnzpg3W2Mvf8Wvi7J1mvv6eNkb8neUeSdFSQsKna0eXVyF4+w==}
+    dependencies:
+      fs-monkey: 1.0.3
     dev: true
 
   /universalify/2.0.0:
