@@ -68,15 +68,6 @@ jobs:
               python3 \
                 third-party/cachegrind-benchmarking/cachegrind.py \
                 node \
-                  --random-gc-interval=0 \
-                  --no-randomize-all-allocations \
-                  --hash-seed=0 \
-                  --random-seed=0 \
-                  --fuzzer-random-seed=0 \
-                  --no-turbo-stress-instruction-scheduling \
-                  --no-stress-compaction-random \
-                  --predictable \
-                  --predictable-gc-schedule \
                   benchmark/run-cachegrind-benchmarking.js \
             )
             echo \
