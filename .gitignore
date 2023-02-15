@@ -63,3 +63,4 @@ Cargo.lock
 /fixtures-tmp
 eslint-interactive-*.tgz
 .pnpm-store
+/benchmark/fixtures.json

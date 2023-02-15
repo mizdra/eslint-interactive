@@ -54,6 +54,9 @@ jobs:
             sudo dpkg -L valgrind | while IFS= read -r f; do if test -f $f; then echo $f; fi; done | xargs cp --parents --target-directory ~/valgrind/
           fi
 
+      - name: Setup cachegrind-benchmarking
+        run: node benchmark/setup-cachegrind-benchmarking.js
+
       - name: Run cachegrind-benchmarking
         run: |
           # NOTE: Some options are passed to the node command to get consistent results.
