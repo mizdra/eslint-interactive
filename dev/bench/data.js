@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1676188976600,
+  "lastUpdate": 1677609503584,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -9247,6 +9247,35 @@ window.BENCHMARK_DATA = {
           {
             "name": "cachegrind-benchmarking",
             "value": 21455200364,
+            "unit": "instructions"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "distinct": true,
+          "id": "6076f5b0361e1aa998c7a1fef8e35475dfe604f4",
+          "message": "chore(deps): update dependency stream-match to ^3.0.1",
+          "timestamp": "2023-02-28T18:34:40Z",
+          "tree_id": "92e1d4ab134ac88dc8d0e9ae5a22f292f8272ff9",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/6076f5b0361e1aa998c7a1fef8e35475dfe604f4"
+        },
+        "date": 1677609502701,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "cachegrind-benchmarking",
+            "value": 21377520727,
             "unit": "instructions"
           }
         ]
