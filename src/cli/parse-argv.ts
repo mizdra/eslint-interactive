@@ -7,6 +7,11 @@ export function parseArgv(argv: string[]): Config {
   const parsedArgv = yargs(argv.slice(2))
     .version(VERSION)
     .usage('$0 [file.js] [dir]')
+    .option('config', {
+      alias: 'c',
+      type: 'string',
+      describe: 'Use this configuration, overriding .eslintrc.* config options if present',
+    })
     .option('ext', {
       type: 'array',
       describe: 'Specify JavaScript file extensions',
@@ -55,6 +60,7 @@ export function parseArgv(argv: string[]): Config {
   const formatterName = parsedArgv.format;
   return {
     patterns,
+    overrideConfigFile: parsedArgv.config,
     extensions,
     rulePaths,
     ignorePath: parsedArgv.ignorePath,

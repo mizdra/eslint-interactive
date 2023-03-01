@@ -52,7 +52,15 @@ export type Undo = () => Promise<void>;
 /** The config of eslint-interactive */
 export type Config = Pick<
   ESLint.Options,
-  'extensions' | 'rulePaths' | 'ignorePath' | 'cache' | 'cacheLocation' | 'useEslintrc' | 'overrideConfig' | 'cwd'
+  | 'overrideConfigFile'
+  | 'extensions'
+  | 'rulePaths'
+  | 'ignorePath'
+  | 'cache'
+  | 'cacheLocation'
+  | 'useEslintrc'
+  | 'overrideConfig'
+  | 'cwd'
 > & {
   patterns: string[];
   formatterName?: string;
