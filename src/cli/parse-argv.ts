@@ -7,10 +7,11 @@ export function parseArgv(argv: string[]): Config {
   const parsedArgv = yargs(argv.slice(2))
     .version(VERSION)
     .usage('$0 [file.js] [dir]')
-    .option('no-eslintrc', {
+    // NOTE: yargs doesn't support negative only option. So we use `--eslintrc` instead of `--no-eslintrc`.
+    .option('eslintrc', {
       type: 'boolean',
-      describe: 'Disable use of configuration from .eslintrc.*',
-      default: !DEFAULT_BASE_CONFIG.useEslintrc,
+      describe: 'Enable use of configuration from .eslintrc.*',
+      default: DEFAULT_BASE_CONFIG.useEslintrc,
     })
     .option('config', {
       alias: 'c',
@@ -65,7 +66,7 @@ export function parseArgv(argv: string[]): Config {
   const formatterName = parsedArgv.format;
   return {
     patterns,
-    useEslintrc: !parsedArgv.noEslintrc,
+    useEslintrc: parsedArgv.eslintrc,
     overrideConfigFile: parsedArgv.config,
     extensions,
     rulePaths,
