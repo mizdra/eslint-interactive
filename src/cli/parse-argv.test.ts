@@ -8,6 +8,16 @@ describe('parseArgv', () => {
     expect(parseArgv([...baseArgs, 'foo', 'bar']).patterns).toStrictEqual(['foo', 'bar']);
     expect(parseArgv([...baseArgs, '1', 'true']).patterns).toStrictEqual(['1', 'true']);
   });
+  test('--no-eslintrc', () => {
+    expect(parseArgv([...baseArgs, '--no-eslintrc']).useEslintrc).toStrictEqual(false);
+    expect(parseArgv([...baseArgs, '--no-eslintrc=false']).useEslintrc).toStrictEqual(true);
+  });
+  test('--config', () => {
+    expect(parseArgv([...baseArgs]).overrideConfigFile).toStrictEqual(undefined);
+    expect(parseArgv([...baseArgs, '--config', 'override-config-file.json']).overrideConfigFile).toStrictEqual(
+      'override-config-file.json',
+    );
+  });
   test('--rulesdir', () => {
     expect(parseArgv([...baseArgs, '--rulesdir', 'foo']).rulePaths).toStrictEqual(['foo']);
     expect(parseArgv([...baseArgs, '--rulesdir', 'foo', '--rulesdir', 'bar']).rulePaths).toStrictEqual(['foo', 'bar']);
