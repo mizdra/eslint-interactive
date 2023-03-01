@@ -7,22 +7,22 @@ export function parseArgv(argv: string[]): Config {
   const parsedArgv = yargs(argv.slice(2))
     .version(VERSION)
     .usage('$0 [file.js] [dir]')
+    .option('ext', {
+      type: 'array',
+      describe: 'Specify JavaScript file extensions',
+    })
+    .nargs('ext', 1)
     .option('rulesdir', {
       type: 'array',
       describe: 'Use additional rules from this directory',
     })
     .nargs('rulesdir', 1)
-    .option('ext', {
-      type: 'array',
-      describe: 'Specify JavaScript file extensions',
-    })
     // Following ESLint, --ignore-path accepts only one path. However, this limitation may be relaxed in the future.
     // ref: https://github.com/eslint/eslint/issues/9794
     .option('ignore-path', {
       type: 'string',
       describe: 'Specify path of ignore file',
     })
-    .nargs('ext', 1)
     .option('format', {
       type: 'string',
       describe: 'Specify the format to be used for the `Display problem messages` action',
@@ -55,9 +55,9 @@ export function parseArgv(argv: string[]): Config {
   const formatterName = parsedArgv.format;
   return {
     patterns,
+    extensions,
     rulePaths,
     ignorePath: parsedArgv.ignorePath,
-    extensions,
     formatterName,
     quiet: parsedArgv.quiet,
     cache: parsedArgv.cache,
