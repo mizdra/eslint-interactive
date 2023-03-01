@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1677689086124,
+  "lastUpdate": 1677689129029,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -9305,6 +9305,35 @@ window.BENCHMARK_DATA = {
           {
             "name": "cachegrind-benchmarking",
             "value": 21355355030,
+            "unit": "instructions"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "pp.mizdra@gmail.com",
+            "name": "mizdra",
+            "username": "mizdra"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "427d8f02f0e638539d3d757c3aa6654233eebeed",
+          "message": "Merge pull request #274 from mizdra/improve-help-message\n\nImprove help message",
+          "timestamp": "2023-03-02T01:41:58+09:00",
+          "tree_id": "848790793d53d13237463aaa312b1571e3015504",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/427d8f02f0e638539d3d757c3aa6654233eebeed"
+        },
+        "date": 1677689128150,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "cachegrind-benchmarking",
+            "value": 21356280699,
             "unit": "instructions"
           }
         ]
