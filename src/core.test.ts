@@ -71,6 +71,8 @@ describe('Core', () => {
   });
   test('baseOptions', () => {
     const core1 = new Core({
+      useEslintrc: false,
+      overrideConfigFile: 'override-config-file.json',
       patterns: ['pattern-a', 'pattern-b'],
       rulePaths: ['rule-path-a', 'rule-path-b'],
       extensions: ['.js', '.jsx'],
@@ -80,6 +82,8 @@ describe('Core', () => {
       cwd: '/tmp/cwd',
     });
     expect(core1.baseESLintOptions).toStrictEqual<ESLint.Options>({
+      useEslintrc: false,
+      overrideConfigFile: 'override-config-file.json',
       cache: false,
       cacheLocation: '.eslintcache',
       rulePaths: ['rule-path-a', 'rule-path-b'],
@@ -90,6 +94,7 @@ describe('Core', () => {
       patterns: ['pattern-a', 'pattern-b'],
     });
     expect(core2.baseESLintOptions).toStrictEqual<ESLint.Options>({
+      useEslintrc: DEFAULT_BASE_CONFIG.useEslintrc,
       cache: DEFAULT_BASE_CONFIG.cache,
       cacheLocation: DEFAULT_BASE_CONFIG.cacheLocation,
       rulePaths: undefined,

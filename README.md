@@ -66,17 +66,22 @@ $ npx eslint-interactive --help
 eslint-interactive [file.js] [dir]
 
 Options:
-  --help            Show help                                          [boolean]
-  --version         Show version number                                [boolean]
-  --rulesdir        Use additional rules from this directory             [array]
-  --ext             Specify JavaScript file extensions                   [array]
-  --ignore-path     Specify path of ignore file                         [string]
-  --format          Specify the format to be used for the `Display problem messa
-                    ges` action                  [string] [default: "codeframe"]
-  --quiet           Report errors only                [boolean] [default: false]
-  --cache           Only check changed files           [boolean] [default: true]
-  --cache-location  Path to the cache file or directory
-                                         [string] [default: "/tmp/.eslintcache"]
+      --help            Show help                                      [boolean]
+      --version         Show version number                            [boolean]
+      --eslintrc        Enable use of configuration from .eslintrc.*
+                                                       [boolean] [default: true]
+  -c, --config          Use this configuration, overriding .eslintrc.* config op
+                        tions if present                                [string]
+      --ext             Specify JavaScript file extensions               [array]
+      --rulesdir        Use additional rules from this directory         [array]
+      --ignore-path     Specify path of ignore file                     [string]
+      --format          Specify the format to be used for the `Display problem m
+                        essages` action          [string] [default: "codeframe"]
+      --quiet           Report errors only            [boolean] [default: false]
+      --cache           Only check changed files       [boolean] [default: true]
+      --cache-location  Path to the cache file or directory
+  [string] [default:
+                 "./node_modules/.cache/eslint-interactive/10.5.0/.eslintcache"]
 
 
 $ # Examples
@@ -85,6 +90,7 @@ $ npx eslint-interactive ./src ./test
 $ npx eslint-interactive './src/**/*.{ts,tsx,vue}'
 $ npx eslint-interactive ./src --ext .ts,.tsx,.vue
 $ npx eslint-interactive ./src --rulesdir ./rules
+$ npx eslint-interactive ./src --no-eslintrc --config ./.eslintrc.ci.js
 ```
 
 ## Available actions
