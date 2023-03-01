@@ -1,4 +1,4 @@
-import { join } from 'path';
+import { join, relative } from 'path';
 import { fileURLToPath } from 'url';
 import { ESLint } from 'eslint';
 import isInstalledGlobally from 'is-installed-globally';
@@ -72,7 +72,7 @@ export const DEFAULT_BASE_CONFIG: Partial<Config> = {
   useEslintrc: true,
   cwd: undefined,
   cache: true,
-  cacheLocation: join(getCacheDir(), '.eslintcache'),
+  cacheLocation: relative(process.cwd(), join(getCacheDir(), '.eslintcache')),
   extensions: undefined,
   formatterName: 'codeframe',
   quiet: false,
