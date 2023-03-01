@@ -10,7 +10,7 @@ specifiers:
   '@types/estraverse': ^5.1.2
   '@types/estree': ^1.0.0
   '@types/find-cache-dir': ^3.2.1
-  '@types/fs-extra': ^11.0.0
+  '@types/fs-extra': ^11.0.1
   '@types/jest': ^29.0.0
   '@types/node': ^18.0.5
   '@types/terminal-link': ^1.2.0
@@ -70,7 +70,7 @@ devDependencies:
   '@types/estraverse': 5.1.2
   '@types/estree': 1.0.0
   '@types/find-cache-dir': 3.2.1
-  '@types/fs-extra': 11.0.0
+  '@types/fs-extra': 11.0.1
   '@types/jest': 29.0.0
   '@types/node': 18.0.5
   '@types/terminal-link': 1.2.0
@@ -1070,8 +1070,8 @@ packages:
     resolution: {integrity: sha512-frsJrz2t/CeGifcu/6uRo4b+SzAwT4NYCVPu1GN8IB9XTzrpPkGuV0tmh9mN+/L0PklAlsC3u5Fxt0ju00LXIw==}
     dev: true
 
-  /@types/fs-extra/11.0.0:
-    resolution: {integrity: sha512-zdV5odfHf95B4qr6bdpshG4VMm/3xgnPhSJLa3xh75CYr35e34k+4FQli82Q48sPqwHazJGy+6+jl4T+Vw1AMg==}
+  /@types/fs-extra/11.0.1:
+    resolution: {integrity: sha512-MxObHvNl4A69ofaTRU8DFqvgzzv8s9yRtaPPm5gud9HDNvpB3GPQFvNuTWAI59B9huVGV5jXYJwbCsmBsOGYWA==}
     dependencies:
       '@types/jsonfile': 6.1.1
       '@types/node': 18.0.5
