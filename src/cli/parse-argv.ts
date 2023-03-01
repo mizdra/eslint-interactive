@@ -5,8 +5,11 @@ import { VERSION } from './package.js';
 /** Parse argv into the config object of eslint-interactive */
 export function parseArgv(argv: string[]): Config {
   const parsedArgv = yargs(argv.slice(2))
+    .wrap(Math.min(140, process.stdout.columns))
+    .scriptName('eslint-interactive')
     .version(VERSION)
     .usage('$0 [file.js] [dir]')
+    .detectLocale(false)
     // NOTE: yargs doesn't support negative only option. So we use `--eslintrc` instead of `--no-eslintrc`.
     .option('eslintrc', {
       type: 'boolean',
@@ -54,6 +57,12 @@ export function parseArgv(argv: string[]): Config {
       describe: `Path to the cache file or directory`,
       default: DEFAULT_BASE_CONFIG.cacheLocation,
     })
+    .example('$0 ./src', 'Lint ./src/ directory')
+    .example('$0 ./src ./test', 'Lint multiple directories')
+    .example("$0 './src/**/*.{ts,tsx,vue}'", 'Lint with glob pattern')
+    .example('$0 ./src --ext .ts,.tsx,.vue', 'Lint with custom extensions')
+    .example('$0 ./src --rulesdir ./rules', 'Lint with custom rules')
+    .example('$0 ./src --no-eslintrc --config ./.eslintrc.ci.js', 'Lint with custom config')
     .parseSync();
   // NOTE: convert `string` type because yargs convert `'10'` (`string` type) into `10` (`number` type)
   // and `lintFiles` only accepts `string[]`.
