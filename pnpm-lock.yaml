@@ -18,7 +18,7 @@ specifiers:
   '@typescript-eslint/eslint-plugin': ^5.30.6
   '@typescript-eslint/parser': ^5.30.6
   babel-jest: ^29.0.1
-  boxen: ^7.0.1
+  boxen: ^7.0.2
   chalk: ^5.0.1
   comlink: ^4.3.1
   cross-env: ^7.0.3
@@ -46,7 +46,7 @@ specifiers:
   yargs: ^17.5.1
 
 dependencies:
-  boxen: 7.0.1
+  boxen: 7.0.2
   chalk: 5.0.1
   comlink: 4.3.1
   enquirer: 2.3.6
@@ -1512,8 +1512,8 @@ packages:
       readable-stream: 3.6.0
     dev: false
 
-  /boxen/7.0.1:
-    resolution: {integrity: sha512-8k2eH6SRAK00NDl1iX5q17RJ8rfl53TajdYxE3ssMLehbg487dEVgsad4pIsZb/QqBgYWIl6JOauMTLGX2Kpkw==}
+  /boxen/7.0.2:
+    resolution: {integrity: sha512-1Z4UJabXUP1/R9rLpoU3O2lEMnG3pPLAs/ZD2lF3t2q7qD5lM8rqbtnvtvm4N0wEyNlE+9yZVTVAGmd1V5jabg==}
     engines: {node: '>=14.16'}
     dependencies:
       ansi-align: 3.0.1
