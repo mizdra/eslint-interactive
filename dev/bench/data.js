@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1680296625683,
+  "lastUpdate": 1680301661622,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -9450,6 +9450,35 @@ window.BENCHMARK_DATA = {
           {
             "name": "cachegrind-benchmarking",
             "value": 21274701340,
+            "unit": "instructions"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "distinct": true,
+          "id": "80894b04f67f9c8d97db7c0b71534583da1a8f7c",
+          "message": "chore(deps): update dependency fs-extra to ^11.1.1",
+          "timestamp": "2023-03-31T22:24:11Z",
+          "tree_id": "e2b55a9564562360444fe6ce638d646e3f3527ee",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/80894b04f67f9c8d97db7c0b71534583da1a8f7c"
+        },
+        "date": 1680301660715,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "cachegrind-benchmarking",
+            "value": 21381602865,
             "unit": "instructions"
           }
         ]
