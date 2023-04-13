@@ -26,6 +26,10 @@ export function parseArgv(argv: string[]): Config {
       describe: 'Specify JavaScript file extensions',
     })
     .nargs('ext', 1)
+    .option('resolve-plugins-relative-to', {
+      type: 'string',
+      describe: 'A folder where plugins should be resolved from, CWD by default',
+    })
     .option('rulesdir', {
       type: 'array',
       describe: 'Use additional rules from this directory',
@@ -73,6 +77,7 @@ export function parseArgv(argv: string[]): Config {
     // map '.js,.ts' into ['.js', '.ts']
     .flatMap((extension) => extension.split(','));
   const formatterName = parsedArgv.format;
+  const resolvePluginsRelativeTo = parsedArgv['resolve-plugins-relative-to'];
   return {
     patterns,
     useEslintrc: parsedArgv.eslintrc,
@@ -84,5 +89,6 @@ export function parseArgv(argv: string[]): Config {
     quiet: parsedArgv.quiet,
     cache: parsedArgv.cache,
     cacheLocation: parsedArgv['cache-location'],
+    resolvePluginsRelativeTo,
   };
 }
