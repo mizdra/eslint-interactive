@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1680301661622,
+  "lastUpdate": 1681536898304,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -9479,6 +9479,35 @@ window.BENCHMARK_DATA = {
           {
             "name": "cachegrind-benchmarking",
             "value": 21381602865,
+            "unit": "instructions"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "pp.mizdra@gmail.com",
+            "name": "mizdra",
+            "username": "mizdra"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "1d8c3d2ddfebdba122c2e003971cd3d5ed89bebf",
+          "message": "Merge pull request #279 from sisisin/feat/support-plugin-option\n\nfeat: support --resolve-plugins-relative-to",
+          "timestamp": "2023-04-15T14:30:45+09:00",
+          "tree_id": "ac32e4ceb8a064b999149f67d472a8d55ea81699",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/1d8c3d2ddfebdba122c2e003971cd3d5ed89bebf"
+        },
+        "date": 1681536897126,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "cachegrind-benchmarking",
+            "value": 21100477458,
             "unit": "instructions"
           }
         ]
