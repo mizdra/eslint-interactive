@@ -89,6 +89,7 @@ describe('Core', () => {
       rulePaths: ['rule-path-a', 'rule-path-b'],
       extensions: ['.js', '.jsx'],
       cwd: '/tmp/cwd',
+      resolvePluginsRelativeTo: undefined,
     });
     const core2 = new Core({
       patterns: ['pattern-a', 'pattern-b'],
@@ -100,6 +101,7 @@ describe('Core', () => {
       rulePaths: undefined,
       extensions: undefined,
       cwd: undefined,
+      resolvePluginsRelativeTo: undefined,
     });
   });
   describe('lint', () => {

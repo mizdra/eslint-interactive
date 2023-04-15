@@ -66,17 +66,19 @@ $ npx eslint-interactive --help
 eslint-interactive [file.js] [dir]
 
 Options:
-      --help            Show help                                                                                                  [boolean]
-      --version         Show version number                                                                                        [boolean]
-      --eslintrc        Enable use of configuration from .eslintrc.*                                               [boolean] [default: true]
-  -c, --config          Use this configuration, overriding .eslintrc.* config options if present                                    [string]
-      --ext             Specify JavaScript file extensions                                                                           [array]
-      --rulesdir        Use additional rules from this directory                                                                     [array]
-      --ignore-path     Specify path of ignore file                                                                                 [string]
-      --format          Specify the format to be used for the `Display problem messages` action              [string] [default: "codeframe"]
-      --quiet           Report errors only                                                                        [boolean] [default: false]
-      --cache           Only check changed files                                                                   [boolean] [default: true]
-      --cache-location  Path to the cache file or directory [string] [default: "node_modules/.cache/eslint-interactive/10.5.0/.eslintcache"]
+      --help                         Show help                                                                                     [boolean]
+      --version                      Show version number                                                                           [boolean]
+      --eslintrc                     Enable use of configuration from .eslintrc.*                                  [boolean] [default: true]
+  -c, --config                       Use this configuration, overriding .eslintrc.* config options if present                       [string]
+      --resolve-plugins-relative-to  A folder where plugins should be resolved from, CWD by default                                 [string]
+      --ext                          Specify JavaScript file extensions                                                              [array]
+      --rulesdir                     Use additional rules from this directory                                                        [array]
+      --ignore-path                  Specify path of ignore file                                                                    [string]
+      --format                       Specify the format to be used for the `Display problem messages` action [string] [default: "codeframe"]
+      --quiet                        Report errors only                                                           [boolean] [default: false]
+      --cache                        Only check changed files                                                      [boolean] [default: true]
+      --cache-location               Path to the cache file or directory
+                                                            [string] [default: "node_modules/.cache/eslint-interactive/10.6.0/.eslintcache"]
 
 Examples:
   eslint-interactive ./src                                           Lint ./src/ directory

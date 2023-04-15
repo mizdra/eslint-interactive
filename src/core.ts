@@ -61,6 +61,7 @@ export type Config = Pick<
   | 'cacheLocation'
   | 'overrideConfig'
   | 'cwd'
+  | 'resolvePluginsRelativeTo'
 > & {
   patterns: string[];
   formatterName?: string;
@@ -77,6 +78,7 @@ export const DEFAULT_BASE_CONFIG: Partial<Config> = {
   formatterName: 'codeframe',
   quiet: false,
   rulePaths: undefined,
+  resolvePluginsRelativeTo: undefined,
 };
 
 /**
