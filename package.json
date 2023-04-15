@@ -42,7 +42,7 @@
     "@types/find-cache-dir": "^3.2.1",
     "@types/fs-extra": "^11.0.1",
     "@types/jest": "^29.0.0",
-    "@types/node": "^18.0.5",
+    "@types/node": "^18.15.11",
     "@types/terminal-link": "^1.2.0",
     "@types/yargs": "^17.0.13",
     "@typescript-eslint/eslint-plugin": "^5.30.6",
