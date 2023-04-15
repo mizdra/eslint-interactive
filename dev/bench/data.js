@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1681536898304,
+  "lastUpdate": 1681537085377,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -9508,6 +9508,35 @@ window.BENCHMARK_DATA = {
           {
             "name": "cachegrind-benchmarking",
             "value": 21100477458,
+            "unit": "instructions"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "pp.mizdra@gmail.com",
+            "name": "mizdra",
+            "username": "mizdra"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "8790166ba4ce5bfe5be895fbcb5bc264e3fe7b28",
+          "message": "Merge pull request #278 from mizdra/renovate/node-18.x\n\nchore(deps): update dependency @types/node to ^18.15.11",
+          "timestamp": "2023-04-15T14:34:56+09:00",
+          "tree_id": "7bab43ba0328559140efbfaa58be8a84fa1be300",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/8790166ba4ce5bfe5be895fbcb5bc264e3fe7b28"
+        },
+        "date": 1681537084870,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "cachegrind-benchmarking",
+            "value": 21064270938,
             "unit": "instructions"
           }
         ]
