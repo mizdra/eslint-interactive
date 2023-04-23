@@ -6,7 +6,7 @@ import { getCacheDir } from '../util/cache.js';
 const PAGER_CONTENT_FILE_PATH = join(getCacheDir(), 'pager-content.txt');
 
 export async function pager(content: string): Promise<void> {
-  if (process.platform == 'win32') {
+  if (process.platform === 'win32') {
     return pagerForWindows(content);
   } else {
     return pagerForPOSIX(content);
