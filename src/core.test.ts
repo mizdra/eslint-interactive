@@ -37,7 +37,7 @@ function normalizeResults(results: ESLint.LintResult[]): ESLint.LintResult[] {
       filePath: result.filePath
         .replace(process.cwd(), '')
         // for windows
-        .replace(/\\/g, '/'),
+        .replace(/\\/gu, '/'),
       messages: result.messages.map(normalizeMessage),
       // Remove the source because the snapshot will be large
       source: 'ommitted',
@@ -149,7 +149,7 @@ describe('Core', () => {
     expect(
       (await core.formatResultDetails(results, ['import/order', 'ban-exponentiation-operator']))
         // for windows
-        .replace(/\\/g, '/'),
+        .replace(/\\/gu, '/'),
     ).toMatchSnapshot();
   });
   describe('applyAutoFixes', () => {

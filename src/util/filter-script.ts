@@ -25,13 +25,13 @@ export async function editFileWithEditor(filepath: string): Promise<string> {
 }
 
 export function generateFilterScriptFilePath(ruleIds: string[]): string {
-  const basename = ruleIds.join('_').replace(/[^\w-]/g, '') + '.js';
+  const basename = ruleIds.join('_').replace(/[^\w-]/ug, '') + '.js';
   const filepath = join(getCacheDir(), 'filter-script', basename);
   return filepath;
 }
 
 export function generateFixableMakerScriptFilePath(ruleIds: string[]): string {
-  const basename = ruleIds.join('_').replace(/[^\w-]/g, '') + '.js';
+  const basename = ruleIds.join('_').replace(/[^\w-]/ug, '') + '.js';
   const filepath = join(getCacheDir(), 'fixable-maker-script', basename);
   return filepath;
 }
