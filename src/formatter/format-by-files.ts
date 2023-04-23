@@ -12,7 +12,7 @@ export function formatByFiles(results: ESLint.LintResult[]): string {
   let passCount = 0;
   let warningCount = 0;
 
-  results.forEach(function (result) {
+  results.forEach((result) => {
     const messages = result.messages;
 
     if (messages.length === 0) {
