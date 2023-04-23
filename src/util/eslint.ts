@@ -69,7 +69,7 @@ export function parseDisableComment(comment: Comment): DisableComment | undefine
   return {
     type: comment.type,
     scope: header === 'eslint-disable-next-line' ? 'next-line' : 'file',
-    ruleIds: ruleIds,
+    ruleIds,
     // description is optional
     ...(description === '' || description === undefined ? {} : { description }),
     range: comment.range,

@@ -36,7 +36,7 @@ function generateFixPerLine(
     });
     return context.fixer.replaceTextRange(disableCommentPerLine.range, text);
   } else {
-    const headNodeIndex = context.sourceCode.getIndexFromLoc({ line: line, column: 0 });
+    const headNodeIndex = context.sourceCode.getIndexFromLoc({ line, column: 0 });
     const headNode = context.sourceCode.getNodeByRangeIndex(headNodeIndex);
     if (headNode === null) return null; // For some reason, it seems to be null sometimes.
 
