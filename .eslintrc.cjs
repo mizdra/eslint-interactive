@@ -3,12 +3,7 @@
 /** @type import('eslint').Linter.BaseConfig */
 module.exports = {
   root: true,
-  extends: [
-    // basic
-    '@mizdra/mizdra',
-    '@mizdra/mizdra/+typescript',
-    '@mizdra/mizdra/+prettier',
-  ],
+  extends: ['@mizdra/mizdra', '@mizdra/mizdra/+prettier'],
   parserOptions: {
     ecmaVersion: 2021,
   },
@@ -48,6 +43,7 @@ module.exports = {
     // for typescript
     {
       files: ['*.ts', '*.tsx', '*.cts', '*.mts'],
+      extends: ['@mizdra/mizdra/+typescript', '@mizdra/mizdra/+prettier'],
       parserOptions: {
         project: ['./tsconfig.src.json', './tsconfig.test.json', './e2e-test/import-as-esm-from-esm/tsconfig.json'],
       },
