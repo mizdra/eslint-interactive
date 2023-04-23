@@ -50,6 +50,7 @@ export class SerializableCore {
     ruleIds: string[],
     filterScript: string,
   ): ReturnType<Core['applySuggestions']> {
+    // eslint-disable-next-line no-eval -- TODO: replace with a better solution
     const filter = eval(filterScript) as SuggestionFilter;
     return proxy(await this.core.applySuggestions(results, ruleIds, filter));
   }
@@ -58,6 +59,7 @@ export class SerializableCore {
     ruleIds: string[],
     fixableMakerScript: string,
   ): ReturnType<Core['makeFixableAndFix']> {
+    // eslint-disable-next-line no-eval -- TODO: replace with a better solution
     const fixableMaker = eval(fixableMakerScript) as FixableMaker;
     return proxy(await this.core.makeFixableAndFix(results, ruleIds, fixableMaker));
   }
