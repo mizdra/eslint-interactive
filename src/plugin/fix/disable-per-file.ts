@@ -36,7 +36,7 @@ function generateFix(context: FixContext, description?: string): Rule.Fix | null
     });
     return context.fixer.replaceTextRange(disableCommentPerFile.range, text);
   } else {
-    const text = toCommentText({ type: 'Block', scope: 'file', ruleIds: ruleIdsToDisable, description }) + '\n';
+    const text = `${toCommentText({ type: 'Block', scope: 'file', ruleIds: ruleIdsToDisable, description })}\n`;
 
     const shebang = findShebang(context.sourceCode.text);
     // if shebang exists, insert comment after shebang

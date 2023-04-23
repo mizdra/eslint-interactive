@@ -54,10 +54,10 @@ function generateFixPerLine(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if ((headNode.type as any) === 'JSXText') {
       const commentText = toCommentText({ type: 'Block', scope: 'next-line', ruleIds: ruleIdsToDisable, description });
-      return context.fixer.insertTextBeforeRange([headNodeIndex, headNodeIndex], indent + '{' + commentText + '}\n');
+      return context.fixer.insertTextBeforeRange([headNodeIndex, headNodeIndex], `${indent}{${commentText}}\n`);
     } else {
       const commentText = toCommentText({ type: 'Line', scope: 'next-line', ruleIds: ruleIdsToDisable, description });
-      return context.fixer.insertTextBeforeRange([headNodeIndex, headNodeIndex], indent + commentText + '\n');
+      return context.fixer.insertTextBeforeRange([headNodeIndex, headNodeIndex], `${indent + commentText}\n`);
     }
   }
 }
