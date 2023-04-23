@@ -10,6 +10,12 @@ import {
 import { ruleFixer } from './rule-fixer.js';
 import { Fix, FixContext } from './index.js';
 
+export type FixRuleOption = {
+  ruleIds: string[];
+  results: ESLint.LintResult[];
+  fix: Fix;
+};
+
 export const OVERLAPPED_PROBLEM_MESSAGE = 'overlapped';
 
 // from: https://github.com/eslint/eslint/blob/58840ac844a61c72eabb603ecfb761812b82a7ed/lib/linter/report-translator.js#L136
@@ -68,12 +74,6 @@ function createFixes(context: Rule.RuleContext, ruleOption: FixRuleOption, fixer
   if (fixes.length === 0) return null;
   return fixes;
 }
-
-export type FixRuleOption = {
-  ruleIds: string[];
-  results: ESLint.LintResult[];
-  fix: Fix;
-};
 
 export const fixRule: Rule.RuleModule = {
   meta: {

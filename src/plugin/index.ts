@@ -24,17 +24,6 @@ export const eslintInteractivePlugin = {
   },
 };
 
-/**
- * The type representing the fix to do.
- */
-export type Fix =
-  | { name: 'applyAutoFixes'; args: FixArg<'applyAutoFixes'> }
-  | { name: 'disablePerLine'; args: FixArg<'disablePerLine'> }
-  | { name: 'disablePerFile'; args: FixArg<'disablePerFile'> }
-  | { name: 'convertErrorToWarningPerFile'; args: FixArg<'convertErrorToWarningPerFile'> }
-  | { name: 'applySuggestions'; args: FixArg<'applySuggestions'> }
-  | { name: 'makeFixableAndFix'; args: FixArg<'makeFixableAndFix'> };
-
 /** For test */
 export type FixName =
   | 'applyAutoFixes'
@@ -58,6 +47,17 @@ export type FixArg<T extends FixName> = T extends 'applyAutoFixes'
   : T extends 'makeFixableAndFix'
   ? FixToMakeFixableAndFixArgs
   : never;
+
+/**
+ * The type representing the fix to do.
+ */
+export type Fix =
+  | { name: 'applyAutoFixes'; args: FixArg<'applyAutoFixes'> }
+  | { name: 'disablePerLine'; args: FixArg<'disablePerLine'> }
+  | { name: 'disablePerFile'; args: FixArg<'disablePerFile'> }
+  | { name: 'convertErrorToWarningPerFile'; args: FixArg<'convertErrorToWarningPerFile'> }
+  | { name: 'applySuggestions'; args: FixArg<'applySuggestions'> }
+  | { name: 'makeFixableAndFix'; args: FixArg<'makeFixableAndFix'> };
 
 /**
  * The type representing the additional information for the fix.
