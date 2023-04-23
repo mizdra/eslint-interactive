@@ -204,7 +204,7 @@ export class Core {
    * @param results The lint results of the project to apply suggestions
    * @param ruleIds The rule ids to apply suggestions
    * @param filter The script to filter suggestions
-   * */
+   */
   async applySuggestions(results: ESLint.LintResult[], ruleIds: string[], filter: SuggestionFilter): Promise<Undo> {
     return await this.fix(results, ruleIds, { name: 'applySuggestions', args: { filter } });
   }
@@ -214,7 +214,7 @@ export class Core {
    * @param results The lint results of the project to apply suggestions
    * @param ruleIds The rule ids to apply suggestions
    * @param fixableMaker The function to make `Linter.LintMessage` forcibly fixable.
-   * */
+   */
   async makeFixableAndFix(results: ESLint.LintResult[], ruleIds: string[], fixableMaker: FixableMaker): Promise<Undo> {
     return await this.fix(results, ruleIds, { name: 'makeFixableAndFix', args: { fixableMaker } });
   }
