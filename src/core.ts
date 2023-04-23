@@ -162,7 +162,7 @@ export class Core {
    * @param ruleIds The rule ids to fix
    */
   async applyAutoFixes(results: ESLint.LintResult[], ruleIds: string[]): Promise<Undo> {
-    return await this.fix(results, ruleIds, { name: 'applyAutoFixes', args: {} });
+    return this.fix(results, ruleIds, { name: 'applyAutoFixes', args: {} });
   }
 
   /**
@@ -172,7 +172,7 @@ export class Core {
    * @param description The description of the disable comments
    */
   async disablePerLine(results: ESLint.LintResult[], ruleIds: string[], description?: string): Promise<Undo> {
-    return await this.fix(results, ruleIds, { name: 'disablePerLine', args: { description } });
+    return this.fix(results, ruleIds, { name: 'disablePerLine', args: { description } });
   }
 
   /**
@@ -182,7 +182,7 @@ export class Core {
    * @param description The description of the disable comments
    */
   async disablePerFile(results: ESLint.LintResult[], ruleIds: string[], description?: string): Promise<Undo> {
-    return await this.fix(results, ruleIds, { name: 'disablePerFile', args: { description } });
+    return this.fix(results, ruleIds, { name: 'disablePerFile', args: { description } });
   }
 
   /**
@@ -196,7 +196,7 @@ export class Core {
     ruleIds: string[],
     description?: string,
   ): Promise<Undo> {
-    return await this.fix(results, ruleIds, { name: 'convertErrorToWarningPerFile', args: { description } });
+    return this.fix(results, ruleIds, { name: 'convertErrorToWarningPerFile', args: { description } });
   }
 
   /**
@@ -206,7 +206,7 @@ export class Core {
    * @param filter The script to filter suggestions
    */
   async applySuggestions(results: ESLint.LintResult[], ruleIds: string[], filter: SuggestionFilter): Promise<Undo> {
-    return await this.fix(results, ruleIds, { name: 'applySuggestions', args: { filter } });
+    return this.fix(results, ruleIds, { name: 'applySuggestions', args: { filter } });
   }
 
   /**
@@ -216,7 +216,7 @@ export class Core {
    * @param fixableMaker The function to make `Linter.LintMessage` forcibly fixable.
    */
   async makeFixableAndFix(results: ESLint.LintResult[], ruleIds: string[], fixableMaker: FixableMaker): Promise<Undo> {
-    return await this.fix(results, ruleIds, { name: 'makeFixableAndFix', args: { fixableMaker } });
+    return this.fix(results, ruleIds, { name: 'makeFixableAndFix', args: { fixableMaker } });
   }
 
   /**
