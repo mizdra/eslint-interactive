@@ -51,12 +51,16 @@ export async function run(options: Options) {
   let nextScene: NextScene = { name: 'lint' };
   while (nextScene.name !== 'exit') {
     if (nextScene.name === 'lint') {
+      // eslint-disable-next-line no-await-in-loop
       nextScene = await lint(core);
     } else if (nextScene.name === 'selectRuleIds') {
+      // eslint-disable-next-line no-await-in-loop
       nextScene = await selectRuleIds(core, nextScene.args);
     } else if (nextScene.name === 'selectAction') {
+      // eslint-disable-next-line no-await-in-loop
       nextScene = await selectAction(core, nextScene.args);
     } else if (nextScene.name === 'checkResults') {
+      // eslint-disable-next-line no-await-in-loop
       nextScene = await checkResults(nextScene.args);
     }
   }

@@ -252,9 +252,12 @@ export class Core {
         // Don't interpret lintFiles arguments as glob patterns for performance.
         globInputPaths: false,
       });
+      // eslint-disable-next-line no-await-in-loop
       const resultsToFix = await eslint.lintFiles(targetFilePaths);
+      // eslint-disable-next-line no-await-in-loop
       await ESLint.outputFixes(resultsToFix);
       if (!hasOverlappedProblems(resultsToFix)) break;
+      // eslint-disable-next-line no-await-in-loop
       results = await this.lint();
     }
 
