@@ -1,5 +1,6 @@
 import { Rule } from 'eslint';
 import type { Comment } from 'estree';
+import { DescriptionPosition } from 'src/cli/prompt.js';
 import { unique } from '../../util/array.js';
 import {
   DisableComment,
@@ -13,13 +14,18 @@ import { FixContext } from '../index.js';
 
 export type FixToDisablePerFileArgs = {
   description?: string;
+  descriptionPosition?: DescriptionPosition;
 };
 
 function findDisableCommentPerFile(commentsInFile: Comment[]): DisableComment | undefined {
   return commentsInFile.map(parseDisableComment).find((comment) => comment?.scope === 'file');
 }
 
-function generateFix(context: FixContext, description?: string): Rule.Fix | null {
+function generateFix(
+  context: FixContext,
+  description: string | undefined,
+  descriptionPosition: DescriptionPosition | undefined,
+): Rule.Fix | null {
   const ruleIdsToDisable = unique(context.messages.map((message) => message.ruleId).filter(notEmpty));
   if (ruleIdsToDisable.length === 0) return null;
 
@@ -34,9 +40,12 @@ function generateFix(context: FixContext, description?: string): Rule.Fix | null
         description,
       }),
     });
-    return context.fixer.replaceTextRange(disableCommentPerFile.range, text);
+    return context.fixer.replaceTextRange(disableCommentPerFile.range, text.join('\n'));
   } else {
-    const text = toCommentText({ type: 'Block', scope: 'file', ruleIds: ruleIdsToDisable, description }) + '\n';
+    const text =
+      toCommentText({ type: 'Block', scope: 'file', ruleIds: ruleIdsToDisable, description, descriptionPosition }).join(
+        '\n',
+      ) + '\n';
 
     const shebang = findShebang(context.sourceCode.text);
     // if shebang exists, insert comment after shebang
@@ -48,6 +57,6 @@ function generateFix(context: FixContext, description?: string): Rule.Fix | null
  * Create fix to add disable comment per file.
  */
 export function createFixToDisablePerFile(context: FixContext, args: FixToDisablePerFileArgs): Rule.Fix[] {
-  const fix = generateFix(context, args.description);
+  const fix = generateFix(context, args.description, args.descriptionPosition);
   return fix ? [fix] : [];
 }

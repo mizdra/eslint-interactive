@@ -1,5 +1,6 @@
 import { Linter, Rule } from 'eslint';
 import type { Comment } from 'estree';
+import { DescriptionPosition } from 'src/cli/prompt.js';
 import { groupBy, unique } from '../../util/array.js';
 import { DisableComment, mergeRuleIdsAndDescription, parseDisableComment, toCommentText } from '../../util/eslint.js';
 import { notEmpty } from '../../util/type-check.js';
@@ -7,6 +8,7 @@ import { FixContext } from '../index.js';
 
 export type FixToDisablePerLineArgs = {
   description?: string;
+  descriptionPosition?: DescriptionPosition;
 };
 
 function findDisableCommentPerLine(commentsInFile: Comment[], line: number): DisableComment | undefined {
@@ -17,6 +19,7 @@ function findDisableCommentPerLine(commentsInFile: Comment[], line: number): Dis
 function generateFixPerLine(
   context: FixContext,
   description: string | undefined,
+  descriptionPosition: DescriptionPosition | undefined,
   line: number,
   messagesInLine: Linter.LintMessage[],
 ): Rule.Fix | null {
@@ -34,7 +37,8 @@ function generateFixPerLine(
         description,
       }),
     });
-    return context.fixer.replaceTextRange(disableCommentPerLine.range, text);
+
+    return context.fixer.replaceTextRange(disableCommentPerLine.range, text.join('\n'));
   } else {
     const headNodeIndex = context.sourceCode.getIndexFromLoc({ line: line, column: 0 });
     const headNode = context.sourceCode.getNodeByRangeIndex(headNodeIndex);
@@ -53,11 +57,27 @@ function generateFixPerLine(
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if ((headNode.type as any) === 'JSXText') {
-      const commentText = toCommentText({ type: 'Block', scope: 'next-line', ruleIds: ruleIdsToDisable, description });
-      return context.fixer.insertTextBeforeRange([headNodeIndex, headNodeIndex], indent + '{' + commentText + '}\n');
+      const commentText = toCommentText({
+        type: 'Block',
+        scope: 'next-line',
+        ruleIds: ruleIdsToDisable,
+        description,
+        descriptionPosition,
+      });
+
+      const lines = commentText.map((line) => indent + '{' + line + '}').join('\n');
+      return context.fixer.insertTextBeforeRange([headNodeIndex, headNodeIndex], lines + '\n');
     } else {
-      const commentText = toCommentText({ type: 'Line', scope: 'next-line', ruleIds: ruleIdsToDisable, description });
-      return context.fixer.insertTextBeforeRange([headNodeIndex, headNodeIndex], indent + commentText + '\n');
+      const commentText = toCommentText({
+        type: 'Line',
+        scope: 'next-line',
+        ruleIds: ruleIdsToDisable,
+        description,
+        descriptionPosition,
+      });
+
+      const lines = commentText.map((line) => indent + line).join('\n');
+      return context.fixer.insertTextBeforeRange([headNodeIndex, headNodeIndex], lines + '\n');
     }
   }
 }
@@ -69,7 +89,7 @@ export function createFixToDisablePerLine(context: FixContext, args: FixToDisabl
   const lineToMessages = groupBy(context.messages, (message) => message.line);
   const fixes = [];
   for (const [line, messagesInLine] of lineToMessages) {
-    const fix = generateFixPerLine(context, args.description, line, messagesInLine);
+    const fix = generateFixPerLine(context, args.description, args.descriptionPosition, line, messagesInLine);
     if (fix) fixes.push(fix);
   }
   return fixes;

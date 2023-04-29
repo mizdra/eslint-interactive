@@ -37,6 +37,8 @@ export type DisplayMode = 'printInTerminal' | 'printInTerminalWithPager' | 'writ
  */
 export type NextStep = 'fixOtherRules' | 'exit' | 'undoTheFix';
 
+export type DescriptionPosition = 'sameLine' | 'previousLine';
+
 /**
  * Ask the user for the rule ids to which they want to apply the action.
  * @param ruleIdsInResults The rule ids that are in the lint results.
@@ -151,6 +153,28 @@ export async function promptToInputDescription(): Promise<string | undefined> {
     },
   ]);
   return description === '' ? undefined : description;
+}
+
+/**
+ * Ask the user a position of the directive
+ * @returns The description position
+ */
+export async function promptToInputDescriptionPosition(): Promise<DescriptionPosition> {
+  const { descriptionPosition } = await prompt<{
+    descriptionPosition: DescriptionPosition;
+  }>([
+    {
+      name: 'descriptionPosition',
+      type: 'select',
+      message: 'Position of code comment with your reason for fixing',
+      choices: [
+        { name: 'sameLine', message: 'Same Line - The code comment will be placed on the same time' },
+        { name: 'previousLine', message: 'Previous Line - The code comment will be placed on previous line' },
+      ],
+      onCancel,
+    },
+  ]);
+  return descriptionPosition;
 }
 
 /**

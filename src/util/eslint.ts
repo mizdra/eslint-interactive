@@ -1,5 +1,6 @@
 import { AST, ESLint, Linter } from 'eslint';
 import type { Comment } from 'estree';
+import { DescriptionPosition } from 'src/cli/prompt.js';
 import { unique } from './array.js';
 import { notEmpty } from './type-check.js';
 
@@ -30,6 +31,7 @@ export type DisableComment = {
   scope: 'next-line' | 'file';
   ruleIds: string[];
   description?: string;
+  descriptionPosition?: DescriptionPosition;
   range: [number, number];
 };
 
@@ -79,20 +81,32 @@ export function parseDisableComment(comment: Comment): DisableComment | undefine
 /**
  * Convert `DisableComment` to comment text.
  */
-export function toCommentText({ type, scope, ruleIds, description }: Omit<DisableComment, 'range'>): string {
+export function toCommentText({
+  type,
+  scope,
+  ruleIds,
+  description,
+  descriptionPosition,
+}: Omit<DisableComment, 'range'>): string[] {
   const header = scope === 'next-line' ? 'eslint-disable-next-line' : 'eslint-disable';
   const ruleList = unique(ruleIds).join(', ');
   if (type === 'Line') {
     if (description === undefined) {
-      return `// ${header} ${ruleList}`;
+      return [`// ${header} ${ruleList}`];
     } else {
-      return `// ${header} ${ruleList} -- ${description}`;
+      if (descriptionPosition === 'previousLine') {
+        return [`// ${description}`, `// ${header} ${ruleList}`];
+      }
+      return [`// ${header} ${ruleList} -- ${description}`];
     }
   } else {
     if (description === undefined) {
-      return `/* ${header} ${ruleList} */`;
+      return [`/* ${header} ${ruleList} */`];
     } else {
-      return `/* ${header} ${ruleList} -- ${description} */`;
+      if (descriptionPosition === 'previousLine') {
+        return [`/* ${description} */`, `/* ${header} ${ruleList} */`];
+      }
+      return [`/* ${header} ${ruleList} -- ${description} */`];
     }
   }
 }
