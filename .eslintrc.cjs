@@ -11,8 +11,6 @@ module.exports = {
     node: true,
   },
   rules: {
-    'import/no-extraneous-dependencies': 'error',
-    'multiline-comment-style': [2, 'separate-lines'],
     'no-console': 'off',
     // 子ディレクトリ  (実際には孫など子以降を含む) のモジュールの import を禁止する
     'no-restricted-imports': [
@@ -48,18 +46,6 @@ module.exports = {
       extends: ['@mizdra/mizdra/+typescript', '@mizdra/mizdra/+prettier'],
       parserOptions: {
         project: ['./tsconfig.src.json', './tsconfig.test.json', './e2e-test/import-as-esm-from-esm/tsconfig.json'],
-      },
-      rules: {
-        '@typescript-eslint/no-unused-vars': [
-          2,
-          {
-            ignoreRestSiblings: true,
-            caughtErrors: 'all',
-            argsIgnorePattern: '^_',
-            destructuredArrayIgnorePattern: '^_',
-            caughtErrorsIgnorePattern: '^_',
-          },
-        ],
       },
     },
     // for test
