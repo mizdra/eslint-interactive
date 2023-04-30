@@ -12,8 +12,6 @@ module.exports = {
     node: true,
   },
   rules: {
-    'n/no-missing-import': 'off',
-    'n/no-missing-require': 'off',
     'no-console': 'off',
     // 子ディレクトリ  (実際には孫など子以降を含む) のモジュールの import を禁止する
     'no-restricted-imports': [
