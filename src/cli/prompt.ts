@@ -8,6 +8,7 @@ const { prompt } = enquirer;
 
 // When combined with worker, for some reason the enquirer grabs the SIGINT and the process continues to survive.
 // Therefore, the process is explicitly terminated.
+// eslint-disable-next-line n/no-process-exit
 const onCancel = () => process.exit();
 
 /**
