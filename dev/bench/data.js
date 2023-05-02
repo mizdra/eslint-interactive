@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1682885464034,
+  "lastUpdate": 1683060366470,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -9595,6 +9595,35 @@ window.BENCHMARK_DATA = {
           {
             "name": "cachegrind-benchmarking",
             "value": 21409322270,
+            "unit": "instructions"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "distinct": true,
+          "id": "5baf78e17b56010a0fc6f0acaa13489a798341ab",
+          "message": "chore(deps): update babel monorepo",
+          "timestamp": "2023-05-02T20:42:35Z",
+          "tree_id": "285d7509d4673a2c6cc24631b57cfc3f0f8999c8",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/5baf78e17b56010a0fc6f0acaa13489a798341ab"
+        },
+        "date": 1683060365895,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "cachegrind-benchmarking",
+            "value": 21105900583,
             "unit": "instructions"
           }
         ]
