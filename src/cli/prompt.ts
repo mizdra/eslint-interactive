@@ -38,6 +38,8 @@ export type DisplayMode = 'printInTerminal' | 'printInTerminalWithPager' | 'writ
  */
 export type NextStep = 'fixOtherRules' | 'exit' | 'undoTheFix';
 
+export type DescriptionPosition = 'sameLine' | 'previousLine';
+
 /**
  * Ask the user for the rule ids to which they want to apply the action.
  * @param ruleIdsInResults The rule ids that are in the lint results.
@@ -152,6 +154,28 @@ export async function promptToInputDescription(): Promise<string | undefined> {
     },
   ]);
   return description === '' ? undefined : description;
+}
+
+/**
+ * Ask the user a position of the description
+ * @returns The description position
+ */
+export async function promptToInputDescriptionPosition(): Promise<DescriptionPosition> {
+  const { descriptionPosition } = await prompt<{
+    descriptionPosition: DescriptionPosition;
+  }>([
+    {
+      name: 'descriptionPosition',
+      type: 'select',
+      message: 'Where would you like to position the code comment?',
+      choices: [
+        { name: 'sameLine', message: "Same Line - Place on the same line as the eslint's disable comment." },
+        { name: 'previousLine', message: "Previous Line - Place on the line before the eslint's disable comment." },
+      ],
+      onCancel,
+    },
+  ]);
+  return descriptionPosition;
 }
 
 /**

@@ -1,5 +1,5 @@
-import { AST, ESLint, Linter } from 'eslint';
-import type { Comment } from 'estree';
+import { AST, ESLint, Linter, Rule, SourceCode } from 'eslint';
+import type { Comment, SourceLocation } from 'estree';
 import { unique } from './array.js';
 import { notEmpty } from './type-check.js';
 
@@ -31,13 +31,14 @@ export type DisableComment = {
   ruleIds: string[];
   description?: string;
   range: [number, number];
+  loc: SourceLocation;
 };
 
 /**
- * コメントを ESLint の disable comment としてパースする。
- * disable comment としてパースできなかった場合は undefined を返す。
+ * Parses the comment as an ESLint disable comment.
+ * Returns undefined if the comment cannot be parsed as a disable comment.
  *
- * ## 参考: disable comment の構造
+ * ## Reference: Structure of a disable comment
  * /* eslint-disable-next-line rule-a, rule-b, rule-c, rule-d -- I'm the rules.
  *    ^^^^^^^^^^^^^^^^^^^^^^^^ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ ^^ ^^^^^^^^^^^^^^
  *    |                        |                              |  |
@@ -47,9 +48,9 @@ export type DisableComment = {
  *                                                               description
  */
 export function parseDisableComment(comment: Comment): DisableComment | undefined {
-  // NOTE: コメントノードには必ず range があるはずだが、型上は optional なので、
-  // range がない場合はパースに失敗した扱いにする。
-  if (!comment.range) return undefined;
+  // NOTE: Comment nodes should always have range and loc, but they are optional in the types.
+  // If range or loc is missing, consider the parsing failed.
+  if (!comment.range || !comment.loc) return undefined;
 
   const result = COMMENT_RE.exec(comment.value);
   if (!result) return undefined;
@@ -59,11 +60,11 @@ export function parseDisableComment(comment: Comment): DisableComment | undefine
   const ruleIds = ruleList
     .split(',')
     .map((r) => r.trim())
-    // 空文字は除外しておく
+    // Exclude empty strings
     .filter((ruleId) => ruleId !== '');
 
   const scope = header === 'eslint-disable-next-line' ? 'next-line' : 'file';
-  // file scope comment must be block-style.
+  // A file scope comment must be block-style.
   if (scope === 'file' && comment.type === 'Line') return undefined;
 
   return {
@@ -73,27 +74,143 @@ export function parseDisableComment(comment: Comment): DisableComment | undefine
     // description is optional
     ...(description === '' || description === undefined ? {} : { description }),
     range: comment.range,
+    loc: comment.loc,
   };
+}
+
+/**
+ * Convert text to comment text.
+ */
+export function toCommentText(args: { type: 'Line' | 'Block'; text: string }): string {
+  const { type, text } = args;
+  if (type === 'Line') {
+    return `// ${text}`;
+  } else {
+    return `/* ${text} */`;
+  }
 }
 
 /**
  * Convert `DisableComment` to comment text.
  */
-export function toCommentText({ type, scope, ruleIds, description }: Omit<DisableComment, 'range'>): string {
+export function toDisableCommentText({
+  type,
+  scope,
+  ruleIds,
+  description,
+}: Omit<DisableComment, 'range' | 'loc'>): string {
   const header = scope === 'next-line' ? 'eslint-disable-next-line' : 'eslint-disable';
   const ruleList = unique(ruleIds).join(', ');
-  if (type === 'Line') {
-    if (description === undefined) {
-      return `// ${header} ${ruleList}`;
-    } else {
-      return `// ${header} ${ruleList} -- ${description}`;
-    }
+  const footer = description === undefined ? '' : ` -- ${description}`;
+  return toCommentText({ type, text: `${header} ${ruleList}${footer}` });
+}
+
+function getIndentFromLine(sourceCode: SourceCode, line: number): string {
+  const headNodeIndex = sourceCode.getIndexFromLoc({ line: line, column: 0 });
+  // Extract the same indent as the line we want to fix
+  const indent = sourceCode.text.slice(
+    headNodeIndex,
+    headNodeIndex +
+      sourceCode.text
+        .slice(headNodeIndex)
+        // ref: https://tc39.es/ecma262/#sec-white-space
+        // eslint-disable-next-line no-control-regex
+        .search(/[^\u{0009}\u{000B}\u{000C}\u{FEFF}\p{gc=Space_Separator}]/u),
+  );
+  return indent;
+}
+
+function isLineInJSXText(sourceCode: SourceCode, line: number): boolean {
+  const headNodeIndex = sourceCode.getIndexFromLoc({ line: line, column: 0 });
+  const headNode = sourceCode.getNodeByRangeIndex(headNodeIndex);
+  return headNode?.type === 'JSXText';
+}
+
+/**
+ * Merge the ruleIds of the disable comments.
+ * @param a The ruleIds of first disable comment
+ * @param b The ruleIds of second disable comment
+ * @returns The ruleIds of merged disable comment
+ */
+export function mergeRuleIds(a: string[], b: string[]): string[] {
+  return unique([...a, ...b]);
+}
+
+/**
+ * Merge the description of the disable comments.
+ * @param a The description of first disable comment
+ * @param b The description of second disable comment
+ * @returns The description of merged disable comment
+ */
+export function mergeDescription(a: string | undefined, b: string | undefined): string | undefined {
+  if (a === undefined && b === undefined) return undefined;
+  if (a === undefined) return b;
+  if (b === undefined) return a;
+  return `${a}, ${b}`;
+}
+
+export function insertDescriptionCommentStatementBeforeLine(args: {
+  fixer: Rule.RuleFixer;
+  sourceCode: SourceCode;
+  line: number;
+  description: string;
+}): Rule.Fix {
+  const { fixer, sourceCode, line, description } = args;
+  const indent = getIndentFromLine(sourceCode, line);
+  const headNodeIndex = sourceCode.getIndexFromLoc({ line, column: 0 });
+
+  if (isLineInJSXText(sourceCode, line)) {
+    const commentText = toCommentText({ type: 'Block', text: description });
+    return fixer.insertTextBeforeRange([headNodeIndex, headNodeIndex], `${indent}{${commentText}}\n`);
   } else {
-    if (description === undefined) {
-      return `/* ${header} ${ruleList} */`;
-    } else {
-      return `/* ${header} ${ruleList} -- ${description} */`;
-    }
+    const commentText = toCommentText({ type: 'Line', text: description });
+    return fixer.insertTextBeforeRange([headNodeIndex, headNodeIndex], `${indent}${commentText}\n`);
+  }
+}
+
+/**
+ * Update existing disable comment.
+ * @returns The eslint's fix object
+ */
+export function updateDisableComment(args: {
+  fixer: Rule.RuleFixer;
+  disableComment: DisableComment;
+  newRules: string[];
+  newDescription: string | undefined;
+}): Rule.Fix {
+  const { fixer, disableComment: existingDisableComment, newRules, newDescription } = args;
+  const newDisableCommentText = toDisableCommentText({
+    type: existingDisableComment.type,
+    scope: existingDisableComment.scope,
+    ruleIds: newRules,
+    description: newDescription,
+  });
+  return fixer.replaceTextRange(existingDisableComment.range, newDisableCommentText);
+}
+
+export function insertDisableCommentStatementBeforeLine(args: {
+  fixer: Rule.RuleFixer;
+  sourceCode: SourceCode;
+  line: number;
+  scope: 'file' | 'next-line';
+  ruleIds: string[];
+  description: string | undefined;
+}) {
+  const { fixer, sourceCode, line, scope, ruleIds, description } = args;
+  const indent = getIndentFromLine(sourceCode, line);
+  const headNodeIndex = sourceCode.getIndexFromLoc({ line: line, column: 0 });
+  const isInJSXText = isLineInJSXText(sourceCode, line);
+  const type = isInJSXText || scope === 'file' ? 'Block' : 'Line';
+  const disableCommentText = toDisableCommentText({
+    type,
+    scope,
+    ruleIds,
+    description,
+  });
+  if (isInJSXText) {
+    return fixer.insertTextBeforeRange([headNodeIndex, headNodeIndex], `${indent}{${disableCommentText}}\n`);
+  } else {
+    return fixer.insertTextBeforeRange([headNodeIndex, headNodeIndex], `${indent}${disableCommentText}\n`);
   }
 }
 
@@ -136,42 +253,6 @@ export function filterResultsByRuleId(results: ESLint.LintResult[], ruleIds: (st
       };
     })
     .filter((result) => result.messages.length > 0);
-}
-
-/**
- * push rule ids to the disable comment and return the new comment node.
- * @param comment The comment node to be modified
- * @param ruleIds The rule ids to be added
- * @returns The new comment node
- */
-export function pushRuleIdsToDisableComment(comment: DisableComment, ruleIds: string[]): DisableComment {
-  return {
-    ...comment,
-    ruleIds: unique([...comment.ruleIds, ...ruleIds]),
-  };
-}
-
-/**
- * Merge the ruleIds and description of the disable comments.
- * @param a The ruleIds and description of first disable comment
- * @param b The ruleIds and description of second disable comment
- * @returns The ruleIds and description of merged disable comment
- */
-export function mergeRuleIdsAndDescription(
-  a: { ruleIds: string[]; description?: string },
-  b: { ruleIds: string[]; description?: string },
-): { ruleIds: string[]; description?: string } {
-  const ruleIds = unique([...a.ruleIds, ...b.ruleIds]);
-  const description =
-    a.description !== undefined && b.description !== undefined
-      ? `${a.description}, ${b.description}`
-      : a.description !== undefined && b.description === undefined
-      ? a.description
-      : a.description === undefined && b.description !== undefined
-      ? b.description
-      : undefined;
-  if (description === undefined) return { ruleIds };
-  return { ruleIds, description };
 }
 
 /**
