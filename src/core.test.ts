@@ -139,8 +139,8 @@ describe('Core', () => {
       expect(countWarnings(resultsWithIgnorePath)).toEqual(0);
     });
   });
-  // This test fails because the documentation url is not supported in eslint 7.0.0. Therefore, ignore this test.
-  testIf(ESLint.version !== '7.0.0')('printSummaryOfResults', async () => {
+  // This test fails because the documentation url format is not supported in eslint 7.x.x and 8.0.0. Therefore, ignore this test.
+  testIf(!ESLint.version.startsWith('7.') && ESLint.version !== '8.0.0')('printSummaryOfResults', async () => {
     const results = await core.lint();
     expect(core.formatResultSummary(results)).toMatchSnapshot();
   });
