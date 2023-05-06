@@ -156,7 +156,7 @@ export async function promptToInputDescription(): Promise<string | undefined> {
 }
 
 /**
- * Ask the user a position of the directive
+ * Ask the user a position of the description
  * @returns The description position
  */
 export async function promptToInputDescriptionPosition(): Promise<DescriptionPosition> {
@@ -166,10 +166,10 @@ export async function promptToInputDescriptionPosition(): Promise<DescriptionPos
     {
       name: 'descriptionPosition',
       type: 'select',
-      message: 'Position of code comment with your reason for fixing',
+      message: 'Where would you like to position the code comment?',
       choices: [
-        { name: 'sameLine', message: 'Same Line - The code comment will be placed on the same time' },
-        { name: 'previousLine', message: 'Previous Line - The code comment will be placed on previous line' },
+        { name: 'sameLine', message: "Same Line - Place on the same line as the eslint's disable comment." },
+        { name: 'previousLine', message: "Previous Line - Place on the line before the eslint's disable comment." },
       ],
       onCancel,
     },
