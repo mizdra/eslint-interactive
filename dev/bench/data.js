@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1683060366470,
+  "lastUpdate": 1683361883477,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -9624,6 +9624,35 @@ window.BENCHMARK_DATA = {
           {
             "name": "cachegrind-benchmarking",
             "value": 21105900583,
+            "unit": "instructions"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "pp.mizdra@gmail.com",
+            "name": "mizdra",
+            "username": "mizdra"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "99dd761e024d4371df7445d678d3127d39b97c4c",
+          "message": "Merge pull request #286 from stevenmusumeche/comment-position\n\nAdd support for \"Description position\"",
+          "timestamp": "2023-05-06T17:27:52+09:00",
+          "tree_id": "7271cc7f68ec087777458e200db7651069d616ee",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/99dd761e024d4371df7445d678d3127d39b97c4c"
+        },
+        "date": 1683361882350,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "cachegrind-benchmarking",
+            "value": 21440576427,
             "unit": "instructions"
           }
         ]
