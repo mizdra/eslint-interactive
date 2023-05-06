@@ -20,5 +20,5 @@ export async function selectRuleIds(
   { results, ruleIdsInResults }: SelectRuleIdsArgs,
 ): Promise<NextScene> {
   const selectedRuleIds = await promptToInputRuleIds(ruleIdsInResults);
-  return await selectAction(core, { results, ruleIdsInResults, selectedRuleIds });
+  return selectAction(core, { results, ruleIdsInResults, selectedRuleIds });
 }

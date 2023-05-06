@@ -1,5 +1,5 @@
-import { writeFile } from 'fs/promises';
-import { join } from 'path';
+import { writeFile } from 'node:fs/promises';
+import { join } from 'node:path';
 import chalk from 'chalk';
 import { Remote } from 'comlink';
 import { ESLint } from 'eslint';

@@ -3,5 +3,5 @@
 /fixtures
 /tsconfig.src.tsbuildinfo
 /tsconfig.test.tsbuildinfo
-/.pnpm-store
 pnpm-lock.yaml
+/.pnpm-store

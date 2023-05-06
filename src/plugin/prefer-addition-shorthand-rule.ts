@@ -32,19 +32,19 @@ export const preferAdditionShorthandRule: Rule.RuleModule = {
           suggest: [
             {
               desc: 'Use `val += 1` instead.',
-              fix: function (fixer) {
+              fix(fixer) {
                 return fixer.replaceText(node, `${leftIdentifier.name} += 1`);
               },
             },
             {
               desc: 'Use `val++` instead.',
-              fix: function (fixer) {
+              fix(fixer) {
                 return fixer.replaceText(node, `${leftIdentifier.name}++`);
               },
             },
             {
               desc: 'Use `++val` instead.',
-              fix: function (fixer) {
+              fix(fixer) {
                 return fixer.replaceText(node, `++${leftIdentifier.name}`);
               },
             },

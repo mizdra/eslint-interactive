@@ -1,5 +1,4 @@
 import { Linter, Rule, SourceCode } from 'eslint';
-import { fixRule, type FixRuleOption } from './fix-rule.js';
 import {
   type FixableMaker,
   type SuggestionFilter,
@@ -10,6 +9,7 @@ import {
   type FixToApplyAutoFixesArgs,
   FixToConvertErrorToWarningPerFileArgs,
 } from './fix/index.js';
+import { fixRule, type FixRuleOption } from './fix-rule.js';
 import { preferAdditionShorthandRule } from './prefer-addition-shorthand-rule.js';
 
 export { OVERLAPPED_PROBLEM_MESSAGE } from './fix-rule.js';
@@ -23,17 +23,6 @@ export const eslintInteractivePlugin = {
     'prefer-addition-shorthand': preferAdditionShorthandRule,
   },
 };
-
-/**
- * The type representing the fix to do.
- */
-export type Fix =
-  | { name: 'applyAutoFixes'; args: FixArg<'applyAutoFixes'> }
-  | { name: 'disablePerLine'; args: FixArg<'disablePerLine'> }
-  | { name: 'disablePerFile'; args: FixArg<'disablePerFile'> }
-  | { name: 'convertErrorToWarningPerFile'; args: FixArg<'convertErrorToWarningPerFile'> }
-  | { name: 'applySuggestions'; args: FixArg<'applySuggestions'> }
-  | { name: 'makeFixableAndFix'; args: FixArg<'makeFixableAndFix'> };
 
 /** For test */
 export type FixName =
@@ -58,6 +47,17 @@ export type FixArg<T extends FixName> = T extends 'applyAutoFixes'
   : T extends 'makeFixableAndFix'
   ? FixToMakeFixableAndFixArgs
   : never;
+
+/**
+ * The type representing the fix to do.
+ */
+export type Fix =
+  | { name: 'applyAutoFixes'; args: FixArg<'applyAutoFixes'> }
+  | { name: 'disablePerLine'; args: FixArg<'disablePerLine'> }
+  | { name: 'disablePerFile'; args: FixArg<'disablePerFile'> }
+  | { name: 'convertErrorToWarningPerFile'; args: FixArg<'convertErrorToWarningPerFile'> }
+  | { name: 'applySuggestions'; args: FixArg<'applySuggestions'> }
+  | { name: 'makeFixableAndFix'; args: FixArg<'makeFixableAndFix'> };
 
 /**
  * The type representing the additional information for the fix.

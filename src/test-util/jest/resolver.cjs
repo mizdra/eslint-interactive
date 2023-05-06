@@ -1,6 +1,7 @@
 // @ts-check
+'use strict';
 
-const { dirname, resolve } = require('path');
+const { dirname, resolve } = require('node:path');
 const resolveFrom = require('resolve-from');
 
 /**
@@ -15,7 +16,7 @@ const resolveFrom = require('resolve-from');
  * pathFilter?: (pkg: any, path: string, relativePath: string) => string;
  * rootDir?: string;
  * }} ResolverOptions
- * */
+ */
 
 /** @type {(path: string, options: ResolverOptions) => string} */
 module.exports = (path, options) => {

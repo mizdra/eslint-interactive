@@ -1,4 +1,4 @@
-import { basename } from 'path';
+import { basename } from 'node:path';
 import { FixTester } from '../../test-util/fix-tester.js';
 
 const tester = new FixTester(

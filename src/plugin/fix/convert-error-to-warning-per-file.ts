@@ -26,7 +26,7 @@ function generateFix(context: FixContext, description?: string): Rule.Fix | null
   // NOTE: Merging settings into an existing inline config comment is intentionally avoided
   // because of the complexity of the implementation.
 
-  const text = toInlineConfigCommentText({ rulesRecord: rulesRecordToConverting, description }) + '\n';
+  const text = `${toInlineConfigCommentText({ rulesRecord: rulesRecordToConverting, description })}\n`;
 
   const shebang = findShebang(context.sourceCode.text);
   // if shebang exists, insert comment after shebang

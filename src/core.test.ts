@@ -1,5 +1,5 @@
-import { dirname, join } from 'path';
-import { fileURLToPath } from 'url';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { ESLint, Linter } from 'eslint';
 import { Core, DEFAULT_BASE_CONFIG } from './core.js';
 import { cleanupFixturesCopy, getSnapshotOfChangedFiles, setupFixturesCopy } from './test-util/fixtures.js';
@@ -37,7 +37,7 @@ function normalizeResults(results: ESLint.LintResult[]): ESLint.LintResult[] {
       filePath: result.filePath
         .replace(process.cwd(), '')
         // for windows
-        .replace(/\\/g, '/'),
+        .replace(/\\/gu, '/'),
       messages: result.messages.map(normalizeMessage),
       // Remove the source because the snapshot will be large
       source: 'ommitted',
@@ -139,8 +139,8 @@ describe('Core', () => {
       expect(countWarnings(resultsWithIgnorePath)).toEqual(0);
     });
   });
-  // This test fails because the documentation url is not supported in eslint 7.0.0. Therefore, ignore this test.
-  testIf(ESLint.version !== '7.0.0')('printSummaryOfResults', async () => {
+  // This test fails because the documentation url format is not supported in eslint 7.x.x and 8.0.0. Therefore, ignore this test.
+  testIf(!ESLint.version.startsWith('7.') && ESLint.version !== '8.0.0')('printSummaryOfResults', async () => {
     const results = await core.lint();
     expect(core.formatResultSummary(results)).toMatchSnapshot();
   });
@@ -149,7 +149,7 @@ describe('Core', () => {
     expect(
       (await core.formatResultDetails(results, ['import/order', 'ban-exponentiation-operator']))
         // for windows
-        .replace(/\\/g, '/'),
+        .replace(/\\/gu, '/'),
     ).toMatchSnapshot();
   });
   describe('applyAutoFixes', () => {

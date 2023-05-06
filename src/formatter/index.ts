@@ -5,5 +5,5 @@ import { formatByRules } from './format-by-rules.js';
 export { takeRuleStatistics, type RuleStatistic } from './take-rule-statistics.js';
 
 export function format(results: ESLint.LintResult[], data?: ESLint.LintResultData): string {
-  return formatByFiles(results) + '\n' + formatByRules(results, data);
+  return `${formatByFiles(results)}\n${formatByRules(results, data)}`;
 }
