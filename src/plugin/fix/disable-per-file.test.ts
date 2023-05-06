@@ -75,6 +75,32 @@ describe('disable-per-file', () => {
       var val"
     `);
   });
+  test('add a description to the line before the disable comment if there is already disable comment', async () => {
+    expect(
+      await tester.test({
+        code: ['/* eslint-disable semi -- foo */', 'var val'],
+        ruleIdsToFix: ['no-var'],
+        args: { description: 'bar', descriptionPosition: 'previousLine' },
+      }),
+    ).toMatchInlineSnapshot(`
+      "// bar
+      /* eslint-disable semi, no-var -- foo */
+      var val"
+    `);
+  });
+  test('add a description comment before the line with the problem', async () => {
+    expect(
+      await tester.test({
+        code: ['var val'],
+        ruleIdsToFix: ['semi'],
+        args: { description: 'foo', descriptionPosition: 'previousLine' },
+      }),
+    ).toMatchInlineSnapshot(`
+      "// foo
+      /* eslint-disable semi */
+      var val"
+    `);
+  });
   test('`eslint-disable` has precedence over `@ts-check`', async () => {
     expect(
       await tester.test({
