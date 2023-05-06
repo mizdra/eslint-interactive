@@ -1,4 +1,5 @@
 import { Linter, Rule, SourceCode } from 'eslint';
+import { fixRule, type FixRuleOption } from './fix-rule.js';
 import {
   type FixableMaker,
   type SuggestionFilter,
@@ -9,7 +10,6 @@ import {
   type FixToApplyAutoFixesArgs,
   FixToConvertErrorToWarningPerFileArgs,
 } from './fix/index.js';
-import { fixRule, type FixRuleOption } from './fix-rule.js';
 import { preferAdditionShorthandRule } from './prefer-addition-shorthand-rule.js';
 
 export { OVERLAPPED_PROBLEM_MESSAGE } from './fix-rule.js';
