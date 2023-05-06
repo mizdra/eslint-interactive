@@ -1,13 +1,16 @@
 import { ESLint } from 'eslint';
+import { SourceLocation } from 'estree';
 import { fakeLintMessage, fakeLintResult } from '../test-util/eslint.js';
 import {
   scanUsedPluginsFromResults,
-  toCommentText,
   parseDisableComment,
-  mergeRuleIdsAndDescription,
   findShebang,
   filterResultsByRuleId,
   toInlineConfigCommentText,
+  toDisableCommentText,
+  toCommentText,
+  mergeRuleIds,
+  mergeDescription,
 } from './eslint.js';
 
 const range: [number, number] = [0, 1];
@@ -245,29 +248,50 @@ describe('parseCommentAsESLintDisableComment', () => {
   });
 });
 
-describe('toCommentText', () => {
+test('toCommentText', () => {
+  expect(toCommentText({ type: 'Line', text: 'foo' })).toBe('// foo');
+  expect(toCommentText({ type: 'Block', text: 'foo' })).toBe('/* foo */');
+});
+
+describe('toDisableCommentText', () => {
   test('Line 形式のコメントが作成できる', () => {
-    expect(toCommentText({ type: 'Line', scope: 'next-line', ruleIds: ['a', 'b'] })).toMatchInlineSnapshot(
+    expect(toDisableCommentText({ type: 'Line', scope: 'next-line', ruleIds: ['a', 'b'] })).toMatchInlineSnapshot(
       `"// eslint-disable-next-line a, b"`,
     );
     expect(
-      toCommentText({ type: 'Line', scope: 'next-line', ruleIds: ['a', 'b'], description: 'foo' }),
+      toDisableCommentText({ type: 'Line', scope: 'next-line', ruleIds: ['a', 'b'], description: 'foo' }),
     ).toMatchInlineSnapshot(`"// eslint-disable-next-line a, b -- foo"`);
   });
   test('Block 形式のコメントが作成できる', () => {
-    expect(toCommentText({ type: 'Block', scope: 'next-line', ruleIds: ['a', 'b'] })).toMatchInlineSnapshot(
+    expect(toDisableCommentText({ type: 'Block', scope: 'next-line', ruleIds: ['a', 'b'] })).toMatchInlineSnapshot(
       `"/* eslint-disable-next-line a, b */"`,
     );
     expect(
-      toCommentText({ type: 'Block', scope: 'next-line', ruleIds: ['a', 'b'], description: 'foo' }),
+      toDisableCommentText({ type: 'Block', scope: 'next-line', ruleIds: ['a', 'b'], description: 'foo' }),
     ).toMatchInlineSnapshot(`"/* eslint-disable-next-line a, b -- foo */"`);
   });
   test('file 全体に適用される disable コメントが作成できる', () => {
     expect(
-      toCommentText({ type: 'Line', scope: 'file', ruleIds: ['a', 'b'], description: 'foo' }),
+      toDisableCommentText({ type: 'Line', scope: 'file', ruleIds: ['a', 'b'], description: 'foo' }),
     ).toMatchInlineSnapshot(`"// eslint-disable a, b -- foo"`);
   });
 });
+
+test('mergeRuleIds', () => {
+  expect(mergeRuleIds(['a', 'b'], ['c', 'd'])).toStrictEqual(['a', 'b', 'c', 'd']);
+  expect(mergeRuleIds(['a', 'b'], ['b', 'c'])).toStrictEqual(['a', 'b', 'c']);
+});
+
+test('mergeDescription', () => {
+  expect(mergeDescription('foo', 'bar')).toBe('foo, bar');
+  expect(mergeDescription('foo', undefined)).toBe('foo');
+  expect(mergeDescription(undefined, 'bar')).toBe('bar');
+  expect(mergeDescription(undefined, undefined)).toBe(undefined);
+});
+
+test.todo('insertDescriptionCommentStatementBeforeLine');
+test.todo('updateDisableComment');
+test.todo('insertDisableCommentStatementBeforeLine');
 
 test('toInlineConfigCommentText', () => {
   expect(toInlineConfigCommentText({ rulesRecord: { a: 0, b: 1, c: 2 } })).toMatchInlineSnapshot(
