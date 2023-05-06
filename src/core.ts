@@ -2,6 +2,7 @@ import { join, relative } from 'path';
 import { fileURLToPath } from 'url';
 import { ESLint } from 'eslint';
 import isInstalledGlobally from 'is-installed-globally';
+import { DescriptionPosition } from './cli/prompt.js';
 import { format } from './formatter/index.js';
 import {
   eslintInteractivePlugin,
@@ -170,9 +171,15 @@ export class Core {
    * @param results The lint results of the project to add disable comments
    * @param ruleIds The rule ids to add disable comments
    * @param description The description of the disable comments
+   * @param descriptionPosition The position of the description
    */
-  async disablePerLine(results: ESLint.LintResult[], ruleIds: string[], description?: string): Promise<Undo> {
-    return await this.fix(results, ruleIds, { name: 'disablePerLine', args: { description } });
+  async disablePerLine(
+    results: ESLint.LintResult[],
+    ruleIds: string[],
+    description?: string,
+    descriptionPosition?: DescriptionPosition,
+  ): Promise<Undo> {
+    return await this.fix(results, ruleIds, { name: 'disablePerLine', args: { description, descriptionPosition } });
   }
 
   /**
@@ -180,9 +187,15 @@ export class Core {
    * @param results The lint results of the project to add disable comments
    * @param ruleIds The rule ids to add disable comments
    * @param description The description of the disable comments
+   * @param descriptionPosition The position of the description
    */
-  async disablePerFile(results: ESLint.LintResult[], ruleIds: string[], description?: string): Promise<Undo> {
-    return await this.fix(results, ruleIds, { name: 'disablePerFile', args: { description } });
+  async disablePerFile(
+    results: ESLint.LintResult[],
+    ruleIds: string[],
+    description?: string,
+    descriptionPosition?: DescriptionPosition,
+  ): Promise<Undo> {
+    return await this.fix(results, ruleIds, { name: 'disablePerFile', args: { description, descriptionPosition } });
   }
 
   /**

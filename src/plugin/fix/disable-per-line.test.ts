@@ -37,7 +37,7 @@ describe('disable-per-line', () => {
         ruleIdsToFix: ['no-var'],
       }),
     ).toMatchInlineSnapshot(`
-      "/* eslint-disable-next-line semi, no-var */
+      "// eslint-disable-next-line semi, no-var
       var val"
     `);
   });
@@ -67,7 +67,7 @@ describe('disable-per-line', () => {
         ruleIdsToFix: ['no-var'],
       }),
     ).toMatchInlineSnapshot(`
-      "/* eslint-disable-next-line semi, no-var -- comment */
+      "// eslint-disable-next-line semi, no-var -- comment
       var val"
     `);
   });
@@ -79,7 +79,7 @@ describe('disable-per-line', () => {
         args: { description: 'comment' },
       }),
     ).toMatchInlineSnapshot(`
-      "/* eslint-disable-next-line semi, no-var -- comment */
+      "// eslint-disable-next-line semi, no-var -- comment
       var val"
     `);
   });
@@ -91,7 +91,33 @@ describe('disable-per-line', () => {
         args: { description: 'bar' },
       }),
     ).toMatchInlineSnapshot(`
-      "/* eslint-disable-next-line semi, no-var -- foo, bar */
+      "// eslint-disable-next-line semi, no-var -- foo, bar
+      var val"
+    `);
+  });
+  test('add a description to the line before the disable comment if there is already disable comment', async () => {
+    expect(
+      await tester.test({
+        code: ['// eslint-disable-next-line semi -- foo', 'var val'],
+        ruleIdsToFix: ['no-var'],
+        args: { description: 'bar', descriptionPosition: 'previousLine' },
+      }),
+    ).toMatchInlineSnapshot(`
+      "// bar
+      // eslint-disable-next-line semi, no-var -- foo
+      var val"
+    `);
+  });
+  test('add a description comment before the line with the problem', async () => {
+    expect(
+      await tester.test({
+        code: ['var val'],
+        ruleIdsToFix: ['semi'],
+        args: { description: 'foo', descriptionPosition: 'previousLine' },
+      }),
+    ).toMatchInlineSnapshot(`
+      "// foo
+      // eslint-disable-next-line semi
       var val"
     `);
   });
@@ -111,37 +137,75 @@ describe('disable-per-line', () => {
       var val3"
     `);
   });
-  test('JSX に対しても disable できる', async () => {
-    expect(
-      await tester.test({
-        code: [
-          'var jsx = <div>',
-          '  <span>text1</span>',
-          '  <span>{void 2}</span>',
-          '  {/* eslint-disable-next-line semi */}',
-          '  <span>{void 3}</span>',
-          '  {() => {',
-          '    var val;',
-          '  }}',
-          '</div>;',
-        ],
-
-        ruleIdsToFix: ['no-var', 'no-void'],
-      }),
-    ).toMatchInlineSnapshot(`
-      "// eslint-disable-next-line no-var
-      var jsx = <div>
-        <span>text1</span>
-        {/* eslint-disable-next-line no-void */}
-        <span>{void 2}</span>
-        {/* eslint-disable-next-line semi, no-void */}
-        <span>{void 3}</span>
-        {() => {
-          // eslint-disable-next-line no-var
-          var val;
-        }}
-      </div>;"
-    `);
+  describe('add a disable comment for JSX', () => {
+    test('when descriptionPosition is sameLine', async () => {
+      expect(
+        await tester.test({
+          code: [
+            'var jsx = <div>',
+            '  <span>text1</span>',
+            '  <span>{void 2}</span>',
+            '  {/* eslint-disable-next-line semi */}',
+            '  <span>{void 3}</span>',
+            '  {() => {',
+            '    var val;',
+            '  }}',
+            '</div>;',
+          ],
+          ruleIdsToFix: ['no-var', 'no-void'],
+          args: { description: 'foo', descriptionPosition: 'sameLine' },
+        }),
+      ).toMatchInlineSnapshot(`
+        "// eslint-disable-next-line no-var -- foo
+        var jsx = <div>
+          <span>text1</span>
+          {/* eslint-disable-next-line no-void -- foo */}
+          <span>{void 2}</span>
+          {/* eslint-disable-next-line semi, no-void -- foo */}
+          <span>{void 3}</span>
+          {() => {
+            // eslint-disable-next-line no-var -- foo
+            var val;
+          }}
+        </div>;"
+      `);
+    });
+    test('when descriptionPosition is previousLine', async () => {
+      expect(
+        await tester.test({
+          code: [
+            'var jsx = <div>',
+            '  <span>text1</span>',
+            '  <span>{void 2}</span>',
+            '  {/* eslint-disable-next-line semi */}',
+            '  <span>{void 3}</span>',
+            '  {() => {',
+            '    var val;',
+            '  }}',
+            '</div>;',
+          ],
+          ruleIdsToFix: ['no-var', 'no-void'],
+          args: { description: 'foo', descriptionPosition: 'previousLine' },
+        }),
+      ).toMatchInlineSnapshot(`
+        "// foo
+        // eslint-disable-next-line no-var
+        var jsx = <div>
+          <span>text1</span>
+          {/* foo */}
+          {/* eslint-disable-next-line no-void */}
+          <span>{void 2}</span>
+          {/* foo */}
+          {/* eslint-disable-next-line semi, no-void */}
+          <span>{void 3}</span>
+          {() => {
+            // foo
+            // eslint-disable-next-line no-var
+            var val;
+          }}
+        </div>;"
+      `);
+    });
   });
   test('disable comment のある行に disable comment 以外の Node があっても disable できる', async () => {
     expect(
@@ -159,7 +223,7 @@ describe('disable-per-line', () => {
       }),
     ).toMatchInlineSnapshot(`
       "// eslint-disable-next-line no-var
-      var val1; /* eslint-disable-next-line semi, no-var */
+      var val1; // eslint-disable-next-line semi, no-var
       var val2;
       // eslint-disable-next-line no-var
       var val3; /* eslint-disable-next-line semi, no-var */ val4;
