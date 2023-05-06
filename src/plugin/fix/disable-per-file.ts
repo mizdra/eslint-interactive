@@ -1,5 +1,4 @@
-import { Rule } from 'eslint';
-import type { Comment } from 'estree';
+import { Rule, SourceCode } from 'eslint';
 import { DescriptionPosition } from 'src/cli/prompt.js';
 import { unique } from '../../util/array.js';
 import {
@@ -20,7 +19,8 @@ export type FixToDisablePerFileArgs = {
   descriptionPosition?: DescriptionPosition;
 };
 
-function findDisableCommentPerFile(commentsInFile: Comment[]): DisableComment | undefined {
+function findDisableCommentPerFile(sourceCode: SourceCode): DisableComment | undefined {
+  const commentsInFile = sourceCode.getAllComments();
   return commentsInFile.map(parseDisableComment).find((comment) => comment?.scope === 'file');
 }
 
@@ -34,8 +34,7 @@ function generateFix(
   const ruleIdsToDisable = unique(context.messages.map((message) => message.ruleId).filter(notEmpty));
   if (ruleIdsToDisable.length === 0) return [];
 
-  const commentsInFile = context.sourceCode.getAllComments();
-  const disableCommentPerFile = findDisableCommentPerFile(commentsInFile);
+  const disableCommentPerFile = findDisableCommentPerFile(sourceCode);
 
   // if shebang exists, insert comment after shebang
   const shebang = findShebang(context.sourceCode.text);

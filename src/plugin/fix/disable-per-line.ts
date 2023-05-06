@@ -1,5 +1,4 @@
-import { Linter, Rule } from 'eslint';
-import type { Comment } from 'estree';
+import { Linter, Rule, SourceCode } from 'eslint';
 import { DescriptionPosition } from 'src/cli/prompt.js';
 import { groupBy, unique } from '../../util/array.js';
 import {
@@ -19,7 +18,8 @@ export type FixToDisablePerLineArgs = {
   descriptionPosition?: DescriptionPosition;
 };
 
-function findDisableCommentPerLine(commentsInFile: Comment[], line: number): DisableComment | undefined {
+function findDisableCommentPerLine(sourceCode: SourceCode, line: number): DisableComment | undefined {
+  const commentsInFile = sourceCode.getAllComments();
   const commentsInPreviousLine = commentsInFile.filter((comment) => comment.loc?.start.line === line - 1);
   return commentsInPreviousLine.map(parseDisableComment).find((comment) => comment?.scope === 'next-line');
 }
@@ -36,8 +36,7 @@ function generateFixesPerLine(
   const ruleIdsToDisable = unique(messagesInLine.map((message) => message.ruleId).filter(notEmpty));
   if (ruleIdsToDisable.length === 0) return [];
 
-  const commentsInFile = context.sourceCode.getAllComments();
-  const disableCommentPerLine = findDisableCommentPerLine(commentsInFile, line);
+  const disableCommentPerLine = findDisableCommentPerLine(sourceCode, line);
 
   const fixes: Rule.Fix[] = [];
   const isPreviousLine = description !== undefined && descriptionPosition === 'previousLine';
