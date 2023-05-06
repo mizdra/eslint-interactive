@@ -11,6 +11,7 @@ import {
 } from './eslint.js';
 
 const range: [number, number] = [0, 1];
+const loc: SourceLocation = { start: { line: 1, column: 0 }, end: { line: 1, column: 1 } };
 
 test('scanUsedPluginsFromResults', () => {
   const results: ESLint.LintResult[] = [
@@ -58,95 +59,115 @@ test('filterResultsByRuleId', () => {
 describe('parseCommentAsESLintDisableComment', () => {
   describe('disable comment の時', () => {
     test('basic', () => {
-      expect(parseDisableComment({ type: 'Line', value: ' eslint-disable-next-line a', range })).toStrictEqual({
+      expect(parseDisableComment({ type: 'Line', value: ' eslint-disable-next-line a', range, loc })).toStrictEqual({
         type: 'Line',
         scope: 'next-line',
         ruleIds: ['a'],
         range,
+        loc,
       });
-      expect(parseDisableComment({ type: 'Block', value: ' eslint-disable-next-line a ', range })).toStrictEqual({
+      expect(parseDisableComment({ type: 'Block', value: ' eslint-disable-next-line a ', range, loc })).toStrictEqual({
         type: 'Block',
         scope: 'next-line',
         ruleIds: ['a'],
         range,
+        loc,
       });
     });
     test('先頭や末尾の空白は省略できる', () => {
-      expect(parseDisableComment({ type: 'Line', value: 'eslint-disable-next-line a', range })).toStrictEqual({
+      expect(parseDisableComment({ type: 'Line', value: 'eslint-disable-next-line a', range, loc })).toStrictEqual({
         type: 'Line',
         scope: 'next-line',
         ruleIds: ['a'],
         range,
+        loc,
       });
-      expect(parseDisableComment({ type: 'Block', value: 'eslint-disable-next-line a', range })).toStrictEqual({
+      expect(parseDisableComment({ type: 'Block', value: 'eslint-disable-next-line a', range, loc })).toStrictEqual({
         type: 'Block',
         scope: 'next-line',
         ruleIds: ['a'],
         range,
+        loc,
       });
     });
     test('複数の ruleId をパースできる', () => {
-      expect(parseDisableComment({ type: 'Line', value: ' eslint-disable-next-line a, b, c', range })).toStrictEqual({
+      expect(
+        parseDisableComment({ type: 'Line', value: ' eslint-disable-next-line a, b, c', range, loc }),
+      ).toStrictEqual({
         type: 'Line',
         scope: 'next-line',
         ruleIds: ['a', 'b', 'c'],
         range,
+        loc,
       });
-      expect(parseDisableComment({ type: 'Line', value: ' eslint-disable-next-line a,b,c', range })).toStrictEqual({
+      expect(parseDisableComment({ type: 'Line', value: ' eslint-disable-next-line a,b,c', range, loc })).toStrictEqual(
+        {
+          type: 'Line',
+          scope: 'next-line',
+          ruleIds: ['a', 'b', 'c'],
+          range,
+          loc,
+        },
+      );
+      expect(
+        parseDisableComment({ type: 'Line', value: ' eslint-disable-next-line a, b, c,', range, loc }),
+      ).toStrictEqual({
         type: 'Line',
         scope: 'next-line',
         ruleIds: ['a', 'b', 'c'],
         range,
+        loc,
       });
-      expect(parseDisableComment({ type: 'Line', value: ' eslint-disable-next-line a, b, c,', range })).toStrictEqual({
+      expect(
+        parseDisableComment({ type: 'Line', value: ' eslint-disable-next-line a, b,, c', range, loc }),
+      ).toStrictEqual({
         type: 'Line',
         scope: 'next-line',
         ruleIds: ['a', 'b', 'c'],
         range,
-      });
-      expect(parseDisableComment({ type: 'Line', value: ' eslint-disable-next-line a, b,, c', range })).toStrictEqual({
-        type: 'Line',
-        scope: 'next-line',
-        ruleIds: ['a', 'b', 'c'],
-        range,
+        loc,
       });
     });
     test('description をパースできる', () => {
       expect(
-        parseDisableComment({ type: 'Line', value: ' eslint-disable-next-line a -- foo bar', range }),
+        parseDisableComment({ type: 'Line', value: ' eslint-disable-next-line a -- foo bar', range, loc }),
       ).toStrictEqual({
         type: 'Line',
         scope: 'next-line',
         ruleIds: ['a'],
         description: 'foo bar',
         range,
+        loc,
       });
-      expect(parseDisableComment({ type: 'Line', value: ' eslint-disable-next-line a --  foo ', range })).toStrictEqual(
-        {
-          type: 'Line',
-          scope: 'next-line',
-          ruleIds: ['a'],
-          description: 'foo',
-          range,
-        },
-      );
       expect(
-        parseDisableComment({ type: 'Line', value: ' eslint-disable-next-line a -- b -- c', range }),
+        parseDisableComment({ type: 'Line', value: ' eslint-disable-next-line a --  foo ', range, loc }),
+      ).toStrictEqual({
+        type: 'Line',
+        scope: 'next-line',
+        ruleIds: ['a'],
+        description: 'foo',
+        range,
+        loc,
+      });
+      expect(
+        parseDisableComment({ type: 'Line', value: ' eslint-disable-next-line a -- b -- c', range, loc }),
       ).toStrictEqual({
         type: 'Line',
         scope: 'next-line',
         ruleIds: ['a'],
         description: 'b -- c',
         range,
+        loc,
       });
       expect(
-        parseDisableComment({ type: 'Line', value: ' eslint-disable-next-line a , - , b -- c', range }),
+        parseDisableComment({ type: 'Line', value: ' eslint-disable-next-line a , - , b -- c', range, loc }),
       ).toStrictEqual({
         type: 'Line',
         scope: 'next-line',
         ruleIds: ['a', '-', 'b'],
         description: 'c',
         range,
+        loc,
       });
     });
     test('\\s で定義されるホワイトスペース文字を処理できる', () => {
@@ -155,6 +176,7 @@ describe('parseCommentAsESLintDisableComment', () => {
           type: 'Line',
           value: '\r\teslint-disable-next-line\r\ta,\r\tb\r\t--\r\tfoo\r\t',
           range,
+          loc,
         }),
       ).toStrictEqual({
         type: 'Line',
@@ -162,14 +184,16 @@ describe('parseCommentAsESLintDisableComment', () => {
         ruleIds: ['a', 'b'],
         description: 'foo',
         range,
+        loc,
       });
     });
     test('eslint-disable 形式のコメントもパースできる', () => {
-      expect(parseDisableComment({ type: 'Block', value: ' eslint-disable a', range })).toStrictEqual({
+      expect(parseDisableComment({ type: 'Block', value: ' eslint-disable a', range, loc })).toStrictEqual({
         type: 'Block',
         scope: 'file',
         ruleIds: ['a'],
         range,
+        loc,
       });
     });
   });
@@ -179,6 +203,7 @@ describe('parseCommentAsESLintDisableComment', () => {
         type: 'Line',
         value: 'eslint-disable-next-line',
         range,
+        loc,
       }),
     ).toStrictEqual(undefined);
     expect(
@@ -186,6 +211,7 @@ describe('parseCommentAsESLintDisableComment', () => {
         type: 'Line',
         value: 'eslint-disable-next-linea',
         range,
+        loc,
       }),
     ).toStrictEqual(undefined);
     expect(
@@ -193,16 +219,27 @@ describe('parseCommentAsESLintDisableComment', () => {
         type: 'Line',
         value: 'foo',
         range,
+        loc,
       }),
     ).toStrictEqual(undefined);
     // file scope comment must be block-style.
     expect(parseDisableComment({ type: 'Line', value: ' eslint-disable a', range })).toStrictEqual(undefined);
   });
-  test('range が無い時', () => {
+  test('when without range', () => {
     expect(
       parseDisableComment({
         type: 'Line',
         value: 'eslint-disable-next-line a',
+        loc,
+      }),
+    ).toStrictEqual(undefined);
+  });
+  test('when without loc', () => {
+    expect(
+      parseDisableComment({
+        type: 'Line',
+        value: 'eslint-disable-next-line a',
+        range,
       }),
     ).toStrictEqual(undefined);
   });

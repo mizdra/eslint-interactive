@@ -36,10 +36,10 @@ export type DisableComment = {
 };
 
 /**
- * コメントを ESLint の disable comment としてパースする。
- * disable comment としてパースできなかった場合は undefined を返す。
+ * Parses the comment as an ESLint disable comment.
+ * Returns undefined if the comment cannot be parsed as a disable comment.
  *
- * ## 参考: disable comment の構造
+ * ## Reference: Structure of a disable comment
  * /* eslint-disable-next-line rule-a, rule-b, rule-c, rule-d -- I'm the rules.
  *    ^^^^^^^^^^^^^^^^^^^^^^^^ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ ^^ ^^^^^^^^^^^^^^
  *    |                        |                              |  |
@@ -49,9 +49,9 @@ export type DisableComment = {
  *                                                               description
  */
 export function parseDisableComment(comment: Comment): DisableComment | undefined {
-  // NOTE: コメントノードには必ず range があるはずだが、型上は optional なので、
-  // range がない場合はパースに失敗した扱いにする。
-  if (!comment.range) return undefined;
+  // NOTE: Comment nodes should always have range and loc, but they are optional in the types.
+  // If range or loc is missing, consider the parsing failed.
+  if (!comment.range || !comment.loc) return undefined;
 
   const result = COMMENT_RE.exec(comment.value);
   if (!result) return undefined;
@@ -61,11 +61,11 @@ export function parseDisableComment(comment: Comment): DisableComment | undefine
   const ruleIds = ruleList
     .split(',')
     .map((r) => r.trim())
-    // 空文字は除外しておく
+    // Exclude empty strings
     .filter((ruleId) => ruleId !== '');
 
   const scope = header === 'eslint-disable-next-line' ? 'next-line' : 'file';
-  // file scope comment must be block-style.
+  // A file scope comment must be block-style.
   if (scope === 'file' && comment.type === 'Line') return undefined;
 
   return {
@@ -75,6 +75,7 @@ export function parseDisableComment(comment: Comment): DisableComment | undefine
     // description is optional
     ...(description === '' || description === undefined ? {} : { description }),
     range: comment.range,
+    loc: comment.loc,
   };
 }
 
