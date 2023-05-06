@@ -1,4 +1,4 @@
-import { resolve } from 'path';
+import { resolve } from 'node:path';
 import { Linter, ESLint } from 'eslint';
 import { eslintInteractivePlugin, FixArg, FixName, FixRuleOption } from '../plugin/index.js';
 

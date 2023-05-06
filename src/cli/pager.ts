@@ -1,6 +1,6 @@
-import { spawnSync } from 'child_process';
-import { writeFile } from 'fs/promises';
-import { join } from 'path';
+import { spawnSync } from 'node:child_process';
+import { writeFile } from 'node:fs/promises';
+import { join } from 'node:path';
 import { getCacheDir } from '../util/cache.js';
 
 const PAGER_CONTENT_FILE_PATH = join(getCacheDir(), 'pager-content.txt');

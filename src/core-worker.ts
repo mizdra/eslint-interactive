@@ -1,4 +1,4 @@
-import { parentPort, MessageChannel } from 'worker_threads';
+import { parentPort, MessageChannel } from 'node:worker_threads';
 import { expose, proxy } from 'comlink';
 import nodeEndpoint from 'comlink/dist/esm/node-adapter.mjs';
 import { ESLint } from 'eslint';

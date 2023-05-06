@@ -1,8 +1,8 @@
-import { exec as execOriginal } from 'child_process';
-import { mkdir, appendFile, readFile, access } from 'fs/promises';
-import { dirname, join } from 'path';
-import { fileURLToPath } from 'url';
-import { promisify } from 'util';
+import { exec as execOriginal } from 'node:child_process';
+import { mkdir, appendFile, readFile, access } from 'node:fs/promises';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { promisify } from 'node:util';
 import { getCacheDir } from './cache.js';
 
 const exec = promisify(execOriginal);

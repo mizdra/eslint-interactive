@@ -106,7 +106,7 @@ export function toDisableCommentText({
 }
 
 function getIndentFromLine(sourceCode: SourceCode, line: number): string {
-  const headNodeIndex = sourceCode.getIndexFromLoc({ line: line, column: 0 });
+  const headNodeIndex = sourceCode.getIndexFromLoc({ line, column: 0 });
   // Extract the same indent as the line we want to fix
   const indent = sourceCode.text.slice(
     headNodeIndex,
@@ -121,7 +121,7 @@ function getIndentFromLine(sourceCode: SourceCode, line: number): string {
 }
 
 function isLineInJSXText(sourceCode: SourceCode, line: number): boolean {
-  const headNodeIndex = sourceCode.getIndexFromLoc({ line: line, column: 0 });
+  const headNodeIndex = sourceCode.getIndexFromLoc({ line, column: 0 });
   const headNode = sourceCode.getNodeByRangeIndex(headNodeIndex);
   return headNode?.type === 'JSXText';
 }
@@ -198,7 +198,7 @@ export function insertDisableCommentStatementBeforeLine(args: {
 }) {
   const { fixer, sourceCode, line, scope, ruleIds, description } = args;
   const indent = getIndentFromLine(sourceCode, line);
-  const headNodeIndex = sourceCode.getIndexFromLoc({ line: line, column: 0 });
+  const headNodeIndex = sourceCode.getIndexFromLoc({ line, column: 0 });
   const isInJSXText = isLineInJSXText(sourceCode, line);
   const type = isInJSXText || scope === 'file' ? 'Block' : 'Line';
   const disableCommentText = toDisableCommentText({

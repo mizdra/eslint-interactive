@@ -1,7 +1,7 @@
 // @ts-check
 'use strict';
 
-const { dirname, resolve } = require('path');
+const { dirname, resolve } = require('node:path');
 const resolveFrom = require('resolve-from');
 
 /**

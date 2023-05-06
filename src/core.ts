@@ -1,5 +1,5 @@
-import { join, relative } from 'path';
-import { fileURLToPath } from 'url';
+import { join, relative } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { ESLint } from 'eslint';
 import isInstalledGlobally from 'is-installed-globally';
 import { DescriptionPosition } from './cli/prompt.js';

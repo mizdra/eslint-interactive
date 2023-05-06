@@ -1,8 +1,8 @@
-import { exec } from 'child_process';
-import { rm } from 'fs/promises';
-import { dirname, join, resolve } from 'path';
-import { fileURLToPath } from 'url';
-import { promisify } from 'util';
+import { exec } from 'node:child_process';
+import { rm } from 'node:fs/promises';
+import { dirname, join, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { promisify } from 'node:util';
 import fse from 'fs-extra/esm';
 
 const execPromise = promisify(exec);

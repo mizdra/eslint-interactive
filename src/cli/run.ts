@@ -1,6 +1,6 @@
-import { dirname, join } from 'path';
-import { fileURLToPath } from 'url';
-import { Worker } from 'worker_threads';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { Worker } from 'node:worker_threads';
 import { wrap } from 'comlink';
 import nodeEndpoint from 'comlink/dist/esm/node-adapter.mjs';
 // eslint-disable-next-line @typescript-eslint/no-require-imports

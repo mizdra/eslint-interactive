@@ -1,5 +1,5 @@
-import { dirname, join } from 'path';
-import { fileURLToPath } from 'url';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { ESLint, Linter } from 'eslint';
 import { Core, DEFAULT_BASE_CONFIG } from './core.js';
 import { cleanupFixturesCopy, getSnapshotOfChangedFiles, setupFixturesCopy } from './test-util/fixtures.js';
