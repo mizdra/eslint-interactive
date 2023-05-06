@@ -31,8 +31,8 @@ export type DisableComment = {
   scope: 'next-line' | 'file';
   ruleIds: string[];
   description?: string;
-  descriptionPosition?: DescriptionPosition;
   range: [number, number];
+  loc: SourceLocation;
 };
 
 /**
