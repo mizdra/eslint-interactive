@@ -318,36 +318,6 @@ describe('filterResultsByRuleId', () => {
   });
 });
 
-describe('mergeRuleIdsAndDescription', () => {
-  test('merges the ruleIds and description of the disable comments', () => {
-    expect(
-      mergeRuleIdsAndDescription(
-        { ruleIds: ['a', 'b'], description: 'foo' },
-        { ruleIds: ['b', 'c'], description: 'bar' },
-      ),
-    ).toStrictEqual({ ruleIds: ['a', 'b', 'c'], description: 'foo, bar' });
-  });
-  test('The description is optional', () => {
-    expect(mergeRuleIdsAndDescription({ ruleIds: ['a', 'b'] }, { ruleIds: ['b', 'c'] })).toStrictEqual({
-      ruleIds: ['a', 'b', 'c'],
-    });
-  });
-  test('can merge the comment without description with the comment with description', () => {
-    expect(
-      mergeRuleIdsAndDescription({ ruleIds: ['a', 'b'], description: 'foo' }, { ruleIds: ['b', 'c'] }),
-    ).toStrictEqual({
-      ruleIds: ['a', 'b', 'c'],
-      description: 'foo',
-    });
-    expect(
-      mergeRuleIdsAndDescription({ ruleIds: ['a', 'b'] }, { ruleIds: ['b', 'c'], description: 'bar' }),
-    ).toStrictEqual({
-      ruleIds: ['a', 'b', 'c'],
-      description: 'bar',
-    });
-  });
-});
-
 describe('findShebang', () => {
   test('find shebang from the first line of the file', () => {
     expect(findShebang('#!/bin/node\nval;')).toStrictEqual({

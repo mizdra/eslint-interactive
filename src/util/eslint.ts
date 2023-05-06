@@ -154,42 +154,6 @@ export function filterResultsByRuleId(results: ESLint.LintResult[], ruleIds: (st
 }
 
 /**
- * push rule ids to the disable comment and return the new comment node.
- * @param comment The comment node to be modified
- * @param ruleIds The rule ids to be added
- * @returns The new comment node
- */
-export function pushRuleIdsToDisableComment(comment: DisableComment, ruleIds: string[]): DisableComment {
-  return {
-    ...comment,
-    ruleIds: unique([...comment.ruleIds, ...ruleIds]),
-  };
-}
-
-/**
- * Merge the ruleIds and description of the disable comments.
- * @param a The ruleIds and description of first disable comment
- * @param b The ruleIds and description of second disable comment
- * @returns The ruleIds and description of merged disable comment
- */
-export function mergeRuleIdsAndDescription(
-  a: { ruleIds: string[]; description?: string },
-  b: { ruleIds: string[]; description?: string },
-): { ruleIds: string[]; description?: string } {
-  const ruleIds = unique([...a.ruleIds, ...b.ruleIds]);
-  const description =
-    a.description !== undefined && b.description !== undefined
-      ? `${a.description}, ${b.description}`
-      : a.description !== undefined && b.description === undefined
-      ? a.description
-      : a.description === undefined && b.description !== undefined
-      ? b.description
-      : undefined;
-  if (description === undefined) return { ruleIds };
-  return { ruleIds, description };
-}
-
-/**
  * Find shebang from the first line of the file.
  * @param sourceCodeText The source code text of the file.
  * @returns The information of shebang. If the file does not have shebang, return null.
