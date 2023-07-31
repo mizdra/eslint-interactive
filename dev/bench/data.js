@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1690833561993,
+  "lastUpdate": 1690837831525,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -9856,6 +9856,35 @@ window.BENCHMARK_DATA = {
           {
             "name": "cachegrind-benchmarking",
             "value": 21070784152,
+            "unit": "instructions"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "distinct": true,
+          "id": "4206514c64d0a8a64f74c40f2a02878212f5c8dd",
+          "message": "Update dependency boxen to ^7.1.1",
+          "timestamp": "2023-07-31T21:06:19Z",
+          "tree_id": "a84371aa9f7ede2e3d753cd02468a9b84421efac",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/4206514c64d0a8a64f74c40f2a02878212f5c8dd"
+        },
+        "date": 1690837830494,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "cachegrind-benchmarking",
+            "value": 21413017589,
             "unit": "instructions"
           }
         ]
