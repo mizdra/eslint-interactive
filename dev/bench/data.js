@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1688181072908,
+  "lastUpdate": 1690833561993,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -9827,6 +9827,35 @@ window.BENCHMARK_DATA = {
           {
             "name": "cachegrind-benchmarking",
             "value": 21162685309,
+            "unit": "instructions"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "distinct": true,
+          "id": "c9299c6bfa3ab20734e4dc9c17c09063a486df6c",
+          "message": "Update dependency @babel/core to ^7.22.9",
+          "timestamp": "2023-07-31T19:55:08Z",
+          "tree_id": "9940886d76db5664b6a9855e77503af603e866c0",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/c9299c6bfa3ab20734e4dc9c17c09063a486df6c"
+        },
+        "date": 1690833561083,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "cachegrind-benchmarking",
+            "value": 21070784152,
             "unit": "instructions"
           }
         ]
