@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1696102162513,
+  "lastUpdate": 1696114062039,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -9972,6 +9972,35 @@ window.BENCHMARK_DATA = {
           {
             "name": "cachegrind-benchmarking",
             "value": 21210959518,
+            "unit": "instructions"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "distinct": true,
+          "id": "c5e5d9f286724cc1af207eb1276eaf461c2c5420",
+          "message": "Update dependency @types/estree to ^1.0.2",
+          "timestamp": "2023-09-30T22:44:28Z",
+          "tree_id": "08c59a58113c252156b493bf58c68d632fb61273",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/c5e5d9f286724cc1af207eb1276eaf461c2c5420"
+        },
+        "date": 1696114061563,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "cachegrind-benchmarking",
+            "value": 21254827215,
             "unit": "instructions"
           }
         ]
