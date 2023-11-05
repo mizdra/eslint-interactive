@@ -144,14 +144,7 @@ export class Core {
     // On the other hand, `eslint.loadFormatter` cannot load the globally installed formatter by name. So here it loads them by path.
     const resolvedFormatterNameOrPath =
       isInstalledGlobally && formatterName === 'codeframe'
-        ? fileURLToPath(
-            // @ts-expect-error
-            await import.meta.resolve(
-              'eslint-formatter-codeframe',
-              // @ts-expect-error
-              await import.meta.resolve('eslint-interactive'),
-            ),
-          )
+        ? fileURLToPath(import.meta.resolve('eslint-formatter-codeframe', import.meta.resolve('eslint-interactive')))
         : formatterName;
 
     const formatter = await eslint.loadFormatter(resolvedFormatterNameOrPath);
