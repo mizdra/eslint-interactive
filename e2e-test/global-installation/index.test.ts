@@ -12,7 +12,7 @@ const LF = String.fromCharCode(0x0a); // \n
 
 beforeAll(() => {
   process.stderr.write('🤖  Installing eslint globally...\n');
-  execSync(`npm install -g eslint@${ESLint.version}`); // Install the same version globally that was installed locally
+  execSync(`npm install -g eslint@${ESLint.version}`, { cwd: __dirname }); // Install the same version globally that was installed locally
   process.stderr.write('🤖 Packing eslint-interactive...\n');
   execSync('npm pack ../../', { cwd: __dirname });
   process.stderr.write('🤖  Installing eslint-interactive globally...\n');
