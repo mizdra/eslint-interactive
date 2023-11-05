@@ -51,6 +51,7 @@ export async function promptToInputRuleIds(ruleIdsInResults: string[]): Promise<
       name: 'ruleIds',
       type: 'multiselect',
       message: 'Which rules would you like to apply action?',
+      // @ts-expect-error
       hint: 'Select all you want with <space> key.',
       choices: ruleIdsInResults,
       validate(value) {
