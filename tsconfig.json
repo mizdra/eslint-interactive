@@ -1,10 +1,25 @@
-// 🙏 "Solution Style" tsconfig.json 🙏
-// ref: https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-9.html#support-for-solution-style-tsconfigjson-files
 {
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.src.json" },
-    { "path": "./tsconfig.test.json" },
-    { "path": "./e2e-test/tsconfig.json" }
-  ]
+  "extends": ["@tsconfig/strictest/tsconfig.json", "@tsconfig/node18/tsconfig.json"],
+  "exclude": ["node_modules", "benchmark", "static", "e2e-test", "fixtures", "fixtures-tmp", "dist", "bin"],
+  "compilerOptions": {
+    "module": "Node16",
+    "moduleResolution": "node16",
+    "noEmit": true,
+    "incremental": true,
+    "tsBuildInfoFile": "node_modules/.cache/typescript/.tsbuildinfo",
+    /* Lint Options */
+    "noUnusedLocals": false, // Delegate to @typescript-eslint/no-unused-vars in eslint
+    "noUnusedParameters": false, // Delegate to @typescript-eslint/no-unused-vars in eslint
+
+    // 🤯🤯🤯 THIS IS SUPER HACK!!! 🤯🤯🤯
+    // - comlink provides an ESM module (ex. `comlink/dist/esm/node-adapter.mjs`)
+    // - Of course, comlink also provide type definitions (ex. `comlink/dist/esm/node-adapter.d.ts`)
+    // - However, the corresponding type definition for `xxx.mjs` is `xxx.d.mts` in `"module": "node12"` mode
+    // - Therefore, importing the ESM module causes compilation errors
+    // - So, use `paths` option to force `xxx.mjs` to be mapped to `xxx.d.ts`.
+    "baseUrl": ".",
+    "paths": {
+      "comlink/dist/esm/node-adapter.mjs": ["./node_modules/comlink/dist/esm/node-adapter.js"]
+    }
+  }
 }
