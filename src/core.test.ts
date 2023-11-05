@@ -12,40 +12,28 @@ const cwd = join(dirname(fileURLToPath(import.meta.url)), '..');
 const formatterName = 'eslint-formatter-codeframe';
 
 // Normalize `message` for the snapshot.
-function normalizeMessage(message: Linter.LintMessage): Linter.LintMessage {
-  // Exclude field because of the different format of `fix`, `endLine` and `endColumn` in prefer-const in ESLint v7.0.0
-  if (message.ruleId === 'prefer-const') {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    delete (message as any).fix;
-  }
-  if (message.ruleId === 'arrow-body-style') {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    delete (message as any).endLine;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    delete (message as any).endColumn;
-  }
-  return message;
+function normalizeMessage(message: Linter.LintMessage) {
+  return {
+    ruleId: message.ruleId,
+    severity: message.severity,
+  } satisfies Partial<Linter.LintMessage>;
 }
 
 // Normalize `results` for the snapshot.
-function normalizeResults(results: ESLint.LintResult[]): ESLint.LintResult[] {
+function normalizeResults(results: ESLint.LintResult[]) {
   return results.map((result) => {
     return {
-      ...result,
       // Usually, `filePath` changes depending on the environment, and the snapshot will fail.
       // So, remove the current directory from `filePath`.
       filePath: result.filePath
         .replace(process.cwd(), '')
         // for windows
         .replace(/\\/gu, '/'),
+      errorCount: result.errorCount,
+      warningCount: result.warningCount,
+      fixableErrorCount: result.fixableErrorCount,
+      fixableWarningCount: result.fixableWarningCount,
       messages: result.messages.map(normalizeMessage),
-      // Remove the source because the snapshot will be large
-      source: 'ommitted',
-      // Remove the suppressedMessages because this field is supported in eslint v8.8.0+
-      suppressedMessages: [],
-      // Remove because this field is not supported in eslint v7.0.0
-      fatalErrorCount: NaN,
-      usedDeprecatedRules: [],
     };
   });
 }
