@@ -45,6 +45,7 @@ function normalizeResults(results: ESLint.LintResult[]): ESLint.LintResult[] {
       suppressedMessages: [],
       // Remove because this field is not supported in eslint v7.0.0
       fatalErrorCount: NaN,
+      usedDeprecatedRules: [],
     };
   });
 }
