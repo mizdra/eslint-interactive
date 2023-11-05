@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1699193687876,
+  "lastUpdate": 1699195176296,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -10030,6 +10030,35 @@ window.BENCHMARK_DATA = {
           {
             "name": "cachegrind-benchmarking",
             "value": 24027214120,
+            "unit": "instructions"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "pp.mizdra@gmail.com",
+            "name": "mizdra",
+            "username": "mizdra"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "fd057e348292ba91c55220c23dac6538f2c81797",
+          "message": "Merge pull request #311 from mizdra/require-node-18\n\nRequire Node.js v18+",
+          "timestamp": "2023-11-05T23:37:31+09:00",
+          "tree_id": "819e47de922030785fe265ee410af37d5ed7bd9a",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/fd057e348292ba91c55220c23dac6538f2c81797"
+        },
+        "date": 1699195175828,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "cachegrind-benchmarking",
+            "value": 22361086722,
             "unit": "instructions"
           }
         ]
