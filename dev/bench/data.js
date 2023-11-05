@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1699195176296,
+  "lastUpdate": 1699195945883,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -10059,6 +10059,35 @@ window.BENCHMARK_DATA = {
           {
             "name": "cachegrind-benchmarking",
             "value": 22361086722,
+            "unit": "instructions"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "pp.mizdra@gmail.com",
+            "name": "mizdra",
+            "username": "mizdra"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "0591eb160c0c55d359ae21e54058da6236e1a19f",
+          "message": "Merge pull request #312 from mizdra/focus-on-minimum-version-set-for-ci\n\nFocus on minimum version set for CI",
+          "timestamp": "2023-11-05T23:50:18+09:00",
+          "tree_id": "bf6da215db67bde4b415726c37522b080ad97092",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/0591eb160c0c55d359ae21e54058da6236e1a19f"
+        },
+        "date": 1699195944863,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "cachegrind-benchmarking",
+            "value": 22302574828,
             "unit": "instructions"
           }
         ]
