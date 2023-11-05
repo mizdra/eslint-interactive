@@ -27,7 +27,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           # Fix the version to stabilize results.
-          node-version: 16.14.0
+          node-version: 20.9.0
           cache: 'pnpm'
 
       - run: pnpm install
