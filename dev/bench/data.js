@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1699195945883,
+  "lastUpdate": 1699198414896,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -1112,6 +1112,35 @@ window.BENCHMARK_DATA = {
           {
             "name": "cachegrind-benchmarking",
             "value": 22302574828,
+            "unit": "instructions"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "pp.mizdra@gmail.com",
+            "name": "mizdra",
+            "username": "mizdra"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "d279c183ef7d3464d5780f906fd77bd683f3945a",
+          "message": "Merge pull request #314 from mizdra/make-normalize-method-more-stable\n\nMake normalize method more stable",
+          "timestamp": "2023-11-06T00:30:19+09:00",
+          "tree_id": "f43c64d0a501c6302ed2a03a016061799ad86b69",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/d279c183ef7d3464d5780f906fd77bd683f3945a"
+        },
+        "date": 1699198413996,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "cachegrind-benchmarking",
+            "value": 22385545614,
             "unit": "instructions"
           }
         ]
