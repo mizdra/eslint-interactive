@@ -14,8 +14,8 @@ import { notEmpty } from '../../util/type-check.js';
 import { FixContext } from '../index.js';
 
 export type FixToDisablePerLineArgs = {
-  description?: string;
-  descriptionPosition?: DescriptionPosition;
+  description?: string | undefined;
+  descriptionPosition?: DescriptionPosition | undefined;
 };
 
 function findDisableCommentPerLine(sourceCode: SourceCode, line: number): DisableComment | undefined {

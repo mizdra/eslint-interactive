@@ -65,8 +65,8 @@ export type Config = Pick<
   | 'resolvePluginsRelativeTo'
 > & {
   patterns: string[];
-  formatterName?: string;
-  quiet?: boolean;
+  formatterName?: string | undefined;
+  quiet?: boolean | undefined;
 };
 
 /** Default config of `Core` */

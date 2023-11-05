@@ -15,8 +15,8 @@ import { notEmpty } from '../../util/type-check.js';
 import { FixContext } from '../index.js';
 
 export type FixToDisablePerFileArgs = {
-  description?: string;
-  descriptionPosition?: DescriptionPosition;
+  description?: string | undefined;
+  descriptionPosition?: DescriptionPosition | undefined;
 };
 
 function findDisableCommentPerFile(sourceCode: SourceCode): DisableComment | undefined {

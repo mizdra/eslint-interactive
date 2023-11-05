@@ -29,7 +29,7 @@ export type DisableComment = {
   type: 'Block' | 'Line';
   scope: 'next-line' | 'file';
   ruleIds: string[];
-  description?: string;
+  description?: string | undefined;
   range: [number, number];
   loc: SourceLocation;
 };
@@ -57,6 +57,7 @@ export function parseDisableComment(comment: Comment): DisableComment | undefine
   if (!result.groups) return undefined;
 
   const { header, ruleList, description } = result.groups;
+  if (header === undefined || ruleList === undefined) return undefined;
   const ruleIds = ruleList
     .split(',')
     .map((r) => r.trim())
@@ -215,7 +216,7 @@ export function insertDisableCommentStatementBeforeLine(args: {
 }
 
 export type InlineConfigComment = {
-  description?: string;
+  description?: string | undefined;
   rulesRecord: Partial<Linter.RulesRecord>;
   range: [number, number];
 };
