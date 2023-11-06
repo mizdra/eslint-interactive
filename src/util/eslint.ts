@@ -18,7 +18,8 @@ export function scanUsedPluginsFromResults(results: ESLint.LintResult[]): string
       const parts = ruleId.split('/');
       if (parts.length === 1) return undefined; // ex: 'rule-a'
       if (parts.length === 2) return parts[0]; // ex: 'plugin/rule-a'
-      if (parts.length === 3) return `${parts[0]}/${parts[1]}`; // ex: '@scoped/plugin/rule-a'
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      if (parts.length === 3) return `${parts[0]!}/${parts[1]!}`; // ex: '@scoped/plugin/rule-a'
       return undefined; // invalid ruleId
     }) // plugins: string[]
     .filter(notEmpty);
