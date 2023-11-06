@@ -32,7 +32,7 @@
     "@babel/core": "^7.23.2",
     "@babel/preset-typescript": "^7.23.2",
     "@jest/types": "^29.6.3",
-    "@mizdra/eslint-config-mizdra": "^2.0.0",
+    "@mizdra/eslint-config-mizdra": "2.1.0-alpha.0",
     "@mizdra/prettier-config-mizdra": "^1.0.0",
     "@tsconfig/node18": "^18.2.2",
     "@tsconfig/strictest": "^2.0.2",
