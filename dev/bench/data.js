@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1699454167304,
+  "lastUpdate": 1699456739567,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -1199,6 +1199,35 @@ window.BENCHMARK_DATA = {
           {
             "name": "cachegrind-benchmarking",
             "value": 22407557147,
+            "unit": "instructions"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "pp.mizdra@gmail.com",
+            "name": "mizdra",
+            "username": "mizdra"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "ad43777d3abe56080d918fa3f201711d4240747e",
+          "message": "Merge pull request #318 from mizdra/refactoring-npm-scripts\n\nRefactoring npm-scripts",
+          "timestamp": "2023-11-09T00:15:36+09:00",
+          "tree_id": "1c8d35010c169c600e29bcaffd1852920d70954f",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/ad43777d3abe56080d918fa3f201711d4240747e"
+        },
+        "date": 1699456738997,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "cachegrind-benchmarking",
+            "value": 22458851671,
             "unit": "instructions"
           }
         ]
