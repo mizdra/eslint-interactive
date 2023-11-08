@@ -74,8 +74,8 @@ devDependencies:
     specifier: ^8.44.6
     version: 8.44.6
   '@types/estraverse':
-    specifier: ^5.1.5
-    version: 5.1.5
+    specifier: ^5.1.6
+    version: 5.1.6
   '@types/estree':
     specifier: ^1.0.4
     version: 1.0.4
@@ -1028,8 +1028,8 @@ packages:
       '@types/json-schema': 7.0.14
     dev: true
 
-  /@types/estraverse@5.1.5:
-    resolution: {integrity: sha512-HbVDqIkxBwbIClGoum3GtXhrZkDHCw26+9jTLHRUeUPLlOwHCeGgXw+0b8xK+j6zfuf6Rv1y9Jke3MtSujcFng==}
+  /@types/estraverse@5.1.6:
+    resolution: {integrity: sha512-IL4TOP+KA2BvqAv4jWQ1HXzIeQ4AecgY8SBgdLMIlkMll8nki/OB1z0LGU/K8y3udZuyBvjOG97j/RE1cgUlCA==}
     dependencies:
       '@types/estree': 1.0.4
     dev: true

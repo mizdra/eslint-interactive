@@ -41,7 +41,7 @@
     "@tsconfig/node18": "^18.2.2",
     "@tsconfig/strictest": "^2.0.2",
     "@types/eslint": "^8.44.6",
-    "@types/estraverse": "^5.1.5",
+    "@types/estraverse": "^5.1.6",
     "@types/estree": "^1.0.4",
     "@types/find-cache-dir": "^3.2.1",
     "@types/fs-extra": "^11.0.3",
