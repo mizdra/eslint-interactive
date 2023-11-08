@@ -5,6 +5,8 @@ import { ESLint, Linter } from 'eslint';
 import { Core, DEFAULT_BASE_CONFIG } from './core.js';
 import { cleanupFixturesCopy, getSnapshotOfChangedFiles, setupFixturesCopy } from './test-util/fixtures.js';
 
+const testIf = (condition: boolean) => (condition ? test : test.skip);
+
 const cwd = join(dirname(fileURLToPath(import.meta.url)), '..');
 // For some reason, the test fails if `formatterName === 'codeframe'`.
 // So here we overwrite it with `formatterName === 'eslint-formatter-codeframe'`.
@@ -128,7 +130,7 @@ describe('Core', () => {
     });
   });
   // This test fails because the documentation url format is not supported in eslint 7.x.x and 8.0.0. Therefore, ignore this test.
-  test('printSummaryOfResults', async () => {
+  testIf(!ESLint.version.startsWith('7.'))('printSummaryOfResults', async () => {
     const results = await core.lint();
     jest.spyOn(ESLint.prototype, 'getRulesMetaForResults').mockImplementationOnce(() => {
       return {
