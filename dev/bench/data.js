@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1699457499859,
+  "lastUpdate": 1699458145503,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -1257,6 +1257,35 @@ window.BENCHMARK_DATA = {
           {
             "name": "cachegrind-benchmarking",
             "value": 22350091669,
+            "unit": "instructions"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "pp.mizdra@gmail.com",
+            "name": "mizdra",
+            "username": "mizdra"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "474306b2699c7f56a2ad96ccfccca1c606b9f051",
+          "message": "Merge pull request #320 from mizdra/remove-hacks-for-node-14\n\nRemove hacks for Node.js v14",
+          "timestamp": "2023-11-09T00:40:18+09:00",
+          "tree_id": "2922bd0875eafcbcb316e4b8424ac56bc2e3f1ca",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/474306b2699c7f56a2ad96ccfccca1c606b9f051"
+        },
+        "date": 1699458145042,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "cachegrind-benchmarking",
+            "value": 22342142384,
             "unit": "instructions"
           }
         ]
