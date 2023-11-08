@@ -2,3 +2,5 @@
 /dist
 /bin
 /static
+/e2e-test
+/fixtures

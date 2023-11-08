@@ -46,7 +46,7 @@ module.exports = {
       files: ['*.ts', '*.tsx', '*.cts', '*.mts'],
       extends: ['@mizdra/mizdra/+typescript', '@mizdra/mizdra/+prettier'],
       parserOptions: {
-        project: ['./tsconfig.json', './e2e-test/import-as-esm-from-esm/tsconfig.json'],
+        project: ['./tsconfig.json'],
       },
     },
     // for test
