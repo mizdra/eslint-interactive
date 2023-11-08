@@ -79,9 +79,6 @@ devDependencies:
   '@types/estree':
     specifier: ^1.0.4
     version: 1.0.4
-  '@types/find-cache-dir':
-    specifier: ^3.2.1
-    version: 3.2.1
   '@types/fs-extra':
     specifier: ^11.0.3
     version: 11.0.3
@@ -1036,10 +1033,6 @@ packages:
 
   /@types/estree@1.0.4:
     resolution: {integrity: sha512-2JwWnHK9H+wUZNorf2Zr6ves96WHoWDJIftkcxPKsS7Djta6Zu519LarhRNljPXkpsZR2ZMwNCPeW7omW07BJw==}
-    dev: true
-
-  /@types/find-cache-dir@3.2.1:
-    resolution: {integrity: sha512-frsJrz2t/CeGifcu/6uRo4b+SzAwT4NYCVPu1GN8IB9XTzrpPkGuV0tmh9mN+/L0PklAlsC3u5Fxt0ju00LXIw==}
     dev: true
 
   /@types/fs-extra@11.0.3:
@@ -3501,7 +3494,7 @@ packages:
     dependencies:
       universalify: 2.0.0
     optionalDependencies:
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
     dev: true
 
   /jsx-ast-utils@3.3.3:
