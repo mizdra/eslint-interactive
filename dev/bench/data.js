@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1699458145503,
+  "lastUpdate": 1699458788740,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -1286,6 +1286,35 @@ window.BENCHMARK_DATA = {
           {
             "name": "cachegrind-benchmarking",
             "value": 22342142384,
+            "unit": "instructions"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "distinct": true,
+          "id": "2da5c1180fd64a4aff4a0cdab1b652ed4a9f447e",
+          "message": "Update dependency @types/estraverse to ^5.1.6",
+          "timestamp": "2023-11-08T15:49:49Z",
+          "tree_id": "0b344fa72c1faedee57c3de45d7343e016384f9b",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/2da5c1180fd64a4aff4a0cdab1b652ed4a9f447e"
+        },
+        "date": 1699458787791,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "cachegrind-benchmarking",
+            "value": 22385869412,
             "unit": "instructions"
           }
         ]
