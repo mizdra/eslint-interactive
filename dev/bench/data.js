@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1699456739567,
+  "lastUpdate": 1699457499859,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -1228,6 +1228,35 @@ window.BENCHMARK_DATA = {
           {
             "name": "cachegrind-benchmarking",
             "value": 22458851671,
+            "unit": "instructions"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "pp.mizdra@gmail.com",
+            "name": "mizdra",
+            "username": "mizdra"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "511d6d27c4280a688581f035d986ccb59aa7d063",
+          "message": "Merge pull request #319 from mizdra/add-e2e-test-job\n\nAdd E2E job for CI",
+          "timestamp": "2023-11-09T00:29:32+09:00",
+          "tree_id": "8a351706bcb6dbe1dc9bd4bdc33614d3579fde44",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/511d6d27c4280a688581f035d986ccb59aa7d063"
+        },
+        "date": 1699457499185,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "cachegrind-benchmarking",
+            "value": 22350091669,
             "unit": "instructions"
           }
         ]
