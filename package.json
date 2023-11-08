@@ -46,7 +46,6 @@
     "@types/fs-extra": "^11.0.3",
     "@types/jest": "^29.5.7",
     "@types/node": "^20.8.10",
-    "@types/terminal-link": "^1.2.0",
     "@types/yargs": "^17.0.29",
     "babel-jest": "^29.7.0",
     "cross-env": "^7.0.3",
