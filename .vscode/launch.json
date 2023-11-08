@@ -6,7 +6,6 @@
       "request": "launch",
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
-      "disableOptimisticBPs": true,
       "cwd": "${workspaceFolder}",
       "runtimeExecutable": "pnpm",
       "args": ["run", "test", "--runInBand", "--watchAll=false"]
