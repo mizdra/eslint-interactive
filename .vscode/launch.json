@@ -1,4 +1,5 @@
 {
+  "version": "0.2.0",
   "configurations": [
     {
       "type": "node",
@@ -9,6 +10,14 @@
       "cwd": "${workspaceFolder}",
       "runtimeExecutable": "pnpm",
       "args": ["run", "test", "--runInBand", "--watchAll=false"]
+    },
+    {
+      "name": "dev",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["run", "dev"]
     }
   ]
 }
