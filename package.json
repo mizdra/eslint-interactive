@@ -17,15 +17,17 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "predev": "pnpm run build",
-    "dev": "cd fixtures && ../bin/eslint-interactive.js ./lib --rulesdir ./rules --ext .js,.jsx,.mjs",
+    "dev": "run-s dev:prepare dev:run",
+    "dev:prepare": "pnpm run build",
+    "dev:run": "cd fixtures && ../bin/eslint-interactive.js ./lib --rulesdir ./rules --ext .js,.jsx,.mjs",
     "lint": "run-s -c lint:*",
     "lint:tsc": "tsc -p tsconfig.json --noEmit",
     "lint:eslint": "eslint .",
     "lint:prettier": "prettier --check .",
     "test": "cross-env FORCE_HYPERLINK=1 NODE_OPTIONS=\"--experimental-vm-modules --experimental-import-meta-resolve $NODE_OPTIONS\" jest --colors",
-    "postbuild:test": "cross-env NODE_OPTIONS=\"--experimental-vm-modules --experimental-import-meta-resolve $NODE_OPTIONS\" jest -c e2e-test/jest.config.mjs --runInBand",
-    "postbuild:benchmark": "node benchmark/run.js"
+    "e2e": "run-s e2e:prepare e2e:run",
+    "e2e:prepare": "pnpm run build",
+    "e2e:run": "cross-env NODE_OPTIONS=\"--experimental-vm-modules --experimental-import-meta-resolve $NODE_OPTIONS\" jest -c e2e-test/jest.config.mjs --runInBand"
   },
   "prettier": "@mizdra/prettier-config-mizdra",
   "packageManager": "pnpm@8.9.0",
