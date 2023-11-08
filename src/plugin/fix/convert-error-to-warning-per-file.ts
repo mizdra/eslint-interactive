@@ -5,7 +5,7 @@ import { notEmpty } from '../../util/type-check.js';
 import { FixContext } from '../index.js';
 
 export type FixToConvertErrorToWarningPerFileArgs = {
-  description?: string;
+  description?: string | undefined;
 };
 
 function generateFix(context: FixContext, description?: string): Rule.Fix | null {

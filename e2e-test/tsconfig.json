@@ -1,6 +1,7 @@
 {
-  "extends": "../tsconfig.base.json",
+  "extends": "../tsconfig.json",
   "include": ["**/*"],
+  "exclude": ["node_modules"],
   "compilerOptions": {
     "outDir": "./dist/",
     // Compatible for Node.js v12 (ref: https://github.com/microsoft/TypeScript/wiki/Node-Target-Mapping)

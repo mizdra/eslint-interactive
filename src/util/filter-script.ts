@@ -10,7 +10,7 @@ const exec = promisify(execOriginal);
 const DEFAULT_EDITOR_COMMAND = 'vi';
 
 function getEditorCommand(): string {
-  return process.env.EDITOR ?? DEFAULT_EDITOR_COMMAND;
+  return process.env['EDITOR'] ?? DEFAULT_EDITOR_COMMAND;
 }
 
 export async function editFileWithEditor(filepath: string): Promise<string> {
