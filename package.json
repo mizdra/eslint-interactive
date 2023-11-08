@@ -17,7 +17,8 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "dev": "tsc-watch -p tsconfig.build.json --onSuccess 'bin/eslint-interactive.js fixtures --rulesdir fixtures/rules --ext .js,.jsx,.mjs'",
+    "predev": "pnpm run build",
+    "dev": "cd fixtures && ../bin/eslint-interactive.js ./lib --rulesdir ./rules --ext .js,.jsx,.mjs",
     "lint": "run-s -c lint:*",
     "lint:tsc": "tsc -p tsconfig.json --noEmit",
     "lint:eslint": "eslint .",
