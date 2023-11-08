@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1699448932013,
+  "lastUpdate": 1699454167304,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -1170,6 +1170,35 @@ window.BENCHMARK_DATA = {
           {
             "name": "cachegrind-benchmarking",
             "value": 22385574145,
+            "unit": "instructions"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "pp.mizdra@gmail.com",
+            "name": "mizdra",
+            "username": "mizdra"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "54bf515f920ce87f8ed8974948068f787ba1952f",
+          "message": "Merge pull request #317 from mizdra/refactoring-e2e-test\n\nRefactoring test and add vscode debugger config",
+          "timestamp": "2023-11-08T23:32:42+09:00",
+          "tree_id": "d37614e4a27fef0e2efb48bc905761c6635f4fa5",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/54bf515f920ce87f8ed8974948068f787ba1952f"
+        },
+        "date": 1699454166550,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "cachegrind-benchmarking",
+            "value": 22407557147,
             "unit": "instructions"
           }
         ]
