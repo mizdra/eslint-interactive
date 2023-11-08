@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1699198414896,
+  "lastUpdate": 1699448932013,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -1141,6 +1141,35 @@ window.BENCHMARK_DATA = {
           {
             "name": "cachegrind-benchmarking",
             "value": 22385545614,
+            "unit": "instructions"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "pp.mizdra@gmail.com",
+            "name": "mizdra",
+            "username": "mizdra"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "6424d1804f8d354a05c7d2515bbc0014e4f2c801",
+          "message": "Merge pull request #315 from mizdra/refactoring-tsconfig\n\nRefactoring tsconfig.json",
+          "timestamp": "2023-11-08T22:05:59+09:00",
+          "tree_id": "aac6fa7049d435356432d80679343ce6f3f4d8db",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/6424d1804f8d354a05c7d2515bbc0014e4f2c801"
+        },
+        "date": 1699448931448,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "cachegrind-benchmarking",
+            "value": 22385574145,
             "unit": "instructions"
           }
         ]
