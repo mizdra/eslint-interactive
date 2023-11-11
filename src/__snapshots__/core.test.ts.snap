@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Core applyAutoFixes basic 1`] = `
+exports[`Core > applyAutoFixes > basic 1`] = `
 "==> fixtures-tmp/index.js <==
 import { mul } from './lib/mul';
 import { add } from './lib/add';
@@ -52,9 +52,9 @@ export function add(a, b) {
 "
 `;
 
-exports[`Core applyAutoFixes basic 2`] = `""`;
+exports[`Core > applyAutoFixes > basic 2`] = `""`;
 
-exports[`Core applyAutoFixes fix overlapped problems 1`] = `
+exports[`Core > applyAutoFixes > fix overlapped problems 1`] = `
 "() => {return (
   () => {return (
     () => {return (
@@ -83,26 +83,26 @@ exports[`Core applyAutoFixes fix overlapped problems 1`] = `
 "
 `;
 
-exports[`Core applyAutoFixes fix overlapped problems 2`] = `""`;
+exports[`Core > applyAutoFixes > fix overlapped problems 2`] = `""`;
 
-exports[`Core applySuggestions 1`] = `
-""\\'";
-'\\"';
+exports[`Core > applySuggestions 1`] = `
+"\\"\\\\'\\";
+'\\\\\\"';
 if (!('key1' in {})) 0;
-if (!('key2' in {})) "\\'";
+if (!('key2' in {})) \\"\\\\'\\";
 if (!(\`
 key3
-\` in {})) "\\'";
+\` in {})) \\"\\\\'\\";
 if (!(\`
 key4
-\` in {})) "\\'";
+\` in {})) \\"\\\\'\\";
 if (!('key5' in {})) 0;
 "
 `;
 
-exports[`Core applySuggestions 2`] = `""`;
+exports[`Core > applySuggestions 2`] = `""`;
 
-exports[`Core disablePerFile 1`] = `
+exports[`Core > disablePerFile 1`] = `
 "/* eslint-disable ban-exponentiation-operator */
 const a = 0;
 // eslint-disable-next-line semi
@@ -122,9 +122,9 @@ const jsx = (
 "
 `;
 
-exports[`Core disablePerFile 2`] = `""`;
+exports[`Core > disablePerFile 2`] = `""`;
 
-exports[`Core disablePerLine 1`] = `
+exports[`Core > disablePerLine 1`] = `
 "const a = 0;
 // eslint-disable-next-line semi
 const b = 0
@@ -144,9 +144,9 @@ const jsx = (
 "
 `;
 
-exports[`Core disablePerLine 2`] = `""`;
+exports[`Core > disablePerLine 2`] = `""`;
 
-exports[`Core lint returns lint results 1`] = `
+exports[`Core > lint > returns lint results 1`] = `
 [
   {
     "errorCount": 0,
@@ -480,7 +480,7 @@ exports[`Core lint returns lint results 1`] = `
 ]
 `;
 
-exports[`Core makeFixableAndFix basic 1`] = `
+exports[`Core > makeFixableAndFix > basic 1`] = `
 "==> fixtures-tmp/index.js <==
 import { mul } from './lib/mul'
 import { add } from './lib/add'
@@ -527,9 +527,9 @@ function _fn(_arg) {
 "
 `;
 
-exports[`Core makeFixableAndFix basic 2`] = `""`;
+exports[`Core > makeFixableAndFix > basic 2`] = `""`;
 
-exports[`Core makeFixableAndFix fix overlapped problems 1`] = `
+exports[`Core > makeFixableAndFix > fix overlapped problems 1`] = `
 "() => {return (
   () => {return (
     () => {return (
@@ -558,9 +558,9 @@ exports[`Core makeFixableAndFix fix overlapped problems 1`] = `
 "
 `;
 
-exports[`Core makeFixableAndFix fix overlapped problems 2`] = `""`;
+exports[`Core > makeFixableAndFix > fix overlapped problems 2`] = `""`;
 
-exports[`Core printDetailsOfResults 1`] = `
+exports[`Core > printDetailsOfResults 1`] = `
 "[31merror[39m: [1m\`./lib/add\` import should occur before import of \`./lib/mul\`[22m [2m(import/order)[22m at [32mfixtures-tmp/index.js:2:1[39m:
   1 | import { mul } from './lib/mul'
 > 2 | import { add } from './lib/add'
@@ -614,7 +614,7 @@ exports[`Core printDetailsOfResults 1`] = `
 [31m[1m19 errors potentially fixable with the \`--fix\` option.[22m[39m"
 `;
 
-exports[`Core printSummaryOfResults 1`] = `
+exports[`Core > printSummaryOfResults 1`] = `
 "[1m- 11 files (2 files passed, [91m9 files failed[39m) checked.[22m
 [1m- 58 problems ([31m57 errors[39m, [33m1 warning[39m) found.[22m
 ╔═════════════════════════════╤═══════╤═════════╤════════════╤═════════════════╗
@@ -639,7 +639,7 @@ exports[`Core printSummaryOfResults 1`] = `
 "
 `;
 
-exports[`Core with overrideConfig returns lint results 1`] = `
+exports[`Core > with overrideConfig > returns lint results 1`] = `
 [
   {
     "errorCount": 0,

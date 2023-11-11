@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`make-fixable-and-fix \`fixableMaker\` receives the message and node. 1`] = `
+exports[`make-fixable-and-fix > \`fixableMaker\` receives the message and node. 1`] = `
 {
   "context": {
     "filename": "test.js",
