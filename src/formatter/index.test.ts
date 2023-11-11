@@ -1,5 +1,5 @@
-import { describe, expect, test } from "vitest";
 import { ESLint } from 'eslint';
+import { describe, expect, test } from "vitest";
 import { fakeLintResult, fakeLintMessage } from '../test-util/eslint.js';
 import { format } from './index.js';
 

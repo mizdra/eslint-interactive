@@ -1,5 +1,5 @@
-import { describe, expect, test } from "vitest";
 import { ESLint } from 'eslint';
+import { describe, expect, test } from "vitest";
 import { fakeLintResult, fakeLintMessage, fakeFix, fakeSuggestions } from '../test-util/eslint.js';
 import { takeRuleStatistics, type RuleStatistic } from './take-rule-statistics.js';
 
