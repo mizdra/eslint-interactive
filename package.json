@@ -24,7 +24,7 @@
     "lint:tsc": "tsc -p tsconfig.json --noEmit",
     "lint:eslint": "eslint .",
     "lint:prettier": "prettier --check .",
-    "test": "cross-env FORCE_HYPERLINK=1 NODE_OPTIONS=\"--experimental-vm-modules --experimental-import-meta-resolve $NODE_OPTIONS\" jest --colors",
+    "test": "vitest",
     "e2e": "run-s e2e:prepare e2e:run",
     "e2e:prepare": "pnpm run build",
     "e2e:run": "cross-env NODE_OPTIONS=\"--experimental-vm-modules --experimental-import-meta-resolve $NODE_OPTIONS\" jest -c e2e-test/jest.config.mjs --runInBand"
