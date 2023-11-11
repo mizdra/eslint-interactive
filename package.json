@@ -57,7 +57,8 @@
     "prettier": "3.0.3",
     "resolve-from": "^5.0.0",
     "stream-match": "^4.1.0",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "vitest": "^0.34.6"
   },
   "dependencies": {
     "boxen": "^7.1.1",
