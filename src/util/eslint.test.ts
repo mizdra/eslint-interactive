@@ -1,3 +1,4 @@
+import { describe, expect, test } from "vitest";
 import { ESLint } from 'eslint';
 import { SourceLocation } from 'estree';
 import { fakeLintMessage, fakeLintResult } from '../test-util/eslint.js';

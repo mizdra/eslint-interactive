@@ -1,3 +1,4 @@
+import { describe, expect, test } from "vitest";
 import { ESLint } from 'eslint';
 import stripAnsi from 'strip-ansi';
 import { fakeLintResult, fakeLintMessage } from '../test-util/eslint.js';

@@ -1,3 +1,4 @@
+import { describe, expect, test } from "vitest";
 import { basename } from 'node:path';
 import { FixTester } from '../../test-util/fix-tester.js';
 

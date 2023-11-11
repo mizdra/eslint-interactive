@@ -1,3 +1,4 @@
+import { describe, expect, test } from "vitest";
 import { parseArgv } from './parse-argv.js';
 
 const baseArgs = ['node', 'eslint-interactive'];
