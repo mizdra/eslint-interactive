@@ -58,7 +58,8 @@
     "resolve-from": "^5.0.0",
     "stream-match": "^4.1.0",
     "typescript": "^5.2.2",
-    "vitest": "^0.34.6"
+    "vitest": "^0.34.6",
+    "vitest-github-actions-reporter": "^0.10.0"
   },
   "dependencies": {
     "boxen": "^7.1.1",
