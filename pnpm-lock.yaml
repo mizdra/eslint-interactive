@@ -4,126 +4,134 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-dependencies:
-  boxen:
-    specifier: ^7.1.1
-    version: 7.1.1
-  chalk:
-    specifier: ^5.3.0
-    version: 5.3.0
-  comlink:
-    specifier: ^4.4.1
-    version: 4.4.1
-  enquirer:
-    specifier: ^2.4.1
-    version: 2.4.1
-  eslint-formatter-codeframe:
-    specifier: ^7.32.1
-    version: 7.32.1
-  estraverse:
-    specifier: ^5.3.0
-    version: 5.3.0
-  find-cache-dir:
-    specifier: ^5.0.0
-    version: 5.0.0
-  is-installed-globally:
-    specifier: ^1.0.0
-    version: 1.0.0
-  ora:
-    specifier: ^7.0.1
-    version: 7.0.1
-  strip-ansi:
-    specifier: ^7.1.0
-    version: 7.1.0
-  table:
-    specifier: ^6.8.1
-    version: 6.8.1
-  terminal-link:
-    specifier: ^3.0.0
-    version: 3.0.0
-  yargs:
-    specifier: ^17.7.2
-    version: 17.7.2
+importers:
 
-devDependencies:
-  '@babel/core':
-    specifier: ^7.23.3
-    version: 7.23.3
-  '@babel/preset-typescript':
-    specifier: ^7.23.3
-    version: 7.23.3(@babel/core@7.23.3)
-  '@jest/globals':
-    specifier: ^29.7.0
-    version: 29.7.0
-  '@jest/types':
-    specifier: ^29.6.3
-    version: 29.6.3
-  '@mizdra/eslint-config-mizdra':
-    specifier: 2.1.0-alpha.0
-    version: 2.1.0-alpha.0(eslint@8.53.0)(prettier@3.0.3)(typescript@5.2.2)
-  '@mizdra/prettier-config-mizdra':
-    specifier: ^1.0.0
-    version: 1.0.0(prettier@3.0.3)
-  '@tsconfig/node18':
-    specifier: ^18.2.2
-    version: 18.2.2
-  '@tsconfig/strictest':
-    specifier: ^2.0.2
-    version: 2.0.2
-  '@types/eslint':
-    specifier: ^8.44.6
-    version: 8.44.6
-  '@types/estraverse':
-    specifier: ^5.1.6
-    version: 5.1.6
-  '@types/estree':
-    specifier: ^1.0.5
-    version: 1.0.5
-  '@types/fs-extra':
-    specifier: ^11.0.4
-    version: 11.0.4
-  '@types/jest':
-    specifier: ^29.5.7
-    version: 29.5.7
-  '@types/node':
-    specifier: ^20.8.10
-    version: 20.8.10
-  '@types/yargs':
-    specifier: ^17.0.29
-    version: 17.0.29
-  babel-jest:
-    specifier: ^29.7.0
-    version: 29.7.0(@babel/core@7.23.3)
-  cross-env:
-    specifier: ^7.0.3
-    version: 7.0.3
-  eslint:
-    specifier: ^8.53.0
-    version: 8.53.0
-  fs-extra:
-    specifier: ^11.1.1
-    version: 11.1.1
-  jest:
-    specifier: ^29.7.0
-    version: 29.7.0(@types/node@20.8.10)
-  jest-mock-process:
-    specifier: ^2.0.0
-    version: 2.0.0(jest@29.7.0)
-  npm-run-all:
-    specifier: ^4.1.5
-    version: 4.1.5
-  prettier:
-    specifier: 3.0.3
-    version: 3.0.3
-  resolve-from:
-    specifier: ^5.0.0
-    version: 5.0.0
-  stream-match:
-    specifier: ^4.1.0
-    version: 4.1.0
-  typescript:
-    specifier: ^5.2.2
-    version: 5.2.2
+  .:
+    dependencies:
+      boxen:
+        specifier: ^7.1.1
+        version: 7.1.1
+      chalk:
+        specifier: ^5.3.0
+        version: 5.3.0
+      comlink:
+        specifier: ^4.4.1
+        version: 4.4.1
+      enquirer:
+        specifier: ^2.4.1
+        version: 2.4.1
+      eslint-formatter-codeframe:
+        specifier: ^7.32.1
+        version: 7.32.1
+      estraverse:
+        specifier: ^5.3.0
+        version: 5.3.0
+      find-cache-dir:
+        specifier: ^5.0.0
+        version: 5.0.0
+      is-installed-globally:
+        specifier: ^1.0.0
+        version: 1.0.0
+      ora:
+        specifier: ^7.0.1
+        version: 7.0.1
+      strip-ansi:
+        specifier: ^7.1.0
+        version: 7.1.0
+      table:
+        specifier: ^6.8.1
+        version: 6.8.1
+      terminal-link:
+        specifier: ^3.0.0
+        version: 3.0.0
+      yargs:
+        specifier: ^17.7.2
+        version: 17.7.2
+    devDependencies:
+      '@babel/core':
+        specifier: ^7.23.3
+        version: 7.23.3
+      '@babel/preset-typescript':
+        specifier: ^7.23.3
+        version: 7.23.3(@babel/core@7.23.3)
+      '@jest/globals':
+        specifier: ^29.7.0
+        version: 29.7.0
+      '@jest/types':
+        specifier: ^29.6.3
+        version: 29.6.3
+      '@mizdra/eslint-config-mizdra':
+        specifier: 2.1.0-alpha.0
+        version: 2.1.0-alpha.0(eslint@8.53.0)(prettier@3.0.3)(typescript@5.2.2)
+      '@mizdra/prettier-config-mizdra':
+        specifier: ^1.0.0
+        version: 1.0.0(prettier@3.0.3)
+      '@tsconfig/node18':
+        specifier: ^18.2.2
+        version: 18.2.2
+      '@tsconfig/strictest':
+        specifier: ^2.0.2
+        version: 2.0.2
+      '@types/eslint':
+        specifier: ^8.44.6
+        version: 8.44.6
+      '@types/estraverse':
+        specifier: ^5.1.6
+        version: 5.1.6
+      '@types/estree':
+        specifier: ^1.0.5
+        version: 1.0.5
+      '@types/fs-extra':
+        specifier: ^11.0.4
+        version: 11.0.4
+      '@types/jest':
+        specifier: ^29.5.7
+        version: 29.5.7
+      '@types/node':
+        specifier: ^20.8.10
+        version: 20.8.10
+      '@types/yargs':
+        specifier: ^17.0.29
+        version: 17.0.29
+      babel-jest:
+        specifier: ^29.7.0
+        version: 29.7.0(@babel/core@7.23.3)
+      cross-env:
+        specifier: ^7.0.3
+        version: 7.0.3
+      eslint:
+        specifier: ^8.53.0
+        version: 8.53.0
+      fs-extra:
+        specifier: ^11.1.1
+        version: 11.1.1
+      jest:
+        specifier: ^29.7.0
+        version: 29.7.0(@types/node@20.8.10)
+      jest-mock-process:
+        specifier: ^2.0.0
+        version: 2.0.0(jest@29.7.0)
+      npm-run-all:
+        specifier: ^4.1.5
+        version: 4.1.5
+      prettier:
+        specifier: 3.0.3
+        version: 3.0.3
+      resolve-from:
+        specifier: ^5.0.0
+        version: 5.0.0
+      stream-match:
+        specifier: ^4.1.0
+        version: 4.1.0
+      typescript:
+        specifier: ^5.2.2
+        version: 5.2.2
+
+  e2e-test/import-as-esm-from-esm:
+    dependencies:
+      eslint-interactive:
+        specifier: ../../
+        version: link:../..
 
 packages:
 
@@ -336,15 +344,9 @@ packages:
     engines: {node: '>=6.9.0'}
     dev: true
 
-  /@babel/helper-validator-identifier@7.19.1:
-    resolution: {integrity: sha512-awrNfaMtnHUr653GgGEs++LlAvW6w+DcPrOliSMXWCKo597CwL5Acf/wWdNkf/tfEQE3mjkeD1YOVZOUV/od1w==}
-    engines: {node: '>=6.9.0'}
-    dev: false
-
   /@babel/helper-validator-identifier@7.22.20:
     resolution: {integrity: sha512-Y4OZ+ytlatR8AI+8KZfKuL5urKp7qey08ha31L8b3BwewJAoJamTzyvxPR/5D+KkdJCGPq/+8TukHBlY10FX9A==}
     engines: {node: '>=6.9.0'}
-    dev: true
 
   /@babel/helper-validator-option@7.22.15:
     resolution: {integrity: sha512-bMn7RmyFjY/mdECUbgn9eoSY4vqvacUnS9i9vGAGttgFWesO6B4CYWA7XlpbWgBt71iv/hfbPlynohStqnu5hA==}
@@ -366,7 +368,7 @@ packages:
     resolution: {integrity: sha512-u7stbOuYjaPezCuLj29hNW1v64M2Md2qupEKP1fHc7WdOA3DgLh37suiSrZYY7haUB7iBeQZ9P1uiRF359do3g==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/helper-validator-identifier': 7.19.1
+      '@babel/helper-validator-identifier': 7.22.20
       chalk: 2.4.2
       js-tokens: 4.0.0
     dev: false
@@ -2828,6 +2830,12 @@ packages:
     engines: {node: '>= 0.4'}
     dev: true
 
+  /is-core-module@2.12.0:
+    resolution: {integrity: sha512-RECHCBCd/viahWmwj6enj19sKbHfJrddi/6cBDsNTKbNq0f7VeaUkBo60BqzvPqo/W54ChS62Z5qyun7cfOMqQ==}
+    dependencies:
+      has: 1.0.3
+    dev: true
+
   /is-core-module@2.13.1:
     resolution: {integrity: sha512-hHrIjvZsftOsvKSn2TRYl63zvxsgE0K+0mYMoH6gD4omR5IWB2KynivBQczo3+wF1cCkjzvptnI9Q0sPU66ilw==}
     dependencies:
@@ -3720,7 +3728,7 @@ packages:
     resolution: {integrity: sha512-/5CMN3T0R4XTj4DcGaexo+roZSdSFW/0AOOTROrjxzCG1wrWXEsGbRKevjlIL+ZDE4sZlJr5ED4YW0yqmkK+eA==}
     dependencies:
       hosted-git-info: 2.8.5
-      resolve: 1.22.8
+      resolve: 1.22.1
       semver: 5.7.1
       validate-npm-package-license: 3.0.4
     dev: true
@@ -4179,6 +4187,15 @@ packages:
   /resolve.exports@2.0.2:
     resolution: {integrity: sha512-X2UW6Nw3n/aMgDVy+0rSqgHlv39WZAlZrXCdnbyEiKm17DSqHX4MmQMaST3FbeWR5FTuRcUwYAziZajji0Y7mg==}
     engines: {node: '>=10'}
+    dev: true
+
+  /resolve@1.22.1:
+    resolution: {integrity: sha512-nBpuuYuY5jFsli/JIs1oldw6fOQCBioohqWZg/2hiaOybXOft4lonv85uDOKXdf8rhyK159cxU5cDcK/NKk8zw==}
+    hasBin: true
+    dependencies:
+      is-core-module: 2.12.0
+      path-parse: 1.0.7
+      supports-preserve-symlinks-flag: 1.0.0
     dev: true
 
   /resolve@1.22.8:
