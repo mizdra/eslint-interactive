@@ -21,10 +21,11 @@
     "source=eslint-interactive-dist,target=${containerWorkspaceFolder}/dist,type=volume"
   ],
 
-  // Set *default* container specific settings.json values on container create.
-  "settings": {},
-
-  "extensions": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode", "zixuanchen.vitest-explorer"],
+  "customizations": {
+    "vscode": {
+      "extensions": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode", "zixuanchen.vitest-explorer"]
+    }
+  },
 
   // Run `pnpm install` the moment after the container has finished starting, but before the extension starts loading.
   "onCreateCommand": "npm install -g pnpm && pnpm install",
