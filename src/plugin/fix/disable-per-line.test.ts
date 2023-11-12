@@ -1,5 +1,5 @@
 /* eslint-disable no-irregular-whitespace */
-import { describe, expect, test } from "vitest";
+import { describe, expect, test } from 'vitest';
 
 import { FixTester } from '../../test-util/fix-tester.js';
 

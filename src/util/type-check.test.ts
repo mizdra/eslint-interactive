@@ -1,4 +1,4 @@
-import { expect, test } from "vitest";
+import { expect, test } from 'vitest';
 import { notEmpty } from './type-check.js';
 
 test('notEmpty', () => {

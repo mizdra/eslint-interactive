@@ -1,4 +1,4 @@
-import { expect, test } from "vitest";
+import { expect, test } from 'vitest';
 import { groupBy, unique } from './array.js';
 
 test('unique', () => {

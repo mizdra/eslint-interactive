@@ -1,5 +1,5 @@
 import { basename } from 'node:path';
-import { describe, expect, test } from "vitest";
+import { describe, expect, test } from 'vitest';
 import { FixTester } from '../../test-util/fix-tester.js';
 
 const tester = new FixTester(

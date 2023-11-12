@@ -1,6 +1,6 @@
 import { ESLint } from 'eslint';
 import stripAnsi from 'strip-ansi';
-import { describe, expect, test } from "vitest";
+import { describe, expect, test } from 'vitest';
 import { fakeLintResult, fakeLintMessage } from '../test-util/eslint.js';
 import { formatByFiles } from './format-by-files.js';
 
