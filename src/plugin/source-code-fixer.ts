@@ -5,13 +5,15 @@
  * @fileoverview An object that caches and applies source code fixes.
  * @author Nicholas C. Zakas
  */
-'use strict';
+// 'use strict';
 
 // ------------------------------------------------------------------------------
 // Requirements
 // ------------------------------------------------------------------------------
 
-const debug = require('debug')('eslint:source-code-fixer');
+import { Linter } from 'eslint';
+const debug = (..._args: unknown[]) => {};
+// const debug = require('debug')('eslint:source-code-fixer');
 
 // ------------------------------------------------------------------------------
 // Helpers
@@ -26,7 +28,8 @@ const BOM = '\uFEFF';
  * @returns {int} -1 if a comes before b, 1 if a comes after b, 0 if equal.
  * @private
  */
-function compareMessagesByFixRange(a, b) {
+function compareMessagesByFixRange(a: Linter.LintMessage, b: Linter.LintMessage) {
+  if (!a.fix || !b.fix) throw new Error('Message should have a fix property.');
   return a.fix.range[0] - b.fix.range[0] || a.fix.range[1] - b.fix.range[1];
 }
 
@@ -37,7 +40,7 @@ function compareMessagesByFixRange(a, b) {
  * @returns {int} -1 if a comes before b, 1 if a comes after b, 0 if equal.
  * @private
  */
-function compareMessagesByLocation(a, b) {
+function compareMessagesByLocation(a: Linter.LintMessage, b: Linter.LintMessage) {
   return a.line - b.line || a.column - b.column;
 }
 
@@ -50,6 +53,7 @@ function compareMessagesByLocation(a, b) {
  * @constructor
  */
 function SourceCodeFixer() {
+  // @ts-ignore
   Object.freeze(this);
 }
 
@@ -61,7 +65,11 @@ function SourceCodeFixer() {
  * @param {boolean|Function} [shouldFix=true] Determines whether each message should be fixed
  * @returns {Object} An object containing the fixed text and any unfixed messages.
  */
-SourceCodeFixer.applyFixes = function (sourceText, messages, shouldFix) {
+SourceCodeFixer.applyFixes = function (
+  sourceText: string,
+  messages: Linter.LintMessage[],
+  shouldFix: boolean | ((message: Linter.LintMessage) => boolean),
+) {
   debug('Applying fixes');
 
   if (shouldFix === false) {
@@ -75,7 +83,7 @@ SourceCodeFixer.applyFixes = function (sourceText, messages, shouldFix) {
 
   // clone the array
   const remainingMessages = [];
-  const fixes = [];
+  const fixes: Linter.LintMessage[] = [];
   const bom = sourceText.startsWith(BOM) ? BOM : '';
   const text = bom ? sourceText.slice(1) : sourceText;
   let lastPos = Number.NEGATIVE_INFINITY;
@@ -86,7 +94,8 @@ SourceCodeFixer.applyFixes = function (sourceText, messages, shouldFix) {
    * @param {Message} problem The message object to apply fixes from
    * @returns {boolean} Whether fix was successfully applied
    */
-  function attemptFix(problem) {
+  function attemptFix(problem: Linter.LintMessage) {
+    if (!problem.fix) throw new Error('Problem should have a fix property.');
     const fix = problem.fix;
     const start = fix.range[0];
     const end = fix.range[1];
@@ -149,4 +158,5 @@ SourceCodeFixer.applyFixes = function (sourceText, messages, shouldFix) {
   };
 };
 
-module.exports = SourceCodeFixer;
+export { SourceCodeFixer };
+// module.exports = SourceCodeFixer;
