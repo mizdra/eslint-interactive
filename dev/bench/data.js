@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1699542604893,
+  "lastUpdate": 1699775857270,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -1431,6 +1431,35 @@ window.BENCHMARK_DATA = {
           {
             "name": "cachegrind-benchmarking",
             "value": 22507166439,
+            "unit": "instructions"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "pp.mizdra@gmail.com",
+            "name": "mizdra",
+            "username": "mizdra"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "d6a2c89cf263dc36ba3b7700ce661351940c22ee",
+          "message": "Merge pull request #322 from mizdra/use-vite\n\nRefactoring tests",
+          "timestamp": "2023-11-12T16:53:36+09:00",
+          "tree_id": "0470c7150665364f492fdcffed5cce50d12daa8d",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/d6a2c89cf263dc36ba3b7700ce661351940c22ee"
+        },
+        "date": 1699775856062,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "cachegrind-benchmarking",
+            "value": 22885045956,
             "unit": "instructions"
           }
         ]
