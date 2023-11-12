@@ -1,7 +1,7 @@
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { jest } from '@jest/globals';
 import { ESLint, Linter } from 'eslint';
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import { Core, DEFAULT_BASE_CONFIG } from './core.js';
 import { cleanupFixturesCopy, getSnapshotOfChangedFiles, setupFixturesCopy } from './test-util/fixtures.js';
 
@@ -132,7 +132,7 @@ describe('Core', () => {
   // This test fails because the documentation url format is not supported in eslint 7.x.x and 8.0.0. Therefore, ignore this test.
   testIf(!ESLint.version.startsWith('7.'))('printSummaryOfResults', async () => {
     const results = await core.lint();
-    jest.spyOn(ESLint.prototype, 'getRulesMetaForResults').mockImplementationOnce(() => {
+    vi.spyOn(ESLint.prototype, 'getRulesMetaForResults').mockImplementationOnce(() => {
       return {
         'prefer-const': {
           docs: {

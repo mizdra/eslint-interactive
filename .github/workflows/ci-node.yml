@@ -42,7 +42,7 @@ jobs:
           node-version: ${{ matrix.node }}
           cache: 'pnpm'
       - name: Change ESLint version
-        run: pnpm add -D eslint@${{ matrix.eslint }}
+        run: pnpm add -w -D eslint@${{ matrix.eslint }}
       - run: pnpm run test
 
   e2e:
@@ -62,5 +62,5 @@ jobs:
           node-version: ${{ matrix.node }}
           cache: 'pnpm'
       - name: Change ESLint version
-        run: pnpm add -D eslint@${{ matrix.eslint }}
+        run: pnpm add -w -D eslint@${{ matrix.eslint }}
       - run: pnpm run e2e

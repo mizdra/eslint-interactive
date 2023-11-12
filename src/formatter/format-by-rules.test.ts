@@ -1,6 +1,7 @@
 /* eslint-disable no-irregular-whitespace */
 import { ESLint } from 'eslint';
 import stripAnsi from 'strip-ansi';
+import { describe, expect, test } from 'vitest';
 import { fakeLintResult, fakeLintMessage, fakeFix, fakeSuggestions } from '../test-util/eslint.js';
 import { formatByRules } from './format-by-rules.js';
 

@@ -1,3 +1,4 @@
+import { beforeAll, expect, test } from 'vitest';
 import { execSync, spawn } from 'child_process';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -26,7 +27,7 @@ test('verify installation', async () => {
 });
 
 // FIXME
-test.failing('can print error with eslint-formatter-codeframe', async () => {
+test.fails('can print error with eslint-formatter-codeframe', async () => {
   const child = spawn(
     'eslint-interactive',
     [

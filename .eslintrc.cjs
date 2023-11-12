@@ -52,9 +52,6 @@ module.exports = {
     // for test
     {
       files: ['src/**/*.test.{ts,tsx,cts,mts}', 'src/test-util/**/*.{ts,tsx,cts,mts}'],
-      env: {
-        jest: true,
-      },
       rules: {
         'no-restricted-imports': 'off',
       },

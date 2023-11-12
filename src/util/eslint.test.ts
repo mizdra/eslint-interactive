@@ -1,5 +1,6 @@
 import { ESLint } from 'eslint';
 import { SourceLocation } from 'estree';
+import { describe, expect, test } from 'vitest';
 import { fakeLintMessage, fakeLintResult } from '../test-util/eslint.js';
 import {
   scanUsedPluginsFromResults,
@@ -301,7 +302,7 @@ test('toInlineConfigCommentText', () => {
     toInlineConfigCommentText({
       rulesRecord: { a: 'off', b: ['warn'], c: ['error', 'option1', 'option2'] },
     }),
-  ).toMatchInlineSnapshot(`"/* eslint a: "off", b: ["warn"], c: ["error","option1","option2"] */"`);
+  ).toMatchInlineSnapshot('"/* eslint a: \\"off\\", b: [\\"warn\\"], c: [\\"error\\",\\"option1\\",\\"option2\\"] */"');
   expect(
     toInlineConfigCommentText({
       rulesRecord: { 'plugin/a': 0, 'foo-bar/b': 0, '@baz/c': 0 },
