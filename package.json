@@ -27,7 +27,7 @@
     "test": "vitest",
     "e2e": "run-s e2e:prepare e2e:run",
     "e2e:prepare": "pnpm run build",
-    "e2e:run": "cross-env NODE_OPTIONS=\"--experimental-vm-modules --experimental-import-meta-resolve $NODE_OPTIONS\" jest -c e2e-test/jest.config.mjs --runInBand"
+    "e2e:run": "vitest -c vite.config.e2e.ts"
   },
   "prettier": "@mizdra/prettier-config-mizdra",
   "packageManager": "pnpm@8.9.0",
