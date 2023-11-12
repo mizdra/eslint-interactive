@@ -9,16 +9,13 @@ import {
   type FixToApplyAutoFixesArgs,
   FixToConvertErrorToWarningPerFileArgs,
 } from './fix/index.js';
-import { fixRule, type FixRuleOption } from './fix-rule.js';
 import { preferAdditionShorthandRule } from './prefer-addition-shorthand-rule.js';
 
-export { OVERLAPPED_PROBLEM_MESSAGE } from './fix-rule.js';
-
-export { FixRuleOption, type FixableMaker, type SuggestionFilter };
+export { type FixerOptions, applyFixes } from './fixer.js';
+export { type FixableMaker, type SuggestionFilter };
 
 export const eslintInteractivePlugin = {
   rules: {
-    'fix': fixRule,
     // for test
     'prefer-addition-shorthand': preferAdditionShorthandRule,
   },

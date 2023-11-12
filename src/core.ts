@@ -1,16 +1,17 @@
+import { writeFile } from 'node:fs/promises';
 import { join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { ESLint } from 'eslint';
+import { ESLint, Linter } from 'eslint';
 import isInstalledGlobally from 'is-installed-globally';
 import { DescriptionPosition } from './cli/prompt.js';
 import { format } from './formatter/index.js';
 import {
+  applyFixes,
   eslintInteractivePlugin,
-  FixRuleOption,
+  type FixerOptions,
   FixableMaker,
   SuggestionFilter,
   Fix,
-  OVERLAPPED_PROBLEM_MESSAGE,
 } from './plugin/index.js';
 import { unique } from './util/array.js';
 import { getCacheDir } from './util/cache.js';
@@ -28,10 +29,6 @@ function generateResultsToUndo(resultsOfLint: ESLint.LintResult[]): ESLint.LintR
     // NOTE: THIS IS HACK.
     return { ...resultOfLint, output: resultOfLint.source };
   });
-}
-
-function hasOverlappedProblems(results: ESLint.LintResult[]): boolean {
-  return results.flatMap((result) => result.messages).some((message) => message.message === OVERLAPPED_PROBLEM_MESSAGE);
 }
 
 /**
@@ -232,39 +229,37 @@ export class Core {
   private async fix(resultsOfLint: ESLint.LintResult[], ruleIds: string[], fix: Fix): Promise<Undo> {
     // NOTE: Extract only necessary results and files for performance
     const filteredResultsOfLint = filterResultsByRuleId(resultsOfLint, ruleIds);
-    const targetFilePaths = filteredResultsOfLint.map((result) => result.filePath);
-    const usedRuleIds = await getUsedRuleIds(targetFilePaths, this.baseESLintOptions);
 
     // TODO: refactor
-    let results = filteredResultsOfLint;
-    for (let i = 0; i < MAX_AUTOFIX_PASSES; i++) {
-      const eslint = new ESLint({
-        ...this.baseESLintOptions,
-        // This is super hack to load ESM plugin/rule.
-        // ref: https://github.com/eslint/eslint/issues/15453#issuecomment-1001200953
-        plugins: {
-          'eslint-interactive': eslintInteractivePlugin,
-        },
-        overrideConfig: {
-          plugins: ['eslint-interactive'],
-          rules: {
-            'eslint-interactive/fix': [2, { results, ruleIds, fix } as FixRuleOption],
-            // Turn off all rules except `eslint-interactive/fix` when fixing for performance.
-            ...Object.fromEntries(usedRuleIds.map((ruleId) => [ruleId, 'off'])),
+    const results = filteredResultsOfLint;
+    const eslint = new ESLint(this.baseESLintOptions);
+    const linter = new Linter();
+
+    for (let result of results) {
+      if (!result.source) throw new Error('Source code is required to apply fixes.');
+      let currentText = result.source;
+      for (let i = 0; i < MAX_AUTOFIX_PASSES; i++) {
+        const fixedResult = applyFixes({ result, ruleIds, fix });
+
+        // update to use the fixed output instead of the original text
+        currentText = fixedResult.output;
+        if (!fixedResult.fixed) break;
+        // eslint-disable-next-line no-await-in-loop
+        const config = await eslint.calculateConfigForFile(result.filePath);
+        const messages = linter.verify(
+          currentText,
+          {
+            ...config,
+            rules: {
+              ...(config.rules ?? {}),
+            },
           },
-        },
-        // NOTE: Only fix the `fix` rule problems.
-        fix: (message) => message.ruleId === 'eslint-interactive/fix',
-        // Don't interpret lintFiles arguments as glob patterns for performance.
-        globInputPaths: false,
-      });
+          result.filePath,
+        );
+        result = { ...result, source: currentText, messages };
+      }
       // eslint-disable-next-line no-await-in-loop
-      const resultsToFix = await eslint.lintFiles(targetFilePaths);
-      // eslint-disable-next-line no-await-in-loop
-      await ESLint.outputFixes(resultsToFix);
-      if (!hasOverlappedProblems(resultsToFix)) break;
-      // eslint-disable-next-line no-await-in-loop
-      results = await this.lint();
+      await writeFile(result.filePath, currentText);
     }
 
     return async () => {
