@@ -14,7 +14,7 @@ import {
 } from './plugin/index.js';
 import { unique } from './util/array.js';
 import { getCacheDir } from './util/cache.js';
-import { filterResultsByRuleId, scanUsedPluginsFromResults } from './util/eslint.js';
+import { filterResultsByRuleId } from './util/eslint.js';
 
 const MAX_AUTOFIX_PASSES = 10;
 
@@ -36,15 +36,12 @@ function hasOverlappedProblems(results: ESLint.LintResult[]): boolean {
 
 /**
  * Get all the rules loaded from eslintrc.
+ * @param eslint The eslint instance.
  * @param targetFilePaths The target file paths.
- * @param options The eslint option.
  * @returns The rule ids loaded from eslintrc.
  */
-async function getUsedRuleIds(targetFilePaths: string[], options: ESLint.Options): Promise<string[]> {
-  const eslintToGetRules = new ESLint(options);
-  const configs = await Promise.all(
-    targetFilePaths.map(async (filePath) => eslintToGetRules.calculateConfigForFile(filePath)),
-  );
+async function getUsedRuleIds(eslint: ESLint, targetFilePaths: string[]): Promise<string[]> {
+  const configs = await Promise.all(targetFilePaths.map(async (filePath) => eslint.calculateConfigForFile(filePath)));
   return unique(configs.map((config) => config.rules).flatMap((rules) => Object.keys(rules)));
 }
 
@@ -105,6 +102,7 @@ export const configDefaults = {
  */
 export class Core {
   readonly config: NormalizedConfig;
+  readonly eslint: ESLint;
 
   constructor(config: Config) {
     this.config = {
@@ -125,6 +123,7 @@ export class Core {
           config.eslintOptions?.resolvePluginsRelativeTo ?? configDefaults.eslintOptions.resolvePluginsRelativeTo,
       },
     };
+    this.eslint = new ESLint(this.config.eslintOptions);
   }
 
   /**
@@ -132,8 +131,7 @@ export class Core {
    * @returns The results of linting
    */
   async lint(): Promise<ESLint.LintResult[]> {
-    const eslint = new ESLint(this.config.eslintOptions);
-    let results = await eslint.lintFiles(this.config.patterns);
+    let results = await this.eslint.lintFiles(this.config.patterns);
     if (this.config.quiet) results = ESLint.getErrorResults(results);
     return results;
   }
@@ -143,17 +141,9 @@ export class Core {
    * @param results The lint results of the project to print summary
    */
   formatResultSummary(results: ESLint.LintResult[]): string {
-    // get used plugins from `results`
-    const plugins = scanUsedPluginsFromResults(results);
-
-    // get `rulesMeta` from `results`
-    const eslint = new ESLint({
-      ...this.config.eslintOptions,
-      overrideConfig: { ...this.config.eslintOptions.overrideConfig, plugins },
-    });
     // NOTE: `getRulesMetaForResults` is a feature added in ESLint 7.29.0.
     // Therefore, the function may not exist in versions lower than 7.29.0.
-    const rulesMeta: ESLint.LintResultData['rulesMeta'] = eslint.getRulesMetaForResults?.(results) ?? {};
+    const rulesMeta: ESLint.LintResultData['rulesMeta'] = this.eslint.getRulesMetaForResults?.(results) ?? {};
 
     return format(results, { rulesMeta, cwd: this.config.eslintOptions.cwd });
   }
@@ -164,7 +154,6 @@ export class Core {
    * @param ruleIds The rule ids to print details
    */
   async formatResultDetails(results: ESLint.LintResult[], ruleIds: (string | null)[]): Promise<string> {
-    const eslint = new ESLint(this.config.eslintOptions);
     const formatterName = this.config.formatterName;
 
     // When eslint-interactive is installed globally, eslint-formatter-codeframe will also be installed globally.
@@ -174,7 +163,7 @@ export class Core {
         ? fileURLToPath(import.meta.resolve('eslint-formatter-codeframe', import.meta.resolve('eslint-interactive')))
         : formatterName;
 
-    const formatter = await eslint.loadFormatter(resolvedFormatterNameOrPath);
+    const formatter = await this.eslint.loadFormatter(resolvedFormatterNameOrPath);
     return formatter.format(filterResultsByRuleId(results, ruleIds));
   }
 
@@ -260,7 +249,7 @@ export class Core {
     // NOTE: Extract only necessary results and files for performance
     const filteredResultsOfLint = filterResultsByRuleId(resultsOfLint, ruleIds);
     const targetFilePaths = filteredResultsOfLint.map((result) => result.filePath);
-    const usedRuleIds = await getUsedRuleIds(targetFilePaths, this.config.eslintOptions);
+    const usedRuleIds = await getUsedRuleIds(this.eslint, targetFilePaths);
 
     // TODO: refactor
     let results = filteredResultsOfLint;
