@@ -1,5 +1,5 @@
 import yargs from 'yargs';
-import { Config, DEFAULT_BASE_CONFIG } from '../core.js';
+import { Config, configDefaults } from '../core.js';
 import { VERSION } from './package.js';
 
 /** Parse argv into the config object of eslint-interactive */
@@ -14,7 +14,7 @@ export function parseArgv(argv: string[]): Config {
     .option('eslintrc', {
       type: 'boolean',
       describe: 'Enable use of configuration from .eslintrc.*',
-      default: DEFAULT_BASE_CONFIG.useEslintrc,
+      default: configDefaults.eslintOptions.useEslintrc,
     })
     .option('config', {
       alias: 'c',
@@ -44,22 +44,22 @@ export function parseArgv(argv: string[]): Config {
     .option('format', {
       type: 'string',
       describe: 'Specify the format to be used for the `Display problem messages` action',
-      default: DEFAULT_BASE_CONFIG.formatterName,
+      default: configDefaults.formatterName,
     })
     .option('quiet', {
       type: 'boolean',
       describe: 'Report errors only',
-      default: DEFAULT_BASE_CONFIG.quiet,
+      default: configDefaults.quiet,
     })
     .option('cache', {
       type: 'boolean',
       describe: 'Only check changed files',
-      default: DEFAULT_BASE_CONFIG.cache,
+      default: configDefaults.eslintOptions.cache,
     })
     .option('cache-location', {
       type: 'string',
       describe: `Path to the cache file or directory`,
-      default: DEFAULT_BASE_CONFIG.cacheLocation,
+      default: configDefaults.eslintOptions.cacheLocation,
     })
     .example('$0 ./src', 'Lint ./src/ directory')
     .example('$0 ./src ./test', 'Lint multiple directories')
@@ -77,18 +77,19 @@ export function parseArgv(argv: string[]): Config {
     // map '.js,.ts' into ['.js', '.ts']
     .flatMap((extension) => extension.split(','));
   const formatterName = parsedArgv.format;
-  const resolvePluginsRelativeTo = parsedArgv['resolve-plugins-relative-to'];
   return {
     patterns,
-    useEslintrc: parsedArgv.eslintrc,
-    overrideConfigFile: parsedArgv.config,
-    extensions,
-    rulePaths,
-    ignorePath: parsedArgv.ignorePath,
+    eslintOptions: {
+      useEslintrc: parsedArgv.eslintrc,
+      overrideConfigFile: parsedArgv.config,
+      extensions,
+      rulePaths,
+      ignorePath: parsedArgv.ignorePath,
+      cache: parsedArgv.cache,
+      cacheLocation: parsedArgv['cache-location'],
+      resolvePluginsRelativeTo: parsedArgv['resolve-plugins-relative-to'],
+    },
     formatterName,
     quiet: parsedArgv.quiet,
-    cache: parsedArgv.cache,
-    cacheLocation: parsedArgv['cache-location'],
-    resolvePluginsRelativeTo,
   };
 }
