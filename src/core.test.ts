@@ -1,13 +1,15 @@
+import { constants, cp } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { ESLint, Linter } from 'eslint';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import { Core, configDefaults } from './core.js';
-import { cleanupFixturesCopy, getSnapshotOfChangedFiles, setupFixturesCopy } from './test-util/fixtures.js';
+import { cleanupFixturesCopy, createIFF, getSnapshotOfChangedFiles, setupFixturesCopy } from './test-util/fixtures.js';
 
 const testIf = (condition: boolean) => (condition ? test : test.skip);
 
-const cwd = join(dirname(fileURLToPath(import.meta.url)), '..');
+const rootDir = join(dirname(fileURLToPath(import.meta.url)), '..');
+const cwd = rootDir;
 // For some reason, the test fails if `formatterName === 'codeframe'`.
 // So here we overwrite it with `formatterName === 'eslint-formatter-codeframe'`.
 const formatterName = 'eslint-formatter-codeframe';
@@ -52,27 +54,35 @@ afterEach(async () => {
 });
 
 describe('Core', () => {
-  const core = new Core({
-    patterns: ['fixtures-tmp'],
-    formatterName,
-    eslintOptions: {
-      rulePaths: ['fixtures-tmp/rules'],
-      extensions: ['.js', '.jsx', '.mjs'],
-      cwd,
-    },
+  let core: Core;
+  beforeEach(() => {
+    core = new Core({
+      patterns: ['fixtures-tmp'],
+      formatterName,
+      eslintOptions: {
+        rulePaths: ['fixtures-tmp/rules'],
+        extensions: ['.js', '.jsx', '.mjs'],
+        cwd,
+      },
+    });
   });
-  test('baseOptions', () => {
+  test('baseOptions', async () => {
+    const iff = await createIFF({
+      'override-config-file.json': `{}`,
+      'rule-path-a': async (path) =>
+        cp(join(rootDir, 'fixtures/rules'), path, { mode: constants.COPYFILE_FICLONE, recursive: true }),
+    });
     const core1 = new Core({
       patterns: ['pattern-a', 'pattern-b'],
       formatterName,
       eslintOptions: {
         useEslintrc: false,
         overrideConfigFile: 'override-config-file.json',
-        rulePaths: ['rule-path-a', 'rule-path-b'],
+        rulePaths: ['rule-path-a'],
         extensions: ['.js', '.jsx'],
         cache: false,
         cacheLocation: '.eslintcache',
-        cwd: '/tmp/cwd',
+        cwd: iff.rootDir,
       },
     });
     expect(core1.config.eslintOptions).toStrictEqual<ESLint.Options>({
@@ -80,9 +90,9 @@ describe('Core', () => {
       overrideConfigFile: 'override-config-file.json',
       cache: false,
       cacheLocation: '.eslintcache',
-      rulePaths: ['rule-path-a', 'rule-path-b'],
+      rulePaths: ['rule-path-a'],
       extensions: ['.js', '.jsx'],
-      cwd: '/tmp/cwd',
+      cwd: iff.rootDir,
       ignorePath: undefined,
       overrideConfig: undefined,
       resolvePluginsRelativeTo: undefined,

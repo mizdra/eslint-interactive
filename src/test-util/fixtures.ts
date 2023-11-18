@@ -1,13 +1,20 @@
 import { exec } from 'node:child_process';
+import { randomUUID } from 'node:crypto';
 import { rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { promisify } from 'node:util';
+import { defineIFFCreator } from '@mizdra/inline-fixture-files';
 import fse from 'fs-extra/esm';
 
 const execPromise = promisify(exec);
 
 const cwd = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
+
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+const fixtureDir = join(tmpdir(), 'eslint-interactive', process.env['VITEST_POOL_ID']!);
+export const createIFF = defineIFFCreator({ generateRootDir: () => join(fixtureDir, randomUUID()) });
 
 /**
  * Returns a string containing the stitched together contents of the file modified by fix.
