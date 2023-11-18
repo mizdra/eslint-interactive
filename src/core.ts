@@ -88,13 +88,13 @@ export const configDefaults = {
   eslintOptions: {
     useEslintrc: true,
     overrideConfigFile: undefined,
-    cwd: process.cwd(),
-    cache: true,
-    cacheLocation: relative(process.cwd(), join(getCacheDir(), '.eslintcache')),
     extensions: undefined,
     rulePaths: undefined,
     ignorePath: undefined,
+    cache: true,
+    cacheLocation: relative(process.cwd(), join(getCacheDir(), '.eslintcache')),
     overrideConfig: undefined,
+    cwd: process.cwd(),
     resolvePluginsRelativeTo: undefined,
   },
 } satisfies Partial<Config>;
