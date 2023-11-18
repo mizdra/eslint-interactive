@@ -50,8 +50,7 @@ async function getUsedRuleIds(targetFilePaths: string[], options: ESLint.Options
 
 export type Undo = () => Promise<void>;
 
-/** The config of eslint-interactive */
-export type Config = Pick<
+type ESLintOptions = Pick<
   ESLint.Options,
   | 'useEslintrc'
   | 'overrideConfigFile'
@@ -63,41 +62,69 @@ export type Config = Pick<
   | 'overrideConfig'
   | 'cwd'
   | 'resolvePluginsRelativeTo'
-> & {
+>;
+
+/** The config of eslint-interactive */
+export type Config = {
   patterns: string[];
   formatterName?: string | undefined;
   quiet?: boolean | undefined;
+  eslintOptions?: ESLint.Options;
+};
+
+type NormalizedESLintOptions = Omit<ESLintOptions, 'cwd'> & { cwd: Exclude<ESLintOptions['cwd'], undefined> };
+
+type NormalizedConfig = {
+  patterns: string[];
+  formatterName: string;
+  quiet: boolean;
+  eslintOptions: NormalizedESLintOptions;
 };
 
 /** Default config of `Core` */
-export const DEFAULT_BASE_CONFIG: Partial<Config> = {
-  useEslintrc: true,
-  cwd: undefined,
-  cache: true,
-  cacheLocation: relative(process.cwd(), join(getCacheDir(), '.eslintcache')),
-  extensions: undefined,
+const configDefaults = {
   formatterName: 'codeframe',
   quiet: false,
-  rulePaths: undefined,
-  resolvePluginsRelativeTo: undefined,
-};
+  eslintOptions: {
+    useEslintrc: true,
+    overrideConfigFile: undefined,
+    cwd: process.cwd(),
+    cache: true,
+    cacheLocation: relative(process.cwd(), join(getCacheDir(), '.eslintcache')),
+    extensions: undefined,
+    rulePaths: undefined,
+    ignorePath: undefined,
+    overrideConfig: undefined,
+    resolvePluginsRelativeTo: undefined,
+  },
+} satisfies Partial<Config>;
 
 /**
  * The core of eslint-interactive.
  * It uses ESLint's Node.js API to output a summary of problems, fix problems, apply suggestions, etc.
  */
 export class Core {
-  readonly config: Config;
-  /** The base options of ESLint */
-  readonly baseESLintOptions: ESLint.Options;
+  readonly config: NormalizedConfig;
 
   constructor(config: Config) {
     this.config = {
-      ...DEFAULT_BASE_CONFIG,
-      ...config,
+      patterns: config.patterns,
+      formatterName: config.formatterName ?? configDefaults.formatterName,
+      quiet: config.quiet ?? configDefaults.quiet,
+      eslintOptions: {
+        useEslintrc: config.eslintOptions?.useEslintrc ?? configDefaults.eslintOptions.useEslintrc,
+        overrideConfigFile: config.eslintOptions?.overrideConfigFile ?? configDefaults.eslintOptions.overrideConfigFile,
+        extensions: config.eslintOptions?.extensions ?? configDefaults.eslintOptions.extensions,
+        rulePaths: config.eslintOptions?.rulePaths ?? configDefaults.eslintOptions.rulePaths,
+        ignorePath: config.eslintOptions?.ignorePath ?? configDefaults.eslintOptions.ignorePath,
+        cache: config.eslintOptions?.cache ?? configDefaults.eslintOptions.cache,
+        cacheLocation: config.eslintOptions?.cacheLocation ?? configDefaults.eslintOptions.cacheLocation,
+        overrideConfig: config.eslintOptions?.overrideConfig ?? configDefaults.eslintOptions.overrideConfig,
+        cwd: config.eslintOptions?.cwd ?? configDefaults.eslintOptions.cwd,
+        resolvePluginsRelativeTo:
+          config.eslintOptions?.resolvePluginsRelativeTo ?? configDefaults.eslintOptions.resolvePluginsRelativeTo,
+      },
     };
-    const { patterns, formatterName, quiet, ...baseOptions } = this.config;
-    this.baseESLintOptions = baseOptions;
   }
 
   /**
@@ -105,7 +132,7 @@ export class Core {
    * @returns The results of linting
    */
   async lint(): Promise<ESLint.LintResult[]> {
-    const eslint = new ESLint(this.baseESLintOptions);
+    const eslint = new ESLint(this.config.eslintOptions);
     let results = await eslint.lintFiles(this.config.patterns);
     if (this.config.quiet) results = ESLint.getErrorResults(results);
     return results;
@@ -121,14 +148,14 @@ export class Core {
 
     // get `rulesMeta` from `results`
     const eslint = new ESLint({
-      ...this.baseESLintOptions,
-      overrideConfig: { ...this.baseESLintOptions.overrideConfig, plugins },
+      ...this.config.eslintOptions,
+      overrideConfig: { ...this.config.eslintOptions.overrideConfig, plugins },
     });
     // NOTE: `getRulesMetaForResults` is a feature added in ESLint 7.29.0.
     // Therefore, the function may not exist in versions lower than 7.29.0.
     const rulesMeta: ESLint.LintResultData['rulesMeta'] = eslint.getRulesMetaForResults?.(results) ?? {};
 
-    return format(results, { rulesMeta, cwd: this.config.cwd ?? process.cwd() });
+    return format(results, { rulesMeta, cwd: this.config.eslintOptions.cwd });
   }
 
   /**
@@ -137,8 +164,8 @@ export class Core {
    * @param ruleIds The rule ids to print details
    */
   async formatResultDetails(results: ESLint.LintResult[], ruleIds: (string | null)[]): Promise<string> {
-    const eslint = new ESLint(this.baseESLintOptions);
-    const formatterName = this.config.formatterName ?? DEFAULT_BASE_CONFIG.formatterName;
+    const eslint = new ESLint(this.config.eslintOptions);
+    const formatterName = this.config.formatterName;
 
     // When eslint-interactive is installed globally, eslint-formatter-codeframe will also be installed globally.
     // On the other hand, `eslint.loadFormatter` cannot load the globally installed formatter by name. So here it loads them by path.
@@ -233,13 +260,13 @@ export class Core {
     // NOTE: Extract only necessary results and files for performance
     const filteredResultsOfLint = filterResultsByRuleId(resultsOfLint, ruleIds);
     const targetFilePaths = filteredResultsOfLint.map((result) => result.filePath);
-    const usedRuleIds = await getUsedRuleIds(targetFilePaths, this.baseESLintOptions);
+    const usedRuleIds = await getUsedRuleIds(targetFilePaths, this.config.eslintOptions);
 
     // TODO: refactor
     let results = filteredResultsOfLint;
     for (let i = 0; i < MAX_AUTOFIX_PASSES; i++) {
       const eslint = new ESLint({
-        ...this.baseESLintOptions,
+        ...this.config.eslintOptions,
         // This is super hack to load ESM plugin/rule.
         // ref: https://github.com/eslint/eslint/issues/15453#issuecomment-1001200953
         plugins: {
