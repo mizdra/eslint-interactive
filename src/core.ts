@@ -50,7 +50,7 @@ async function getUsedRuleIds(targetFilePaths: string[], options: ESLint.Options
 
 export type Undo = () => Promise<void>;
 
-type ESLintOptions = Pick<
+export type ESLintOptions = Pick<
   ESLint.Options,
   | 'useEslintrc'
   | 'overrideConfigFile'
@@ -82,7 +82,7 @@ type NormalizedConfig = {
 };
 
 /** Default config of `Core` */
-const configDefaults = {
+export const configDefaults = {
   formatterName: 'codeframe',
   quiet: false,
   eslintOptions: {
