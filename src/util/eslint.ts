@@ -1,30 +1,11 @@
 import { AST, ESLint, Linter, Rule, SourceCode } from 'eslint';
 import type { Comment, SourceLocation } from 'estree';
 import { unique } from './array.js';
-import { notEmpty } from './type-check.js';
 
 const COMMENT_RE =
   /^\s*(?<header>eslint-disable|eslint-disable-next-line)\s+(?<ruleList>[@a-z0-9\-_$/]*(?:\s*,\s*[@a-z0-9\-_$/]*)*(?:\s*,)?)(?:\s+--\s+(?<description>.*\S))?\s*$/u;
 
 const SHEBANG_PATTERN = /^#!.+?\r?\n/u;
-
-/** `results` 内で使われているプラグインの名前のリストを洗い出して返す */
-export function scanUsedPluginsFromResults(results: ESLint.LintResult[]): string[] {
-  const plugins = results
-    .flatMap((result) => result.messages) // messages: Linter.LintMessage[]
-    .map((message) => message.ruleId) // ruleIds: (string | undefined)[]
-    .filter(notEmpty) // ruleIds: string[]
-    .map((ruleId) => {
-      const parts = ruleId.split('/');
-      if (parts.length === 1) return undefined; // ex: 'rule-a'
-      if (parts.length === 2) return parts[0]; // ex: 'plugin/rule-a'
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      if (parts.length === 3) return `${parts[0]!}/${parts[1]!}`; // ex: '@scoped/plugin/rule-a'
-      return undefined; // invalid ruleId
-    }) // plugins: string[]
-    .filter(notEmpty);
-  return unique(plugins);
-}
 
 export type DisableComment = {
   type: 'Block' | 'Line';
