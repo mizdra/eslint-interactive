@@ -19,7 +19,9 @@ afterEach(async () => {
 test('Programmable API', async () => {
   const core = new Core({
     patterns: ['fixtures-tmp'],
-    cwd: join(dirname(fileURLToPath(import.meta.url)), '..', '..'),
+    eslintOptions: {
+      cwd: join(dirname(fileURLToPath(import.meta.url)), '..', '..'),
+    },
   });
   const results = await core.lint();
 

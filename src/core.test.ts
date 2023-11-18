@@ -2,7 +2,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { ESLint, Linter } from 'eslint';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
-import { Core, DEFAULT_BASE_CONFIG } from './core.js';
+import { Core, configDefaults } from './core.js';
 import { cleanupFixturesCopy, getSnapshotOfChangedFiles, setupFixturesCopy } from './test-util/fixtures.js';
 
 const testIf = (condition: boolean) => (condition ? test : test.skip);
@@ -54,24 +54,28 @@ afterEach(async () => {
 describe('Core', () => {
   const core = new Core({
     patterns: ['fixtures-tmp'],
-    rulePaths: ['fixtures-tmp/rules'],
-    extensions: ['.js', '.jsx', '.mjs'],
     formatterName,
-    cwd,
+    eslintOptions: {
+      rulePaths: ['fixtures-tmp/rules'],
+      extensions: ['.js', '.jsx', '.mjs'],
+      cwd,
+    },
   });
   test('baseOptions', () => {
     const core1 = new Core({
-      useEslintrc: false,
-      overrideConfigFile: 'override-config-file.json',
       patterns: ['pattern-a', 'pattern-b'],
-      rulePaths: ['rule-path-a', 'rule-path-b'],
-      extensions: ['.js', '.jsx'],
       formatterName,
-      cache: false,
-      cacheLocation: '.eslintcache',
-      cwd: '/tmp/cwd',
+      eslintOptions: {
+        useEslintrc: false,
+        overrideConfigFile: 'override-config-file.json',
+        rulePaths: ['rule-path-a', 'rule-path-b'],
+        extensions: ['.js', '.jsx'],
+        cache: false,
+        cacheLocation: '.eslintcache',
+        cwd: '/tmp/cwd',
+      },
     });
-    expect(core1.baseESLintOptions).toStrictEqual<ESLint.Options>({
+    expect(core1.config.eslintOptions).toStrictEqual<ESLint.Options>({
       useEslintrc: false,
       overrideConfigFile: 'override-config-file.json',
       cache: false,
@@ -79,20 +83,14 @@ describe('Core', () => {
       rulePaths: ['rule-path-a', 'rule-path-b'],
       extensions: ['.js', '.jsx'],
       cwd: '/tmp/cwd',
+      ignorePath: undefined,
+      overrideConfig: undefined,
       resolvePluginsRelativeTo: undefined,
     });
     const core2 = new Core({
       patterns: ['pattern-a', 'pattern-b'],
     });
-    expect(core2.baseESLintOptions).toStrictEqual<ESLint.Options>({
-      useEslintrc: DEFAULT_BASE_CONFIG.useEslintrc,
-      cache: DEFAULT_BASE_CONFIG.cache,
-      cacheLocation: DEFAULT_BASE_CONFIG.cacheLocation,
-      rulePaths: undefined,
-      extensions: undefined,
-      cwd: undefined,
-      resolvePluginsRelativeTo: undefined,
-    });
+    expect(core2.config.eslintOptions).toStrictEqual<ESLint.Options>(configDefaults.eslintOptions);
   });
   describe('lint', () => {
     test('returns lint results', async () => {
@@ -123,7 +121,10 @@ describe('Core', () => {
 
       const coreWithIgnorePath = new Core({
         ...core.config,
-        ignorePath: 'fixtures-tmp/.customignore',
+        eslintOptions: {
+          ...core.config.eslintOptions,
+          ignorePath: 'fixtures-tmp/.customignore',
+        },
       });
       const resultsWithIgnorePath = await coreWithIgnorePath.lint();
       expect(countWarnings(resultsWithIgnorePath)).toEqual(0);
@@ -216,22 +217,25 @@ describe('Core', () => {
     test('returns lint results', async () => {
       const coreWithOverride = new Core({
         ...core.config,
-        useEslintrc: false,
-        overrideConfig: {
-          root: true,
-          env: {
-            node: true,
-            es2020: true,
-          },
-          parserOptions: {
-            sourceType: 'module',
-            ecmaVersion: 2020,
-            ecmaFeatures: {
-              jsx: true,
+        eslintOptions: {
+          ...core.config.eslintOptions,
+          useEslintrc: false,
+          overrideConfig: {
+            root: true,
+            env: {
+              node: true,
+              es2020: true,
             },
-          },
-          rules: {
-            semi: 'error',
+            parserOptions: {
+              sourceType: 'module',
+              ecmaVersion: 2020,
+              ecmaFeatures: {
+                jsx: true,
+              },
+            },
+            rules: {
+              semi: 'error',
+            },
           },
         },
       });
