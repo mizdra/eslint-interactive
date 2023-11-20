@@ -85,7 +85,7 @@ export class FixTester<T extends FixName> {
         'eslint-interactive': eslintInteractivePlugin,
       },
       overrideConfig: {
-        plugins: ['eslint-interactive', ...(this.defaultLinterConfig.plugins ?? [])],
+        plugins: ['eslint-interactive'],
         rules: {
           ...this.defaultLinterConfig.rules,
           ...options.rules,

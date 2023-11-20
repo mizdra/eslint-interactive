@@ -6,6 +6,7 @@
       "type": "node",
       "request": "launch",
       "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
       "runtimeExecutable": "pnpm",
       "runtimeArgs": ["run", "dev"]
     }
