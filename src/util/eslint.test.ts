@@ -3,7 +3,6 @@ import { SourceLocation } from 'estree';
 import { describe, expect, test } from 'vitest';
 import { fakeLintMessage, fakeLintResult } from '../test-util/eslint.js';
 import {
-  scanUsedPluginsFromResults,
   parseDisableComment,
   findShebang,
   filterResultsByRuleId,
@@ -16,20 +15,6 @@ import {
 
 const range: [number, number] = [0, 1];
 const loc: SourceLocation = { start: { line: 1, column: 0 }, end: { line: 1, column: 1 } };
-
-test('scanUsedPluginsFromResults', () => {
-  const results: ESLint.LintResult[] = [
-    fakeLintResult({
-      messages: [
-        fakeLintMessage({ ruleId: 'rule', severity: 2 }),
-        fakeLintMessage({ ruleId: 'plugin/rule', severity: 2 }),
-        fakeLintMessage({ ruleId: '@scoped/plugin/rule', severity: 2 }),
-        fakeLintMessage({ ruleId: 'invalid/@scoped/plugin/rule', severity: 2 }),
-      ],
-    }),
-  ];
-  expect(scanUsedPluginsFromResults(results)).toStrictEqual(['plugin', '@scoped/plugin']);
-});
 
 test('filterResultsByRuleId', () => {
   const results: ESLint.LintResult[] = [
