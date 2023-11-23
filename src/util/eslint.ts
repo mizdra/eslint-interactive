@@ -1,11 +1,13 @@
 import { join, relative } from 'node:path';
 import { AST, ESLint, Linter, Rule, SourceCode } from 'eslint';
-import { FlatESLint, FlatESLintOptions } from 'eslint/use-at-your-own-risk';
+import eslintPkg, { type FlatESLintOptions } from 'eslint/use-at-your-own-risk';
 import type { Comment, SourceLocation } from 'estree';
 import { Config } from '../core.js';
 import { eslintInteractivePlugin, Fix, FixRuleOption } from '../plugin/index.js';
 import { unique } from './array.js';
 import { getCacheDir } from './cache.js';
+
+const { FlatESLint } = eslintPkg;
 
 const COMMENT_RE =
   /^\s*(?<header>eslint-disable|eslint-disable-next-line)\s+(?<ruleList>[@a-z0-9\-_$/]*(?:\s*,\s*[@a-z0-9\-_$/]*)*(?:\s*,)?)(?:\s+--\s+(?<description>.*\S))?\s*$/u;
