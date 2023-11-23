@@ -1,6 +1,11 @@
+import { join, relative } from 'node:path';
 import { AST, ESLint, Linter, Rule, SourceCode } from 'eslint';
+import { FlatESLint, FlatESLintOptions } from 'eslint/use-at-your-own-risk';
 import type { Comment, SourceLocation } from 'estree';
+import { Config } from '../core.js';
+import { eslintInteractivePlugin, Fix, FixRuleOption } from '../plugin/index.js';
 import { unique } from './array.js';
+import { getCacheDir } from './cache.js';
 
 const COMMENT_RE =
   /^\s*(?<header>eslint-disable|eslint-disable-next-line)\s+(?<ruleList>[@a-z0-9\-_$/]*(?:\s*,\s*[@a-z0-9\-_$/]*)*(?:\s*,)?)(?:\s+--\s+(?<description>.*\S))?\s*$/u;
@@ -247,4 +252,122 @@ export function findShebang(sourceCodeText: string): { range: AST.Range } | null
   const result = SHEBANG_PATTERN.exec(sourceCodeText);
   if (!result) return null;
   return { range: [0, result[0].length] };
+}
+
+export type ESLintOptions = ({ type: 'legacy' } & ESLint.Options) | ({ type: 'flat' } & FlatESLintOptions);
+
+export type NormalizedESLintOptions = Omit<ESLint.Options, 'cwd'> & {
+  type: 'legacy';
+  cwd: Exclude<ESLint.Options['cwd'], undefined>;
+};
+
+export type NormalizedFlatESLintOptions = Omit<FlatESLintOptions, 'cwd'> & {
+  type: 'flat';
+  cwd: Exclude<FlatESLintOptions['cwd'], undefined>;
+};
+
+export type NormalizedConfig = NormalizedESLintOptions | NormalizedFlatESLintOptions;
+
+/** Default config of `Core` */
+export const configDefaults = {
+  formatterName: 'codeframe',
+  quiet: false,
+  eslintOptions: {
+    type: 'legacy',
+    useEslintrc: true,
+    overrideConfigFile: undefined,
+    extensions: undefined,
+    rulePaths: undefined,
+    ignorePath: undefined,
+    cache: true,
+    cacheLocation: relative(process.cwd(), join(getCacheDir(), '.eslintcache')),
+    overrideConfig: undefined,
+    cwd: process.cwd(),
+    resolvePluginsRelativeTo: undefined,
+  },
+} satisfies Partial<Config>;
+
+export function normalizeConfig(config: ESLintOptions): NormalizedConfig {
+  if (config.type === 'legacy') {
+    return {
+      type: 'legacy',
+      useEslintrc: config.useEslintrc ?? configDefaults.eslintOptions.useEslintrc,
+      overrideConfigFile: config.overrideConfigFile ?? configDefaults.eslintOptions.overrideConfigFile,
+      extensions: config.extensions ?? configDefaults.eslintOptions.extensions,
+      rulePaths: config.rulePaths ?? configDefaults.eslintOptions.rulePaths,
+      ignorePath: config.ignorePath ?? configDefaults.eslintOptions.ignorePath,
+      cache: config.cache ?? configDefaults.eslintOptions.cache,
+      cacheLocation: config.cacheLocation ?? configDefaults.eslintOptions.cacheLocation,
+      overrideConfig: config.overrideConfig ?? configDefaults.eslintOptions.overrideConfig,
+      cwd: config.cwd ?? configDefaults.eslintOptions.cwd,
+      resolvePluginsRelativeTo:
+        config.resolvePluginsRelativeTo ?? configDefaults.eslintOptions.resolvePluginsRelativeTo,
+    };
+  } else {
+    return {
+      type: 'flat',
+      overrideConfigFile: config.overrideConfigFile ?? configDefaults.eslintOptions.overrideConfigFile,
+      cache: config.cache ?? configDefaults.eslintOptions.cache,
+      cacheLocation: config.cacheLocation ?? configDefaults.eslintOptions.cacheLocation,
+      overrideConfig: config.overrideConfig ?? configDefaults.eslintOptions.overrideConfig,
+      cwd: config.cwd ?? configDefaults.eslintOptions.cwd,
+    };
+  }
+}
+
+export function createESLint(config: NormalizedConfig): ESLint | InstanceType<typeof FlatESLint> {
+  if (config.type === 'legacy') {
+    return new ESLint(config);
+  } else {
+    return new FlatESLint(config);
+  }
+}
+
+export function createESLintForFix(
+  config: NormalizedConfig,
+  results: ESLint.LintResult[],
+  ruleIds: string[],
+  fix: Fix,
+  usedRuleIds: string[],
+): ESLint | InstanceType<typeof FlatESLint> {
+  if (config.type === 'legacy') {
+    return new ESLint({
+      ...config,
+      // This is super hack to load ESM plugin/rule.
+      // ref: https://github.com/eslint/eslint/issues/15453#issuecomment-1001200953
+      plugins: {
+        'eslint-interactive': eslintInteractivePlugin,
+      },
+      overrideConfig: {
+        plugins: ['eslint-interactive'],
+        rules: {
+          'eslint-interactive/fix': [2, { results, ruleIds, fix } as FixRuleOption],
+          // Turn off all rules except `eslint-interactive/fix` when fixing for performance.
+          ...Object.fromEntries(usedRuleIds.map((ruleId) => [ruleId, 'off'])),
+        },
+      },
+      // NOTE: Only fix the `fix` rule problems.
+      fix: (message) => message.ruleId === 'eslint-interactive/fix',
+      // Don't interpret lintFiles arguments as glob patterns for performance.
+      globInputPaths: false,
+    });
+  } else {
+    return new FlatESLint({
+      ...config,
+      overrideConfig: {
+        plugins: {
+          'eslint-interactive': eslintInteractivePlugin,
+        },
+        rules: {
+          'eslint-interactive/fix': [2, { results, ruleIds, fix } as FixRuleOption],
+          // Turn off all rules except `eslint-interactive/fix` when fixing for performance.
+          ...Object.fromEntries(usedRuleIds.map((ruleId) => [ruleId, 'off'])),
+        },
+      },
+      // NOTE: Only fix the `fix` rule problems.
+      fix: (message) => message.ruleId === 'eslint-interactive/fix',
+      // Don't interpret lintFiles arguments as glob patterns for performance.
+      globInputPaths: false,
+    });
+  }
 }

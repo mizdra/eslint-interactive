@@ -1,20 +1,19 @@
-import { join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { ESLint } from 'eslint';
+import { FlatESLintOptions } from 'eslint/use-at-your-own-risk';
 import isInstalledGlobally from 'is-installed-globally';
 import { DescriptionPosition } from './cli/prompt.js';
 import { format } from './formatter/index.js';
-import {
-  eslintInteractivePlugin,
-  FixRuleOption,
-  FixableMaker,
-  SuggestionFilter,
-  Fix,
-  OVERLAPPED_PROBLEM_MESSAGE,
-} from './plugin/index.js';
+import { FixableMaker, SuggestionFilter, Fix, OVERLAPPED_PROBLEM_MESSAGE } from './plugin/index.js';
 import { unique } from './util/array.js';
-import { getCacheDir } from './util/cache.js';
-import { filterResultsByRuleId } from './util/eslint.js';
+import {
+  NormalizedConfig,
+  configDefaults,
+  createESLint,
+  createESLintForFix,
+  filterResultsByRuleId,
+  normalizeConfig,
+} from './util/eslint.js';
 
 const MAX_AUTOFIX_PASSES = 10;
 
@@ -47,83 +46,36 @@ async function getUsedRuleIds(eslint: ESLint, targetFilePaths: string[]): Promis
 
 export type Undo = () => Promise<void>;
 
-export type ESLintOptions = Pick<
-  ESLint.Options,
-  | 'useEslintrc'
-  | 'overrideConfigFile'
-  | 'extensions'
-  | 'rulePaths'
-  | 'ignorePath'
-  | 'cache'
-  | 'cacheLocation'
-  | 'overrideConfig'
-  | 'cwd'
-  | 'resolvePluginsRelativeTo'
->;
-
 /** The config of eslint-interactive */
 export type Config = {
   patterns: string[];
   formatterName?: string | undefined;
   quiet?: boolean | undefined;
-  eslintOptions?: ESLint.Options;
+  eslintOptions: ({ type: 'legacy' } & ESLint.Options) | ({ type: 'flat' } & FlatESLintOptions);
 };
-
-type NormalizedESLintOptions = Omit<ESLintOptions, 'cwd'> & { cwd: Exclude<ESLintOptions['cwd'], undefined> };
-
-type NormalizedConfig = {
-  patterns: string[];
-  formatterName: string;
-  quiet: boolean;
-  eslintOptions: NormalizedESLintOptions;
-};
-
-/** Default config of `Core` */
-export const configDefaults = {
-  formatterName: 'codeframe',
-  quiet: false,
-  eslintOptions: {
-    useEslintrc: true,
-    overrideConfigFile: undefined,
-    extensions: undefined,
-    rulePaths: undefined,
-    ignorePath: undefined,
-    cache: true,
-    cacheLocation: relative(process.cwd(), join(getCacheDir(), '.eslintcache')),
-    overrideConfig: undefined,
-    cwd: process.cwd(),
-    resolvePluginsRelativeTo: undefined,
-  },
-} satisfies Partial<Config>;
 
 /**
  * The core of eslint-interactive.
  * It uses ESLint's Node.js API to output a summary of problems, fix problems, apply suggestions, etc.
  */
 export class Core {
-  readonly config: NormalizedConfig;
+  readonly patterns: string[];
+  readonly formatterName: string;
+  readonly quiet: boolean;
+  readonly eslintOptions: NormalizedConfig;
   readonly eslint: ESLint;
 
   constructor(config: Config) {
-    this.config = {
-      patterns: config.patterns,
-      formatterName: config.formatterName ?? configDefaults.formatterName,
-      quiet: config.quiet ?? configDefaults.quiet,
-      eslintOptions: {
-        useEslintrc: config.eslintOptions?.useEslintrc ?? configDefaults.eslintOptions.useEslintrc,
-        overrideConfigFile: config.eslintOptions?.overrideConfigFile ?? configDefaults.eslintOptions.overrideConfigFile,
-        extensions: config.eslintOptions?.extensions ?? configDefaults.eslintOptions.extensions,
-        rulePaths: config.eslintOptions?.rulePaths ?? configDefaults.eslintOptions.rulePaths,
-        ignorePath: config.eslintOptions?.ignorePath ?? configDefaults.eslintOptions.ignorePath,
-        cache: config.eslintOptions?.cache ?? configDefaults.eslintOptions.cache,
-        cacheLocation: config.eslintOptions?.cacheLocation ?? configDefaults.eslintOptions.cacheLocation,
-        overrideConfig: config.eslintOptions?.overrideConfig ?? configDefaults.eslintOptions.overrideConfig,
-        cwd: config.eslintOptions?.cwd ?? configDefaults.eslintOptions.cwd,
-        resolvePluginsRelativeTo:
-          config.eslintOptions?.resolvePluginsRelativeTo ?? configDefaults.eslintOptions.resolvePluginsRelativeTo,
-      },
-    };
-    this.eslint = new ESLint(this.config.eslintOptions);
+    const type = config.eslintOptions.type;
+    if (type !== 'legacy' && type !== 'flat') {
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+      throw new Error(`Unexpected type of eslintOptions: ${type}`);
+    }
+    this.patterns = config.patterns;
+    this.formatterName = config.formatterName ?? configDefaults.formatterName;
+    this.quiet = config.quiet ?? configDefaults.quiet;
+    this.eslintOptions = normalizeConfig(config.eslintOptions);
+    this.eslint = createESLint(this.eslintOptions);
   }
 
   /**
@@ -131,8 +83,8 @@ export class Core {
    * @returns The results of linting
    */
   async lint(): Promise<ESLint.LintResult[]> {
-    let results = await this.eslint.lintFiles(this.config.patterns);
-    if (this.config.quiet) results = ESLint.getErrorResults(results);
+    let results = await this.eslint.lintFiles(this.patterns);
+    if (this.quiet) results = ESLint.getErrorResults(results);
     return results;
   }
 
@@ -145,7 +97,7 @@ export class Core {
     // Therefore, the function may not exist in versions lower than 7.29.0.
     const rulesMeta: ESLint.LintResultData['rulesMeta'] = this.eslint.getRulesMetaForResults?.(results) ?? {};
 
-    return format(results, { rulesMeta, cwd: this.config.eslintOptions.cwd });
+    return format(results, { rulesMeta, cwd: this.eslintOptions.cwd });
   }
 
   /**
@@ -154,7 +106,7 @@ export class Core {
    * @param ruleIds The rule ids to print details
    */
   async formatResultDetails(results: ESLint.LintResult[], ruleIds: (string | null)[]): Promise<string> {
-    const formatterName = this.config.formatterName;
+    const formatterName = this.formatterName;
 
     // When eslint-interactive is installed globally, eslint-formatter-codeframe will also be installed globally.
     // On the other hand, `eslint.loadFormatter` cannot load the globally installed formatter by name. So here it loads them by path.
@@ -254,26 +206,7 @@ export class Core {
     // TODO: refactor
     let results = filteredResultsOfLint;
     for (let i = 0; i < MAX_AUTOFIX_PASSES; i++) {
-      const eslint = new ESLint({
-        ...this.config.eslintOptions,
-        // This is super hack to load ESM plugin/rule.
-        // ref: https://github.com/eslint/eslint/issues/15453#issuecomment-1001200953
-        plugins: {
-          'eslint-interactive': eslintInteractivePlugin,
-        },
-        overrideConfig: {
-          plugins: ['eslint-interactive'],
-          rules: {
-            'eslint-interactive/fix': [2, { results, ruleIds, fix } as FixRuleOption],
-            // Turn off all rules except `eslint-interactive/fix` when fixing for performance.
-            ...Object.fromEntries(usedRuleIds.map((ruleId) => [ruleId, 'off'])),
-          },
-        },
-        // NOTE: Only fix the `fix` rule problems.
-        fix: (message) => message.ruleId === 'eslint-interactive/fix',
-        // Don't interpret lintFiles arguments as glob patterns for performance.
-        globInputPaths: false,
-      });
+      const eslint = createESLintForFix(this.eslintOptions, results, ruleIds, fix, usedRuleIds);
       // eslint-disable-next-line no-await-in-loop
       const resultsToFix = await eslint.lintFiles(targetFilePaths);
       // eslint-disable-next-line no-await-in-loop
