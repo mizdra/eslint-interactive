@@ -63,7 +63,7 @@ export class Core {
   readonly formatterName: string;
   readonly quiet: boolean;
   readonly eslintOptions: NormalizedConfig;
-  readonly eslint: ESLint;
+  eslint!: ESLint;
 
   constructor(config: Config) {
     const type = config.eslintOptions.type;
@@ -75,7 +75,6 @@ export class Core {
     this.formatterName = config.formatterName ?? configDefaults.formatterName;
     this.quiet = config.quiet ?? configDefaults.quiet;
     this.eslintOptions = normalizeConfig(config.eslintOptions);
-    this.eslint = createESLint(this.eslintOptions);
   }
 
   /**
@@ -83,6 +82,7 @@ export class Core {
    * @returns The results of linting
    */
   async lint(): Promise<ESLint.LintResult[]> {
+    this.eslint ??= await createESLint(this.eslintOptions);
     let results = await this.eslint.lintFiles(this.patterns);
     if (this.quiet) results = ESLint.getErrorResults(results);
     return results;
@@ -206,7 +206,8 @@ export class Core {
     // TODO: refactor
     let results = filteredResultsOfLint;
     for (let i = 0; i < MAX_AUTOFIX_PASSES; i++) {
-      const eslint = createESLintForFix(this.eslintOptions, results, ruleIds, fix, usedRuleIds);
+      // eslint-disable-next-line no-await-in-loop
+      const eslint = await createESLintForFix(this.eslintOptions, results, ruleIds, fix, usedRuleIds);
       // eslint-disable-next-line no-await-in-loop
       const resultsToFix = await eslint.lintFiles(targetFilePaths);
       // eslint-disable-next-line no-await-in-loop

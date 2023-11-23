@@ -1,13 +1,11 @@
 import { join, relative } from 'node:path';
 import { AST, ESLint, Linter, Rule, SourceCode } from 'eslint';
-import eslintPkg, { type FlatESLintOptions } from 'eslint/use-at-your-own-risk';
+import type unstableESLintModuleType from 'eslint/use-at-your-own-risk';
 import type { Comment, SourceLocation } from 'estree';
 import { Config } from '../core.js';
 import { eslintInteractivePlugin, Fix, FixRuleOption } from '../plugin/index.js';
 import { unique } from './array.js';
 import { getCacheDir } from './cache.js';
-
-const { FlatESLint } = eslintPkg;
 
 const COMMENT_RE =
   /^\s*(?<header>eslint-disable|eslint-disable-next-line)\s+(?<ruleList>[@a-z0-9\-_$/]*(?:\s*,\s*[@a-z0-9\-_$/]*)*(?:\s*,)?)(?:\s+--\s+(?<description>.*\S))?\s*$/u;
@@ -256,16 +254,18 @@ export function findShebang(sourceCodeText: string): { range: AST.Range } | null
   return { range: [0, result[0].length] };
 }
 
-export type ESLintOptions = ({ type: 'legacy' } & ESLint.Options) | ({ type: 'flat' } & FlatESLintOptions);
+export type ESLintOptions =
+  | ({ type: 'legacy' } & ESLint.Options)
+  | ({ type: 'flat' } & unstableESLintModuleType.FlatESLintOptions);
 
 export type NormalizedESLintOptions = Omit<ESLint.Options, 'cwd'> & {
   type: 'legacy';
   cwd: Exclude<ESLint.Options['cwd'], undefined>;
 };
 
-export type NormalizedFlatESLintOptions = Omit<FlatESLintOptions, 'cwd'> & {
+export type NormalizedFlatESLintOptions = Omit<unstableESLintModuleType.FlatESLintOptions, 'cwd'> & {
   type: 'flat';
-  cwd: Exclude<FlatESLintOptions['cwd'], undefined>;
+  cwd: Exclude<unstableESLintModuleType.FlatESLintOptions['cwd'], undefined>;
 };
 
 export type NormalizedConfig = NormalizedESLintOptions | NormalizedFlatESLintOptions;
@@ -317,23 +317,27 @@ export function normalizeConfig(config: ESLintOptions): NormalizedConfig {
   }
 }
 
-export function createESLint(config: NormalizedConfig): ESLint | InstanceType<typeof FlatESLint> {
+export async function createESLint(
+  config: NormalizedConfig,
+): Promise<ESLint | InstanceType<(typeof unstableESLintModuleType)['FlatESLint']>> {
   if (config.type === 'legacy') {
     const { type, ...rest } = config;
     return new ESLint(rest);
   } else {
+    const unstableESLintModule = await import('eslint/use-at-your-own-risk');
+    const { FlatESLint } = unstableESLintModule;
     const { type, ...rest } = config;
     return new FlatESLint(rest);
   }
 }
 
-export function createESLintForFix(
+export async function createESLintForFix(
   config: NormalizedConfig,
   results: ESLint.LintResult[],
   ruleIds: string[],
   fix: Fix,
   usedRuleIds: string[],
-): ESLint | InstanceType<typeof FlatESLint> {
+): Promise<ESLint | InstanceType<(typeof unstableESLintModuleType)['FlatESLint']>> {
   if (config.type === 'legacy') {
     const { type, ...rest } = config;
     return new ESLint({
@@ -357,6 +361,8 @@ export function createESLintForFix(
       globInputPaths: false,
     });
   } else {
+    const unstableESLintModule = await import('eslint/use-at-your-own-risk');
+    const { FlatESLint } = unstableESLintModule;
     const { type, ...rest } = config;
     return new FlatESLint({
       ...rest,
