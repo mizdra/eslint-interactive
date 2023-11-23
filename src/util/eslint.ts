@@ -317,9 +317,11 @@ export function normalizeConfig(config: ESLintOptions): NormalizedConfig {
 
 export function createESLint(config: NormalizedConfig): ESLint | InstanceType<typeof FlatESLint> {
   if (config.type === 'legacy') {
-    return new ESLint(config);
+    const { type, ...rest } = config;
+    return new ESLint(rest);
   } else {
-    return new FlatESLint(config);
+    const { type, ...rest } = config;
+    return new FlatESLint(rest);
   }
 }
 
@@ -331,8 +333,9 @@ export function createESLintForFix(
   usedRuleIds: string[],
 ): ESLint | InstanceType<typeof FlatESLint> {
   if (config.type === 'legacy') {
+    const { type, ...rest } = config;
     return new ESLint({
-      ...config,
+      ...rest,
       // This is super hack to load ESM plugin/rule.
       // ref: https://github.com/eslint/eslint/issues/15453#issuecomment-1001200953
       plugins: {
@@ -352,8 +355,9 @@ export function createESLintForFix(
       globInputPaths: false,
     });
   } else {
+    const { type, ...rest } = config;
     return new FlatESLint({
-      ...config,
+      ...rest,
       overrideConfig: {
         plugins: {
           'eslint-interactive': eslintInteractivePlugin,
