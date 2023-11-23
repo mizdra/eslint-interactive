@@ -10,8 +10,14 @@ describe('parseArgv', () => {
     expect(parseArgv([...baseArgs, '1', 'true']).patterns).toStrictEqual(['1', 'true']);
   });
   test('--no-eslintrc', () => {
-    expect(parseArgv([...baseArgs, '--no-eslintrc']).eslintOptions?.useEslintrc).toStrictEqual(false);
-    expect(parseArgv([...baseArgs, '--no-eslintrc=false']).eslintOptions?.useEslintrc).toStrictEqual(true);
+    expect(parseArgv([...baseArgs, '--no-eslintrc']).eslintOptions).toContainEqual({
+      type: 'legacy',
+      useEslintrc: false,
+    });
+    expect(parseArgv([...baseArgs, '--no-eslintrc=false']).eslintOptions).toContainEqual({
+      type: 'legacy',
+      useEslintrc: true,
+    });
   });
   test('--config', () => {
     expect(parseArgv([...baseArgs]).eslintOptions?.overrideConfigFile).toStrictEqual(undefined);
@@ -20,33 +26,54 @@ describe('parseArgv', () => {
     ).toStrictEqual('override-config-file.json');
   });
   test('--rulesdir', () => {
-    expect(parseArgv([...baseArgs, '--rulesdir', 'foo']).eslintOptions?.rulePaths).toStrictEqual(['foo']);
-    expect(parseArgv([...baseArgs, '--rulesdir', 'foo', '--rulesdir', 'bar']).eslintOptions?.rulePaths).toStrictEqual([
-      'foo',
-      'bar',
-    ]);
-    expect(parseArgv([...baseArgs, '--rulesdir', 'foo', 'bar']).eslintOptions?.rulePaths).toStrictEqual(['foo']);
-    expect(parseArgv([...baseArgs, '--rulesdir', '1', '--rulesdir', 'true']).eslintOptions?.rulePaths).toStrictEqual([
-      '1',
-      'true',
-    ]);
+    expect(parseArgv([...baseArgs, '--rulesdir', 'foo']).eslintOptions).toContainEqual({
+      type: 'legacy',
+      rulePaths: ['foo'],
+    });
+    expect(parseArgv([...baseArgs, '--rulesdir', 'foo', '--rulesdir', 'bar']).eslintOptions).toContainEqual({
+      type: 'legacy',
+      rulePaths: ['foo', 'bar'],
+    });
+    expect(parseArgv([...baseArgs, '--rulesdir', 'foo', 'bar']).eslintOptions).toContainEqual({
+      type: 'legacy',
+      rulePaths: ['foo'],
+    });
+    expect(parseArgv([...baseArgs, '--rulesdir', '1', '--rulesdir', 'true']).eslintOptions).toContainEqual({
+      type: 'legacy',
+      rulePaths: ['1', 'true'],
+    });
   });
   test('--ignore-path', () => {
-    expect(parseArgv([...baseArgs]).eslintOptions?.ignorePath).toStrictEqual(undefined);
-    expect(parseArgv([...baseArgs, '--ignore-path', 'foo']).eslintOptions?.ignorePath).toStrictEqual('foo');
+    expect(parseArgv([...baseArgs]).eslintOptions).toContainEqual({
+      type: 'legacy',
+      ignorePath: undefined,
+    });
+    expect(parseArgv([...baseArgs, '--ignore-path', 'foo']).eslintOptions).toContainEqual({
+      type: 'legacy',
+      ignorePath: 'foo',
+    });
   });
   test('--ext', () => {
-    expect(parseArgv([...baseArgs, '--ext', 'js']).eslintOptions?.extensions).toStrictEqual(['js']);
-    expect(parseArgv([...baseArgs, '--ext', 'js', '--ext', 'ts']).eslintOptions?.extensions).toStrictEqual([
-      'js',
-      'ts',
-    ]);
-    expect(parseArgv([...baseArgs, '--ext', 'js', 'ts']).eslintOptions?.extensions).toStrictEqual(['js']);
-    expect(parseArgv([...baseArgs, '--ext', 'js,ts,tsx']).eslintOptions?.extensions).toStrictEqual(['js', 'ts', 'tsx']);
-    expect(parseArgv([...baseArgs, '--ext', '1', '--ext', 'true']).eslintOptions?.extensions).toStrictEqual([
-      '1',
-      'true',
-    ]);
+    expect(parseArgv([...baseArgs, '--ext', 'js']).eslintOptions).toContainEqual({
+      type: 'legacy',
+      extensions: ['js'],
+    });
+    expect(parseArgv([...baseArgs, '--ext', 'js', '--ext', 'ts']).eslintOptions).toContainEqual({
+      type: 'legacy',
+      extensions: ['js', 'ts'],
+    });
+    expect(parseArgv([...baseArgs, '--ext', 'js', 'ts']).eslintOptions).toContainEqual({
+      type: 'legacy',
+      extensions: ['js'],
+    });
+    expect(parseArgv([...baseArgs, '--ext', 'js,ts,tsx']).eslintOptions).toContainEqual({
+      type: 'legacy',
+      extensions: ['js', 'ts', 'tsx'],
+    });
+    expect(parseArgv([...baseArgs, '--ext', '1', '--ext', 'true']).eslintOptions).toContainEqual({
+      type: 'legacy',
+      extensions: ['1', 'true'],
+    });
   });
   test('--format', () => {
     expect(parseArgv([...baseArgs, '--format', 'foo']).formatterName).toBe('foo');

@@ -1,5 +1,6 @@
 import yargs from 'yargs';
-import { Config, configDefaults } from '../core.js';
+import { Config } from '../core.js';
+import { configDefaults } from '../util/eslint.js';
 import { VERSION } from './package.js';
 
 /** Parse argv into the config object of eslint-interactive */
@@ -80,6 +81,7 @@ export function parseArgv(argv: string[]): Config {
   return {
     patterns,
     eslintOptions: {
+      type: 'legacy', // TODO: support 'flat' mode
       useEslintrc: parsedArgv.eslintrc,
       overrideConfigFile: parsedArgv.config,
       extensions,

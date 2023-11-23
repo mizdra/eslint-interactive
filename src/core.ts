@@ -1,12 +1,12 @@
 import { fileURLToPath } from 'node:url';
 import { ESLint } from 'eslint';
-import { FlatESLintOptions } from 'eslint/use-at-your-own-risk';
 import isInstalledGlobally from 'is-installed-globally';
 import { DescriptionPosition } from './cli/prompt.js';
 import { format } from './formatter/index.js';
 import { FixableMaker, SuggestionFilter, Fix, OVERLAPPED_PROBLEM_MESSAGE } from './plugin/index.js';
 import { unique } from './util/array.js';
 import {
+  ESLintOptions,
   NormalizedConfig,
   configDefaults,
   createESLint,
@@ -51,7 +51,7 @@ export type Config = {
   patterns: string[];
   formatterName?: string | undefined;
   quiet?: boolean | undefined;
-  eslintOptions: ({ type: 'legacy' } & ESLint.Options) | ({ type: 'flat' } & FlatESLintOptions);
+  eslintOptions: ESLintOptions;
 };
 
 /**

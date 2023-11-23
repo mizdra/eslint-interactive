@@ -3,8 +3,9 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { ESLint, Linter } from 'eslint';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
-import { Core, configDefaults } from './core.js';
+import { Core } from './core.js';
 import { cleanupFixturesCopy, createIFF, getSnapshotOfChangedFiles, setupFixturesCopy } from './test-util/fixtures.js';
+import { ESLintOptions, configDefaults } from './util/eslint.js';
 
 const testIf = (condition: boolean) => (condition ? test : test.skip);
 
@@ -54,16 +55,18 @@ afterEach(async () => {
 });
 
 describe('Core', () => {
+  const coreEslintOptions = {
+    type: 'legacy',
+    rulePaths: ['fixtures-tmp/rules'],
+    extensions: ['.js', '.jsx', '.mjs'],
+    cwd,
+  } satisfies ESLintOptions;
   let core: Core;
   beforeEach(() => {
     core = new Core({
       patterns: ['fixtures-tmp'],
       formatterName,
-      eslintOptions: {
-        rulePaths: ['fixtures-tmp/rules'],
-        extensions: ['.js', '.jsx', '.mjs'],
-        cwd,
-      },
+      eslintOptions: coreEslintOptions,
     });
   });
   test('baseOptions', async () => {
@@ -76,6 +79,7 @@ describe('Core', () => {
       patterns: ['pattern-a', 'pattern-b'],
       formatterName,
       eslintOptions: {
+        type: 'legacy',
         useEslintrc: false,
         overrideConfigFile: 'override-config-file.json',
         rulePaths: ['rule-path-a'],
@@ -85,7 +89,8 @@ describe('Core', () => {
         cwd: iff.rootDir,
       },
     });
-    expect(core1.config.eslintOptions).toStrictEqual<ESLint.Options>({
+    expect(core1.eslintOptions).toStrictEqual({
+      type: 'legacy',
       useEslintrc: false,
       overrideConfigFile: 'override-config-file.json',
       cache: false,
@@ -99,8 +104,9 @@ describe('Core', () => {
     });
     const core2 = new Core({
       patterns: ['pattern-a', 'pattern-b'],
+      eslintOptions: { type: 'legacy' },
     });
-    expect(core2.config.eslintOptions).toStrictEqual<ESLint.Options>(configDefaults.eslintOptions);
+    expect(core2.eslintOptions).toStrictEqual<ESLint.Options>(configDefaults.eslintOptions);
   });
   describe('lint', () => {
     test('returns lint results', async () => {
@@ -109,14 +115,14 @@ describe('Core', () => {
     });
     test('filters warnings with --quiet option', async () => {
       const coreWithoutQuiet = new Core({
-        ...core.config,
+        ...core,
         quiet: false,
       });
       const resultsWithoutQuiet = await coreWithoutQuiet.lint();
       expect(countWarnings(resultsWithoutQuiet)).not.toEqual(0);
 
       const coreWithQuiet = new Core({
-        ...core.config,
+        ...core,
         quiet: true,
       });
       const resultsWithQuiet = await coreWithQuiet.lint();
@@ -124,15 +130,15 @@ describe('Core', () => {
     });
     test('ignores files with --ignore-path option', async () => {
       const coreWithoutIgnorePath = new Core({
-        ...core.config,
+        ...core,
       });
       const resultsWithoutIgnorePath = await coreWithoutIgnorePath.lint();
       expect(countWarnings(resultsWithoutIgnorePath)).not.toEqual(0);
 
       const coreWithIgnorePath = new Core({
-        ...core.config,
+        ...core,
         eslintOptions: {
-          ...core.config.eslintOptions,
+          ...coreEslintOptions,
           ignorePath: 'fixtures-tmp/.customignore',
         },
       });
@@ -226,9 +232,11 @@ describe('Core', () => {
   describe('with overrideConfig', () => {
     test('returns lint results', async () => {
       const coreWithOverride = new Core({
-        ...core.config,
+        patterns: core.patterns,
+        formatterName: core.formatterName,
+        quiet: core.quiet,
         eslintOptions: {
-          ...core.config.eslintOptions,
+          ...coreEslintOptions,
           useEslintrc: false,
           overrideConfig: {
             root: true,
