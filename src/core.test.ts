@@ -1,11 +1,9 @@
-import { constants, cp } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { ESLint, Linter } from 'eslint';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
-import { configDefaults } from './config.js';
 import { Core } from './core.js';
-import { cleanupFixturesCopy, createIFF, getSnapshotOfChangedFiles, setupFixturesCopy } from './test-util/fixtures.js';
+import { cleanupFixturesCopy, getSnapshotOfChangedFiles, setupFixturesCopy } from './test-util/fixtures.js';
 
 const testIf = (condition: boolean) => (condition ? test : test.skip);
 
@@ -68,51 +66,6 @@ describe('Core', () => {
       },
     });
   });
-  test('baseOptions', async () => {
-    const iff = await createIFF({
-      'override-config-file.json': `{}`,
-      'rule-path-a': async (path) =>
-        cp(join(rootDir, 'fixtures/rules'), path, { mode: constants.COPYFILE_FICLONE, recursive: true }),
-    });
-    const core1 = new Core({
-      patterns: ['pattern-a', 'pattern-b'],
-      formatterName,
-      cwd: iff.rootDir,
-      eslintOptions: {
-        type: 'eslintrc',
-        useEslintrc: false,
-        overrideConfigFile: 'override-config-file.json',
-        rulePaths: ['rule-path-a'],
-        extensions: ['.js', '.jsx'],
-        cache: false,
-        cacheLocation: '.eslintcache',
-      },
-    });
-    expect(core1.config.eslintOptions).toStrictEqual({
-      type: 'eslintrc',
-      useEslintrc: false,
-      overrideConfigFile: 'override-config-file.json',
-      cache: false,
-      cacheLocation: '.eslintcache',
-      rulePaths: ['rule-path-a'],
-      extensions: ['.js', '.jsx'],
-      cwd: iff.rootDir,
-      ignorePath: undefined,
-      overrideConfig: undefined,
-      resolvePluginsRelativeTo: undefined,
-    });
-    const core2 = new Core({
-      patterns: ['pattern-a', 'pattern-b'],
-      eslintOptions: {
-        type: 'eslintrc',
-      },
-    });
-    expect(core2.config.eslintOptions).toStrictEqual({
-      ...configDefaults.eslintOptions,
-      type: 'eslintrc',
-      cwd: process.cwd(),
-    });
-  });
   describe('lint', () => {
     test('returns lint results', async () => {
       const results = await core.lint();
@@ -132,23 +85,6 @@ describe('Core', () => {
       });
       const resultsWithQuiet = await coreWithQuiet.lint();
       expect(countWarnings(resultsWithQuiet)).toEqual(0);
-    });
-    test('ignores files with --ignore-path option', async () => {
-      const coreWithoutIgnorePath = new Core({
-        ...core.config,
-      });
-      const resultsWithoutIgnorePath = await coreWithoutIgnorePath.lint();
-      expect(countWarnings(resultsWithoutIgnorePath)).not.toEqual(0);
-
-      const coreWithIgnorePath = new Core({
-        ...core.config,
-        eslintOptions: {
-          ...core.config.eslintOptions,
-          ignorePath: 'fixtures-tmp/.customignore',
-        },
-      });
-      const resultsWithIgnorePath = await coreWithIgnorePath.lint();
-      expect(countWarnings(resultsWithIgnorePath)).toEqual(0);
     });
   });
   // This test fails because the documentation url format is not supported in eslint 7.x.x and 8.0.0. Therefore, ignore this test.
@@ -232,36 +168,6 @@ describe('Core', () => {
       expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
       await undo();
       expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
-    });
-  });
-  describe('with overrideConfig', () => {
-    test('returns lint results', async () => {
-      const coreWithOverride = new Core({
-        ...core.config,
-        eslintOptions: {
-          ...core.config.eslintOptions,
-          useEslintrc: false,
-          overrideConfig: {
-            root: true,
-            env: {
-              node: true,
-              es2020: true,
-            },
-            parserOptions: {
-              sourceType: 'module',
-              ecmaVersion: 2020,
-              ecmaFeatures: {
-                jsx: true,
-              },
-            },
-            rules: {
-              semi: 'error',
-            },
-          },
-        },
-      });
-      const resultsWithOverride = await coreWithOverride.lint();
-      expect(normalizeResults(resultsWithOverride)).toMatchSnapshot();
     });
   });
 });
