@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1700453936781,
+  "lastUpdate": 1701011458806,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -1518,6 +1518,35 @@ window.BENCHMARK_DATA = {
           {
             "name": "cachegrind-benchmarking",
             "value": 18868660767,
+            "unit": "instructions"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "pp.mizdra@gmail.com",
+            "name": "mizdra",
+            "username": "mizdra"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "dbd66c0051e7553a4e48eb9fccf5a2ef6318e018",
+          "message": "Merge pull request #327 from mizdra/change-options-interface\n\nChange options interface",
+          "timestamp": "2023-11-27T00:09:09+09:00",
+          "tree_id": "b8727e570118c9b83e87afd45e18d0c44c435b11",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/dbd66c0051e7553a4e48eb9fccf5a2ef6318e018"
+        },
+        "date": 1701011458328,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "cachegrind-benchmarking",
+            "value": 18525296804,
             "unit": "instructions"
           }
         ]
