@@ -1,7 +1,5 @@
-import { join, relative } from 'node:path';
 import { ESLint } from 'eslint';
-import { ParsedCLIOptions } from './cli/parse-argv.js';
-import { getCacheDir } from './util/cache.js';
+import { cliOptionsDefaults, ParsedCLIOptions } from './cli/parse-argv.js';
 import { DeepPartial } from './util/type-check.js';
 
 export type ESLintrcESLintOptions = { type: 'eslintrc' } & Pick<
@@ -58,17 +56,17 @@ export function translateCLIOptions(options: ParsedCLIOptions, eslintOptionsType
 
 /** Default config of `Core` */
 export const configDefaults = {
-  formatterName: 'codeframe',
-  quiet: false,
+  formatterName: cliOptionsDefaults.formatterName,
+  quiet: cliOptionsDefaults.quiet,
   cwd: process.cwd(),
   eslintOptions: {
-    useEslintrc: true,
+    useEslintrc: cliOptionsDefaults.useEslintrc,
     overrideConfigFile: undefined,
     extensions: undefined,
     rulePaths: undefined,
     ignorePath: undefined,
-    cache: true,
-    cacheLocation: relative(process.cwd(), join(getCacheDir(), '.eslintcache')),
+    cache: cliOptionsDefaults.cache,
+    cacheLocation: cliOptionsDefaults.cacheLocation,
     overrideConfig: undefined,
     resolvePluginsRelativeTo: undefined,
   },
