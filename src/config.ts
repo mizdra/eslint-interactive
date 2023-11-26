@@ -29,24 +29,6 @@ export type Config = {
   eslintOptions: ESLintOptions;
 };
 
-/** Default config of `Core` */
-export const configDefaults = {
-  formatterName: 'codeframe',
-  quiet: false,
-  cwd: process.cwd(),
-  eslintOptions: {
-    useEslintrc: true,
-    overrideConfigFile: undefined,
-    extensions: undefined,
-    rulePaths: undefined,
-    ignorePath: undefined,
-    cache: true,
-    cacheLocation: relative(process.cwd(), join(getCacheDir(), '.eslintcache')),
-    overrideConfig: undefined,
-    resolvePluginsRelativeTo: undefined,
-  },
-} satisfies DeepPartial<Config>;
-
 type ESLintOptionsType = 'eslintrc' | 'flat';
 
 export function translateCLIOptions(options: ParsedCLIOptions, eslintOptionsType: ESLintOptionsType): Config {
@@ -72,4 +54,54 @@ export function translateCLIOptions(options: ParsedCLIOptions, eslintOptionsType
   } else {
     throw new Error(`Unexpected configType: ${String(eslintOptionsType)}`);
   }
+}
+
+/** Default config of `Core` */
+export const configDefaults = {
+  formatterName: 'codeframe',
+  quiet: false,
+  cwd: process.cwd(),
+  eslintOptions: {
+    useEslintrc: true,
+    overrideConfigFile: undefined,
+    extensions: undefined,
+    rulePaths: undefined,
+    ignorePath: undefined,
+    cache: true,
+    cacheLocation: relative(process.cwd(), join(getCacheDir(), '.eslintcache')),
+    overrideConfig: undefined,
+    resolvePluginsRelativeTo: undefined,
+  },
+} satisfies DeepPartial<Config>;
+
+export type NormalizedConfig = {
+  patterns: string[];
+  formatterName: string;
+  quiet: boolean;
+  cwd: string;
+  eslintOptions: ESLintOptions;
+};
+
+export function normalizeConfig(config: Config): NormalizedConfig {
+  const cwd = config.cwd ?? configDefaults.cwd;
+  return {
+    patterns: config.patterns,
+    formatterName: config.formatterName ?? configDefaults.formatterName,
+    quiet: config.quiet ?? configDefaults.quiet,
+    cwd,
+    eslintOptions: {
+      type: 'eslintrc',
+      useEslintrc: config.eslintOptions.useEslintrc ?? configDefaults.eslintOptions.useEslintrc,
+      overrideConfigFile: config.eslintOptions.overrideConfigFile ?? configDefaults.eslintOptions.overrideConfigFile,
+      extensions: config.eslintOptions.extensions ?? configDefaults.eslintOptions.extensions,
+      rulePaths: config.eslintOptions.rulePaths ?? configDefaults.eslintOptions.rulePaths,
+      ignorePath: config.eslintOptions.ignorePath ?? configDefaults.eslintOptions.ignorePath,
+      cache: config.eslintOptions.cache ?? configDefaults.eslintOptions.cache,
+      cacheLocation: config.eslintOptions.cacheLocation ?? configDefaults.eslintOptions.cacheLocation,
+      overrideConfig: config.eslintOptions.overrideConfig ?? configDefaults.eslintOptions.overrideConfig,
+      cwd,
+      resolvePluginsRelativeTo:
+        config.eslintOptions.resolvePluginsRelativeTo ?? configDefaults.eslintOptions.resolvePluginsRelativeTo,
+    },
+  };
 }
