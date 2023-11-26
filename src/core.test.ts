@@ -60,6 +60,7 @@ describe('Core', () => {
       patterns: ['fixtures-tmp'],
       formatterName,
       eslintOptions: {
+        type: 'eslintrc',
         rulePaths: ['fixtures-tmp/rules'],
         extensions: ['.js', '.jsx', '.mjs'],
         cwd,
@@ -76,6 +77,7 @@ describe('Core', () => {
       patterns: ['pattern-a', 'pattern-b'],
       formatterName,
       eslintOptions: {
+        type: 'eslintrc',
         useEslintrc: false,
         overrideConfigFile: 'override-config-file.json',
         rulePaths: ['rule-path-a'],
@@ -85,7 +87,8 @@ describe('Core', () => {
         cwd: iff.rootDir,
       },
     });
-    expect(core1.config.eslintOptions).toStrictEqual<ESLint.Options>({
+    expect(core1.config.eslintOptions).toStrictEqual({
+      type: 'eslintrc',
       useEslintrc: false,
       overrideConfigFile: 'override-config-file.json',
       cache: false,
@@ -99,8 +102,11 @@ describe('Core', () => {
     });
     const core2 = new Core({
       patterns: ['pattern-a', 'pattern-b'],
+      eslintOptions: {
+        type: 'eslintrc',
+      },
     });
-    expect(core2.config.eslintOptions).toStrictEqual<ESLint.Options>(configDefaults.eslintOptions);
+    expect(core2.config.eslintOptions).toStrictEqual(configDefaults.eslintOptions);
   });
   describe('lint', () => {
     test('returns lint results', async () => {

@@ -15,6 +15,7 @@ import {
 import { unique } from './util/array.js';
 import { getCacheDir } from './util/cache.js';
 import { filterResultsByRuleId } from './util/eslint.js';
+import { DeepPartial } from './util/type-check.js';
 
 const MAX_AUTOFIX_PASSES = 10;
 
@@ -47,7 +48,7 @@ async function getUsedRuleIds(eslint: ESLint, targetFilePaths: string[]): Promis
 
 export type Undo = () => Promise<void>;
 
-export type ESLintOptions = Pick<
+export type ESLintrcESLintOptions = { type: 'eslintrc' } & Pick<
   ESLint.Options,
   | 'useEslintrc'
   | 'overrideConfigFile'
@@ -61,21 +62,14 @@ export type ESLintOptions = Pick<
   | 'resolvePluginsRelativeTo'
 >;
 
+export type ESLintOptions = ESLintrcESLintOptions; // TODO: support flat config
+
 /** The config of eslint-interactive */
 export type Config = {
   patterns: string[];
   formatterName?: string | undefined;
   quiet?: boolean | undefined;
-  eslintOptions?: ESLint.Options;
-};
-
-type NormalizedESLintOptions = Omit<ESLintOptions, 'cwd'> & { cwd: Exclude<ESLintOptions['cwd'], undefined> };
-
-type NormalizedConfig = {
-  patterns: string[];
-  formatterName: string;
-  quiet: boolean;
-  eslintOptions: NormalizedESLintOptions;
+  eslintOptions: ESLintOptions;
 };
 
 /** Default config of `Core` */
@@ -94,14 +88,14 @@ export const configDefaults = {
     cwd: process.cwd(),
     resolvePluginsRelativeTo: undefined,
   },
-} satisfies Partial<Config>;
+} satisfies DeepPartial<Config>;
 
 /**
  * The core of eslint-interactive.
  * It uses ESLint's Node.js API to output a summary of problems, fix problems, apply suggestions, etc.
  */
 export class Core {
-  readonly config: NormalizedConfig;
+  readonly config: Config;
   readonly eslint: ESLint;
 
   constructor(config: Config) {
@@ -110,6 +104,7 @@ export class Core {
       formatterName: config.formatterName ?? configDefaults.formatterName,
       quiet: config.quiet ?? configDefaults.quiet,
       eslintOptions: {
+        type: 'eslintrc',
         useEslintrc: config.eslintOptions?.useEslintrc ?? configDefaults.eslintOptions.useEslintrc,
         overrideConfigFile: config.eslintOptions?.overrideConfigFile ?? configDefaults.eslintOptions.overrideConfigFile,
         extensions: config.eslintOptions?.extensions ?? configDefaults.eslintOptions.extensions,
@@ -123,7 +118,8 @@ export class Core {
           config.eslintOptions?.resolvePluginsRelativeTo ?? configDefaults.eslintOptions.resolvePluginsRelativeTo,
       },
     };
-    this.eslint = new ESLint(this.config.eslintOptions);
+    const { type, ...eslintOptions } = this.config.eslintOptions;
+    this.eslint = new ESLint(eslintOptions);
   }
 
   /**
@@ -145,7 +141,7 @@ export class Core {
     // Therefore, the function may not exist in versions lower than 7.29.0.
     const rulesMeta: ESLint.LintResultData['rulesMeta'] = this.eslint.getRulesMetaForResults?.(results) ?? {};
 
-    return format(results, { rulesMeta, cwd: this.config.eslintOptions.cwd });
+    return format(results, { rulesMeta, cwd: this.config.eslintOptions?.cwd ?? configDefaults.eslintOptions.cwd });
   }
 
   /**
@@ -254,8 +250,9 @@ export class Core {
     // TODO: refactor
     let results = filteredResultsOfLint;
     for (let i = 0; i < MAX_AUTOFIX_PASSES; i++) {
+      const { type, ...eslintOptions } = this.config.eslintOptions;
       const eslint = new ESLint({
-        ...this.config.eslintOptions,
+        ...eslintOptions,
         // This is super hack to load ESM plugin/rule.
         // ref: https://github.com/eslint/eslint/issues/15453#issuecomment-1001200953
         plugins: {

@@ -115,6 +115,7 @@ export function translateCLIOptions(options: ParsedCLIOptions, eslintOptionsType
       formatterName: options.formatterName,
       quiet: options.quiet,
       eslintOptions: {
+        type: 'eslintrc',
         useEslintrc: options.useEslintrc,
         overrideConfigFile: options.overrideConfigFile,
         extensions: options.extensions,
