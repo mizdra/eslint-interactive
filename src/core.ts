@@ -1,8 +1,8 @@
-import { join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { ESLint } from 'eslint';
 import isInstalledGlobally from 'is-installed-globally';
 import { DescriptionPosition } from './cli/prompt.js';
+import { Config, ESLintOptions, configDefaults } from './config.js';
 import { format } from './formatter/index.js';
 import {
   eslintInteractivePlugin,
@@ -13,9 +13,7 @@ import {
   OVERLAPPED_PROBLEM_MESSAGE,
 } from './plugin/index.js';
 import { unique } from './util/array.js';
-import { getCacheDir } from './util/cache.js';
 import { filterResultsByRuleId } from './util/eslint.js';
-import { DeepPartial } from './util/type-check.js';
 
 const MAX_AUTOFIX_PASSES = 10;
 
@@ -47,49 +45,6 @@ async function getUsedRuleIds(eslint: ESLint, targetFilePaths: string[]): Promis
 }
 
 export type Undo = () => Promise<void>;
-
-export type ESLintrcESLintOptions = { type: 'eslintrc' } & Pick<
-  ESLint.Options,
-  | 'useEslintrc'
-  | 'overrideConfigFile'
-  | 'extensions'
-  | 'rulePaths'
-  | 'ignorePath'
-  | 'cache'
-  | 'cacheLocation'
-  | 'overrideConfig'
-  | 'cwd'
-  | 'resolvePluginsRelativeTo'
->;
-
-export type ESLintOptions = ESLintrcESLintOptions; // TODO: support flat config
-
-/** The config of eslint-interactive */
-export type Config = {
-  patterns: string[];
-  formatterName?: string | undefined;
-  quiet?: boolean | undefined;
-  cwd?: string | undefined;
-  eslintOptions: ESLintOptions;
-};
-
-/** Default config of `Core` */
-export const configDefaults = {
-  formatterName: 'codeframe',
-  quiet: false,
-  cwd: process.cwd(),
-  eslintOptions: {
-    useEslintrc: true,
-    overrideConfigFile: undefined,
-    extensions: undefined,
-    rulePaths: undefined,
-    ignorePath: undefined,
-    cache: true,
-    cacheLocation: relative(process.cwd(), join(getCacheDir(), '.eslintcache')),
-    overrideConfig: undefined,
-    resolvePluginsRelativeTo: undefined,
-  },
-} satisfies DeepPartial<Config>;
 
 /**
  * The core of eslint-interactive.

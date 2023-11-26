@@ -1,8 +1,8 @@
 import yargs from 'yargs';
-import { Config, configDefaults } from '../core.js';
+import { configDefaults } from '../config.js';
 import { VERSION } from './package.js';
 
-type ParsedCLIOptions = {
+export type ParsedCLIOptions = {
   patterns: string[];
   formatterName: string;
   quiet: boolean;
@@ -104,31 +104,4 @@ export function parseArgv(argv: string[]): ParsedCLIOptions {
     cacheLocation: parsedArgv['cache-location'],
     resolvePluginsRelativeTo: parsedArgv['resolve-plugins-relative-to'],
   };
-}
-
-type ESLintOptionsType = 'eslintrc' | 'flat';
-
-export function translateCLIOptions(options: ParsedCLIOptions, eslintOptionsType: ESLintOptionsType): Config {
-  if (eslintOptionsType === 'eslintrc') {
-    return {
-      patterns: options.patterns,
-      formatterName: options.formatterName,
-      quiet: options.quiet,
-      eslintOptions: {
-        type: 'eslintrc',
-        useEslintrc: options.useEslintrc,
-        overrideConfigFile: options.overrideConfigFile,
-        extensions: options.extensions,
-        rulePaths: options.rulePaths,
-        ignorePath: options.ignorePath,
-        cache: options.cache,
-        cacheLocation: options.cacheLocation,
-        resolvePluginsRelativeTo: options.resolvePluginsRelativeTo,
-      },
-    };
-  } else if (eslintOptionsType === 'flat') {
-    throw new Error('Flat config is not supported yet');
-  } else {
-    throw new Error(`Unexpected configType: ${String(eslintOptionsType)}`);
-  }
 }

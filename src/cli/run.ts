@@ -6,7 +6,8 @@ import nodeEndpoint from 'comlink/dist/esm/node-adapter.mjs';
 import isInstalledGlobally from 'is-installed-globally';
 import terminalLink from 'terminal-link';
 import { warn } from '../cli/log.js';
-import { parseArgv, translateCLIOptions } from '../cli/parse-argv.js';
+import { parseArgv } from '../cli/parse-argv.js';
+import { translateCLIOptions } from '../config.js';
 import { SerializableCore } from '../core-worker.js';
 import { lint, selectAction, selectRuleIds, checkResults, NextScene } from '../scene/index.js';
 

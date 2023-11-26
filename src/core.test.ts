@@ -3,7 +3,8 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { ESLint, Linter } from 'eslint';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
-import { Core, configDefaults } from './core.js';
+import { configDefaults } from './config.js';
+import { Core } from './core.js';
 import { cleanupFixturesCopy, createIFF, getSnapshotOfChangedFiles, setupFixturesCopy } from './test-util/fixtures.js';
 
 const testIf = (condition: boolean) => (condition ? test : test.skip);
