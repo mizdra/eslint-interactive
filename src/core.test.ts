@@ -87,7 +87,7 @@ describe('Core', () => {
         cwd: iff.rootDir,
       },
     });
-    expect(core1.config.eslintOptions).toStrictEqual({
+    expect(core1.eslintOptions).toStrictEqual({
       type: 'eslintrc',
       useEslintrc: false,
       overrideConfigFile: 'override-config-file.json',
@@ -106,7 +106,10 @@ describe('Core', () => {
         type: 'eslintrc',
       },
     });
-    expect(core2.config.eslintOptions).toStrictEqual(configDefaults.eslintOptions);
+    expect(core2.eslintOptions).toStrictEqual({
+      type: 'eslintrc',
+      ...configDefaults.eslintOptions,
+    });
   });
   describe('lint', () => {
     test('returns lint results', async () => {
@@ -115,14 +118,14 @@ describe('Core', () => {
     });
     test('filters warnings with --quiet option', async () => {
       const coreWithoutQuiet = new Core({
-        ...core.config,
+        ...core,
         quiet: false,
       });
       const resultsWithoutQuiet = await coreWithoutQuiet.lint();
       expect(countWarnings(resultsWithoutQuiet)).not.toEqual(0);
 
       const coreWithQuiet = new Core({
-        ...core.config,
+        ...core,
         quiet: true,
       });
       const resultsWithQuiet = await coreWithQuiet.lint();
@@ -130,15 +133,15 @@ describe('Core', () => {
     });
     test('ignores files with --ignore-path option', async () => {
       const coreWithoutIgnorePath = new Core({
-        ...core.config,
+        ...core,
       });
       const resultsWithoutIgnorePath = await coreWithoutIgnorePath.lint();
       expect(countWarnings(resultsWithoutIgnorePath)).not.toEqual(0);
 
       const coreWithIgnorePath = new Core({
-        ...core.config,
+        ...core,
         eslintOptions: {
-          ...core.config.eslintOptions,
+          ...core.eslintOptions,
           ignorePath: 'fixtures-tmp/.customignore',
         },
       });
@@ -232,9 +235,9 @@ describe('Core', () => {
   describe('with overrideConfig', () => {
     test('returns lint results', async () => {
       const coreWithOverride = new Core({
-        ...core.config,
+        ...core,
         eslintOptions: {
-          ...core.config.eslintOptions,
+          ...core.eslintOptions,
           useEslintrc: false,
           overrideConfig: {
             root: true,

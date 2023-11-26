@@ -95,30 +95,31 @@ export const configDefaults = {
  * It uses ESLint's Node.js API to output a summary of problems, fix problems, apply suggestions, etc.
  */
 export class Core {
-  readonly config: Config;
+  readonly patterns: string[];
+  readonly formatterName: string;
+  readonly quiet: boolean;
+  readonly eslintOptions: ESLintOptions;
   readonly eslint: ESLint;
 
   constructor(config: Config) {
-    this.config = {
-      patterns: config.patterns,
-      formatterName: config.formatterName ?? configDefaults.formatterName,
-      quiet: config.quiet ?? configDefaults.quiet,
-      eslintOptions: {
-        type: 'eslintrc',
-        useEslintrc: config.eslintOptions?.useEslintrc ?? configDefaults.eslintOptions.useEslintrc,
-        overrideConfigFile: config.eslintOptions?.overrideConfigFile ?? configDefaults.eslintOptions.overrideConfigFile,
-        extensions: config.eslintOptions?.extensions ?? configDefaults.eslintOptions.extensions,
-        rulePaths: config.eslintOptions?.rulePaths ?? configDefaults.eslintOptions.rulePaths,
-        ignorePath: config.eslintOptions?.ignorePath ?? configDefaults.eslintOptions.ignorePath,
-        cache: config.eslintOptions?.cache ?? configDefaults.eslintOptions.cache,
-        cacheLocation: config.eslintOptions?.cacheLocation ?? configDefaults.eslintOptions.cacheLocation,
-        overrideConfig: config.eslintOptions?.overrideConfig ?? configDefaults.eslintOptions.overrideConfig,
-        cwd: config.eslintOptions?.cwd ?? configDefaults.eslintOptions.cwd,
-        resolvePluginsRelativeTo:
-          config.eslintOptions?.resolvePluginsRelativeTo ?? configDefaults.eslintOptions.resolvePluginsRelativeTo,
-      },
+    this.patterns = config.patterns;
+    this.formatterName = config.formatterName ?? configDefaults.formatterName;
+    this.quiet = config.quiet ?? configDefaults.quiet;
+    this.eslintOptions = {
+      type: 'eslintrc',
+      useEslintrc: config.eslintOptions?.useEslintrc ?? configDefaults.eslintOptions.useEslintrc,
+      overrideConfigFile: config.eslintOptions?.overrideConfigFile ?? configDefaults.eslintOptions.overrideConfigFile,
+      extensions: config.eslintOptions?.extensions ?? configDefaults.eslintOptions.extensions,
+      rulePaths: config.eslintOptions?.rulePaths ?? configDefaults.eslintOptions.rulePaths,
+      ignorePath: config.eslintOptions?.ignorePath ?? configDefaults.eslintOptions.ignorePath,
+      cache: config.eslintOptions?.cache ?? configDefaults.eslintOptions.cache,
+      cacheLocation: config.eslintOptions?.cacheLocation ?? configDefaults.eslintOptions.cacheLocation,
+      overrideConfig: config.eslintOptions?.overrideConfig ?? configDefaults.eslintOptions.overrideConfig,
+      cwd: config.eslintOptions?.cwd ?? configDefaults.eslintOptions.cwd,
+      resolvePluginsRelativeTo:
+        config.eslintOptions?.resolvePluginsRelativeTo ?? configDefaults.eslintOptions.resolvePluginsRelativeTo,
     };
-    const { type, ...eslintOptions } = this.config.eslintOptions;
+    const { type, ...eslintOptions } = this.eslintOptions;
     this.eslint = new ESLint(eslintOptions);
   }
 
@@ -127,8 +128,8 @@ export class Core {
    * @returns The results of linting
    */
   async lint(): Promise<ESLint.LintResult[]> {
-    let results = await this.eslint.lintFiles(this.config.patterns);
-    if (this.config.quiet) results = ESLint.getErrorResults(results);
+    let results = await this.eslint.lintFiles(this.patterns);
+    if (this.quiet) results = ESLint.getErrorResults(results);
     return results;
   }
 
@@ -141,7 +142,7 @@ export class Core {
     // Therefore, the function may not exist in versions lower than 7.29.0.
     const rulesMeta: ESLint.LintResultData['rulesMeta'] = this.eslint.getRulesMetaForResults?.(results) ?? {};
 
-    return format(results, { rulesMeta, cwd: this.config.eslintOptions?.cwd ?? configDefaults.eslintOptions.cwd });
+    return format(results, { rulesMeta, cwd: this.eslintOptions?.cwd ?? configDefaults.eslintOptions.cwd });
   }
 
   /**
@@ -150,7 +151,7 @@ export class Core {
    * @param ruleIds The rule ids to print details
    */
   async formatResultDetails(results: ESLint.LintResult[], ruleIds: (string | null)[]): Promise<string> {
-    const formatterName = this.config.formatterName;
+    const formatterName = this.formatterName;
 
     // When eslint-interactive is installed globally, eslint-formatter-codeframe will also be installed globally.
     // On the other hand, `eslint.loadFormatter` cannot load the globally installed formatter by name. So here it loads them by path.
@@ -250,7 +251,7 @@ export class Core {
     // TODO: refactor
     let results = filteredResultsOfLint;
     for (let i = 0; i < MAX_AUTOFIX_PASSES; i++) {
-      const { type, ...eslintOptions } = this.config.eslintOptions;
+      const { type, ...eslintOptions } = this.eslintOptions;
       const eslint = new ESLint({
         ...eslintOptions,
         // This is super hack to load ESM plugin/rule.
