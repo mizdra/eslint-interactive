@@ -69,6 +69,7 @@ export type Config = {
   patterns: string[];
   formatterName?: string | undefined;
   quiet?: boolean | undefined;
+  cwd?: string | undefined;
   eslintOptions: ESLintOptions;
 };
 
@@ -76,6 +77,7 @@ export type Config = {
 export const configDefaults = {
   formatterName: 'codeframe',
   quiet: false,
+  cwd: process.cwd(),
   eslintOptions: {
     useEslintrc: true,
     overrideConfigFile: undefined,
@@ -85,7 +87,6 @@ export const configDefaults = {
     cache: true,
     cacheLocation: relative(process.cwd(), join(getCacheDir(), '.eslintcache')),
     overrideConfig: undefined,
-    cwd: process.cwd(),
     resolvePluginsRelativeTo: undefined,
   },
 } satisfies DeepPartial<Config>;
@@ -98,6 +99,7 @@ export class Core {
   readonly patterns: string[];
   readonly formatterName: string;
   readonly quiet: boolean;
+  readonly cwd: string;
   readonly eslintOptions: ESLintOptions;
   readonly eslint: ESLint;
 
@@ -105,6 +107,7 @@ export class Core {
     this.patterns = config.patterns;
     this.formatterName = config.formatterName ?? configDefaults.formatterName;
     this.quiet = config.quiet ?? configDefaults.quiet;
+    this.cwd = config.cwd ?? configDefaults.cwd;
     this.eslintOptions = {
       type: 'eslintrc',
       useEslintrc: config.eslintOptions?.useEslintrc ?? configDefaults.eslintOptions.useEslintrc,
@@ -115,7 +118,7 @@ export class Core {
       cache: config.eslintOptions?.cache ?? configDefaults.eslintOptions.cache,
       cacheLocation: config.eslintOptions?.cacheLocation ?? configDefaults.eslintOptions.cacheLocation,
       overrideConfig: config.eslintOptions?.overrideConfig ?? configDefaults.eslintOptions.overrideConfig,
-      cwd: config.eslintOptions?.cwd ?? configDefaults.eslintOptions.cwd,
+      cwd: this.cwd,
       resolvePluginsRelativeTo:
         config.eslintOptions?.resolvePluginsRelativeTo ?? configDefaults.eslintOptions.resolvePluginsRelativeTo,
     };
@@ -142,7 +145,7 @@ export class Core {
     // Therefore, the function may not exist in versions lower than 7.29.0.
     const rulesMeta: ESLint.LintResultData['rulesMeta'] = this.eslint.getRulesMetaForResults?.(results) ?? {};
 
-    return format(results, { rulesMeta, cwd: this.eslintOptions?.cwd ?? configDefaults.eslintOptions.cwd });
+    return format(results, { rulesMeta, cwd: this.cwd });
   }
 
   /**

@@ -59,11 +59,11 @@ describe('Core', () => {
     core = new Core({
       patterns: ['fixtures-tmp'],
       formatterName,
+      cwd,
       eslintOptions: {
         type: 'eslintrc',
         rulePaths: ['fixtures-tmp/rules'],
         extensions: ['.js', '.jsx', '.mjs'],
-        cwd,
       },
     });
   });
@@ -76,6 +76,7 @@ describe('Core', () => {
     const core1 = new Core({
       patterns: ['pattern-a', 'pattern-b'],
       formatterName,
+      cwd: iff.rootDir,
       eslintOptions: {
         type: 'eslintrc',
         useEslintrc: false,
@@ -84,7 +85,6 @@ describe('Core', () => {
         extensions: ['.js', '.jsx'],
         cache: false,
         cacheLocation: '.eslintcache',
-        cwd: iff.rootDir,
       },
     });
     expect(core1.eslintOptions).toStrictEqual({
@@ -107,8 +107,9 @@ describe('Core', () => {
       },
     });
     expect(core2.eslintOptions).toStrictEqual({
-      type: 'eslintrc',
       ...configDefaults.eslintOptions,
+      type: 'eslintrc',
+      cwd: process.cwd(),
     });
   });
   describe('lint', () => {
