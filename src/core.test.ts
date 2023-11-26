@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url';
 import { ESLint, Linter } from 'eslint';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import { Core } from './core.js';
-import { cleanupFixturesCopy, getSnapshotOfChangedFiles, setupFixturesCopy } from './test-util/fixtures.js';
+import { cleanupFixturesCopy, createIFF, getSnapshotOfChangedFiles, setupFixturesCopy } from './test-util/fixtures.js';
 
 const testIf = (condition: boolean) => (condition ? test : test.skip);
 
@@ -22,15 +22,17 @@ function normalizeMessage(message: Linter.LintMessage) {
 }
 
 // Normalize `results` for the snapshot.
-function normalizeResults(results: ESLint.LintResult[]) {
+function normalizeResults(results: ESLint.LintResult[], fixtureDir?: string) {
   return results.map((result) => {
+    // Usually, `filePath` changes depending on the environment, and the snapshot will fail.
+    // So, remove the current directory from `filePath`.
+    let filePath = result.filePath
+      .replace(process.cwd(), '')
+      // for windows
+      .replace(/\\/gu, '/');
+    if (fixtureDir) filePath = filePath.replace(fixtureDir, '<fixture>');
     return {
-      // Usually, `filePath` changes depending on the environment, and the snapshot will fail.
-      // So, remove the current directory from `filePath`.
-      filePath: result.filePath
-        .replace(process.cwd(), '')
-        // for windows
-        .replace(/\\/gu, '/'),
+      filePath,
       errorCount: result.errorCount,
       warningCount: result.warningCount,
       fixableErrorCount: result.fixableErrorCount,
@@ -64,6 +66,42 @@ describe('Core', () => {
         rulePaths: ['fixtures-tmp/rules'],
         extensions: ['.js', '.jsx', '.mjs'],
       },
+    });
+  });
+  describe('constructor', () => {
+    test('pass options to eslint', async () => {
+      const iff = await createIFF({
+        'index.js': 'var a = 1;',
+      });
+      const core = new Core({
+        patterns: ['.'],
+        cwd: iff.rootDir,
+        eslintOptions: {
+          type: 'eslintrc',
+          useEslintrc: false,
+          overrideConfig: {
+            rules: { 'no-unused-vars': 'error' },
+          },
+        },
+      });
+      const results = await core.lint();
+      expect(normalizeResults(results, iff.rootDir)).toMatchInlineSnapshot(`
+        [
+          {
+            "errorCount": 1,
+            "filePath": "<fixture>/index.js",
+            "fixableErrorCount": 0,
+            "fixableWarningCount": 0,
+            "messages": [
+              {
+                "ruleId": "no-unused-vars",
+                "severity": 2,
+              },
+            ],
+            "warningCount": 0,
+          },
+        ]
+      `);
     });
   });
   describe('lint', () => {

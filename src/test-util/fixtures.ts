@@ -13,7 +13,7 @@ const execPromise = promisify(exec);
 const cwd = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-const fixtureDir = join(tmpdir(), 'eslint-interactive', process.env['VITEST_POOL_ID']!);
+export const fixtureDir = join(tmpdir(), 'eslint-interactive', process.env['VITEST_POOL_ID']!);
 export const createIFF = defineIFFCreator({ generateRootDir: () => join(fixtureDir, randomUUID()) });
 
 /**
