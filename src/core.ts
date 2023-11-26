@@ -110,17 +110,17 @@ export class Core {
     this.cwd = config.cwd ?? configDefaults.cwd;
     this.eslintOptions = {
       type: 'eslintrc',
-      useEslintrc: config.eslintOptions?.useEslintrc ?? configDefaults.eslintOptions.useEslintrc,
-      overrideConfigFile: config.eslintOptions?.overrideConfigFile ?? configDefaults.eslintOptions.overrideConfigFile,
-      extensions: config.eslintOptions?.extensions ?? configDefaults.eslintOptions.extensions,
-      rulePaths: config.eslintOptions?.rulePaths ?? configDefaults.eslintOptions.rulePaths,
-      ignorePath: config.eslintOptions?.ignorePath ?? configDefaults.eslintOptions.ignorePath,
-      cache: config.eslintOptions?.cache ?? configDefaults.eslintOptions.cache,
-      cacheLocation: config.eslintOptions?.cacheLocation ?? configDefaults.eslintOptions.cacheLocation,
-      overrideConfig: config.eslintOptions?.overrideConfig ?? configDefaults.eslintOptions.overrideConfig,
+      useEslintrc: config.eslintOptions.useEslintrc ?? configDefaults.eslintOptions.useEslintrc,
+      overrideConfigFile: config.eslintOptions.overrideConfigFile ?? configDefaults.eslintOptions.overrideConfigFile,
+      extensions: config.eslintOptions.extensions ?? configDefaults.eslintOptions.extensions,
+      rulePaths: config.eslintOptions.rulePaths ?? configDefaults.eslintOptions.rulePaths,
+      ignorePath: config.eslintOptions.ignorePath ?? configDefaults.eslintOptions.ignorePath,
+      cache: config.eslintOptions.cache ?? configDefaults.eslintOptions.cache,
+      cacheLocation: config.eslintOptions.cacheLocation ?? configDefaults.eslintOptions.cacheLocation,
+      overrideConfig: config.eslintOptions.overrideConfig ?? configDefaults.eslintOptions.overrideConfig,
       cwd: this.cwd,
       resolvePluginsRelativeTo:
-        config.eslintOptions?.resolvePluginsRelativeTo ?? configDefaults.eslintOptions.resolvePluginsRelativeTo,
+        config.eslintOptions.resolvePluginsRelativeTo ?? configDefaults.eslintOptions.resolvePluginsRelativeTo,
     };
     const { type, ...eslintOptions } = this.eslintOptions;
     this.eslint = new ESLint(eslintOptions);
