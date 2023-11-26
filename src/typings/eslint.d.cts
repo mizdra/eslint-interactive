@@ -131,9 +131,10 @@ declare module 'eslint/use-at-your-own-risk' {
     async isPathIgnored(filePath: string): Promise<boolean>;
   }
 
-  const pkg = {
-    FlatESLint,
-  };
+  async function shouldUseFlatConfig(): Promise<boolean>;
 
-  export = pkg;
+  module.exports = {
+    FlatESLint,
+    shouldUseFlatConfig,
+  };
 }

@@ -3,8 +3,22 @@ import { Config } from '../core.js';
 import { configDefaults } from '../util/eslint.js';
 import { VERSION } from './package.js';
 
+type ParsedCLIOptions = {
+  patterns: string[];
+  formatterName: string;
+  quiet: boolean;
+  useEslintrc: boolean | undefined;
+  overrideConfigFile: string | undefined;
+  extensions: string[] | undefined;
+  rulePaths: string[] | undefined;
+  ignorePath: string | undefined;
+  cache: boolean | undefined;
+  cacheLocation: string | undefined;
+  resolvePluginsRelativeTo: string | undefined;
+};
+
 /** Parse argv into the config object of eslint-interactive */
-export function parseArgv(argv: string[]): Config {
+export function parseArgv(argv: string[]): ParsedCLIOptions {
   const parsedArgv = yargs(argv.slice(2))
     .wrap(Math.min(140, process.stdout.columns))
     .scriptName('eslint-interactive')
@@ -15,7 +29,6 @@ export function parseArgv(argv: string[]): Config {
     .option('eslintrc', {
       type: 'boolean',
       describe: 'Enable use of configuration from .eslintrc.*',
-      default: configDefaults.eslintOptions.useEslintrc,
     })
     .option('config', {
       alias: 'c',
@@ -80,18 +93,57 @@ export function parseArgv(argv: string[]): Config {
   const formatterName = parsedArgv.format;
   return {
     patterns,
-    eslintOptions: {
-      type: 'eslintrc', // TODO: support 'flat' mode
-      useEslintrc: parsedArgv.eslintrc,
-      overrideConfigFile: parsedArgv.config,
-      extensions,
-      rulePaths,
-      ignorePath: parsedArgv.ignorePath,
-      cache: parsedArgv.cache,
-      cacheLocation: parsedArgv['cache-location'],
-      resolvePluginsRelativeTo: parsedArgv['resolve-plugins-relative-to'],
-    },
     formatterName,
     quiet: parsedArgv.quiet,
+    useEslintrc: parsedArgv.eslintrc,
+    overrideConfigFile: parsedArgv.config,
+    extensions,
+    rulePaths,
+    ignorePath: parsedArgv.ignorePath,
+    cache: parsedArgv.cache,
+    cacheLocation: parsedArgv['cache-location'],
+    resolvePluginsRelativeTo: parsedArgv['resolve-plugins-relative-to'],
   };
+}
+
+type ESLintOptionsType = 'eslintrc' | 'flat';
+
+export function translateCLIOptions(options: ParsedCLIOptions, eslintOptionsType: ESLintOptionsType): Config {
+  if (eslintOptionsType === 'eslintrc') {
+    return {
+      patterns: options.patterns,
+      formatterName: options.formatterName,
+      quiet: options.quiet,
+      eslintOptions: {
+        type: 'eslintrc',
+        useEslintrc: options.useEslintrc ?? configDefaults.eslintOptions.useEslintrc,
+        overrideConfigFile: options.overrideConfigFile,
+        extensions: options.extensions,
+        rulePaths: options.rulePaths,
+        ignorePath: options.ignorePath,
+        cache: options.cache,
+        cacheLocation: options.cacheLocation,
+        resolvePluginsRelativeTo: options.resolvePluginsRelativeTo,
+      },
+    };
+  } else if (eslintOptionsType === 'flat') {
+    if (options.useEslintrc) throw new Error('The --eslintrc option is not supported with flat config');
+    if (options.extensions !== undefined) throw new Error('The --ext option is not supported with flat config');
+    if (options.rulePaths !== undefined) throw new Error('The --rulesdir option is not supported with flat config');
+    if (options.ignorePath !== undefined) throw new Error('The --ignore-path option is not supported with flat config');
+    if (options.resolvePluginsRelativeTo !== undefined)
+      throw new Error('The --resolve-plugins-relative-to option is not supported with flat config');
+    return {
+      patterns: options.patterns,
+      formatterName: options.formatterName,
+      quiet: options.quiet,
+      eslintOptions: {
+        type: 'flat',
+        cache: options.cache,
+        cacheLocation: options.cacheLocation,
+      },
+    };
+  } else {
+    throw new Error(`Unexpected configType: ${String(eslintOptionsType)}`);
+  }
 }
