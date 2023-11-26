@@ -20,7 +20,7 @@ test('Programmable API', async () => {
   const core = new Core({
     patterns: ['fixtures-tmp'],
     eslintOptions: {
-      type: 'legacy',
+      type: 'eslintrc',
       cwd: join(dirname(fileURLToPath(import.meta.url)), '..', '..'),
     },
   });

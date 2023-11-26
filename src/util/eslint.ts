@@ -255,11 +255,11 @@ export function findShebang(sourceCodeText: string): { range: AST.Range } | null
 }
 
 export type ESLintOptions =
-  | ({ type: 'legacy' } & ESLint.Options)
+  | ({ type: 'eslintrc' } & ESLint.Options)
   | ({ type: 'flat' } & unstableESLintModuleType.FlatESLintOptions);
 
 export type NormalizedESLintOptions = Omit<ESLint.Options, 'cwd'> & {
-  type: 'legacy';
+  type: 'eslintrc';
   cwd: Exclude<ESLint.Options['cwd'], undefined>;
 };
 
@@ -275,7 +275,7 @@ export const configDefaults = {
   formatterName: 'codeframe',
   quiet: false,
   eslintOptions: {
-    type: 'legacy',
+    type: 'eslintrc',
     useEslintrc: true,
     overrideConfigFile: undefined,
     extensions: undefined,
@@ -290,9 +290,9 @@ export const configDefaults = {
 } satisfies Partial<Config>;
 
 export function normalizeConfig(config: ESLintOptions): NormalizedConfig {
-  if (config.type === 'legacy') {
+  if (config.type === 'eslintrc') {
     return {
-      type: 'legacy',
+      type: 'eslintrc',
       useEslintrc: config.useEslintrc ?? configDefaults.eslintOptions.useEslintrc,
       overrideConfigFile: config.overrideConfigFile ?? configDefaults.eslintOptions.overrideConfigFile,
       extensions: config.extensions ?? configDefaults.eslintOptions.extensions,
@@ -320,7 +320,7 @@ export function normalizeConfig(config: ESLintOptions): NormalizedConfig {
 export async function createESLint(
   config: NormalizedConfig,
 ): Promise<ESLint | InstanceType<(typeof unstableESLintModuleType)['FlatESLint']>> {
-  if (config.type === 'legacy') {
+  if (config.type === 'eslintrc') {
     const { type, ...rest } = config;
     return new ESLint(rest);
   } else {
@@ -338,7 +338,7 @@ export async function createESLintForFix(
   fix: Fix,
   usedRuleIds: string[],
 ): Promise<ESLint | InstanceType<(typeof unstableESLintModuleType)['FlatESLint']>> {
-  if (config.type === 'legacy') {
+  if (config.type === 'eslintrc') {
     const { type, ...rest } = config;
     return new ESLint({
       ...rest,

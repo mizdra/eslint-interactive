@@ -81,7 +81,7 @@ export function parseArgv(argv: string[]): Config {
   return {
     patterns,
     eslintOptions: {
-      type: 'legacy', // TODO: support 'flat' mode
+      type: 'eslintrc', // TODO: support 'flat' mode
       useEslintrc: parsedArgv.eslintrc,
       overrideConfigFile: parsedArgv.config,
       extensions,

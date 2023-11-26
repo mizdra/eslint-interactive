@@ -56,7 +56,7 @@ afterEach(async () => {
 
 describe('Core', () => {
   const coreEslintOptions = {
-    type: 'legacy',
+    type: 'eslintrc',
     rulePaths: ['fixtures-tmp/rules'],
     extensions: ['.js', '.jsx', '.mjs'],
     cwd,
@@ -79,7 +79,7 @@ describe('Core', () => {
       patterns: ['pattern-a', 'pattern-b'],
       formatterName,
       eslintOptions: {
-        type: 'legacy',
+        type: 'eslintrc',
         useEslintrc: false,
         overrideConfigFile: 'override-config-file.json',
         rulePaths: ['rule-path-a'],
@@ -90,7 +90,7 @@ describe('Core', () => {
       },
     });
     expect(core1.eslintOptions).toStrictEqual({
-      type: 'legacy',
+      type: 'eslintrc',
       useEslintrc: false,
       overrideConfigFile: 'override-config-file.json',
       cache: false,
@@ -104,7 +104,7 @@ describe('Core', () => {
     });
     const core2 = new Core({
       patterns: ['pattern-a', 'pattern-b'],
-      eslintOptions: { type: 'legacy' },
+      eslintOptions: { type: 'eslintrc' },
     });
     expect(core2.eslintOptions).toStrictEqual<ESLint.Options>(configDefaults.eslintOptions);
   });

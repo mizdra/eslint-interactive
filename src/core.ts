@@ -67,7 +67,7 @@ export class Core {
 
   constructor(config: Config) {
     const type = config.eslintOptions.type;
-    if (type !== 'legacy' && type !== 'flat') {
+    if (type !== 'eslintrc' && type !== 'flat') {
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       throw new Error(`Unexpected type of eslintOptions: ${type}`);
     }

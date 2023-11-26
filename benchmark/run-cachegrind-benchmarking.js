@@ -5,5 +5,5 @@ import { Core } from '../dist/core.js';
 
 const __dirname = join(dirname(fileURLToPath(import.meta.url)));
 
-const core = new Core({ patterns: ['fixtures'], eslintOptions: { type: 'legacy', cwd: __dirname } });
+const core = new Core({ patterns: ['fixtures'], eslintOptions: { type: 'eslintrc', cwd: __dirname } });
 await runAllFixes(core);
