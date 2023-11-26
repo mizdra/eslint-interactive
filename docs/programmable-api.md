@@ -16,8 +16,9 @@ import { Core, takeRuleStatistics } from 'eslint-interactive';
 
 const core = new Core({
   patterns: ['fixtures'],
+  cwd: resolve('./github.com/mizdra/eslint-interactive'),
   eslintOptions: {
-    cwd: resolve('./github.com/mizdra/eslint-interactive'),
+    type: 'eslintrc',
   },
 });
 const results = await core.lint();
@@ -93,8 +94,9 @@ import { Core, takeRuleStatistics } from 'eslint-interactive';
 
 const core = new Core({
   patterns: ['src'],
+  cwd: resolve('./github.com/mizdra/eslint-interactive'),
   eslintOptions: {
-    cwd: resolve('./github.com/mizdra/eslint-interactive'),
+    type: 'eslintrc',
     useEslintrc: false,
     overrideConfig: {
       rules: {

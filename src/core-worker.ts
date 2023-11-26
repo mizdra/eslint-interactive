@@ -2,7 +2,8 @@ import { parentPort } from 'node:worker_threads';
 import { expose, proxy } from 'comlink';
 import nodeEndpoint from 'comlink/dist/esm/node-adapter.mjs';
 import { ESLint } from 'eslint';
-import { Core, Config } from './core.js';
+import { Config } from './config.js';
+import { Core } from './core.js';
 import { FixableMaker, SuggestionFilter } from './plugin/index.js';
 
 /**

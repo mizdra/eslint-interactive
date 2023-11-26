@@ -3,7 +3,8 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { ESLint, Linter } from 'eslint';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
-import { Core, configDefaults } from './core.js';
+import { configDefaults } from './config.js';
+import { Core } from './core.js';
 import { cleanupFixturesCopy, createIFF, getSnapshotOfChangedFiles, setupFixturesCopy } from './test-util/fixtures.js';
 
 const testIf = (condition: boolean) => (condition ? test : test.skip);
@@ -59,10 +60,11 @@ describe('Core', () => {
     core = new Core({
       patterns: ['fixtures-tmp'],
       formatterName,
+      cwd,
       eslintOptions: {
+        type: 'eslintrc',
         rulePaths: ['fixtures-tmp/rules'],
         extensions: ['.js', '.jsx', '.mjs'],
-        cwd,
       },
     });
   });
@@ -75,17 +77,19 @@ describe('Core', () => {
     const core1 = new Core({
       patterns: ['pattern-a', 'pattern-b'],
       formatterName,
+      cwd: iff.rootDir,
       eslintOptions: {
+        type: 'eslintrc',
         useEslintrc: false,
         overrideConfigFile: 'override-config-file.json',
         rulePaths: ['rule-path-a'],
         extensions: ['.js', '.jsx'],
         cache: false,
         cacheLocation: '.eslintcache',
-        cwd: iff.rootDir,
       },
     });
-    expect(core1.config.eslintOptions).toStrictEqual<ESLint.Options>({
+    expect(core1.config.eslintOptions).toStrictEqual({
+      type: 'eslintrc',
       useEslintrc: false,
       overrideConfigFile: 'override-config-file.json',
       cache: false,
@@ -99,8 +103,15 @@ describe('Core', () => {
     });
     const core2 = new Core({
       patterns: ['pattern-a', 'pattern-b'],
+      eslintOptions: {
+        type: 'eslintrc',
+      },
     });
-    expect(core2.config.eslintOptions).toStrictEqual<ESLint.Options>(configDefaults.eslintOptions);
+    expect(core2.config.eslintOptions).toStrictEqual({
+      ...configDefaults.eslintOptions,
+      type: 'eslintrc',
+      cwd: process.cwd(),
+    });
   });
   describe('lint', () => {
     test('returns lint results', async () => {

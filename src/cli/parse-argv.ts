@@ -1,9 +1,34 @@
+import { join, relative } from 'node:path';
 import yargs from 'yargs';
-import { Config, configDefaults } from '../core.js';
+import { getCacheDir } from '../util/cache.js';
+import { DeepPartial } from '../util/type-check.js';
 import { VERSION } from './package.js';
 
-/** Parse argv into the config object of eslint-interactive */
-export function parseArgv(argv: string[]): Config {
+export type ParsedCLIOptions = {
+  patterns: string[];
+  formatterName: string | undefined;
+  quiet: boolean | undefined;
+  useEslintrc: boolean | undefined;
+  overrideConfigFile: string | undefined;
+  extensions: string[] | undefined;
+  rulePaths: string[] | undefined;
+  ignorePath: string | undefined;
+  cache: boolean | undefined;
+  cacheLocation: string | undefined;
+  resolvePluginsRelativeTo: string | undefined;
+};
+
+/** Default CLI Options */
+export const cliOptionsDefaults = {
+  formatterName: 'codeframe',
+  quiet: false,
+  useEslintrc: true,
+  cache: true,
+  cacheLocation: relative(process.cwd(), join(getCacheDir(), '.eslintcache')),
+} satisfies DeepPartial<ParsedCLIOptions>;
+
+/** Parse CLI options */
+export function parseArgv(argv: string[]): ParsedCLIOptions {
   const parsedArgv = yargs(argv.slice(2))
     .wrap(Math.min(140, process.stdout.columns))
     .scriptName('eslint-interactive')
@@ -14,7 +39,7 @@ export function parseArgv(argv: string[]): Config {
     .option('eslintrc', {
       type: 'boolean',
       describe: 'Enable use of configuration from .eslintrc.*',
-      default: configDefaults.eslintOptions.useEslintrc,
+      default: cliOptionsDefaults.useEslintrc,
     })
     .option('config', {
       alias: 'c',
@@ -44,22 +69,22 @@ export function parseArgv(argv: string[]): Config {
     .option('format', {
       type: 'string',
       describe: 'Specify the format to be used for the `Display problem messages` action',
-      default: configDefaults.formatterName,
+      default: cliOptionsDefaults.formatterName,
     })
     .option('quiet', {
       type: 'boolean',
       describe: 'Report errors only',
-      default: configDefaults.quiet,
+      default: cliOptionsDefaults.quiet,
     })
     .option('cache', {
       type: 'boolean',
       describe: 'Only check changed files',
-      default: configDefaults.eslintOptions.cache,
+      default: cliOptionsDefaults.cache,
     })
     .option('cache-location', {
       type: 'string',
       describe: `Path to the cache file or directory`,
-      default: configDefaults.eslintOptions.cacheLocation,
+      default: cliOptionsDefaults.cacheLocation,
     })
     .example('$0 ./src', 'Lint ./src/ directory')
     .example('$0 ./src ./test', 'Lint multiple directories')
@@ -79,17 +104,15 @@ export function parseArgv(argv: string[]): Config {
   const formatterName = parsedArgv.format;
   return {
     patterns,
-    eslintOptions: {
-      useEslintrc: parsedArgv.eslintrc,
-      overrideConfigFile: parsedArgv.config,
-      extensions,
-      rulePaths,
-      ignorePath: parsedArgv.ignorePath,
-      cache: parsedArgv.cache,
-      cacheLocation: parsedArgv['cache-location'],
-      resolvePluginsRelativeTo: parsedArgv['resolve-plugins-relative-to'],
-    },
     formatterName,
     quiet: parsedArgv.quiet,
+    useEslintrc: parsedArgv.eslintrc,
+    overrideConfigFile: parsedArgv.config,
+    extensions,
+    rulePaths,
+    ignorePath: parsedArgv.ignorePath,
+    cache: parsedArgv.cache,
+    cacheLocation: parsedArgv['cache-location'],
+    resolvePluginsRelativeTo: parsedArgv['resolve-plugins-relative-to'],
   };
 }
