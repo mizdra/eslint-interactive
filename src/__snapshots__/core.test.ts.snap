@@ -102,6 +102,37 @@ if (!('key5' in {})) 0;
 
 exports[`Core > applySuggestions 2`] = `""`;
 
+exports[`Core > constructor > pass options to eslint 1`] = `
+[
+  {
+    "errorCount": 1,
+    "filePath": "<fixture>/src/index.js",
+    "fixableErrorCount": 1,
+    "fixableWarningCount": 0,
+    "messages": [
+      {
+        "ruleId": "prefer-const",
+        "severity": 2,
+      },
+    ],
+    "warningCount": 0,
+  },
+  {
+    "errorCount": 1,
+    "filePath": "<fixture>/src/index.mjs",
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "messages": [
+      {
+        "ruleId": "ban-exponentiation-operator",
+        "severity": 2,
+      },
+    ],
+    "warningCount": 0,
+  },
+]
+`;
+
 exports[`Core > disablePerFile 1`] = `
 "/* eslint-disable ban-exponentiation-operator */
 const a = 0;
