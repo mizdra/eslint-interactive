@@ -52,8 +52,6 @@ exports[`Core > constructor > pass options to eslint 1`] = `
   {
     "errorCount": 1,
     "filePath": "<fixture>/src/index.js",
-    "fixableErrorCount": 1,
-    "fixableWarningCount": 0,
     "messages": [
       {
         "ruleId": "prefer-const",
@@ -65,8 +63,6 @@ exports[`Core > constructor > pass options to eslint 1`] = `
   {
     "errorCount": 1,
     "filePath": "<fixture>/src/index.mjs",
-    "fixableErrorCount": 0,
-    "fixableWarningCount": 0,
     "messages": [
       {
         "ruleId": "ban-exponentiation-operator",
@@ -127,16 +123,12 @@ exports[`Core > lint > returns lint results 1`] = `
   {
     "errorCount": 0,
     "filePath": "/fixtures-tmp/.eslintrc.js",
-    "fixableErrorCount": 0,
-    "fixableWarningCount": 0,
     "messages": [],
     "warningCount": 0,
   },
   {
     "errorCount": 19,
     "filePath": "/fixtures-tmp/index.js",
-    "fixableErrorCount": 18,
-    "fixableWarningCount": 0,
     "messages": [
       {
         "ruleId": "semi",
@@ -220,8 +212,6 @@ exports[`Core > lint > returns lint results 1`] = `
   {
     "errorCount": 7,
     "filePath": "/fixtures-tmp/lib/add-disable-comment.jsx",
-    "fixableErrorCount": 1,
-    "fixableWarningCount": 0,
     "messages": [
       {
         "ruleId": "no-unused-vars",
@@ -257,8 +247,6 @@ exports[`Core > lint > returns lint results 1`] = `
   {
     "errorCount": 10,
     "filePath": "/fixtures-tmp/lib/apply-suggestion.js",
-    "fixableErrorCount": 0,
-    "fixableWarningCount": 0,
     "messages": [
       {
         "ruleId": "no-useless-escape",
@@ -306,8 +294,6 @@ exports[`Core > lint > returns lint results 1`] = `
   {
     "errorCount": 1,
     "filePath": "/fixtures-tmp/lib/eslint-core-problem.mjs",
-    "fixableErrorCount": 0,
-    "fixableWarningCount": 0,
     "messages": [
       {
         "ruleId": null,
@@ -319,8 +305,6 @@ exports[`Core > lint > returns lint results 1`] = `
   {
     "errorCount": 6,
     "filePath": "/fixtures-tmp/lib/make-fixable-and-fix.js",
-    "fixableErrorCount": 0,
-    "fixableWarningCount": 0,
     "messages": [
       {
         "ruleId": "no-unused-vars",
@@ -352,8 +336,6 @@ exports[`Core > lint > returns lint results 1`] = `
   {
     "errorCount": 12,
     "filePath": "/fixtures-tmp/lib/overlapped.js",
-    "fixableErrorCount": 12,
-    "fixableWarningCount": 0,
     "messages": [
       {
         "ruleId": "arrow-body-style",
@@ -409,8 +391,6 @@ exports[`Core > lint > returns lint results 1`] = `
   {
     "errorCount": 1,
     "filePath": "/fixtures-tmp/lib/shebang.js",
-    "fixableErrorCount": 1,
-    "fixableWarningCount": 0,
     "messages": [
       {
         "ruleId": "semi",
@@ -422,8 +402,6 @@ exports[`Core > lint > returns lint results 1`] = `
   {
     "errorCount": 1,
     "filePath": "/fixtures-tmp/lib/sub.mjs",
-    "fixableErrorCount": 1,
-    "fixableWarningCount": 0,
     "messages": [
       {
         "ruleId": "semi",
@@ -435,8 +413,6 @@ exports[`Core > lint > returns lint results 1`] = `
   {
     "errorCount": 0,
     "filePath": "/fixtures-tmp/lib/warning.js",
-    "fixableErrorCount": 0,
-    "fixableWarningCount": 1,
     "messages": [
       {
         "ruleId": "semi",
@@ -448,8 +424,6 @@ exports[`Core > lint > returns lint results 1`] = `
   {
     "errorCount": 0,
     "filePath": "/fixtures-tmp/rules/ban-exponentiation-operator.js",
-    "fixableErrorCount": 0,
-    "fixableWarningCount": 0,
     "messages": [],
     "warningCount": 0,
   },

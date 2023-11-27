@@ -37,8 +37,6 @@ function normalizeResults(results: ESLint.LintResult[], fixtureDir?: string) {
       filePath,
       errorCount: result.errorCount,
       warningCount: result.warningCount,
-      fixableErrorCount: result.fixableErrorCount,
-      fixableWarningCount: result.fixableWarningCount,
       messages: result.messages.map(normalizeMessage),
     };
   });
