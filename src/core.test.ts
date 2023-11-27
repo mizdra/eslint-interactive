@@ -1,6 +1,7 @@
-import { constants, cp } from 'node:fs/promises';
+import { constants, cp, readFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import dedent from 'dedent';
 import { ESLint, Linter } from 'eslint';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import { Core } from './core.js';
@@ -141,22 +142,71 @@ describe('Core', () => {
         .replace(/\\/gu, '/'),
     ).toMatchSnapshot();
   });
-  describe('applyAutoFixes', () => {
+  describe('applyAutoFixes', async () => {
+    const iff = await createIFF({
+      'src/prefer-const.js': 'let a = 1;',
+      'src/arrow-body-style.js': dedent`
+        () => (
+          () => (
+            () => (
+              () => (
+                () => (
+                  () => (
+                    () => (
+                      () => (
+                        () => (
+                          () => (
+                            () => (
+                              () => (
+                                0
+                              )
+                            )
+                          )
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
+        );
+      `,
+      '.eslintrc.js': dedent`
+        module.exports = {
+          parserOptions: {
+            ecmaVersion: 2022,
+            sourceType: 'module',
+          },
+          rules: {
+            'prefer-const': 'error',
+            'arrow-body-style': ['error', 'always'],
+          },
+        };
+      `,
+    });
+    const core = new Core({
+      patterns: ['src'],
+      cwd: iff.rootDir,
+      eslintOptions: { type: 'eslintrc' },
+    });
     test('basic', async () => {
       const results = await core.lint();
-      const undo = await core.applyAutoFixes(results, ['semi']);
-      expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
+      const original = await readFile(iff.paths['src/prefer-const.js'], 'utf-8');
+      const undo = await core.applyAutoFixes(results, ['prefer-const']);
+      expect(await readFile(iff.paths['src/prefer-const.js'], 'utf-8')).toMatchSnapshot();
       await undo();
-      expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
+      expect(await readFile(iff.paths['src/prefer-const.js'], 'utf-8')).toEqual(original);
     });
     test('fix overlapped problems', async () => {
       // NOTE: It can fix up to 11 overlapping errors. This is due to a constraints imposed by ESLint to prevent infinite loops.
       // ref: https://github.com/eslint/eslint/blob/5d60812d440762dff72420714273c714c4c5d074/lib/linter/linter.js#L44
       const results = await core.lint();
+      const original = await readFile(iff.paths['src/arrow-body-style.js'], 'utf-8');
       const undo = await core.applyAutoFixes(results, ['arrow-body-style']);
-      expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
+      expect(await readFile(iff.paths['src/arrow-body-style.js'], 'utf-8')).toMatchSnapshot();
       await undo();
-      expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
+      expect(await readFile(iff.paths['src/arrow-body-style.js'], 'utf-8')).toEqual(original);
     });
   });
   test('disablePerLine', async () => {
