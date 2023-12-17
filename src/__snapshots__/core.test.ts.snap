@@ -1,13 +1,9 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Core > applyAutoFixes > basic 1`] = `
-"/* eslint prefer-const: "error" */
-const a = 1;"
-`;
+exports[`Core > applyAutoFixes > basic 1`] = `"const a = 1;"`;
 
 exports[`Core > applyAutoFixes > fix overlapped problems 1`] = `
-"/* eslint arrow-body-style: ["error", "always"] */
-() => {return (
+"() => {return (
   () => {return (
     () => {return (
       () => {return (
@@ -34,10 +30,7 @@ exports[`Core > applyAutoFixes > fix overlapped problems 1`] = `
 )};"
 `;
 
-exports[`Core > applySuggestions 1`] = `
-"/* eslint no-unused-vars: "error" */
-const a = 1;"
-`;
+exports[`Core > applySuggestions 1`] = `"const a = 1;"`;
 
 exports[`Core > constructor > pass options to eslint 1`] = `
 [
@@ -68,13 +61,11 @@ exports[`Core > constructor > pass options to eslint 1`] = `
 
 exports[`Core > disablePerFile 1`] = `
 "/* eslint-disable ban-exponentiation-operator */
-/* eslint ban-exponentiation-operator: "error" */
 2 ** 2;"
 `;
 
 exports[`Core > disablePerLine 1`] = `
-"/* eslint ban-exponentiation-operator: "error" */
-// eslint-disable-next-line ban-exponentiation-operator
+"// eslint-disable-next-line ban-exponentiation-operator
 2 ** 2;"
 `;
 
@@ -193,23 +184,18 @@ exports[`Core > lint > returns lint results 1`] = `
 ]
 `;
 
-exports[`Core > makeFixableAndFix 1`] = `
-"/* eslint no-unused-vars: "error" */
-const _a = 1;"
-`;
+exports[`Core > makeFixableAndFix 1`] = `"const _a = 1;"`;
 
 exports[`Core > printDetailsOfResults 1`] = `
-"[31merror[39m: [1mBan exponentiation operator[22m [2m(ban-exponentiation-operator)[22m at [32m<fixture>/src/ban-exponentiation-operator.js:2:1[39m:
-  1 | /* eslint ban-exponentiation-operator: "error" */
-> 2 | 2 ** 2;
+"[31merror[39m: [1mBan exponentiation operator[22m [2m(ban-exponentiation-operator)[22m at [32m<fixture>/src/ban-exponentiation-operator.js:1:1[39m:
+> 1 | 2 ** 2;
     | ^
 
 
 [31merror[39m: [1mDefinition for rule 'import/order' was not found[22m [2m(import/order)[22m at [32m<fixture>/src/import-order.js:1:1[39m:
-> 1 | /* eslint import/order: "error" */
+> 1 | import b from 'b';
     | ^
-  2 | import b from 'b';
-  3 | import a from 'a';
+  2 | import a from 'a';
 
 
 [31m[1m2 errors found.[22m[39m"

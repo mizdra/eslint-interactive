@@ -45,11 +45,9 @@ function countWarnings(results: ESLint.LintResult[]): number {
 
 const iff = await createIFF({
   'src/prefer-const.js': dedent`
-    /* eslint prefer-const: "error" */
     let a = 1;
   `,
   'src/arrow-body-style.js': dedent`
-    /* eslint arrow-body-style: ["error", "always"] */
     () => (
       () => (
         () => (
@@ -77,20 +75,16 @@ const iff = await createIFF({
     );
   `,
   'src/import-order.js': dedent`
-    /* eslint import/order: "error" */
     import b from 'b';
     import a from 'a';
   `,
   'src/ban-exponentiation-operator.js': dedent`
-    /* eslint ban-exponentiation-operator: "error" */
     2 ** 2;
   `,
   'src/no-unused-vars.js': dedent`
-    /* eslint no-unused-vars: "error" */
     const a = 1;
   `,
   'src/warn.js': dedent`
-    /* eslint prefer-const: "warn" */
     let a = 1;
   `,
   '.eslintrc.js': dedent`
@@ -100,6 +94,14 @@ const iff = await createIFF({
         ecmaVersion: 2022,
         sourceType: 'module',
       },
+      overrides: [
+        { files: ['prefer-const.js'], rules: { 'prefer-const': 'error' } },
+        { files: ['arrow-body-style.js'], rules: { 'arrow-body-style': ['error', 'always'] } },
+        { files: ['import-order.js'], rules: { 'import/order': 'error' } },
+        { files: ['ban-exponentiation-operator.js'], rules: { 'ban-exponentiation-operator': 'error' } },
+        { files: ['no-unused-vars.js'], rules: { 'no-unused-vars': 'error' } },
+        { files: ['warn.js'], rules: { 'prefer-const': 'warn' } },
+      ],
     };
   `,
   'package.json': '{ "type": "commonjs" }',
