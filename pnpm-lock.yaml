@@ -52,8 +52,8 @@ importers:
         specifier: 2.1.0-alpha.0
         version: 2.1.0-alpha.0(eslint@8.53.0)(prettier@3.0.3)(typescript@5.2.2)
       '@mizdra/inline-fixture-files':
-        specifier: ^1.0.0
-        version: 1.0.0
+        specifier: ^1.1.0
+        version: 1.1.0
       '@mizdra/prettier-config-mizdra':
         specifier: ^1.0.0
         version: 1.0.0(prettier@3.0.3)
@@ -473,8 +473,8 @@ packages:
       - supports-color
     dev: true
 
-  /@mizdra/inline-fixture-files@1.0.0:
-    resolution: {integrity: sha512-R+KK0jQGH3EDl4LlnqP85M4+14j3r3qHxIC0iwj8DodZI7EI4w/L1pwnWTyjZulmXWkih+BtF+EzIyjHPrUIZA==}
+  /@mizdra/inline-fixture-files@1.1.0:
+    resolution: {integrity: sha512-a4mi4kyS96V9BKuwkVgAqpklrg2TjMX1mXKBXJzpSSFfwWOQk30gAIlqci+KQXQB3njVOZaa/KhBV/eIeH3n2Q==}
     engines: {node: '>=16.0.0'}
     dev: true
 
