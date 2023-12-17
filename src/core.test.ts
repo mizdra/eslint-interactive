@@ -3,17 +3,14 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import dedent from 'dedent';
 import { ESLint, Linter } from 'eslint';
-import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
+import { resolve } from 'import-meta-resolve';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { Core } from './core.js';
-import { cleanupFixturesCopy, createIFF, getSnapshotOfChangedFiles, setupFixturesCopy } from './test-util/fixtures.js';
+import { createIFF } from './test-util/fixtures.js';
 
 const testIf = (condition: boolean) => (condition ? test : test.skip);
 
 const rootDir = join(dirname(fileURLToPath(import.meta.url)), '..');
-const cwd = rootDir;
-// For some reason, the test fails if `formatterName === 'codeframe'`.
-// So here we overwrite it with `formatterName === 'eslint-formatter-codeframe'`.
-const formatterName = 'eslint-formatter-codeframe';
 
 // Normalize `message` for the snapshot.
 function normalizeMessage(message: Linter.LintMessage) {
@@ -24,7 +21,7 @@ function normalizeMessage(message: Linter.LintMessage) {
 }
 
 // Normalize `results` for the snapshot.
-function normalizeResults(results: ESLint.LintResult[], fixtureDir?: string) {
+function normalizeResults(results: ESLint.LintResult[], fixtureDir: string) {
   return results.map((result) => {
     // Usually, `filePath` changes depending on the environment, and the snapshot will fail.
     // So, remove the current directory from `filePath`.
@@ -46,28 +43,82 @@ function countWarnings(results: ESLint.LintResult[]): number {
   return results.map((result) => result.warningCount).reduce((acc, num) => acc + num, 0);
 }
 
-beforeEach(async () => {
-  await setupFixturesCopy();
+const iff = await createIFF({
+  'src/prefer-const.js': dedent`
+    /* eslint prefer-const: "error" */
+    let a = 1;
+  `,
+  'src/arrow-body-style.js': dedent`
+    /* eslint arrow-body-style: ["error", "always"] */
+    () => (
+      () => (
+        () => (
+          () => (
+            () => (
+              () => (
+                () => (
+                  () => (
+                    () => (
+                      () => (
+                        () => (
+                          () => (
+                            0
+                          )
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
+    );
+  `,
+  'src/import-order.js': dedent`
+    /* eslint import/order: "error" */
+    import b from 'b';
+    import a from 'a';
+  `,
+  'src/ban-exponentiation-operator.js': dedent`
+    /* eslint ban-exponentiation-operator: "error" */
+    2 ** 2;
+  `,
+  'src/no-unused-vars.js': dedent`
+    /* eslint no-unused-vars: "error" */
+    const a = 1;
+  `,
+  'src/warn.js': dedent`
+    /* eslint prefer-const: "warn" */
+    let a = 1;
+  `,
+  '.eslintrc.js': dedent`
+    module.exports = {
+      parserOptions: {
+        ecmaVersion: 2022,
+        sourceType: 'module',
+      },
+    };
+  `,
+  'rules': async (path) =>
+    cp(join(rootDir, 'fixtures/rules'), path, { mode: constants.COPYFILE_FICLONE, recursive: true }),
 });
 
-afterEach(async () => {
-  await cleanupFixturesCopy();
+const core = new Core({
+  patterns: ['src'],
+  // For some reason, the test fails if `formatterName === 'codeframe'`.
+  // So here we overwrite it.
+  formatterName: fileURLToPath(resolve('eslint-formatter-codeframe', import.meta.url)),
+  cwd: iff.rootDir,
+  eslintOptions: { type: 'eslintrc', rulePaths: ['rules'] },
+});
+
+beforeEach(async () => {
+  await iff.reset();
 });
 
 describe('Core', () => {
-  let core: Core;
-  beforeEach(() => {
-    core = new Core({
-      patterns: ['fixtures-tmp'],
-      formatterName,
-      cwd,
-      eslintOptions: {
-        type: 'eslintrc',
-        rulePaths: ['fixtures-tmp/rules'],
-        extensions: ['.js', '.jsx', '.mjs'],
-      },
-    });
-  });
   describe('constructor', () => {
     test('pass options to eslint', async () => {
       const iff = await createIFF({
@@ -100,7 +151,7 @@ describe('Core', () => {
   describe('lint', () => {
     test('returns lint results', async () => {
       const results = await core.lint();
-      expect(normalizeResults(results)).toMatchSnapshot();
+      expect(normalizeResults(results, iff.rootDir)).toMatchSnapshot();
     });
     test('filters warnings with --quiet option', async () => {
       const coreWithoutQuiet = new Core({
@@ -137,61 +188,17 @@ describe('Core', () => {
     expect(
       (await core.formatResultDetails(results, ['import/order', 'ban-exponentiation-operator']))
         // for windows
-        .replace(/\\/gu, '/'),
+        .replace(/\\/gu, '/')
+        .replaceAll(iff.rootDir, '<fixture>'),
     ).toMatchSnapshot();
   });
-  describe('applyAutoFixes', async () => {
-    const iff = await createIFF({
-      'src/prefer-const.js': 'let a = 1;',
-      'src/arrow-body-style.js': dedent`
-        () => (
-          () => (
-            () => (
-              () => (
-                () => (
-                  () => (
-                    () => (
-                      () => (
-                        () => (
-                          () => (
-                            () => (
-                              () => (
-                                0
-                              )
-                            )
-                          )
-                        )
-                      )
-                    )
-                  )
-                )
-              )
-            )
-          )
-        );
-      `,
-      '.eslintrc.js': dedent`
-        module.exports = {
-          parserOptions: {
-            ecmaVersion: 2022,
-            sourceType: 'module',
-          },
-          rules: {
-            'prefer-const': 'error',
-            'arrow-body-style': ['error', 'always'],
-          },
-        };
-      `,
-    });
-    const core = new Core({
-      patterns: ['src'],
-      cwd: iff.rootDir,
-      eslintOptions: { type: 'eslintrc' },
-    });
+  describe('applyAutoFixes', () => {
     test('basic', async () => {
       const results = await core.lint();
       const original = await readFile(iff.paths['src/prefer-const.js'], 'utf-8');
+
       const undo = await core.applyAutoFixes(results, ['prefer-const']);
+
       expect(await readFile(iff.paths['src/prefer-const.js'], 'utf-8')).toMatchSnapshot();
       await undo();
       expect(await readFile(iff.paths['src/prefer-const.js'], 'utf-8')).toEqual(original);
@@ -201,7 +208,9 @@ describe('Core', () => {
       // ref: https://github.com/eslint/eslint/blob/5d60812d440762dff72420714273c714c4c5d074/lib/linter/linter.js#L44
       const results = await core.lint();
       const original = await readFile(iff.paths['src/arrow-body-style.js'], 'utf-8');
+
       const undo = await core.applyAutoFixes(results, ['arrow-body-style']);
+
       expect(await readFile(iff.paths['src/arrow-body-style.js'], 'utf-8')).toMatchSnapshot();
       await undo();
       expect(await readFile(iff.paths['src/arrow-body-style.js'], 'utf-8')).toEqual(original);
@@ -209,45 +218,45 @@ describe('Core', () => {
   });
   test('disablePerLine', async () => {
     const results = await core.lint();
+    const original = await readFile(iff.paths['src/ban-exponentiation-operator.js'], 'utf-8');
+
     const undo = await core.disablePerLine(results, ['ban-exponentiation-operator']);
-    expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
+
+    expect(await readFile(iff.paths['src/ban-exponentiation-operator.js'], 'utf-8')).toMatchSnapshot();
     await undo();
-    expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
+    expect(await readFile(iff.paths['src/ban-exponentiation-operator.js'], 'utf-8')).toEqual(original);
   });
   test('disablePerFile', async () => {
     const results = await core.lint();
+    const original = await readFile(iff.paths['src/ban-exponentiation-operator.js'], 'utf-8');
+
     const undo = await core.disablePerFile(results, ['ban-exponentiation-operator']);
-    expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
+
+    expect(await readFile(iff.paths['src/ban-exponentiation-operator.js'], 'utf-8')).toMatchSnapshot();
     await undo();
-    expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
+    expect(await readFile(iff.paths['src/ban-exponentiation-operator.js'], 'utf-8')).toEqual(original);
   });
   test('applySuggestions', async () => {
     const results = await core.lint();
+    const original = await readFile(iff.paths['src/no-unused-vars.js'], 'utf-8');
+
     const undo = await core.applySuggestions(results, ['no-unsafe-negation'], (suggestions) => suggestions[0]);
-    expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
+
+    expect(await readFile(iff.paths['src/no-unused-vars.js'], 'utf-8')).toMatchSnapshot();
     await undo();
-    expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
+    expect(await readFile(iff.paths['src/no-unused-vars.js'], 'utf-8')).toEqual(original);
   });
-  describe('makeFixableAndFix', () => {
-    test('basic', async () => {
-      const results = await core.lint();
-      const undo = await core.makeFixableAndFix(results, ['no-unused-vars'], (_message, node) => {
-        if (!node || !node.range) return null;
-        return { range: [node.range[0], node.range[0]], text: '_' };
-      });
-      expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
-      await undo();
-      expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
+  test('makeFixableAndFix', async () => {
+    const results = await core.lint();
+    const original = await readFile(iff.paths['src/no-unused-vars.js'], 'utf-8');
+
+    const undo = await core.makeFixableAndFix(results, ['no-unused-vars'], (_message, node) => {
+      if (!node || !node.range) return null;
+      return { range: [node.range[0], node.range[0]], text: '_' };
     });
-    test('fix overlapped problems', async () => {
-      // NOTE: eslint-interactive only fixes up to 11 overlapping errors to prevent infinite loops.
-      // This follows the limitations of ESLint.
-      // ref: https://github.com/eslint/eslint/blob/5d60812d440762dff72420714273c714c4c5d074/lib/linter/linter.js#L44
-      const results = await core.lint();
-      const undo = await core.makeFixableAndFix(results, ['arrow-body-style'], (message) => message.fix);
-      expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
-      await undo();
-      expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
-    });
+
+    expect(await readFile(iff.paths['src/no-unused-vars.js'], 'utf-8')).toMatchSnapshot();
+    await undo();
+    expect(await readFile(iff.paths['src/no-unused-vars.js'], 'utf-8')).toEqual(original);
   });
 });

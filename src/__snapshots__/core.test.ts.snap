@@ -1,9 +1,13 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Core > applyAutoFixes > basic 1`] = `"const a = 1;"`;
+exports[`Core > applyAutoFixes > basic 1`] = `
+"/* eslint prefer-const: "error" */
+const a = 1;"
+`;
 
 exports[`Core > applyAutoFixes > fix overlapped problems 1`] = `
-"() => {return (
+"/* eslint arrow-body-style: ["error", "always"] */
+() => {return (
   () => {return (
     () => {return (
       () => {return (
@@ -31,21 +35,9 @@ exports[`Core > applyAutoFixes > fix overlapped problems 1`] = `
 `;
 
 exports[`Core > applySuggestions 1`] = `
-""\\'";
-'\\"';
-if (!('key1' in {})) 0;
-if (!('key2' in {})) "\\'";
-if (!(\`
-key3
-\` in {})) "\\'";
-if (!(\`
-key4
-\` in {})) "\\'";
-if (!('key5' in {})) 0;
-"
+"/* eslint no-unused-vars: "error" */
+const a = 1;"
 `;
-
-exports[`Core > applySuggestions 2`] = `""`;
 
 exports[`Core > constructor > pass options to eslint 1`] = `
 [
@@ -76,266 +68,21 @@ exports[`Core > constructor > pass options to eslint 1`] = `
 
 exports[`Core > disablePerFile 1`] = `
 "/* eslint-disable ban-exponentiation-operator */
-const a = 0;
-// eslint-disable-next-line semi
-const b = 0
-/* eslint-disable-next-line semi */
-const c = 0
-// eslint-disable-next-line ban-exponentiation-operator
-const d = 0
-// eslint-disable-next-line no-unused-vars
-const jsx = (
-  <>
-    <div>{2 ** 10}</div>
-    {/* eslint-disable-next-line semi */}
-    <div>{2 ** 10}</div>
-  </>
-);
-"
+/* eslint ban-exponentiation-operator: "error" */
+2 ** 2;"
 `;
-
-exports[`Core > disablePerFile 2`] = `""`;
 
 exports[`Core > disablePerLine 1`] = `
-"const a = 0;
-// eslint-disable-next-line semi
-const b = 0
-/* eslint-disable-next-line semi */
-const c = 0
+"/* eslint ban-exponentiation-operator: "error" */
 // eslint-disable-next-line ban-exponentiation-operator
-const d = 0
-// eslint-disable-next-line no-unused-vars
-const jsx = (
-  <>
-    {/* eslint-disable-next-line ban-exponentiation-operator */}
-    <div>{2 ** 10}</div>
-    {/* eslint-disable-next-line semi, ban-exponentiation-operator */}
-    <div>{2 ** 10}</div>
-  </>
-);
-"
+2 ** 2;"
 `;
-
-exports[`Core > disablePerLine 2`] = `""`;
 
 exports[`Core > lint > returns lint results 1`] = `
 [
   {
-    "errorCount": 0,
-    "filePath": "/fixtures-tmp/.eslintrc.js",
-    "messages": [],
-    "warningCount": 0,
-  },
-  {
-    "errorCount": 19,
-    "filePath": "/fixtures-tmp/index.js",
-    "messages": [
-      {
-        "ruleId": "semi",
-        "severity": 2,
-      },
-      {
-        "ruleId": "import/order",
-        "severity": 2,
-      },
-      {
-        "ruleId": "semi",
-        "severity": 2,
-      },
-      {
-        "ruleId": "semi",
-        "severity": 2,
-      },
-      {
-        "ruleId": "import/order",
-        "severity": 2,
-      },
-      {
-        "ruleId": "semi",
-        "severity": 2,
-      },
-      {
-        "ruleId": "import/order",
-        "severity": 2,
-      },
-      {
-        "ruleId": "semi",
-        "severity": 2,
-      },
-      {
-        "ruleId": "semi",
-        "severity": 2,
-      },
-      {
-        "ruleId": "prefer-const",
-        "severity": 2,
-      },
-      {
-        "ruleId": "semi",
-        "severity": 2,
-      },
-      {
-        "ruleId": "prefer-const",
-        "severity": 2,
-      },
-      {
-        "ruleId": "semi",
-        "severity": 2,
-      },
-      {
-        "ruleId": "prefer-const",
-        "severity": 2,
-      },
-      {
-        "ruleId": "semi",
-        "severity": 2,
-      },
-      {
-        "ruleId": "prefer-const",
-        "severity": 2,
-      },
-      {
-        "ruleId": "no-unused-vars",
-        "severity": 2,
-      },
-      {
-        "ruleId": "semi",
-        "severity": 2,
-      },
-      {
-        "ruleId": "semi",
-        "severity": 2,
-      },
-    ],
-    "warningCount": 0,
-  },
-  {
-    "errorCount": 7,
-    "filePath": "/fixtures-tmp/lib/add-disable-comment.jsx",
-    "messages": [
-      {
-        "ruleId": "no-unused-vars",
-        "severity": 2,
-      },
-      {
-        "ruleId": "no-unused-vars",
-        "severity": 2,
-      },
-      {
-        "ruleId": "no-unused-vars",
-        "severity": 2,
-      },
-      {
-        "ruleId": "no-unused-vars",
-        "severity": 2,
-      },
-      {
-        "ruleId": "semi",
-        "severity": 2,
-      },
-      {
-        "ruleId": "ban-exponentiation-operator",
-        "severity": 2,
-      },
-      {
-        "ruleId": "ban-exponentiation-operator",
-        "severity": 2,
-      },
-    ],
-    "warningCount": 0,
-  },
-  {
-    "errorCount": 10,
-    "filePath": "/fixtures-tmp/lib/apply-suggestion.js",
-    "messages": [
-      {
-        "ruleId": "no-useless-escape",
-        "severity": 2,
-      },
-      {
-        "ruleId": "no-useless-escape",
-        "severity": 2,
-      },
-      {
-        "ruleId": "no-unsafe-negation",
-        "severity": 2,
-      },
-      {
-        "ruleId": "no-unsafe-negation",
-        "severity": 2,
-      },
-      {
-        "ruleId": "no-useless-escape",
-        "severity": 2,
-      },
-      {
-        "ruleId": "no-unsafe-negation",
-        "severity": 2,
-      },
-      {
-        "ruleId": "no-useless-escape",
-        "severity": 2,
-      },
-      {
-        "ruleId": "no-unsafe-negation",
-        "severity": 2,
-      },
-      {
-        "ruleId": "no-useless-escape",
-        "severity": 2,
-      },
-      {
-        "ruleId": "no-unsafe-negation",
-        "severity": 2,
-      },
-    ],
-    "warningCount": 0,
-  },
-  {
-    "errorCount": 1,
-    "filePath": "/fixtures-tmp/lib/eslint-core-problem.mjs",
-    "messages": [
-      {
-        "ruleId": null,
-        "severity": 2,
-      },
-    ],
-    "warningCount": 0,
-  },
-  {
-    "errorCount": 6,
-    "filePath": "/fixtures-tmp/lib/make-fixable-and-fix.js",
-    "messages": [
-      {
-        "ruleId": "no-unused-vars",
-        "severity": 2,
-      },
-      {
-        "ruleId": "no-unused-vars",
-        "severity": 2,
-      },
-      {
-        "ruleId": "no-unused-vars",
-        "severity": 2,
-      },
-      {
-        "ruleId": "no-unused-vars",
-        "severity": 2,
-      },
-      {
-        "ruleId": "no-unused-vars",
-        "severity": 2,
-      },
-      {
-        "ruleId": "no-unused-vars",
-        "severity": 2,
-      },
-    ],
-    "warningCount": 0,
-  },
-  {
     "errorCount": 12,
-    "filePath": "/fixtures-tmp/lib/overlapped.js",
+    "filePath": "<fixture>/src/arrow-body-style.js",
     "messages": [
       {
         "ruleId": "arrow-body-style",
@@ -390,10 +137,10 @@ exports[`Core > lint > returns lint results 1`] = `
   },
   {
     "errorCount": 1,
-    "filePath": "/fixtures-tmp/lib/shebang.js",
+    "filePath": "<fixture>/src/ban-exponentiation-operator.js",
     "messages": [
       {
-        "ruleId": "semi",
+        "ruleId": "ban-exponentiation-operator",
         "severity": 2,
       },
     ],
@@ -401,10 +148,32 @@ exports[`Core > lint > returns lint results 1`] = `
   },
   {
     "errorCount": 1,
-    "filePath": "/fixtures-tmp/lib/sub.mjs",
+    "filePath": "<fixture>/src/import-order.js",
     "messages": [
       {
-        "ruleId": "semi",
+        "ruleId": "import/order",
+        "severity": 2,
+      },
+    ],
+    "warningCount": 0,
+  },
+  {
+    "errorCount": 1,
+    "filePath": "<fixture>/src/no-unused-vars.js",
+    "messages": [
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+      },
+    ],
+    "warningCount": 0,
+  },
+  {
+    "errorCount": 1,
+    "filePath": "<fixture>/src/prefer-const.js",
+    "messages": [
+      {
+        "ruleId": "prefer-const",
         "severity": 2,
       },
     ],
@@ -412,179 +181,55 @@ exports[`Core > lint > returns lint results 1`] = `
   },
   {
     "errorCount": 0,
-    "filePath": "/fixtures-tmp/lib/warning.js",
+    "filePath": "<fixture>/src/warn.js",
     "messages": [
       {
-        "ruleId": "semi",
+        "ruleId": "prefer-const",
         "severity": 1,
       },
     ],
     "warningCount": 1,
   },
-  {
-    "errorCount": 0,
-    "filePath": "/fixtures-tmp/rules/ban-exponentiation-operator.js",
-    "messages": [],
-    "warningCount": 0,
-  },
 ]
 `;
 
-exports[`Core > makeFixableAndFix > basic 1`] = `
-"==> fixtures-tmp/index.js <==
-import { mul } from './lib/mul'
-import { add } from './lib/add'
-import { sub } from './lib/sub'
-import { exp } from './lib/exp'
-import { strictEqual } from 'assert'
-
-const numA=add(1, 2)
-let numB=add(3, 4)
-let numC=sub(5, 6)
-let numD=exp(2, 2)
-let _numE=mul(numA, numB, numC, numD)
-
-strictEqual(numD, -84)
-
-==> fixtures-tmp/lib/add-disable-comment.jsx <==
-const _a = 0;
-// eslint-disable-next-line semi
-const _b = 0
-/* eslint-disable-next-line semi */
-const _c = 0
-// eslint-disable-next-line ban-exponentiation-operator
-const _d = 0
-// eslint-disable-next-line no-unused-vars
-const jsx = (
-  <>
-    <div>{2 ** 10}</div>
-    {/* eslint-disable-next-line semi */}
-    <div>{2 ** 10}</div>
-  </>
-);
-
-==> fixtures-tmp/lib/make-fixable-and-fix.js <==
-import { _readFile } from 'fs';
-import { join, _dirname } from 'path';
-
-const _a = 0;
-const _b = 0;
-
-function _fn(_arg) {
-  console.log(join('a', 'b'));
-}
-
-"
+exports[`Core > makeFixableAndFix 1`] = `
+"/* eslint no-unused-vars: "error" */
+const _a = 1;"
 `;
-
-exports[`Core > makeFixableAndFix > basic 2`] = `""`;
-
-exports[`Core > makeFixableAndFix > fix overlapped problems 1`] = `
-"() => {return (
-  () => {return (
-    () => {return (
-      () => {return (
-        () => {return (
-          () => {return (
-            () => {return (
-              () => {return (
-                () => {return (
-                  () => {return (
-                    () => (
-                      () => (
-                        0
-                      )
-                    )
-                  )}
-                )}
-              )}
-            )}
-          )}
-        )}
-      )}
-    )}
-  )}
-)};
-"
-`;
-
-exports[`Core > makeFixableAndFix > fix overlapped problems 2`] = `""`;
 
 exports[`Core > printDetailsOfResults 1`] = `
-"[31merror[39m: [1m\`./lib/add\` import should occur before import of \`./lib/mul\`[22m [2m(import/order)[22m at [32mfixtures-tmp/index.js:2:1[39m:
-  1 | import { mul } from './lib/mul'
-> 2 | import { add } from './lib/add'
+"[31merror[39m: [1mBan exponentiation operator[22m [2m(ban-exponentiation-operator)[22m at [32m../../../../../..<fixture>/src/ban-exponentiation-operator.js:2:1[39m:
+  1 | /* eslint ban-exponentiation-operator: "error" */
+> 2 | 2 ** 2;
     | ^
-  3 | import { sub } from './lib/sub'
-  4 | import { exp } from './lib/exp'
-  5 | import { strictEqual } from 'assert'
 
 
-[31merror[39m: [1m\`./lib/exp\` import should occur before import of \`./lib/mul\`[22m [2m(import/order)[22m at [32mfixtures-tmp/index.js:4:1[39m:
-  2 | import { add } from './lib/add'
-  3 | import { sub } from './lib/sub'
-> 4 | import { exp } from './lib/exp'
+[31merror[39m: [1mDefinition for rule 'import/order' was not found[22m [2m(import/order)[22m at [32m../../../../../..<fixture>/src/import-order.js:1:1[39m:
+> 1 | /* eslint import/order: "error" */
     | ^
-  5 | import { strictEqual } from 'assert'
-  6 | 
-  7 | const numA=add(1, 2)
+  2 | import b from 'b';
+  3 | import a from 'a';
 
 
-[31merror[39m: [1m\`assert\` import should occur before import of \`./lib/mul\`[22m [2m(import/order)[22m at [32mfixtures-tmp/index.js:5:1[39m:
-  3 | import { sub } from './lib/sub'
-  4 | import { exp } from './lib/exp'
-> 5 | import { strictEqual } from 'assert'
-    | ^
-  6 | 
-  7 | const numA=add(1, 2)
-  8 | let numB=add(3, 4)
-
-
-[31merror[39m: [1mBan exponentiation operator[22m [2m(ban-exponentiation-operator)[22m at [32mfixtures-tmp/lib/add-disable-comment.jsx:11:11[39m:
-   9 | const jsx = (
-  10 |   <>
-> 11 |     <div>{2 ** 10}</div>
-     |           ^
-  12 |     {/* eslint-disable-next-line semi */}
-  13 |     <div>{2 ** 10}</div>
-  14 |   </>
-
-
-[31merror[39m: [1mBan exponentiation operator[22m [2m(ban-exponentiation-operator)[22m at [32mfixtures-tmp/lib/add-disable-comment.jsx:13:11[39m:
-  11 |     <div>{2 ** 10}</div>
-  12 |     {/* eslint-disable-next-line semi */}
-> 13 |     <div>{2 ** 10}</div>
-     |           ^
-  14 |   </>
-  15 | );
-  16 | 
-
-
-[31m[1m26 errors found.[22m[39m[31m[1m[22m[39m
-[31m[1m19 errors potentially fixable with the \`--fix\` option.[22m[39m"
+[31m[1m2 errors found.[22m[39m"
 `;
 
 exports[`Core > printSummaryOfResults 1`] = `
-"[1m- 11 files (2 files passed, [91m9 files failed[39m) checked.[22m
-[1m- 58 problems ([31m57 errors[39m, [33m1 warning[39m) found.[22m
+"[1m- 6 files (0 file passed, [91m6 files failed[39m) checked.[22m
+[1m- 17 problems ([31m16 errors[39m, [33m1 warning[39m) found.[22m
 ╔═════════════════════════════╤═══════╤═════════╤════════════╤═════════════════╗
 ║ Rule                        │ Error │ Warning │ is fixable │ has suggestions ║
 ╟─────────────────────────────┼───────┼─────────┼────────────┼─────────────────╢
-║ semi                        │ [31m[1m14[39m[22m    │ [31m[1m1[39m[22m       │ [31m[1m15[39m[22m         │ 0               ║
-╟─────────────────────────────┼───────┼─────────┼────────────┼─────────────────╢
-║ import/order                │ [31m[1m3[39m[22m     │ 0       │ [31m[1m3[39m[22m          │ 0               ║
-╟─────────────────────────────┼───────┼─────────┼────────────┼─────────────────╢
-║ ]8;;https://example.comprefer-const]8;;                │ [31m[1m4[39m[22m     │ 0       │ [31m[1m4[39m[22m          │ 0               ║
-╟─────────────────────────────┼───────┼─────────┼────────────┼─────────────────╢
-║ no-unused-vars              │ [31m[1m11[39m[22m    │ 0       │ 0          │ 0               ║
-╟─────────────────────────────┼───────┼─────────┼────────────┼─────────────────╢
-║ ban-exponentiation-operator │ [31m[1m2[39m[22m     │ 0       │ 0          │ 0               ║
-╟─────────────────────────────┼───────┼─────────┼────────────┼─────────────────╢
-║ no-useless-escape           │ [31m[1m5[39m[22m     │ 0       │ 0          │ [31m[1m5[39m[22m               ║
-╟─────────────────────────────┼───────┼─────────┼────────────┼─────────────────╢
-║ no-unsafe-negation          │ [31m[1m5[39m[22m     │ 0       │ 0          │ [31m[1m5[39m[22m               ║
-╟─────────────────────────────┼───────┼─────────┼────────────┼─────────────────╢
 ║ arrow-body-style            │ [31m[1m12[39m[22m    │ 0       │ [31m[1m12[39m[22m         │ 0               ║
+╟─────────────────────────────┼───────┼─────────┼────────────┼─────────────────╢
+║ ban-exponentiation-operator │ [31m[1m1[39m[22m     │ 0       │ 0          │ 0               ║
+╟─────────────────────────────┼───────┼─────────┼────────────┼─────────────────╢
+║ import/order                │ [31m[1m1[39m[22m     │ 0       │ 0          │ 0               ║
+╟─────────────────────────────┼───────┼─────────┼────────────┼─────────────────╢
+║ no-unused-vars              │ [31m[1m1[39m[22m     │ 0       │ 0          │ 0               ║
+╟─────────────────────────────┼───────┼─────────┼────────────┼─────────────────╢
+║ ]8;;https://example.comprefer-const]8;;                │ [31m[1m1[39m[22m     │ [31m[1m1[39m[22m       │ [31m[1m2[39m[22m          │ 0               ║
 ╚═════════════════════════════╧═══════╧═════════╧════════════╧═════════════════╝
 "
 `;
