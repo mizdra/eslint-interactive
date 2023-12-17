@@ -31,16 +31,16 @@ exports[`Core > applyAutoFixes > fix overlapped problems 1`] = `
 `;
 
 exports[`Core > applySuggestions 1`] = `
-"\\"\\\\'\\";
-'\\\\\\"';
+""\\'";
+'\\"';
 if (!('key1' in {})) 0;
-if (!('key2' in {})) \\"\\\\'\\";
+if (!('key2' in {})) "\\'";
 if (!(\`
 key3
-\` in {})) \\"\\\\'\\";
+\` in {})) "\\'";
 if (!(\`
 key4
-\` in {})) \\"\\\\'\\";
+\` in {})) "\\'";
 if (!('key5' in {})) 0;
 "
 `;
