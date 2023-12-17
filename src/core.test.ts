@@ -25,11 +25,11 @@ function normalizeResults(results: ESLint.LintResult[], fixtureDir: string) {
   return results.map((result) => {
     // Usually, `filePath` changes depending on the environment, and the snapshot will fail.
     // So, remove the current directory from `filePath`.
-    let filePath = result.filePath
+    const filePath = result.filePath
+      .replace(fixtureDir, '<fixture>')
+      .replace(relative(process.cwd(), fixtureDir), '<fixture>')
       // for windows
       .replace(/\\/gu, '/');
-    if (fixtureDir)
-      filePath = filePath.replace(fixtureDir, '<fixture>').replace(relative(process.cwd(), fixtureDir), '<fixture>');
     return {
       filePath,
       errorCount: result.errorCount,
@@ -196,10 +196,10 @@ describe('Core', () => {
     const results = await core.lint();
     expect(
       (await core.formatResultDetails(results, ['import/order', 'ban-exponentiation-operator']))
-        // for windows
-        .replace(/\\/gu, '/')
         .replaceAll(iff.rootDir, '<fixture>')
-        .replaceAll(relative(process.cwd(), iff.rootDir), '<fixture>'),
+        .replaceAll(relative(process.cwd(), iff.rootDir), '<fixture>')
+        // for windows
+        .replace(/\\/gu, '/'),
     ).toMatchSnapshot();
   });
   describe('applyAutoFixes', () => {
