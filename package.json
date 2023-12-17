@@ -50,7 +50,7 @@
     "prettier": "3.0.3",
     "stream-match": "^4.1.0",
     "typescript": "^5.2.2",
-    "vitest": "^0.34.6",
+    "vitest": "^1.0.4",
     "vitest-github-actions-reporter": "^0.10.0"
   },
   "dependencies": {
