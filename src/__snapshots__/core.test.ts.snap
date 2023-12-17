@@ -199,13 +199,13 @@ const _a = 1;"
 `;
 
 exports[`Core > printDetailsOfResults 1`] = `
-"[31merror[39m: [1mBan exponentiation operator[22m [2m(ban-exponentiation-operator)[22m at [32m../../../../../..<fixture>/src/ban-exponentiation-operator.js:2:1[39m:
+"[31merror[39m: [1mBan exponentiation operator[22m [2m(ban-exponentiation-operator)[22m at [32m<fixture>/src/ban-exponentiation-operator.js:2:1[39m:
   1 | /* eslint ban-exponentiation-operator: "error" */
 > 2 | 2 ** 2;
     | ^
 
 
-[31merror[39m: [1mDefinition for rule 'import/order' was not found[22m [2m(import/order)[22m at [32m../../../../../..<fixture>/src/import-order.js:1:1[39m:
+[31merror[39m: [1mDefinition for rule 'import/order' was not found[22m [2m(import/order)[22m at [32m<fixture>/src/import-order.js:1:1[39m:
 > 1 | /* eslint import/order: "error" */
     | ^
   2 | import b from 'b';

@@ -1,5 +1,5 @@
 import { constants, cp, readFile } from 'node:fs/promises';
-import { dirname, join } from 'node:path';
+import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import dedent from 'dedent';
 import { ESLint, Linter } from 'eslint';
@@ -26,10 +26,10 @@ function normalizeResults(results: ESLint.LintResult[], fixtureDir: string) {
     // Usually, `filePath` changes depending on the environment, and the snapshot will fail.
     // So, remove the current directory from `filePath`.
     let filePath = result.filePath
-      .replace(process.cwd(), '')
       // for windows
       .replace(/\\/gu, '/');
-    if (fixtureDir) filePath = filePath.replace(fixtureDir, '<fixture>');
+    if (fixtureDir)
+      filePath = filePath.replace(fixtureDir, '<fixture>').replace(relative(process.cwd(), fixtureDir), '<fixture>');
     return {
       filePath,
       errorCount: result.errorCount,
@@ -95,12 +95,14 @@ const iff = await createIFF({
   `,
   '.eslintrc.js': dedent`
     module.exports = {
+      root: true,
       parserOptions: {
         ecmaVersion: 2022,
         sourceType: 'module',
       },
     };
   `,
+  'package.json': '{ "type": "commonjs" }',
   'rules': async (path) =>
     cp(join(rootDir, 'fixtures/rules'), path, { mode: constants.COPYFILE_FICLONE, recursive: true }),
 });
@@ -126,6 +128,7 @@ describe('Core', () => {
         'src/index.mjs': '2 ** 2;',
         'rules': async (path) =>
           cp(join(rootDir, 'fixtures/rules'), path, { mode: constants.COPYFILE_FICLONE, recursive: true }),
+        'package.json': '{ "type": "commonjs" }',
       });
       const core = new Core({
         patterns: ['src'],
@@ -189,7 +192,8 @@ describe('Core', () => {
       (await core.formatResultDetails(results, ['import/order', 'ban-exponentiation-operator']))
         // for windows
         .replace(/\\/gu, '/')
-        .replaceAll(iff.rootDir, '<fixture>'),
+        .replaceAll(iff.rootDir, '<fixture>')
+        .replaceAll(relative(process.cwd(), iff.rootDir), '<fixture>'),
     ).toMatchSnapshot();
   });
   describe('applyAutoFixes', () => {

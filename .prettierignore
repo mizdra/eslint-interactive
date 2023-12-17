@@ -3,3 +3,4 @@
 /fixtures
 pnpm-lock.yaml
 /.pnpm-store
+/tmp

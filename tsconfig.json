@@ -1,6 +1,6 @@
 {
   "extends": ["@tsconfig/strictest/tsconfig.json", "@tsconfig/node18/tsconfig.json"],
-  "exclude": ["node_modules", "benchmark", "static", "e2e-test", "fixtures", "fixtures-tmp", "dist", "bin"],
+  "exclude": ["node_modules", "benchmark", "static", "e2e-test", "fixtures", "fixtures-tmp", "dist", "bin", "tmp"],
   "compilerOptions": {
     "module": "Node16",
     "moduleResolution": "node16",

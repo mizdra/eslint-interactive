@@ -12,6 +12,7 @@ export const baseConfig = defineConfig({
       FORCE_COLOR: '1',
       NODE_OPTIONS: '--experimental-import-meta-resolve',
     },
-    watchExclude: [...configDefaults.watchExclude, 'fixtures-tmp/**', 'benchmark/fixtures/**'],
+    exclude: [...configDefaults.exclude, 'tmp/**'],
+    watchExclude: [...configDefaults.watchExclude, 'fixtures-tmp/**', 'tmp/**', 'benchmark/fixtures/**'],
   },
 });
