@@ -224,23 +224,23 @@ describe('Core', () => {
   });
   test('disablePerLine', async () => {
     const results = await core.lint();
-    const original = await readFile(iff.paths['src/ban-exponentiation-operator.js'], 'utf-8');
+    const original = await readFile(iff.paths['src/prefer-const.js'], 'utf-8');
 
-    const undo = await core.disablePerLine(results, ['ban-exponentiation-operator']);
+    const undo = await core.disablePerLine(results, ['prefer-const']);
 
-    expect(await readFile(iff.paths['src/ban-exponentiation-operator.js'], 'utf-8')).toMatchSnapshot();
+    expect(await readFile(iff.paths['src/prefer-const.js'], 'utf-8')).toMatchSnapshot();
     await undo();
-    expect(await readFile(iff.paths['src/ban-exponentiation-operator.js'], 'utf-8')).toEqual(original);
+    expect(await readFile(iff.paths['src/prefer-const.js'], 'utf-8')).toEqual(original);
   });
   test('disablePerFile', async () => {
     const results = await core.lint();
-    const original = await readFile(iff.paths['src/ban-exponentiation-operator.js'], 'utf-8');
+    const original = await readFile(iff.paths['src/prefer-const.js'], 'utf-8');
 
-    const undo = await core.disablePerFile(results, ['ban-exponentiation-operator']);
+    const undo = await core.disablePerFile(results, ['prefer-const']);
 
-    expect(await readFile(iff.paths['src/ban-exponentiation-operator.js'], 'utf-8')).toMatchSnapshot();
+    expect(await readFile(iff.paths['src/prefer-const.js'], 'utf-8')).toMatchSnapshot();
     await undo();
-    expect(await readFile(iff.paths['src/ban-exponentiation-operator.js'], 'utf-8')).toEqual(original);
+    expect(await readFile(iff.paths['src/prefer-const.js'], 'utf-8')).toEqual(original);
   });
   test('applySuggestions', async () => {
     const results = await core.lint();

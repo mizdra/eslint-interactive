@@ -60,13 +60,13 @@ exports[`Core > constructor > pass options to eslint 1`] = `
 `;
 
 exports[`Core > disablePerFile 1`] = `
-"/* eslint-disable ban-exponentiation-operator */
-2 ** 2;"
+"/* eslint-disable prefer-const */
+let a = 1;"
 `;
 
 exports[`Core > disablePerLine 1`] = `
-"// eslint-disable-next-line ban-exponentiation-operator
-2 ** 2;"
+"// eslint-disable-next-line prefer-const
+let a = 1;"
 `;
 
 exports[`Core > lint > returns lint results 1`] = `
