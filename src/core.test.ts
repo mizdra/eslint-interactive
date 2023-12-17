@@ -87,6 +87,9 @@ const iff = await createIFF({
   'src/warn.js': dedent`
     let a = 1;
   `,
+  'src/no-unsafe-negation.js': dedent`
+    if (!key in object) {}
+  `,
   '.eslintrc.js': dedent`
     module.exports = {
       root: true,
@@ -101,6 +104,7 @@ const iff = await createIFF({
         { files: ['ban-exponentiation-operator.js'], rules: { 'ban-exponentiation-operator': 'error' } },
         { files: ['no-unused-vars.js'], rules: { 'no-unused-vars': 'error' } },
         { files: ['warn.js'], rules: { 'prefer-const': 'warn' } },
+        { files: ['no-unsafe-negation.js'], rules: { 'no-unsafe-negation': 'error' } },
       ],
     };
   `,
@@ -244,13 +248,13 @@ describe('Core', () => {
   });
   test('applySuggestions', async () => {
     const results = await core.lint();
-    const original = await readFile(iff.paths['src/no-unused-vars.js'], 'utf-8');
+    const original = await readFile(iff.paths['src/no-unsafe-negation.js'], 'utf-8');
 
     const undo = await core.applySuggestions(results, ['no-unsafe-negation'], (suggestions) => suggestions[0]);
 
-    expect(await readFile(iff.paths['src/no-unused-vars.js'], 'utf-8')).toMatchSnapshot();
+    expect(await readFile(iff.paths['src/no-unsafe-negation.js'], 'utf-8')).toMatchSnapshot();
     await undo();
-    expect(await readFile(iff.paths['src/no-unused-vars.js'], 'utf-8')).toEqual(original);
+    expect(await readFile(iff.paths['src/no-unsafe-negation.js'], 'utf-8')).toEqual(original);
   });
   test('makeFixableAndFix', async () => {
     const results = await core.lint();
