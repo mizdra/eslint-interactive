@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1701011458806,
+  "lastUpdate": 1702909420670,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -1547,6 +1547,35 @@ window.BENCHMARK_DATA = {
           {
             "name": "cachegrind-benchmarking",
             "value": 18525296804,
+            "unit": "instructions"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "pp.mizdra@gmail.com",
+            "name": "mizdra",
+            "username": "mizdra"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "2c95021b262961a333ffc8611c2d74de24992e7e",
+          "message": "Merge pull request #331 from mizdra/refactoring-core-test\n\nRefactoring core's test",
+          "timestamp": "2023-12-18T23:21:34+09:00",
+          "tree_id": "9671c1a120a5a6e3a39d547fdf55de83de8c65c1",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/2c95021b262961a333ffc8611c2d74de24992e7e"
+        },
+        "date": 1702909419531,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "cachegrind-benchmarking",
+            "value": 18276395390,
             "unit": "instructions"
           }
         ]
