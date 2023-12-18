@@ -94,7 +94,7 @@ const iff = await createIFF({
     module.exports = {
       root: true,
       parserOptions: {
-        ecmaVersion: 2022,
+        ecmaVersion: 2021,
         sourceType: 'module',
       },
       overrides: [
@@ -146,7 +146,7 @@ describe('Core', () => {
           extensions: ['.js', '.mjs'],
           overrideConfig: {
             parserOptions: {
-              ecmaVersion: 2022,
+              ecmaVersion: 2021,
               sourceType: 'module',
             },
             rules: { 'prefer-const': 'error', 'ban-exponentiation-operator': 'error' },
