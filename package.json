@@ -33,7 +33,7 @@
   "packageManager": "pnpm@8.9.0",
   "devDependencies": {
     "@mizdra/eslint-config-mizdra": "2.1.0-alpha.0",
-    "@mizdra/inline-fixture-files": "^1.0.0",
+    "@mizdra/inline-fixture-files": "^1.1.0",
     "@mizdra/prettier-config-mizdra": "^1.0.0",
     "@tsconfig/node18": "^18.2.2",
     "@tsconfig/strictest": "^2.0.2",
@@ -43,13 +43,15 @@
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^20.8.10",
     "@types/yargs": "^17.0.29",
+    "dedent": "^1.5.1",
     "eslint": "^8.53.0",
     "fs-extra": "^11.1.1",
+    "import-meta-resolve": "^4.0.0",
     "npm-run-all": "^4.1.5",
     "prettier": "3.0.3",
     "stream-match": "^4.1.0",
     "typescript": "^5.2.2",
-    "vitest": "^0.34.6",
+    "vitest": "^1.0.4",
     "vitest-github-actions-reporter": "^0.10.0"
   },
   "dependencies": {
