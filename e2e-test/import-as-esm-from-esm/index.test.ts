@@ -1,5 +1,4 @@
 import { afterEach, beforeEach, expect, test } from 'vitest';
-import { execSync } from 'child_process';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import stripAnsi from 'strip-ansi';
@@ -20,6 +19,7 @@ test('Programmable API', async () => {
   const core = new Core({
     patterns: ['fixtures-tmp'],
     eslintOptions: {
+      type: 'eslintrc',
       cwd: join(dirname(fileURLToPath(import.meta.url)), '..', '..'),
     },
   });
