@@ -1,11 +1,12 @@
 import { Readable } from 'node:stream';
 
-export function createStreamWatcher(stream: Readable) {
+export function createStreamWatcher(stream: Readable, { debug = false } = {}) {
   let allData = '';
   let unconsumedData = '';
   stream.on('data', (data) => {
     allData += data.toString();
     unconsumedData += data.toString();
+    if (debug) console.log(unconsumedData);
   });
   async function waitOnData(): Promise<void> {
     return new Promise((resolve) => {
