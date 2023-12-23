@@ -82,24 +82,31 @@ export type NormalizedConfig = {
 
 export function normalizeConfig(config: Config): NormalizedConfig {
   const cwd = config.cwd ?? configDefaults.cwd;
-  return {
-    patterns: config.patterns,
-    formatterName: config.formatterName ?? configDefaults.formatterName,
-    quiet: config.quiet ?? configDefaults.quiet,
-    cwd,
-    eslintOptions: {
-      type: 'eslintrc',
-      useEslintrc: config.eslintOptions.useEslintrc ?? configDefaults.eslintOptions.useEslintrc,
-      overrideConfigFile: config.eslintOptions.overrideConfigFile ?? configDefaults.eslintOptions.overrideConfigFile,
-      extensions: config.eslintOptions.extensions ?? configDefaults.eslintOptions.extensions,
-      rulePaths: config.eslintOptions.rulePaths ?? configDefaults.eslintOptions.rulePaths,
-      ignorePath: config.eslintOptions.ignorePath ?? configDefaults.eslintOptions.ignorePath,
-      cache: config.eslintOptions.cache ?? configDefaults.eslintOptions.cache,
-      cacheLocation: config.eslintOptions.cacheLocation ?? configDefaults.eslintOptions.cacheLocation,
-      overrideConfig: config.eslintOptions.overrideConfig ?? configDefaults.eslintOptions.overrideConfig,
+  const type = config.eslintOptions.type;
+  if (type === 'eslintrc') {
+    return {
+      patterns: config.patterns,
+      formatterName: config.formatterName ?? configDefaults.formatterName,
+      quiet: config.quiet ?? configDefaults.quiet,
       cwd,
-      resolvePluginsRelativeTo:
-        config.eslintOptions.resolvePluginsRelativeTo ?? configDefaults.eslintOptions.resolvePluginsRelativeTo,
-    },
-  };
+      eslintOptions: {
+        type: 'eslintrc',
+        useEslintrc: config.eslintOptions.useEslintrc ?? configDefaults.eslintOptions.useEslintrc,
+        overrideConfigFile: config.eslintOptions.overrideConfigFile ?? configDefaults.eslintOptions.overrideConfigFile,
+        extensions: config.eslintOptions.extensions ?? configDefaults.eslintOptions.extensions,
+        rulePaths: config.eslintOptions.rulePaths ?? configDefaults.eslintOptions.rulePaths,
+        ignorePath: config.eslintOptions.ignorePath ?? configDefaults.eslintOptions.ignorePath,
+        cache: config.eslintOptions.cache ?? configDefaults.eslintOptions.cache,
+        cacheLocation: config.eslintOptions.cacheLocation ?? configDefaults.eslintOptions.cacheLocation,
+        overrideConfig: config.eslintOptions.overrideConfig ?? configDefaults.eslintOptions.overrideConfig,
+        cwd,
+        resolvePluginsRelativeTo:
+          config.eslintOptions.resolvePluginsRelativeTo ?? configDefaults.eslintOptions.resolvePluginsRelativeTo,
+      },
+    };
+  } else if (type === 'flat') {
+    throw new Error('Flat config is not supported yet');
+  } else {
+    throw new Error(`Unexpected configType: ${String(type)}`);
+  }
 }
