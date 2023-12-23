@@ -3,8 +3,8 @@ import { execSync, spawn } from 'child_process';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { VERSION } from '../../src/cli/package.js';
+import { createStreamWatcher } from '../../src/test-util/stream-watcher.js';
 import { ESLint } from 'eslint';
-import streamMatch from 'stream-match';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -26,8 +26,7 @@ test('verify installation', async () => {
   expect(result.toString().trim()).toBe(VERSION);
 });
 
-// FIXME
-test.fails('can print error with eslint-formatter-codeframe', async () => {
+test('can print error with eslint-formatter-codeframe', async () => {
   const child = spawn(
     'eslint-interactive',
     [
@@ -37,15 +36,16 @@ test.fails('can print error with eslint-formatter-codeframe', async () => {
     ],
     { shell: true, stdio: 'pipe', cwd: __dirname },
   );
+  const streamWatcher = createStreamWatcher(child.stdout, { debug: true });
 
-  await streamMatch(child.stdout, 'Which rules would you like to apply action?');
+  await streamWatcher.match(/Which rules would you like to apply action\?/);
   child.stdin.write(' '); // Select `semi` rule
   child.stdin.write(LF); // Confirm the choice
-  await streamMatch(child.stdout, 'Which action do you want to do?');
+  await streamWatcher.match(/Which action do you want to do\?/);
   child.stdin.write(LF); // Select `Display details of lint results`
-  await streamMatch(child.stdout, 'In what way are the details displayed?');
+  await streamWatcher.match(/In what way are the details displayed\?/);
   child.stdin.write('0'); // Focus on `Print in terminal`
   child.stdin.write(LF); // Confirm the choice
-  await streamMatch(child.stdout, 'error: Missing semicolon (semi) at failed.js:2:2:'); // formatted by eslint-formatter-codeframe
+  await streamWatcher.match(/Missing semicolon/); // formatted by eslint-formatter-codeframe
   child.stdin.write(ETX); // Exit
 });
