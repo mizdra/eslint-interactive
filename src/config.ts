@@ -1,4 +1,5 @@
 import { ESLint } from 'eslint';
+import { FlatESLintOptions as _FlatESLintOptions } from 'eslint/use-at-your-own-risk';
 import { cliOptionsDefaults, ParsedCLIOptions } from './cli/parse-argv.js';
 import { DeepPartial } from './util/type-check.js';
 
@@ -16,7 +17,12 @@ export type ESLintrcESLintOptions = { type: 'eslintrc' } & Pick<
   | 'resolvePluginsRelativeTo'
 >;
 
-export type ESLintOptions = ESLintrcESLintOptions; // TODO: support flat config
+export type FlatESLintOptions = { type: 'flat' } & Pick<
+  _FlatESLintOptions,
+  'overrideConfigFile' | 'cache' | 'cacheLocation' | 'overrideConfig' | 'cwd'
+>;
+
+export type ESLintOptions = ESLintrcESLintOptions | FlatESLintOptions;
 
 /** The config of eslint-interactive */
 export type Config = {
@@ -48,7 +54,17 @@ export function translateCLIOptions(options: ParsedCLIOptions, eslintOptionsType
       },
     };
   } else if (eslintOptionsType === 'flat') {
-    throw new Error('Flat config is not supported yet');
+    return {
+      patterns: options.patterns,
+      formatterName: options.formatterName,
+      quiet: options.quiet,
+      eslintOptions: {
+        type: 'flat',
+        overrideConfigFile: options.overrideConfigFile,
+        cache: options.cache,
+        cacheLocation: options.cacheLocation,
+      },
+    };
   } else {
     throw new Error(`Unexpected configType: ${String(eslintOptionsType)}`);
   }
@@ -80,26 +96,47 @@ export type NormalizedConfig = {
   eslintOptions: ESLintOptions;
 };
 
+// eslint-disable-next-line complexity
 export function normalizeConfig(config: Config): NormalizedConfig {
   const cwd = config.cwd ?? configDefaults.cwd;
-  return {
-    patterns: config.patterns,
-    formatterName: config.formatterName ?? configDefaults.formatterName,
-    quiet: config.quiet ?? configDefaults.quiet,
-    cwd,
-    eslintOptions: {
-      type: 'eslintrc',
-      useEslintrc: config.eslintOptions.useEslintrc ?? configDefaults.eslintOptions.useEslintrc,
-      overrideConfigFile: config.eslintOptions.overrideConfigFile ?? configDefaults.eslintOptions.overrideConfigFile,
-      extensions: config.eslintOptions.extensions ?? configDefaults.eslintOptions.extensions,
-      rulePaths: config.eslintOptions.rulePaths ?? configDefaults.eslintOptions.rulePaths,
-      ignorePath: config.eslintOptions.ignorePath ?? configDefaults.eslintOptions.ignorePath,
-      cache: config.eslintOptions.cache ?? configDefaults.eslintOptions.cache,
-      cacheLocation: config.eslintOptions.cacheLocation ?? configDefaults.eslintOptions.cacheLocation,
-      overrideConfig: config.eslintOptions.overrideConfig ?? configDefaults.eslintOptions.overrideConfig,
+  const type = config.eslintOptions.type;
+  if (type === 'eslintrc') {
+    return {
+      patterns: config.patterns,
+      formatterName: config.formatterName ?? configDefaults.formatterName,
+      quiet: config.quiet ?? configDefaults.quiet,
       cwd,
-      resolvePluginsRelativeTo:
-        config.eslintOptions.resolvePluginsRelativeTo ?? configDefaults.eslintOptions.resolvePluginsRelativeTo,
-    },
-  };
+      eslintOptions: {
+        type: 'eslintrc',
+        useEslintrc: config.eslintOptions.useEslintrc ?? configDefaults.eslintOptions.useEslintrc,
+        overrideConfigFile: config.eslintOptions.overrideConfigFile ?? configDefaults.eslintOptions.overrideConfigFile,
+        extensions: config.eslintOptions.extensions ?? configDefaults.eslintOptions.extensions,
+        rulePaths: config.eslintOptions.rulePaths ?? configDefaults.eslintOptions.rulePaths,
+        ignorePath: config.eslintOptions.ignorePath ?? configDefaults.eslintOptions.ignorePath,
+        cache: config.eslintOptions.cache ?? configDefaults.eslintOptions.cache,
+        cacheLocation: config.eslintOptions.cacheLocation ?? configDefaults.eslintOptions.cacheLocation,
+        overrideConfig: config.eslintOptions.overrideConfig ?? configDefaults.eslintOptions.overrideConfig,
+        cwd,
+        resolvePluginsRelativeTo:
+          config.eslintOptions.resolvePluginsRelativeTo ?? configDefaults.eslintOptions.resolvePluginsRelativeTo,
+      },
+    };
+  } else if (type === 'flat') {
+    return {
+      patterns: config.patterns,
+      formatterName: config.formatterName ?? configDefaults.formatterName,
+      quiet: config.quiet ?? configDefaults.quiet,
+      cwd,
+      eslintOptions: {
+        type: 'flat',
+        overrideConfigFile: config.eslintOptions.overrideConfigFile ?? configDefaults.eslintOptions.overrideConfigFile,
+        cache: config.eslintOptions.cache ?? configDefaults.eslintOptions.cache,
+        cacheLocation: config.eslintOptions.cacheLocation ?? configDefaults.eslintOptions.cacheLocation,
+        overrideConfig: config.eslintOptions.overrideConfig ?? configDefaults.eslintOptions.overrideConfig,
+        cwd,
+      },
+    };
+  } else {
+    throw new Error(`Unexpected configType: ${String(type)}`);
+  }
 }
