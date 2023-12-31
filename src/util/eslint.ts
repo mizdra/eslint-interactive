@@ -1,5 +1,8 @@
 import { AST, ESLint, Linter, Rule, SourceCode } from 'eslint';
+import { FlatESLint } from 'eslint/use-at-your-own-risk';
 import type { Comment, SourceLocation } from 'estree';
+import { ESLintOptions } from '../config.js';
+import { eslintInteractivePlugin, Fix } from '../plugin/index.js';
 import { unique } from './array.js';
 
 const COMMENT_RE =
@@ -247,4 +250,67 @@ export function findShebang(sourceCodeText: string): { range: AST.Range } | null
   const result = SHEBANG_PATTERN.exec(sourceCodeText);
   if (!result) return null;
   return { range: [0, result[0].length] };
+}
+
+export function createESLintForLint(eslintOptions: ESLintOptions): ESLint | FlatESLint {
+  if (eslintOptions.type === 'eslintrc') {
+    const { type, ...rest } = eslintOptions;
+    return new ESLint(rest);
+  } else if (eslintOptions.type === 'flat') {
+    const { type, ...rest } = eslintOptions;
+    return new FlatESLint(rest);
+  } else {
+    throw new Error(`Unknown eslintOptions.type: ${String(eslintOptions['type'])}`);
+  }
+}
+
+export function createESLintForFix(
+  eslintOptions: ESLintOptions,
+  results: ESLint.LintResult[],
+  ruleIds: string[],
+  fix: Fix,
+  usedRuleIds: string[],
+): ESLint | FlatESLint {
+  if (eslintOptions.type === 'eslintrc') {
+    const { type, ...rest } = eslintOptions;
+    return new ESLint({
+      ...rest,
+      plugins: {
+        'eslint-interactive': eslintInteractivePlugin,
+      },
+      overrideConfig: {
+        plugins: ['eslint-interactive'],
+        rules: {
+          'eslint-interactive/fix': [2, { results, ruleIds, fix }],
+          // Turn off all rules except `eslint-interactive/fix` when fixing for performance.
+          ...Object.fromEntries(usedRuleIds.map((ruleId) => [ruleId, 'off'])),
+        },
+      },
+      // NOTE: Only fix the `fix` rule problems.
+      fix: (message) => message.ruleId === 'eslint-interactive/fix',
+      // Don't interpret lintFiles arguments as glob patterns for performance.
+      globInputPaths: false,
+    });
+  } else if (eslintOptions.type === 'flat') {
+    const { type, ...rest } = eslintOptions;
+    return new FlatESLint({
+      ...rest,
+      overrideConfig: {
+        plugins: {
+          'eslint-interactive': eslintInteractivePlugin,
+        },
+        rules: {
+          'eslint-interactive/fix': [2, { results, ruleIds, fix }],
+          // Turn off all rules except `eslint-interactive/fix` when fixing for performance.
+          ...Object.fromEntries(usedRuleIds.map((ruleId) => [ruleId, 'off'])),
+        },
+      },
+      // NOTE: Only fix the `fix` rule problems.
+      fix: (message) => message.ruleId === 'eslint-interactive/fix',
+      // Don't interpret lintFiles arguments as glob patterns for performance.
+      globInputPaths: false,
+    });
+  } else {
+    throw new Error(`Unknown eslintOptions.type: ${String(eslintOptions['type'])}`);
+  }
 }

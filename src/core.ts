@@ -1,19 +1,13 @@
 import { fileURLToPath } from 'node:url';
 import { ESLint } from 'eslint';
+import { FlatESLint } from 'eslint/use-at-your-own-risk';
 import isInstalledGlobally from 'is-installed-globally';
 import { DescriptionPosition } from './cli/prompt.js';
 import { Config, NormalizedConfig, normalizeConfig } from './config.js';
 import { format } from './formatter/index.js';
-import {
-  eslintInteractivePlugin,
-  FixRuleOption,
-  FixableMaker,
-  SuggestionFilter,
-  Fix,
-  OVERLAPPED_PROBLEM_MESSAGE,
-} from './plugin/index.js';
+import { FixableMaker, SuggestionFilter, Fix, OVERLAPPED_PROBLEM_MESSAGE } from './plugin/index.js';
 import { unique } from './util/array.js';
-import { filterResultsByRuleId } from './util/eslint.js';
+import { createESLintForFix, createESLintForLint, filterResultsByRuleId } from './util/eslint.js';
 
 const MAX_AUTOFIX_PASSES = 10;
 
@@ -52,12 +46,11 @@ export type Undo = () => Promise<void>;
  */
 export class Core {
   readonly config: NormalizedConfig;
-  readonly eslint: ESLint;
+  readonly eslint: ESLint | FlatESLint;
 
   constructor(config: Config) {
     this.config = normalizeConfig(config);
-    const { type, ...eslintOptions } = this.config.eslintOptions;
-    this.eslint = new ESLint(eslintOptions);
+    this.eslint = createESLintForLint(this.config.eslintOptions);
   }
 
   /**
@@ -188,27 +181,7 @@ export class Core {
     // TODO: refactor
     let results = filteredResultsOfLint;
     for (let i = 0; i < MAX_AUTOFIX_PASSES; i++) {
-      const { type, ...eslintOptions } = this.config.eslintOptions;
-      const eslint = new ESLint({
-        ...eslintOptions,
-        // This is super hack to load ESM plugin/rule.
-        // ref: https://github.com/eslint/eslint/issues/15453#issuecomment-1001200953
-        plugins: {
-          'eslint-interactive': eslintInteractivePlugin,
-        },
-        overrideConfig: {
-          plugins: ['eslint-interactive'],
-          rules: {
-            'eslint-interactive/fix': [2, { results, ruleIds, fix } as FixRuleOption],
-            // Turn off all rules except `eslint-interactive/fix` when fixing for performance.
-            ...Object.fromEntries(usedRuleIds.map((ruleId) => [ruleId, 'off'])),
-          },
-        },
-        // NOTE: Only fix the `fix` rule problems.
-        fix: (message) => message.ruleId === 'eslint-interactive/fix',
-        // Don't interpret lintFiles arguments as glob patterns for performance.
-        globInputPaths: false,
-      });
+      const eslint = createESLintForFix(this.config.eslintOptions, results, ruleIds, fix, usedRuleIds);
       // eslint-disable-next-line no-await-in-loop
       const resultsToFix = await eslint.lintFiles(targetFilePaths);
       // eslint-disable-next-line no-await-in-loop
