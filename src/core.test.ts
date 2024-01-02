@@ -102,7 +102,10 @@ const iff = await createIFF({
         { files: ['arrow-body-style.js'], rules: { 'arrow-body-style': ['error', 'always'] } },
         { files: ['import-order.js'], rules: { 'import/order': 'error' } },
         { files: ['ban-exponentiation-operator.js'], rules: { 'ban-exponentiation-operator': 'error' } },
-        { files: ['no-unused-vars.js'], rules: { 'no-unused-vars': 'error' } },
+        {
+          files: ['no-unused-vars.js'],
+          rules: { 'no-unused-vars': ['error', { varsIgnorePattern: '^_' }] },
+        },
         { files: ['warn.js'], rules: { 'prefer-const': 'warn' } },
         { files: ['no-unsafe-negation.js'], rules: { 'no-unsafe-negation': 'error' } },
       ],
