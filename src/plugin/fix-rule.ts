@@ -16,8 +16,6 @@ export type FixRuleOption = {
   fix: Fix;
 };
 
-export const OVERLAPPED_PROBLEM_MESSAGE = 'overlapped';
-
 // from: https://github.com/eslint/eslint/blob/58840ac844a61c72eabb603ecfb761812b82a7ed/lib/linter/report-translator.js#L136
 function compareFixesByRange(a: Rule.Fix, b: Rule.Fix): number {
   return a.range[0] - b.range[0] || a.range[1] - b.range[1];

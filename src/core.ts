@@ -6,8 +6,7 @@ import { DescriptionPosition } from './cli/prompt.js';
 import { Config, NormalizedConfig, normalizeConfig } from './config.js';
 import { format } from './formatter/index.js';
 import { applyFixes, FixResult } from './plugin/fixer.js';
-import { FixableMaker, SuggestionFilter, Fix, OVERLAPPED_PROBLEM_MESSAGE } from './plugin/index.js';
-import { unique } from './util/array.js';
+import { FixableMaker, SuggestionFilter, Fix } from './plugin/index.js';
 import { filterResultsByRuleId } from './util/eslint.js';
 
 const MAX_AUTOFIX_PASSES = 10;
@@ -22,21 +21,6 @@ function generateResultsToUndo(resultsOfLint: ESLint.LintResult[]): ESLint.LintR
     // NOTE: THIS IS HACK.
     return { ...resultOfLint, output: resultOfLint.source };
   });
-}
-
-function hasOverlappedProblems(results: ESLint.LintResult[]): boolean {
-  return results.flatMap((result) => result.messages).some((message) => message.message === OVERLAPPED_PROBLEM_MESSAGE);
-}
-
-/**
- * Get all the rules loaded from eslintrc.
- * @param eslint The eslint instance.
- * @param targetFilePaths The target file paths.
- * @returns The rule ids loaded from eslintrc.
- */
-async function getUsedRuleIds(eslint: ESLint, targetFilePaths: string[]): Promise<string[]> {
-  const configs = await Promise.all(targetFilePaths.map(async (filePath) => eslint.calculateConfigForFile(filePath)));
-  return unique(configs.map((config) => config.rules).flatMap((rules) => Object.keys(rules)));
 }
 
 export type Undo = () => Promise<void>;
