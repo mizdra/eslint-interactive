@@ -1,9 +1,10 @@
 import { basename } from 'node:path';
 import { describe, expect, test } from 'vitest';
 import { FixTester } from '../../test-util/fix-tester.js';
+import { createFixToMakeFixableAndFix, FixToMakeFixableAndFixArgs } from './make-fixable-and-fix.js';
 
-const tester = new FixTester(
-  'makeFixableAndFix',
+const tester = new FixTester<FixToMakeFixableAndFixArgs>(
+  createFixToMakeFixableAndFix,
   {
     fixableMaker: (_message, node) => {
       if (!node || !node.range) return null;

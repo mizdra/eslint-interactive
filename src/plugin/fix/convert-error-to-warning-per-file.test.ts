@@ -1,8 +1,9 @@
 import { describe, expect, test } from 'vitest';
 import { FixTester } from '../../test-util/fix-tester.js';
+import { createFixToConvertErrorToWarningPerFile } from './convert-error-to-warning-per-file.js';
 
 const tester = new FixTester(
-  'convertErrorToWarningPerFile',
+  createFixToConvertErrorToWarningPerFile,
   {},
   { parserOptions: { ecmaVersion: 2020, ecmaFeatures: { jsx: true } } },
 );

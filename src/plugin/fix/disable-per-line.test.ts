@@ -2,9 +2,10 @@
 import { describe, expect, test } from 'vitest';
 
 import { FixTester } from '../../test-util/fix-tester.js';
+import { createFixToDisablePerLine } from './disable-per-line.js';
 
 const tester = new FixTester(
-  'disablePerLine',
+  createFixToDisablePerLine,
   {},
   { parserOptions: { ecmaVersion: 2020, ecmaFeatures: { jsx: true } } },
 );

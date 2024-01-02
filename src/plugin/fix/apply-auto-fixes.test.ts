@@ -1,8 +1,9 @@
 import { describe, expect, test } from 'vitest';
 import { FixTester } from '../../test-util/fix-tester.js';
+import { createFixToApplyAutoFixes } from './index.js';
 
 const tester = new FixTester(
-  'applyAutoFixes',
+  createFixToApplyAutoFixes,
   {},
   { parserOptions: { ecmaVersion: 2020, ecmaFeatures: { jsx: true, globalReturn: true } } },
 );
