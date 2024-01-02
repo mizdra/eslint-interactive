@@ -1,6 +1,7 @@
 import { Linter, Rule } from 'eslint';
 import { FixContext } from '../plugin/index.js';
 import { verifyAndFix } from '../plugin/linter.js';
+import { preferAdditionShorthandRule } from '../plugin/prefer-addition-shorthand-rule.js';
 
 const DEFAULT_FILENAME = 'test.js';
 
@@ -42,6 +43,7 @@ export class FixTester<FixArgs> {
     defaultLinterConfig: Linter.Config,
   ) {
     this.linter = new Linter();
+    this.linter.defineRule('prefer-addition-shorthand', preferAdditionShorthandRule);
     this.fixCreator = fixCreator;
     this.defaultFixArgs = defaultFixArgs;
     this.defaultLinterConfig = defaultLinterConfig;

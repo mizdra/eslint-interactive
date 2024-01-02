@@ -14,7 +14,7 @@ describe('apply-suggestions', () => {
     expect(
       await tester.test({
         code: 'a = a + 1;',
-        ruleIdsToFix: ['eslint-interactive/prefer-addition-shorthand'],
+        ruleIdsToFix: ['prefer-addition-shorthand'],
         args: { filter: (suggestions) => suggestions[0] },
       }),
     ).toMatchInlineSnapshot(`"a += 1;"`);
@@ -23,7 +23,7 @@ describe('apply-suggestions', () => {
     expect(
       await tester.test({
         code: ['a = a + 1;', 'b = b + 1;'],
-        ruleIdsToFix: ['eslint-interactive/prefer-addition-shorthand'],
+        ruleIdsToFix: ['prefer-addition-shorthand'],
         args: { filter: (suggestions) => suggestions[0] },
       }),
     ).toMatchInlineSnapshot(`
@@ -35,7 +35,7 @@ describe('apply-suggestions', () => {
     expect(
       await tester.test({
         code: ['a = a + 1;', 'if (!key in object) {}'],
-        ruleIdsToFix: ['eslint-interactive/prefer-addition-shorthand', 'no-unsafe-negation'],
+        ruleIdsToFix: ['prefer-addition-shorthand', 'no-unsafe-negation'],
         args: { filter: (suggestions) => suggestions[0] },
       }),
     ).toMatchInlineSnapshot(`
@@ -47,7 +47,7 @@ describe('apply-suggestions', () => {
     expect(
       await tester.test({
         code: ['a = a + 1; b = b + 1;'],
-        ruleIdsToFix: ['eslint-interactive/prefer-addition-shorthand'],
+        ruleIdsToFix: ['prefer-addition-shorthand'],
         args: { filter: (suggestions) => suggestions[0] },
       }),
     ).toMatchInlineSnapshot(`"a += 1; b += 1;"`);
@@ -55,7 +55,7 @@ describe('apply-suggestions', () => {
   test('filter には suggestions, message が渡ってくる', async () => {
     await tester.test({
       code: ['a = a + 1;'],
-      ruleIdsToFix: ['eslint-interactive/prefer-addition-shorthand'],
+      ruleIdsToFix: ['prefer-addition-shorthand'],
       args: {
         filter: (suggestions, message, context) => {
           expect({
@@ -87,7 +87,7 @@ describe('apply-suggestions', () => {
     expect(
       await tester.test({
         code: 'a = a + 1;',
-        ruleIdsToFix: ['eslint-interactive/prefer-addition-shorthand'],
+        ruleIdsToFix: ['prefer-addition-shorthand'],
         args: { filter: (_suggestions) => (Math.random() < 0.5 ? null : undefined) },
       }),
     ).toMatchInlineSnapshot(`null`);
