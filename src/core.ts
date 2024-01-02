@@ -1,12 +1,20 @@
 import { writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
-import { ESLint, Linter } from 'eslint';
+import { ESLint, Linter, Rule } from 'eslint';
 import isInstalledGlobally from 'is-installed-globally';
 import { DescriptionPosition } from './cli/prompt.js';
 import { Config, NormalizedConfig, normalizeConfig } from './config.js';
 import { format } from './formatter/index.js';
-import { applyFixes, FixResult } from './plugin/fixer.js';
-import { FixableMaker, SuggestionFilter, Fix } from './plugin/index.js';
+import { createFixToApplyAutoFixes } from './plugin/fix/apply-auto-fixes.js';
+import { createFixToApplySuggestions } from './plugin/fix/apply-suggestions.js';
+import { createFixToConvertErrorToWarningPerFile } from './plugin/fix/convert-error-to-warning-per-file.js';
+import { createFixToDisablePerFile } from './plugin/fix/disable-per-file.js';
+import { createFixToDisablePerLine } from './plugin/fix/disable-per-line.js';
+import { createFixToMakeFixableAndFix } from './plugin/fix/make-fixable-and-fix.js';
+import { FixResult } from './plugin/fixer.js';
+import { FixableMaker, SuggestionFilter, FixContext } from './plugin/index.js';
+import { ruleFixer } from './plugin/rule-fixer.js';
+import { SourceCodeFixer } from './plugin/source-code-fixer.js';
 import { filterResultsByRuleId } from './util/eslint.js';
 
 const MAX_AUTOFIX_PASSES = 10;
@@ -85,7 +93,7 @@ export class Core {
    * @param ruleIds The rule ids to fix
    */
   async applyAutoFixes(results: ESLint.LintResult[], ruleIds: string[]): Promise<Undo> {
-    return this.fix(results, ruleIds, { name: 'applyAutoFixes', args: {} });
+    return this.fix(results, ruleIds, (context) => createFixToApplyAutoFixes(context, {}));
   }
 
   /**
@@ -101,7 +109,9 @@ export class Core {
     description?: string,
     descriptionPosition?: DescriptionPosition,
   ): Promise<Undo> {
-    return this.fix(results, ruleIds, { name: 'disablePerLine', args: { description, descriptionPosition } });
+    return this.fix(results, ruleIds, (context) =>
+      createFixToDisablePerLine(context, { description, descriptionPosition }),
+    );
   }
 
   /**
@@ -117,7 +127,9 @@ export class Core {
     description?: string,
     descriptionPosition?: DescriptionPosition,
   ): Promise<Undo> {
-    return this.fix(results, ruleIds, { name: 'disablePerFile', args: { description, descriptionPosition } });
+    return this.fix(results, ruleIds, (context) =>
+      createFixToDisablePerFile(context, { description, descriptionPosition }),
+    );
   }
 
   /**
@@ -131,7 +143,7 @@ export class Core {
     ruleIds: string[],
     description?: string,
   ): Promise<Undo> {
-    return this.fix(results, ruleIds, { name: 'convertErrorToWarningPerFile', args: { description } });
+    return this.fix(results, ruleIds, (context) => createFixToConvertErrorToWarningPerFile(context, { description }));
   }
 
   /**
@@ -141,7 +153,7 @@ export class Core {
    * @param filter The script to filter suggestions
    */
   async applySuggestions(results: ESLint.LintResult[], ruleIds: string[], filter: SuggestionFilter): Promise<Undo> {
-    return this.fix(results, ruleIds, { name: 'applySuggestions', args: { filter } });
+    return this.fix(results, ruleIds, (context) => createFixToApplySuggestions(context, { filter }));
   }
 
   /**
@@ -151,33 +163,71 @@ export class Core {
    * @param fixableMaker The function to make `Linter.LintMessage` forcibly fixable.
    */
   async makeFixableAndFix(results: ESLint.LintResult[], ruleIds: string[], fixableMaker: FixableMaker): Promise<Undo> {
-    return this.fix(results, ruleIds, { name: 'makeFixableAndFix', args: { fixableMaker } });
+    return this.fix(results, ruleIds, (context) => createFixToMakeFixableAndFix(context, { fixableMaker }));
   }
 
   /**
    * Fix source codes.
    * @param fix The fix information to do.
    */
-  private async fix(resultsOfLint: ESLint.LintResult[], ruleIds: string[], fix: Fix): Promise<Undo> {
+  private async fix(
+    resultsOfLint: ESLint.LintResult[],
+    ruleIds: string[],
+    fixCreator: (context: FixContext) => Rule.Fix[],
+  ): Promise<Undo> {
     // NOTE: Extract only necessary results and files for performance
     const filteredResultsOfLint = filterResultsByRuleId(resultsOfLint, ruleIds);
+    const linter = new Linter();
 
-    for (let result of filteredResultsOfLint) {
+    // eslint-disable-next-line prefer-const
+    for (let { filePath, messages, source } of filteredResultsOfLint) {
+      if (!source) throw new Error('Source code is required to apply fixes.');
       // eslint-disable-next-line no-await-in-loop
-      const config: Linter.Config = await this.eslint.calculateConfigForFile(result.filePath);
+      const config: Linter.Config = await this.eslint.calculateConfigForFile(filePath);
+
+      // Get `SourceCode` instance
+      linter.verify(source, config, filePath);
+      let sourceCode = linter.getSourceCode();
+
       let fixResult: FixResult | undefined;
       for (let i = 0; i < MAX_AUTOFIX_PASSES; i++) {
-        fixResult = applyFixes({ result, ruleIds, fix, config });
-        if (!fixResult.fixed) break;
-        // eslint-disable-next-line no-await-in-loop
-        const [newResult] = await this.eslint.lintText(fixResult.output, { filePath: result.filePath });
-        if (!newResult) throw new Error('unreachable: newResult is undefined');
-        if (newResult.messages.length === 0) break;
-        result = newResult;
+        // Create `Rule.Fix[]`
+        const fixContext: FixContext = {
+          filename: filePath,
+          sourceCode,
+          messages: messages.filter((message) => message.ruleId && ruleIds.includes(message.ruleId)),
+          ruleIds,
+          fixer: ruleFixer,
+        };
+        const fixes = fixCreator(fixContext);
+
+        // Apply `Rule.Fix[]`
+        fixResult = SourceCodeFixer.applyFixes(
+          sourceCode.text,
+          fixes.map((fix) => {
+            return {
+              ruleId: 'eslint-interactive/fix',
+              severity: 2,
+              message: 'fix',
+              line: 0,
+              column: 0,
+              fix,
+            };
+          }),
+          true,
+        );
+
+        // Lint `fixResult.output` again and check if there are any problems.
+        // If there are problems, retry to fix. If not, exit the loop.
+        messages = linter.verify(fixResult.output, config, filePath);
+        sourceCode = linter.getSourceCode();
+        if (messages.length === 0) break;
       }
+
+      // Write the fixed source code to the file
       if (fixResult && fixResult.fixed) {
         // eslint-disable-next-line no-await-in-loop, @typescript-eslint/no-non-null-assertion
-        await writeFile(result.filePath, fixResult.output);
+        await writeFile(filePath, fixResult.output);
       }
     }
 
