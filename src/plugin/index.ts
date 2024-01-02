@@ -1,7 +1,15 @@
 import { Linter, Rule, SourceCode } from 'eslint';
-import { type FixableMaker, type SuggestionFilter } from './fix/index.js';
 
-export { type FixableMaker, type SuggestionFilter };
+export { type FixableMaker, type SuggestionFilter } from './fix/index.js';
+export {
+  createFixToApplyAutoFixes,
+  createFixToDisablePerLine,
+  createFixToDisablePerFile,
+  createFixToConvertErrorToWarningPerFile,
+  createFixToApplySuggestions,
+  createFixToMakeFixableAndFix,
+} from './fix/index.js';
+export { verifyAndFix } from './linter.js';
 
 /**
  * The type representing the additional information for the fix.

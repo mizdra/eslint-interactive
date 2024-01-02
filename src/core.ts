@@ -5,14 +5,18 @@ import isInstalledGlobally from 'is-installed-globally';
 import { DescriptionPosition } from './cli/prompt.js';
 import { Config, NormalizedConfig, normalizeConfig } from './config.js';
 import { format } from './formatter/index.js';
-import { createFixToApplyAutoFixes } from './plugin/fix/apply-auto-fixes.js';
-import { createFixToApplySuggestions } from './plugin/fix/apply-suggestions.js';
-import { createFixToConvertErrorToWarningPerFile } from './plugin/fix/convert-error-to-warning-per-file.js';
-import { createFixToDisablePerFile } from './plugin/fix/disable-per-file.js';
-import { createFixToDisablePerLine } from './plugin/fix/disable-per-line.js';
-import { createFixToMakeFixableAndFix } from './plugin/fix/make-fixable-and-fix.js';
-import { FixableMaker, SuggestionFilter, FixContext } from './plugin/index.js';
-import { verifyAndFix } from './plugin/linter.js';
+import {
+  createFixToApplyAutoFixes,
+  createFixToApplySuggestions,
+  createFixToConvertErrorToWarningPerFile,
+  createFixToDisablePerFile,
+  createFixToDisablePerLine,
+  createFixToMakeFixableAndFix,
+  FixableMaker,
+  SuggestionFilter,
+  FixContext,
+  verifyAndFix,
+} from './plugin/index.js';
 import { filterResultsByRuleId } from './util/eslint.js';
 
 /**
