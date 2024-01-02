@@ -1,17 +1,12 @@
+import { writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
-import { ESLint } from 'eslint';
+import { ESLint, Linter } from 'eslint';
 import isInstalledGlobally from 'is-installed-globally';
 import { DescriptionPosition } from './cli/prompt.js';
 import { Config, NormalizedConfig, normalizeConfig } from './config.js';
 import { format } from './formatter/index.js';
-import {
-  eslintInteractivePlugin,
-  FixRuleOption,
-  FixableMaker,
-  SuggestionFilter,
-  Fix,
-  OVERLAPPED_PROBLEM_MESSAGE,
-} from './plugin/index.js';
+import { applyFixes, FixResult } from './plugin/fixer.js';
+import { FixableMaker, SuggestionFilter, Fix, OVERLAPPED_PROBLEM_MESSAGE } from './plugin/index.js';
 import { unique } from './util/array.js';
 import { filterResultsByRuleId } from './util/eslint.js';
 
@@ -182,40 +177,24 @@ export class Core {
   private async fix(resultsOfLint: ESLint.LintResult[], ruleIds: string[], fix: Fix): Promise<Undo> {
     // NOTE: Extract only necessary results and files for performance
     const filteredResultsOfLint = filterResultsByRuleId(resultsOfLint, ruleIds);
-    const targetFilePaths = filteredResultsOfLint.map((result) => result.filePath);
-    const usedRuleIds = await getUsedRuleIds(this.eslint, targetFilePaths);
 
-    // TODO: refactor
-    let results = filteredResultsOfLint;
-    for (let i = 0; i < MAX_AUTOFIX_PASSES; i++) {
-      const { type, ...eslintOptions } = this.config.eslintOptions;
-      const eslint = new ESLint({
-        ...eslintOptions,
-        // This is super hack to load ESM plugin/rule.
-        // ref: https://github.com/eslint/eslint/issues/15453#issuecomment-1001200953
-        plugins: {
-          'eslint-interactive': eslintInteractivePlugin,
-        },
-        overrideConfig: {
-          plugins: ['eslint-interactive'],
-          rules: {
-            'eslint-interactive/fix': [2, { results, ruleIds, fix } as FixRuleOption],
-            // Turn off all rules except `eslint-interactive/fix` when fixing for performance.
-            ...Object.fromEntries(usedRuleIds.map((ruleId) => [ruleId, 'off'])),
-          },
-        },
-        // NOTE: Only fix the `fix` rule problems.
-        fix: (message) => message.ruleId === 'eslint-interactive/fix',
-        // Don't interpret lintFiles arguments as glob patterns for performance.
-        globInputPaths: false,
-      });
+    for (let result of filteredResultsOfLint) {
       // eslint-disable-next-line no-await-in-loop
-      const resultsToFix = await eslint.lintFiles(targetFilePaths);
-      // eslint-disable-next-line no-await-in-loop
-      await ESLint.outputFixes(resultsToFix);
-      if (!hasOverlappedProblems(resultsToFix)) break;
-      // eslint-disable-next-line no-await-in-loop
-      results = await this.lint();
+      const config: Linter.Config = await this.eslint.calculateConfigForFile(result.filePath);
+      let fixResult: FixResult | undefined;
+      for (let i = 0; i < MAX_AUTOFIX_PASSES; i++) {
+        fixResult = applyFixes({ result, ruleIds, fix, config });
+        if (!fixResult.fixed) break;
+        // eslint-disable-next-line no-await-in-loop
+        const [newResult] = await this.eslint.lintText(fixResult.output, { filePath: result.filePath });
+        if (!newResult) throw new Error('unreachable: newResult is undefined');
+        if (newResult.messages.length === 0) break;
+        result = newResult;
+      }
+      if (fixResult && fixResult.fixed) {
+        // eslint-disable-next-line no-await-in-loop, @typescript-eslint/no-non-null-assertion
+        await writeFile(result.filePath, fixResult.output);
+      }
     }
 
     return async () => {
