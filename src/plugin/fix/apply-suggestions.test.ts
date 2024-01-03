@@ -14,7 +14,7 @@ describe('apply-suggestions', () => {
     expect(
       await tester.test({
         code: 'a = a + 1;',
-        ruleIdsToFix: ['prefer-addition-shorthand'],
+        rules: { 'prefer-addition-shorthand': 'error' },
         args: { filter: (suggestions) => suggestions[0] },
       }),
     ).toMatchInlineSnapshot(`"a += 1;"`);
@@ -23,7 +23,7 @@ describe('apply-suggestions', () => {
     expect(
       await tester.test({
         code: ['a = a + 1;', 'b = b + 1;'],
-        ruleIdsToFix: ['prefer-addition-shorthand'],
+        rules: { 'prefer-addition-shorthand': 'error' },
         args: { filter: (suggestions) => suggestions[0] },
       }),
     ).toMatchInlineSnapshot(`
@@ -35,7 +35,7 @@ describe('apply-suggestions', () => {
     expect(
       await tester.test({
         code: ['a = a + 1;', 'if (!key in object) {}'],
-        ruleIdsToFix: ['prefer-addition-shorthand', 'no-unsafe-negation'],
+        rules: { 'prefer-addition-shorthand': 'error', 'no-unsafe-negation': 'error' },
         args: { filter: (suggestions) => suggestions[0] },
       }),
     ).toMatchInlineSnapshot(`
@@ -47,7 +47,7 @@ describe('apply-suggestions', () => {
     expect(
       await tester.test({
         code: ['a = a + 1; b = b + 1;'],
-        ruleIdsToFix: ['prefer-addition-shorthand'],
+        rules: { 'prefer-addition-shorthand': 'error' },
         args: { filter: (suggestions) => suggestions[0] },
       }),
     ).toMatchInlineSnapshot(`"a += 1; b += 1;"`);
@@ -55,7 +55,7 @@ describe('apply-suggestions', () => {
   test('filter には suggestions, message が渡ってくる', async () => {
     await tester.test({
       code: ['a = a + 1;'],
-      ruleIdsToFix: ['prefer-addition-shorthand'],
+      rules: { 'prefer-addition-shorthand': 'error' },
       args: {
         filter: (suggestions, message, context) => {
           expect({
@@ -78,7 +78,7 @@ describe('apply-suggestions', () => {
     expect(
       await tester.test({
         code: 'a = a + 1;',
-        ruleIdsToFix: ['semi'],
+        rules: { semi: 'error' },
         args: { filter: (suggestions) => suggestions[0] },
       }),
     ).toMatchInlineSnapshot(`null`);
@@ -87,7 +87,7 @@ describe('apply-suggestions', () => {
     expect(
       await tester.test({
         code: 'a = a + 1;',
-        ruleIdsToFix: ['prefer-addition-shorthand'],
+        rules: { 'prefer-addition-shorthand': 'error' },
         args: { filter: (_suggestions) => (Math.random() < 0.5 ? null : undefined) },
       }),
     ).toMatchInlineSnapshot(`null`);

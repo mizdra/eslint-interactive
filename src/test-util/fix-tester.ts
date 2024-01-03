@@ -18,9 +18,9 @@ type TestCase<FixArgs> = {
    */
   code: string | string[];
   /**
-   * The rule ids to fix.
+   * The rules to fix.
    */
-  ruleIdsToFix: string[];
+  rules: Partial<Linter.RulesRecord>;
   /**
    * The arguments to pass to the fix function.
    */
@@ -63,10 +63,11 @@ export class FixTester<FixArgs> {
       ...this.defaultLinterConfig,
       rules: {
         ...this.defaultLinterConfig.rules,
-        ...Object.fromEntries(testCase.ruleIdsToFix.map((ruleId) => [ruleId, 'error'])),
+        ...testCase.rules,
       },
     };
-    const fixedResult = verifyAndFix(this.linter, code, config, filePath, testCase.ruleIdsToFix, (context) =>
+    const ruleIdsToFix = Object.keys(testCase.rules);
+    const fixedResult = verifyAndFix(this.linter, code, config, filePath, ruleIdsToFix, (context) =>
       this.fixCreator(context, testCase.args ?? this.defaultFixArgs),
     );
 

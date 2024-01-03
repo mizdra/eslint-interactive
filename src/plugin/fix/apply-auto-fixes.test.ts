@@ -13,7 +13,7 @@ describe('apply-auto-fixes', () => {
     expect(
       await tester.test({
         code: 'var val',
-        ruleIdsToFix: ['semi'],
+        rules: { semi: 'error' },
       }),
     ).toMatchInlineSnapshot(`"var val;"`);
   });
@@ -21,7 +21,7 @@ describe('apply-auto-fixes', () => {
     expect(
       await tester.test({
         code: 'var val',
-        ruleIdsToFix: ['semi', 'no-var'],
+        rules: { 'semi': 'error', 'no-var': 'error' },
       }),
     ).toMatchInlineSnapshot(`"let val;"`);
   });
@@ -29,7 +29,7 @@ describe('apply-auto-fixes', () => {
     expect(
       await tester.test({
         code: ['var val1', 'var val2', '', 'var val3'],
-        ruleIdsToFix: ['semi'],
+        rules: { semi: 'error' },
       }),
     ).toMatchInlineSnapshot(`
       "var val1;
@@ -42,7 +42,7 @@ describe('apply-auto-fixes', () => {
     expect(
       await tester.test({
         code: 'var val;',
-        ruleIdsToFix: ['semi'],
+        rules: { semi: 'error' },
       }),
     ).toMatchInlineSnapshot(`null`);
   });

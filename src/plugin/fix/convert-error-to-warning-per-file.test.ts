@@ -13,7 +13,7 @@ describe('convert-error-to-warning-per-file', () => {
     expect(
       await tester.test({
         code: 'var val',
-        ruleIdsToFix: ['semi'],
+        rules: { semi: 'error' },
       }),
     ).toMatchInlineSnapshot(`
       "/* eslint semi: 1 */
@@ -24,7 +24,7 @@ describe('convert-error-to-warning-per-file', () => {
     expect(
       await tester.test({
         code: 'var val',
-        ruleIdsToFix: ['semi', 'no-var'],
+        rules: { 'semi': 'error', 'no-var': 'error' },
       }),
     ).toMatchInlineSnapshot(`
       "/* eslint no-var: 1, semi: 1 */
@@ -35,7 +35,7 @@ describe('convert-error-to-warning-per-file', () => {
     expect(
       await tester.test({
         code: 'var val',
-        ruleIdsToFix: ['semi'],
+        rules: { semi: 'error' },
         args: { description: 'comment' },
       }),
     ).toMatchInlineSnapshot(`
@@ -47,7 +47,7 @@ describe('convert-error-to-warning-per-file', () => {
     expect(
       await tester.test({
         code: ['/* eslint semi: 1 */', 'var val'],
-        ruleIdsToFix: ['semi'],
+        rules: { semi: 'error' },
       }),
     ).toMatchInlineSnapshot(`null`);
   });
@@ -55,7 +55,7 @@ describe('convert-error-to-warning-per-file', () => {
     expect(
       await tester.test({
         code: ['var val', 'var val'],
-        ruleIdsToFix: ['semi'],
+        rules: { semi: 'error' },
       }),
     ).toMatchInlineSnapshot(`
       "/* eslint semi: 1 */
@@ -67,7 +67,7 @@ describe('convert-error-to-warning-per-file', () => {
     expect(
       await tester.test({
         code: ['// @ts-check', 'var val'],
-        ruleIdsToFix: ['no-var'],
+        rules: { 'no-var': 'error' },
       }),
     ).toMatchInlineSnapshot(`
       "/* eslint no-var: 1 */
@@ -79,7 +79,7 @@ describe('convert-error-to-warning-per-file', () => {
     expect(
       await tester.test({
         code: ['/* @jsxImportSource @emotion/react */', 'var val'],
-        ruleIdsToFix: ['no-var'],
+        rules: { 'no-var': 'error' },
       }),
     ).toMatchInlineSnapshot(`
       "/* eslint no-var: 1 */
@@ -91,7 +91,7 @@ describe('convert-error-to-warning-per-file', () => {
     expect(
       await tester.test({
         code: ['#!/usr/bin/env node', 'var val'],
-        ruleIdsToFix: ['no-var'],
+        rules: { 'no-var': 'error' },
       }),
     ).toMatchInlineSnapshot(`
       "#!/usr/bin/env node

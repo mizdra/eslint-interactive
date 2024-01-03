@@ -13,7 +13,7 @@ describe('disable-per-file', () => {
     expect(
       await tester.test({
         code: 'var val',
-        ruleIdsToFix: ['semi'],
+        rules: { semi: 'error' },
       }),
     ).toMatchInlineSnapshot(`
       "/* eslint-disable semi */
@@ -24,7 +24,7 @@ describe('disable-per-file', () => {
     expect(
       await tester.test({
         code: 'var val',
-        ruleIdsToFix: ['semi', 'no-var'],
+        rules: { 'semi': 'error', 'no-var': 'error' },
       }),
     ).toMatchInlineSnapshot(`
       "/* eslint-disable no-var, semi */
@@ -35,7 +35,7 @@ describe('disable-per-file', () => {
     expect(
       await tester.test({
         code: ['/* eslint-disable semi */', 'var val'],
-        ruleIdsToFix: ['no-var'],
+        rules: { 'no-var': 'error' },
       }),
     ).toMatchInlineSnapshot(`
       "/* eslint-disable semi, no-var */
@@ -46,7 +46,7 @@ describe('disable-per-file', () => {
     expect(
       await tester.test({
         code: ['/* eslint-disable semi -- comment */', 'var val'],
-        ruleIdsToFix: ['no-var'],
+        rules: { 'no-var': 'error' },
       }),
     ).toMatchInlineSnapshot(`
       "/* eslint-disable semi, no-var -- comment */
@@ -57,7 +57,7 @@ describe('disable-per-file', () => {
     expect(
       await tester.test({
         code: ['/* eslint-disable semi */', 'var val'],
-        ruleIdsToFix: ['no-var'],
+        rules: { 'no-var': 'error' },
         args: { description: 'comment' },
       }),
     ).toMatchInlineSnapshot(`
@@ -69,7 +69,7 @@ describe('disable-per-file', () => {
     expect(
       await tester.test({
         code: ['/* eslint-disable semi -- foo */', 'var val'],
-        ruleIdsToFix: ['no-var'],
+        rules: { 'no-var': 'error' },
         args: { description: 'bar' },
       }),
     ).toMatchInlineSnapshot(`
@@ -81,7 +81,7 @@ describe('disable-per-file', () => {
     expect(
       await tester.test({
         code: ['/* eslint-disable semi -- foo */', 'var val'],
-        ruleIdsToFix: ['no-var'],
+        rules: { 'no-var': 'error' },
         args: { description: 'bar', descriptionPosition: 'previousLine' },
       }),
     ).toMatchInlineSnapshot(`
@@ -94,7 +94,7 @@ describe('disable-per-file', () => {
     expect(
       await tester.test({
         code: ['var val'],
-        ruleIdsToFix: ['semi'],
+        rules: { semi: 'error' },
         args: { description: 'foo', descriptionPosition: 'previousLine' },
       }),
     ).toMatchInlineSnapshot(`
@@ -107,7 +107,7 @@ describe('disable-per-file', () => {
     expect(
       await tester.test({
         code: ['// @ts-check', 'var val'],
-        ruleIdsToFix: ['no-var'],
+        rules: { 'no-var': 'error' },
       }),
     ).toMatchInlineSnapshot(`
       "/* eslint-disable no-var */
@@ -119,7 +119,7 @@ describe('disable-per-file', () => {
     expect(
       await tester.test({
         code: ['/* @jsxImportSource @emotion/react */', 'var val'],
-        ruleIdsToFix: ['no-var'],
+        rules: { 'no-var': 'error' },
       }),
     ).toMatchInlineSnapshot(`
       "/* eslint-disable no-var */
@@ -131,7 +131,7 @@ describe('disable-per-file', () => {
     expect(
       await tester.test({
         code: ['#!/usr/bin/env node', 'var val'],
-        ruleIdsToFix: ['no-var'],
+        rules: { 'no-var': 'error' },
       }),
     ).toMatchInlineSnapshot(`
       "#!/usr/bin/env node

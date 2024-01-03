@@ -22,7 +22,7 @@ describe('make-fixable-and-fix', () => {
     expect(
       await tester.test({
         code: 'const a = 1;',
-        ruleIdsToFix: ['no-unused-vars'],
+        rules: { 'no-unused-vars': ['error', { varsIgnorePattern: '^_' }] },
         args: {
           fixableMaker: (_message, node) => {
             if (!node || !node.range) return null;
@@ -36,7 +36,7 @@ describe('make-fixable-and-fix', () => {
     expect(
       await tester.test({
         code: ['const a = 1;', 'const b = 2;'],
-        ruleIdsToFix: ['no-unused-vars'],
+        rules: { 'no-unused-vars': ['error', { varsIgnorePattern: '^_' }] },
         args: {
           fixableMaker: (_message, node) => {
             if (!node || !node.range) return null;
@@ -53,7 +53,7 @@ describe('make-fixable-and-fix', () => {
     expect(
       await tester.test({
         code: ['const a = 1;', 'let b = 2;', 'b++;', 'console.log(b);'],
-        ruleIdsToFix: ['no-unused-vars', 'no-plusplus'],
+        rules: { 'no-unused-vars': ['error', { varsIgnorePattern: '^_' }], 'no-plusplus': 'error' },
         args: {
           fixableMaker: (message, node) => {
             if (!node || !node.range) return null;
@@ -78,7 +78,7 @@ describe('make-fixable-and-fix', () => {
     expect(
       await tester.test({
         code: ['const a = 1; const b = 2;'],
-        ruleIdsToFix: ['no-unused-vars'],
+        rules: { 'no-unused-vars': ['error', { varsIgnorePattern: '^_' }] },
         args: {
           fixableMaker: (_message, node) => {
             if (!node || !node.range) return null;
@@ -91,7 +91,7 @@ describe('make-fixable-and-fix', () => {
   test('`fixableMaker` receives the message and node.', async () => {
     await tester.test({
       code: ['const a = 1;'],
-      ruleIdsToFix: ['no-unused-vars'],
+      rules: { 'no-unused-vars': ['error', { varsIgnorePattern: '^_' }] },
       args: {
         fixableMaker: (message, node, context) => {
           expect({
@@ -113,7 +113,7 @@ describe('make-fixable-and-fix', () => {
   test('node is null if message is not associated with a node', async () => {
     await tester.test({
       code: ['// this is comment'],
-      ruleIdsToFix: ['capitalized-comments'],
+      rules: { 'capitalized-comments': 'error' },
       args: {
         fixableMaker: (_message, node) => {
           expect(node).toBeNull();
@@ -126,7 +126,7 @@ describe('make-fixable-and-fix', () => {
     expect(
       await tester.test({
         code: 'const a = 1;',
-        ruleIdsToFix: ['no-unused-vars'],
+        rules: { 'no-unused-vars': ['error', { varsIgnorePattern: '^_' }] },
         args: {
           fixableMaker: () => null,
         },
