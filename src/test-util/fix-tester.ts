@@ -1,7 +1,7 @@
 import { Linter, Rule } from 'eslint';
-import { FixContext } from '../plugin/index.js';
-import { verifyAndFix } from '../plugin/linter.js';
-import { preferAdditionShorthandRule } from '../plugin/prefer-addition-shorthand-rule.js';
+import { FixContext } from '../fixer/index.js';
+import { verifyAndFix } from '../fixer/linter.js';
+import { preferAdditionShorthandRule } from '../fixer/prefer-addition-shorthand-rule.js';
 
 const DEFAULT_FILENAME = 'test.js';
 

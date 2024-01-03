@@ -4,7 +4,6 @@ import { ESLint, Linter, Rule } from 'eslint';
 import isInstalledGlobally from 'is-installed-globally';
 import { DescriptionPosition } from './cli/prompt.js';
 import { Config, NormalizedConfig, normalizeConfig } from './config.js';
-import { format } from './formatter/index.js';
 import {
   createFixToApplyAutoFixes,
   createFixToApplySuggestions,
@@ -16,7 +15,8 @@ import {
   SuggestionFilter,
   FixContext,
   verifyAndFix,
-} from './plugin/index.js';
+} from './fixer/index.js';
+import { format } from './formatter/index.js';
 import { filterResultsByRuleId } from './util/eslint.js';
 
 /**
