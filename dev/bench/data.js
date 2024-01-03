@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1703350128754,
+  "lastUpdate": 1704265819644,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -1605,6 +1605,35 @@ window.BENCHMARK_DATA = {
           {
             "name": "cachegrind-benchmarking",
             "value": 18267945169,
+            "unit": "instructions"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "pp.mizdra@gmail.com",
+            "name": "mizdra",
+            "username": "mizdra"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "1a6f7ad4ff1f3d1312c03e5cb12702d6a9817bfd",
+          "message": "Merge pull request #337 from mizdra/refactoring-fixer-2\n\nrefactor: Apply fixes using `SourceCodeFixer` instead of a plugin",
+          "timestamp": "2024-01-03T16:08:55+09:00",
+          "tree_id": "19664d6b39a2ff9f5b48539c51853ef3f050f78f",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/1a6f7ad4ff1f3d1312c03e5cb12702d6a9817bfd"
+        },
+        "date": 1704265818542,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "cachegrind-benchmarking",
+            "value": 8263403932,
             "unit": "instructions"
           }
         ]
