@@ -9,7 +9,7 @@ export {
   createFixToApplySuggestions,
   createFixToMakeFixableAndFix,
 } from './fix/index.js';
-export { verifyAndFix } from './linter.js';
+export { verifyAndFix } from '../eslint/linter.js';
 
 /**
  * The type representing the additional information for the fix.

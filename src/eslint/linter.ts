@@ -8,9 +8,9 @@
  */
 
 import { Linter, Rule } from 'eslint';
+import { FixContext } from '../fixer/index.js';
 import { ruleFixer } from './rule-fixer.js';
 import { SourceCodeFixer } from './source-code-fixer.js';
-import { FixContext } from './index.js';
 
 const MAX_AUTOFIX_PASSES = 10;
 

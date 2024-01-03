@@ -1,5 +1,6 @@
 import { Rule, SourceCode } from 'eslint';
 import { DescriptionPosition } from 'src/cli/prompt.js';
+import { mergeFixes } from '../../eslint/report-translator.js';
 import { unique } from '../../util/array.js';
 import {
   DisableComment,
@@ -13,7 +14,6 @@ import {
 } from '../../util/eslint.js';
 import { notEmpty } from '../../util/type-check.js';
 import { FixContext } from '../index.js';
-import { mergeFixes } from '../report-translator.js';
 
 export type FixToDisablePerFileArgs = {
   description?: string | undefined;
