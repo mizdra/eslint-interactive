@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1704265819644,
+  "lastUpdate": 1704267448161,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -1634,6 +1634,35 @@ window.BENCHMARK_DATA = {
           {
             "name": "cachegrind-benchmarking",
             "value": 8263403932,
+            "unit": "instructions"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "pp.mizdra@gmail.com",
+            "name": "mizdra",
+            "username": "mizdra"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "7994b70c2b73490f26d6761ba7d44060494c5d20",
+          "message": "Merge pull request #338 from mizdra/remove-unused-codes\n\nRemove unused codes",
+          "timestamp": "2024-01-03T16:36:15+09:00",
+          "tree_id": "6fc3894765a8694d1804ef2c59af94bb1d9a8db6",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/7994b70c2b73490f26d6761ba7d44060494c5d20"
+        },
+        "date": 1704267447543,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "cachegrind-benchmarking",
+            "value": 8262785717,
             "unit": "instructions"
           }
         ]
