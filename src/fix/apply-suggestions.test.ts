@@ -1,28 +1,29 @@
 import { basename } from 'node:path';
 import { describe, expect, test } from 'vitest';
-import { FixTester } from '../../test-util/fix-tester.js';
+import { FixTester } from '../test-util/fix-tester.js';
+import { createFixToApplySuggestions, FixToApplySuggestionsArgs } from './apply-suggestions.js';
 
-const tester = new FixTester(
-  'applySuggestions',
+const tester = new FixTester<FixToApplySuggestionsArgs>(
+  createFixToApplySuggestions,
   { filter: (suggestions) => suggestions[0] },
   { parserOptions: { ecmaVersion: 2020, ecmaFeatures: { jsx: true } } },
 );
 
 describe('apply-suggestions', () => {
-  test('basic', async () => {
+  test('basic', () => {
     expect(
-      await tester.test({
+      tester.test({
         code: 'a = a + 1;',
-        ruleIdsToFix: ['eslint-interactive/prefer-addition-shorthand'],
+        rules: { 'prefer-addition-shorthand': 'error' },
         args: { filter: (suggestions) => suggestions[0] },
       }),
     ).toMatchInlineSnapshot(`"a += 1;"`);
   });
-  test('一度に複数の suggestion を適用できる', async () => {
+  test('一度に複数の suggestion を適用できる', () => {
     expect(
-      await tester.test({
+      tester.test({
         code: ['a = a + 1;', 'b = b + 1;'],
-        ruleIdsToFix: ['eslint-interactive/prefer-addition-shorthand'],
+        rules: { 'prefer-addition-shorthand': 'error' },
         args: { filter: (suggestions) => suggestions[0] },
       }),
     ).toMatchInlineSnapshot(`
@@ -30,11 +31,11 @@ describe('apply-suggestions', () => {
       b += 1;"
     `);
   });
-  test('一度に複数の rule の suggestion を適用できる', async () => {
+  test('一度に複数の rule の suggestion を適用できる', () => {
     expect(
-      await tester.test({
+      tester.test({
         code: ['a = a + 1;', 'if (!key in object) {}'],
-        ruleIdsToFix: ['eslint-interactive/prefer-addition-shorthand', 'no-unsafe-negation'],
+        rules: { 'prefer-addition-shorthand': 'error', 'no-unsafe-negation': 'error' },
         args: { filter: (suggestions) => suggestions[0] },
       }),
     ).toMatchInlineSnapshot(`
@@ -42,19 +43,19 @@ describe('apply-suggestions', () => {
       if (!(key in object)) {}"
     `);
   });
-  test('1 つの行に複数の suggestion があっても全ての suggestion が適用できる', async () => {
+  test('1 つの行に複数の suggestion があっても全ての suggestion が適用できる', () => {
     expect(
-      await tester.test({
+      tester.test({
         code: ['a = a + 1; b = b + 1;'],
-        ruleIdsToFix: ['eslint-interactive/prefer-addition-shorthand'],
+        rules: { 'prefer-addition-shorthand': 'error' },
         args: { filter: (suggestions) => suggestions[0] },
       }),
     ).toMatchInlineSnapshot(`"a += 1; b += 1;"`);
   });
-  test('filter には suggestions, message が渡ってくる', async () => {
-    await tester.test({
+  test('filter には suggestions, message が渡ってくる', () => {
+    tester.test({
       code: ['a = a + 1;'],
-      ruleIdsToFix: ['eslint-interactive/prefer-addition-shorthand'],
+      rules: { 'prefer-addition-shorthand': 'error' },
       args: {
         filter: (suggestions, message, context) => {
           expect({
@@ -73,20 +74,20 @@ describe('apply-suggestions', () => {
       },
     });
   });
-  test('suggestion がない場合は何もしない', async () => {
+  test('suggestion がない場合は何もしない', () => {
     expect(
-      await tester.test({
+      tester.test({
         code: 'a = a + 1;',
-        ruleIdsToFix: ['semi'],
+        rules: { semi: 'error' },
         args: { filter: (suggestions) => suggestions[0] },
       }),
     ).toMatchInlineSnapshot(`null`);
   });
-  test('filter から null もしくは undefined を返すと、suggestion は適用されない', async () => {
+  test('filter から null もしくは undefined を返すと、suggestion は適用されない', () => {
     expect(
-      await tester.test({
+      tester.test({
         code: 'a = a + 1;',
-        ruleIdsToFix: ['eslint-interactive/prefer-addition-shorthand'],
+        rules: { 'prefer-addition-shorthand': 'error' },
         args: { filter: (_suggestions) => (Math.random() < 0.5 ? null : undefined) },
       }),
     ).toMatchInlineSnapshot(`null`);

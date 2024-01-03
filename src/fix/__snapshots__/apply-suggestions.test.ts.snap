@@ -22,7 +22,7 @@ exports[`apply-suggestions > filter には suggestions, message が渡ってく�
         "line": 1,
         "message": "The addition method is redundant.",
         "nodeType": "AssignmentExpression",
-        "ruleId": "eslint-interactive/prefer-addition-shorthand",
+        "ruleId": "prefer-addition-shorthand",
         "severity": 2,
         "suggestions": [
           {
@@ -59,7 +59,7 @@ exports[`apply-suggestions > filter には suggestions, message が渡ってく�
       },
     ],
     "ruleIds": [
-      "eslint-interactive/prefer-addition-shorthand",
+      "prefer-addition-shorthand",
     ],
     "sourceCode": {
       "text": "a = a + 1;",
@@ -72,7 +72,7 @@ exports[`apply-suggestions > filter には suggestions, message が渡ってく�
     "line": 1,
     "message": "The addition method is redundant.",
     "nodeType": "AssignmentExpression",
-    "ruleId": "eslint-interactive/prefer-addition-shorthand",
+    "ruleId": "prefer-addition-shorthand",
     "severity": 2,
     "suggestions": [
       {

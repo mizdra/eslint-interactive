@@ -1,6 +1,7 @@
 import { Rule, SourceCode } from 'eslint';
 import { DescriptionPosition } from 'src/cli/prompt.js';
-import { unique } from '../../util/array.js';
+import { mergeFixes } from '../eslint/report-translator.js';
+import { unique } from '../util/array.js';
 import {
   DisableComment,
   findShebang,
@@ -10,9 +11,9 @@ import {
   mergeDescription,
   mergeRuleIds,
   updateDisableComment,
-} from '../../util/eslint.js';
-import { notEmpty } from '../../util/type-check.js';
-import { FixContext } from '../index.js';
+} from '../util/eslint.js';
+import { notEmpty } from '../util/type-check.js';
+import { FixContext } from './index.js';
 
 export type FixToDisablePerFileArgs = {
   description?: string | undefined;
@@ -28,11 +29,11 @@ function generateFix(
   context: FixContext,
   description: string | undefined,
   descriptionPosition: DescriptionPosition | undefined,
-): Rule.Fix[] {
+): Rule.Fix | null {
   const { fixer, sourceCode } = context;
 
   const ruleIdsToDisable = unique(context.messages.map((message) => message.ruleId).filter(notEmpty));
-  if (ruleIdsToDisable.length === 0) return [];
+  if (ruleIdsToDisable.length === 0) return null;
 
   const disableCommentPerFile = findDisableCommentPerFile(sourceCode);
 
@@ -81,12 +82,14 @@ function generateFix(
       }),
     );
   }
-  return fixes;
+  return mergeFixes(fixes, context.sourceCode);
 }
 
 /**
  * Create fix to add disable comment per file.
  */
 export function createFixToDisablePerFile(context: FixContext, args: FixToDisablePerFileArgs): Rule.Fix[] {
-  return generateFix(context, args.description, args.descriptionPosition);
+  const fix = generateFix(context, args.description, args.descriptionPosition);
+  if (fix) return [fix];
+  return [];
 }

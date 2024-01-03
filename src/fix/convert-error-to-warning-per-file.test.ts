@@ -1,40 +1,41 @@
 import { describe, expect, test } from 'vitest';
-import { FixTester } from '../../test-util/fix-tester.js';
+import { FixTester } from '../test-util/fix-tester.js';
+import { createFixToConvertErrorToWarningPerFile } from './convert-error-to-warning-per-file.js';
 
 const tester = new FixTester(
-  'convertErrorToWarningPerFile',
+  createFixToConvertErrorToWarningPerFile,
   {},
   { parserOptions: { ecmaVersion: 2020, ecmaFeatures: { jsx: true } } },
 );
 
 describe('convert-error-to-warning-per-file', () => {
-  test('basic', async () => {
+  test('basic', () => {
     expect(
-      await tester.test({
+      tester.test({
         code: 'var val',
-        ruleIdsToFix: ['semi'],
+        rules: { semi: 'error' },
       }),
     ).toMatchInlineSnapshot(`
       "/* eslint semi: 1 */
       var val"
     `);
   });
-  test('fixes multiple rules', async () => {
+  test('fixes multiple rules', () => {
     expect(
-      await tester.test({
+      tester.test({
         code: 'var val',
-        ruleIdsToFix: ['semi', 'no-var'],
+        rules: { 'semi': 'error', 'no-var': 'error' },
       }),
     ).toMatchInlineSnapshot(`
       "/* eslint no-var: 1, semi: 1 */
       var val"
     `);
   });
-  test('can add description', async () => {
+  test('can add description', () => {
     expect(
-      await tester.test({
+      tester.test({
         code: 'var val',
-        ruleIdsToFix: ['semi'],
+        rules: { semi: 'error' },
         args: { description: 'comment' },
       }),
     ).toMatchInlineSnapshot(`
@@ -42,19 +43,19 @@ describe('convert-error-to-warning-per-file', () => {
       var val"
     `);
   });
-  test('ignores warnings', async () => {
+  test('ignores warnings', () => {
     expect(
-      await tester.test({
+      tester.test({
         code: ['/* eslint semi: 1 */', 'var val'],
-        ruleIdsToFix: ['semi'],
+        rules: { semi: 'error' },
       }),
     ).toMatchInlineSnapshot(`null`);
   });
-  test('combines directives into one', async () => {
+  test('combines directives into one', () => {
     expect(
-      await tester.test({
+      tester.test({
         code: ['var val', 'var val'],
-        ruleIdsToFix: ['semi'],
+        rules: { semi: 'error' },
       }),
     ).toMatchInlineSnapshot(`
       "/* eslint semi: 1 */
@@ -62,11 +63,11 @@ describe('convert-error-to-warning-per-file', () => {
       var val"
     `);
   });
-  test('`eslint` directive has precedence over `@ts-check`', async () => {
+  test('`eslint` directive has precedence over `@ts-check`', () => {
     expect(
-      await tester.test({
+      tester.test({
         code: ['// @ts-check', 'var val'],
-        ruleIdsToFix: ['no-var'],
+        rules: { 'no-var': 'error' },
       }),
     ).toMatchInlineSnapshot(`
       "/* eslint no-var: 1 */
@@ -74,11 +75,11 @@ describe('convert-error-to-warning-per-file', () => {
       var val"
     `);
   });
-  test('`eslint` directive has precedence over `/* @jsxImportSource xxx */`', async () => {
+  test('`eslint` directive has precedence over `/* @jsxImportSource xxx */`', () => {
     expect(
-      await tester.test({
+      tester.test({
         code: ['/* @jsxImportSource @emotion/react */', 'var val'],
-        ruleIdsToFix: ['no-var'],
+        rules: { 'no-var': 'error' },
       }),
     ).toMatchInlineSnapshot(`
       "/* eslint no-var: 1 */
@@ -86,11 +87,11 @@ describe('convert-error-to-warning-per-file', () => {
       var val"
     `);
   });
-  test('The shebang has precedence over `eslint` directive', async () => {
+  test('The shebang has precedence over `eslint` directive', () => {
     expect(
-      await tester.test({
+      tester.test({
         code: ['#!/usr/bin/env node', 'var val'],
-        ruleIdsToFix: ['no-var'],
+        rules: { 'no-var': 'error' },
       }),
     ).toMatchInlineSnapshot(`
       "#!/usr/bin/env node

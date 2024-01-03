@@ -1,21 +1,23 @@
+import { writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
-import { ESLint } from 'eslint';
+import { ESLint, Linter, Rule } from 'eslint';
 import isInstalledGlobally from 'is-installed-globally';
 import { DescriptionPosition } from './cli/prompt.js';
 import { Config, NormalizedConfig, normalizeConfig } from './config.js';
-import { format } from './formatter/index.js';
 import {
-  eslintInteractivePlugin,
-  FixRuleOption,
+  createFixToApplyAutoFixes,
+  createFixToApplySuggestions,
+  createFixToConvertErrorToWarningPerFile,
+  createFixToDisablePerFile,
+  createFixToDisablePerLine,
+  createFixToMakeFixableAndFix,
   FixableMaker,
   SuggestionFilter,
-  Fix,
-  OVERLAPPED_PROBLEM_MESSAGE,
-} from './plugin/index.js';
-import { unique } from './util/array.js';
+  FixContext,
+  verifyAndFix,
+} from './fix/index.js';
+import { format } from './formatter/index.js';
 import { filterResultsByRuleId } from './util/eslint.js';
-
-const MAX_AUTOFIX_PASSES = 10;
 
 /**
  * Generate results to undo.
@@ -27,21 +29,6 @@ function generateResultsToUndo(resultsOfLint: ESLint.LintResult[]): ESLint.LintR
     // NOTE: THIS IS HACK.
     return { ...resultOfLint, output: resultOfLint.source };
   });
-}
-
-function hasOverlappedProblems(results: ESLint.LintResult[]): boolean {
-  return results.flatMap((result) => result.messages).some((message) => message.message === OVERLAPPED_PROBLEM_MESSAGE);
-}
-
-/**
- * Get all the rules loaded from eslintrc.
- * @param eslint The eslint instance.
- * @param targetFilePaths The target file paths.
- * @returns The rule ids loaded from eslintrc.
- */
-async function getUsedRuleIds(eslint: ESLint, targetFilePaths: string[]): Promise<string[]> {
-  const configs = await Promise.all(targetFilePaths.map(async (filePath) => eslint.calculateConfigForFile(filePath)));
-  return unique(configs.map((config) => config.rules).flatMap((rules) => Object.keys(rules)));
 }
 
 export type Undo = () => Promise<void>;
@@ -106,7 +93,7 @@ export class Core {
    * @param ruleIds The rule ids to fix
    */
   async applyAutoFixes(results: ESLint.LintResult[], ruleIds: string[]): Promise<Undo> {
-    return this.fix(results, ruleIds, { name: 'applyAutoFixes', args: {} });
+    return this.fix(results, ruleIds, (context) => createFixToApplyAutoFixes(context, {}));
   }
 
   /**
@@ -122,7 +109,9 @@ export class Core {
     description?: string,
     descriptionPosition?: DescriptionPosition,
   ): Promise<Undo> {
-    return this.fix(results, ruleIds, { name: 'disablePerLine', args: { description, descriptionPosition } });
+    return this.fix(results, ruleIds, (context) =>
+      createFixToDisablePerLine(context, { description, descriptionPosition }),
+    );
   }
 
   /**
@@ -138,7 +127,9 @@ export class Core {
     description?: string,
     descriptionPosition?: DescriptionPosition,
   ): Promise<Undo> {
-    return this.fix(results, ruleIds, { name: 'disablePerFile', args: { description, descriptionPosition } });
+    return this.fix(results, ruleIds, (context) =>
+      createFixToDisablePerFile(context, { description, descriptionPosition }),
+    );
   }
 
   /**
@@ -152,7 +143,7 @@ export class Core {
     ruleIds: string[],
     description?: string,
   ): Promise<Undo> {
-    return this.fix(results, ruleIds, { name: 'convertErrorToWarningPerFile', args: { description } });
+    return this.fix(results, ruleIds, (context) => createFixToConvertErrorToWarningPerFile(context, { description }));
   }
 
   /**
@@ -162,7 +153,7 @@ export class Core {
    * @param filter The script to filter suggestions
    */
   async applySuggestions(results: ESLint.LintResult[], ruleIds: string[], filter: SuggestionFilter): Promise<Undo> {
-    return this.fix(results, ruleIds, { name: 'applySuggestions', args: { filter } });
+    return this.fix(results, ruleIds, (context) => createFixToApplySuggestions(context, { filter }));
   }
 
   /**
@@ -172,50 +163,35 @@ export class Core {
    * @param fixableMaker The function to make `Linter.LintMessage` forcibly fixable.
    */
   async makeFixableAndFix(results: ESLint.LintResult[], ruleIds: string[], fixableMaker: FixableMaker): Promise<Undo> {
-    return this.fix(results, ruleIds, { name: 'makeFixableAndFix', args: { fixableMaker } });
+    return this.fix(results, ruleIds, (context) => createFixToMakeFixableAndFix(context, { fixableMaker }));
   }
 
   /**
    * Fix source codes.
    * @param fix The fix information to do.
    */
-  private async fix(resultsOfLint: ESLint.LintResult[], ruleIds: string[], fix: Fix): Promise<Undo> {
+  private async fix(
+    resultsOfLint: ESLint.LintResult[],
+    ruleIds: string[],
+    fixCreator: (context: FixContext) => Rule.Fix[],
+  ): Promise<Undo> {
     // NOTE: Extract only necessary results and files for performance
     const filteredResultsOfLint = filterResultsByRuleId(resultsOfLint, ruleIds);
-    const targetFilePaths = filteredResultsOfLint.map((result) => result.filePath);
-    const usedRuleIds = await getUsedRuleIds(this.eslint, targetFilePaths);
+    const linter = new Linter();
 
-    // TODO: refactor
-    let results = filteredResultsOfLint;
-    for (let i = 0; i < MAX_AUTOFIX_PASSES; i++) {
-      const { type, ...eslintOptions } = this.config.eslintOptions;
-      const eslint = new ESLint({
-        ...eslintOptions,
-        // This is super hack to load ESM plugin/rule.
-        // ref: https://github.com/eslint/eslint/issues/15453#issuecomment-1001200953
-        plugins: {
-          'eslint-interactive': eslintInteractivePlugin,
-        },
-        overrideConfig: {
-          plugins: ['eslint-interactive'],
-          rules: {
-            'eslint-interactive/fix': [2, { results, ruleIds, fix } as FixRuleOption],
-            // Turn off all rules except `eslint-interactive/fix` when fixing for performance.
-            ...Object.fromEntries(usedRuleIds.map((ruleId) => [ruleId, 'off'])),
-          },
-        },
-        // NOTE: Only fix the `fix` rule problems.
-        fix: (message) => message.ruleId === 'eslint-interactive/fix',
-        // Don't interpret lintFiles arguments as glob patterns for performance.
-        globInputPaths: false,
-      });
+    // eslint-disable-next-line prefer-const
+    for (let { filePath, source } of filteredResultsOfLint) {
+      if (!source) throw new Error('Source code is required to apply fixes.');
       // eslint-disable-next-line no-await-in-loop
-      const resultsToFix = await eslint.lintFiles(targetFilePaths);
-      // eslint-disable-next-line no-await-in-loop
-      await ESLint.outputFixes(resultsToFix);
-      if (!hasOverlappedProblems(resultsToFix)) break;
-      // eslint-disable-next-line no-await-in-loop
-      results = await this.lint();
+      const config: Linter.Config = await this.eslint.calculateConfigForFile(filePath);
+
+      const fixedResult = verifyAndFix(linter, source, config, filePath, ruleIds, fixCreator);
+
+      // Write the fixed source code to the file
+      if (fixedResult.fixed) {
+        // eslint-disable-next-line no-await-in-loop, @typescript-eslint/no-non-null-assertion
+        await writeFile(filePath, fixedResult.output);
+      }
     }
 
     return async () => {

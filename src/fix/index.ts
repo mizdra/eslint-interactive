@@ -1,3 +1,7 @@
+import { Linter, Rule, SourceCode } from 'eslint';
+
+export { verifyAndFix } from '../eslint/linter.js';
+
 export {
   type SuggestionFilter,
   type FixToApplySuggestionsArgs,
@@ -15,3 +19,19 @@ export {
   type FixToMakeFixableAndFixArgs,
   createFixToMakeFixableAndFix,
 } from './make-fixable-and-fix.js';
+
+/**
+ * The type representing the additional information for the fix.
+ */
+export type FixContext = {
+  filename: string;
+  sourceCode: SourceCode;
+  messages: Linter.LintMessage[];
+  ruleIds: string[];
+  fixer: Rule.RuleFixer;
+};
+
+/**
+ * The type representing the fix function.
+ */
+export type FixFunction<T> = (context: FixContext, args: T) => Rule.Fix[];

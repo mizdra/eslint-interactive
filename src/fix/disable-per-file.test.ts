@@ -1,62 +1,63 @@
 import { describe, expect, test } from 'vitest';
-import { FixTester } from '../../test-util/fix-tester.js';
+import { FixTester } from '../test-util/fix-tester.js';
+import { createFixToDisablePerFile } from './disable-per-file.js';
 
 const tester = new FixTester(
-  'disablePerFile',
+  createFixToDisablePerFile,
   {},
   { parserOptions: { ecmaVersion: 2020, ecmaFeatures: { jsx: true } } },
 );
 
 describe('disable-per-file', () => {
-  test('basic', async () => {
+  test('basic', () => {
     expect(
-      await tester.test({
+      tester.test({
         code: 'var val',
-        ruleIdsToFix: ['semi'],
+        rules: { semi: 'error' },
       }),
     ).toMatchInlineSnapshot(`
       "/* eslint-disable semi */
       var val"
     `);
   });
-  test('複数の rule を同時に disable できる', async () => {
+  test('複数の rule を同時に disable できる', () => {
     expect(
-      await tester.test({
+      tester.test({
         code: 'var val',
-        ruleIdsToFix: ['semi', 'no-var'],
+        rules: { 'semi': 'error', 'no-var': 'error' },
       }),
     ).toMatchInlineSnapshot(`
       "/* eslint-disable no-var, semi */
       var val"
     `);
   });
-  test('既に disable comment が付いている場合は、末尾に足す', async () => {
+  test('既に disable comment が付いている場合は、末尾に足す', () => {
     expect(
-      await tester.test({
+      tester.test({
         code: ['/* eslint-disable semi */', 'var val'],
-        ruleIdsToFix: ['no-var'],
+        rules: { 'no-var': 'error' },
       }),
     ).toMatchInlineSnapshot(`
       "/* eslint-disable semi, no-var */
       var val"
     `);
   });
-  test('disable description があっても disable できる', async () => {
+  test('disable description があっても disable できる', () => {
     expect(
-      await tester.test({
+      tester.test({
         code: ['/* eslint-disable semi -- comment */', 'var val'],
-        ruleIdsToFix: ['no-var'],
+        rules: { 'no-var': 'error' },
       }),
     ).toMatchInlineSnapshot(`
       "/* eslint-disable semi, no-var -- comment */
       var val"
     `);
   });
-  test('disable description を追加できる', async () => {
+  test('disable description を追加できる', () => {
     expect(
-      await tester.test({
+      tester.test({
         code: ['/* eslint-disable semi */', 'var val'],
-        ruleIdsToFix: ['no-var'],
+        rules: { 'no-var': 'error' },
         args: { description: 'comment' },
       }),
     ).toMatchInlineSnapshot(`
@@ -64,11 +65,11 @@ describe('disable-per-file', () => {
       var val"
     `);
   });
-  test('既に disable description があるコメントに対しても disable description を追加できる', async () => {
+  test('既に disable description があるコメントに対しても disable description を追加できる', () => {
     expect(
-      await tester.test({
+      tester.test({
         code: ['/* eslint-disable semi -- foo */', 'var val'],
-        ruleIdsToFix: ['no-var'],
+        rules: { 'no-var': 'error' },
         args: { description: 'bar' },
       }),
     ).toMatchInlineSnapshot(`
@@ -76,11 +77,11 @@ describe('disable-per-file', () => {
       var val"
     `);
   });
-  test('add a description to the line before the disable comment if there is already disable comment', async () => {
+  test('add a description to the line before the disable comment if there is already disable comment', () => {
     expect(
-      await tester.test({
+      tester.test({
         code: ['/* eslint-disable semi -- foo */', 'var val'],
-        ruleIdsToFix: ['no-var'],
+        rules: { 'no-var': 'error' },
         args: { description: 'bar', descriptionPosition: 'previousLine' },
       }),
     ).toMatchInlineSnapshot(`
@@ -89,11 +90,11 @@ describe('disable-per-file', () => {
       var val"
     `);
   });
-  test('add a description comment before the line with the problem', async () => {
+  test('add a description comment before the line with the problem', () => {
     expect(
-      await tester.test({
+      tester.test({
         code: ['var val'],
-        ruleIdsToFix: ['semi'],
+        rules: { semi: 'error' },
         args: { description: 'foo', descriptionPosition: 'previousLine' },
       }),
     ).toMatchInlineSnapshot(`
@@ -102,11 +103,11 @@ describe('disable-per-file', () => {
       var val"
     `);
   });
-  test('`eslint-disable` has precedence over `@ts-check`', async () => {
+  test('`eslint-disable` has precedence over `@ts-check`', () => {
     expect(
-      await tester.test({
+      tester.test({
         code: ['// @ts-check', 'var val'],
-        ruleIdsToFix: ['no-var'],
+        rules: { 'no-var': 'error' },
       }),
     ).toMatchInlineSnapshot(`
       "/* eslint-disable no-var */
@@ -114,11 +115,11 @@ describe('disable-per-file', () => {
       var val"
     `);
   });
-  test('`eslint-disable` has precedence over `/* @jsxImportSource xxx */`', async () => {
+  test('`eslint-disable` has precedence over `/* @jsxImportSource xxx */`', () => {
     expect(
-      await tester.test({
+      tester.test({
         code: ['/* @jsxImportSource @emotion/react */', 'var val'],
-        ruleIdsToFix: ['no-var'],
+        rules: { 'no-var': 'error' },
       }),
     ).toMatchInlineSnapshot(`
       "/* eslint-disable no-var */
@@ -126,11 +127,11 @@ describe('disable-per-file', () => {
       var val"
     `);
   });
-  test('The shebang has precedence over `eslint-disable`', async () => {
+  test('The shebang has precedence over `eslint-disable`', () => {
     expect(
-      await tester.test({
+      tester.test({
         code: ['#!/usr/bin/env node', 'var val'],
-        ruleIdsToFix: ['no-var'],
+        rules: { 'no-var': 'error' },
       }),
     ).toMatchInlineSnapshot(`
       "#!/usr/bin/env node

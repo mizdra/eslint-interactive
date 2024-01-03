@@ -1,13 +1,14 @@
-import { resolve } from 'node:path';
-import { Linter, ESLint } from 'eslint';
-import { eslintInteractivePlugin, FixArg, FixName, FixRuleOption } from '../plugin/index.js';
+import { Linter, Rule } from 'eslint';
+import { verifyAndFix } from '../eslint/linter.js';
+import { FixContext } from '../fix/index.js';
+import { preferAdditionShorthandRule } from './prefer-addition-shorthand-rule.js';
 
 const DEFAULT_FILENAME = 'test.js';
 
 /**
  * The type representing the test case.
  */
-type TestCase<T extends FixName> = {
+type TestCase<FixArgs> = {
   /**
    * The filename of the code.
    */
@@ -17,13 +18,13 @@ type TestCase<T extends FixName> = {
    */
   code: string | string[];
   /**
-   * The rule ids to fix.
+   * The rules to fix.
    */
-  ruleIdsToFix: string[];
+  rules: Partial<Linter.RulesRecord>;
   /**
    * The arguments to pass to the fix function.
    */
-  args?: FixArg<T>;
+  args?: FixArgs;
 };
 
 type TestResult = string | null;
@@ -31,12 +32,19 @@ type TestResult = string | null;
 /**
  * The test utility for the fix.
  */
-export class FixTester<T extends FixName> {
-  private fixName: T;
-  private defaultFixArgs: FixArg<T>;
+export class FixTester<FixArgs> {
+  private linter: Linter;
+  private fixCreator: (context: FixContext, args: FixArgs) => Rule.Fix[];
+  private defaultFixArgs: FixArgs;
   private defaultLinterConfig: Linter.Config;
-  constructor(fixName: T, defaultFixArgs: FixArg<T>, defaultLinterConfig: Linter.Config) {
-    this.fixName = fixName;
+  constructor(
+    fixCreator: (context: FixContext, args: FixArgs) => Rule.Fix[],
+    defaultFixArgs: FixArgs,
+    defaultLinterConfig: Linter.Config,
+  ) {
+    this.linter = new Linter();
+    this.linter.defineRule('prefer-addition-shorthand', preferAdditionShorthandRule);
+    this.fixCreator = fixCreator;
     this.defaultFixArgs = defaultFixArgs;
     this.defaultLinterConfig = defaultLinterConfig;
   }
@@ -45,54 +53,27 @@ export class FixTester<T extends FixName> {
    * @param testCase The test case.
    * @returns The fixed code. If the fix skipped, null is returned.
    */
-  async test(testCase: TestCase<T>): Promise<TestResult> {
+  test(testCase: TestCase<FixArgs>): TestResult {
     const code = Array.isArray(testCase.code) ? testCase.code.join('\n') : testCase.code;
 
     const filePath = testCase.filename ?? DEFAULT_FILENAME;
 
-    const eslintForLint = this.createESLint({
+    const config: Linter.Config = {
+      ...this.defaultLinterConfig,
       rules: {
-        ...Object.fromEntries(testCase.ruleIdsToFix.map((ruleId) => [ruleId, 'error'])),
+        ...this.defaultLinterConfig.rules,
+        ...testCase.rules,
       },
-    });
-    const resultsForLint = await eslintForLint.lintText(code, { filePath });
+    };
+    const ruleIdsToFix = Object.keys(testCase.rules);
+    const fixedResult = verifyAndFix(this.linter, code, config, filePath, ruleIdsToFix, (context) =>
+      this.fixCreator(context, testCase.args ?? this.defaultFixArgs),
+    );
 
-    const eslintForFix = this.createESLint({
-      rules: {
-        'eslint-interactive/fix': [
-          2,
-          {
-            results: resultsForLint,
-            ruleIds: testCase.ruleIdsToFix,
-            fix: { name: this.fixName, args: { ...this.defaultFixArgs, ...testCase.args } },
-          } as FixRuleOption,
-        ],
-      },
-      // NOTE: Only fix the `fix` rule problems.
-      fix: (message) => message.ruleId === 'eslint-interactive/fix',
-    });
-    const resultsForFix = await eslintForFix.lintText(code, { filePath });
-
-    const resultOfTargetFile = resultsForFix.find((result) => result.filePath === resolve(filePath));
-    if (!resultOfTargetFile) return null;
-    return resultOfTargetFile.output ?? null;
-  }
-
-  private createESLint(options: { rules?: Linter.HasRules['rules']; fix?: ESLint.Options['fix'] }): ESLint {
-    return new ESLint({
-      useEslintrc: false,
-      plugins: {
-        'eslint-interactive': eslintInteractivePlugin,
-      },
-      overrideConfig: {
-        plugins: ['eslint-interactive'],
-        rules: {
-          ...this.defaultLinterConfig.rules,
-          ...options.rules,
-        },
-        ...this.defaultLinterConfig,
-      },
-      fix: options.fix,
-    });
+    if (fixedResult.fixed) {
+      return fixedResult.output;
+    } else {
+      return null;
+    }
   }
 }

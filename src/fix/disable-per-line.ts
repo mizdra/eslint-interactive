@@ -1,6 +1,7 @@
 import { Linter, Rule, SourceCode } from 'eslint';
 import { DescriptionPosition } from 'src/cli/prompt.js';
-import { groupBy, unique } from '../../util/array.js';
+import { mergeFixes } from '../eslint/report-translator.js';
+import { groupBy, unique } from '../util/array.js';
 import {
   DisableComment,
   insertDescriptionCommentStatementBeforeLine,
@@ -9,9 +10,9 @@ import {
   mergeRuleIds,
   parseDisableComment,
   updateDisableComment,
-} from '../../util/eslint.js';
-import { notEmpty } from '../../util/type-check.js';
-import { FixContext } from '../index.js';
+} from '../util/eslint.js';
+import { notEmpty } from '../util/type-check.js';
+import { FixContext } from './index.js';
 
 export type FixToDisablePerLineArgs = {
   description?: string | undefined;
@@ -30,11 +31,11 @@ function generateFixesPerLine(
   descriptionPosition: DescriptionPosition | undefined,
   line: number,
   messagesInLine: Linter.LintMessage[],
-): Rule.Fix[] {
+): Rule.Fix | null {
   const { fixer, sourceCode } = context;
 
   const ruleIdsToDisable = unique(messagesInLine.map((message) => message.ruleId).filter(notEmpty));
-  if (ruleIdsToDisable.length === 0) return [];
+  if (ruleIdsToDisable.length === 0) return null;
 
   const disableCommentPerLine = findDisableCommentPerLine(sourceCode, line);
 
@@ -74,7 +75,7 @@ function generateFixesPerLine(
       }),
     );
   }
-  return fixes;
+  return mergeFixes(fixes, context.sourceCode);
 }
 
 /**
@@ -84,7 +85,8 @@ export function createFixToDisablePerLine(context: FixContext, args: FixToDisabl
   const lineToMessages = groupBy(context.messages, (message) => message.line);
   const fixes: Rule.Fix[] = [];
   for (const [line, messagesInLine] of lineToMessages) {
-    fixes.push(...generateFixesPerLine(context, args.description, args.descriptionPosition, line, messagesInLine));
+    const fix = generateFixesPerLine(context, args.description, args.descriptionPosition, line, messagesInLine);
+    if (fix) fixes.push(fix);
   }
   return fixes;
 }
