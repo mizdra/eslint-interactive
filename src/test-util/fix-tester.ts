@@ -53,8 +53,7 @@ export class FixTester<FixArgs> {
    * @param testCase The test case.
    * @returns The fixed code. If the fix skipped, null is returned.
    */
-  // eslint-disable-next-line @typescript-eslint/require-await -- TODO: remove `async`
-  async test(testCase: TestCase<FixArgs>): Promise<TestResult> {
+  test(testCase: TestCase<FixArgs>): TestResult {
     const code = Array.isArray(testCase.code) ? testCase.code.join('\n') : testCase.code;
 
     const filePath = testCase.filename ?? DEFAULT_FILENAME;
