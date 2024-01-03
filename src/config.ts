@@ -1,8 +1,7 @@
 import { ESLint } from 'eslint';
 import { cliOptionsDefaults, ParsedCLIOptions } from './cli/parse-argv.js';
 import { DeepPartial } from './util/type-check.js';
-
-export type ESLintrcESLintOptions = { type: 'eslintrc' } & Pick<
+type ESLintrcESLintOptions = { type: 'eslintrc' } & Pick<
   ESLint.Options,
   | 'useEslintrc'
   | 'overrideConfigFile'

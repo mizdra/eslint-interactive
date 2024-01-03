@@ -4,8 +4,6 @@ import { Rule } from 'eslint';
  * @file This is a rule for testing purposes.
  */
 
-export type ApplyFixesRuleOption = Rule.Fix[];
-
 export const preferAdditionShorthandRule: Rule.RuleModule = {
   meta: {
     type: 'suggestion',

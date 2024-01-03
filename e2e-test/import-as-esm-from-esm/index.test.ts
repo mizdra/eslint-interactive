@@ -1,27 +1,41 @@
-import { afterEach, beforeEach, expect, test } from 'vitest';
-import { dirname, join } from 'path';
-import { fileURLToPath } from 'url';
+import { afterEach, expect, test } from 'vitest';
 import stripAnsi from 'strip-ansi';
-// eslint-disable-next-line no-restricted-imports
-import { cleanupFixturesCopy, getSnapshotOfChangedFiles, setupFixturesCopy } from '../../src/test-util/fixtures.js';
+import { createIFF } from '../../src/test-util/fixtures.js';
+import dedent from 'dedent';
+import { readFile } from 'fs/promises';
 
 const { Core, takeRuleStatistics } = await import('eslint-interactive');
 
-beforeEach(async () => {
-  await setupFixturesCopy();
+const iff = await createIFF({
+  'src/prefer-const.js': dedent`
+    let a = 1;
+  `,
+  '.eslintrc.js': dedent`
+    module.exports = {
+      root: true,
+      parserOptions: {
+        ecmaVersion: 2021,
+        sourceType: 'module',
+      },
+      overrides: [
+        { files: ['prefer-const.js'], rules: { 'prefer-const': 'error' } },
+      ],
+    };
+  `,
+  'package.json': '{ "type": "commonjs" }',
 });
 
 afterEach(async () => {
-  await cleanupFixturesCopy();
+  await iff.reset();
 });
 
 test('Programmable API', async () => {
   const core = new Core({
-    patterns: ['fixtures-tmp'],
+    patterns: ['src'],
     eslintOptions: {
       type: 'eslintrc',
-      cwd: join(dirname(fileURLToPath(import.meta.url)), '..', '..'),
     },
+    cwd: iff.rootDir,
   });
   const results = await core.lint();
 
@@ -29,6 +43,6 @@ test('Programmable API', async () => {
   const statistics = takeRuleStatistics(results);
   expect(statistics).toMatchSnapshot();
 
-  await core.applyAutoFixes(results, ['semi']);
-  expect(await getSnapshotOfChangedFiles()).toMatchSnapshot();
+  await core.applyAutoFixes(results, ['prefer-const']);
+  expect(await readFile(iff.paths['src/prefer-const.js'], 'utf-8')).toMatchSnapshot();
 });

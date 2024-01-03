@@ -196,8 +196,7 @@ export function insertDisableCommentStatementBeforeLine(args: {
     return fixer.insertTextBeforeRange([headNodeIndex, headNodeIndex], `${indent}${disableCommentText}\n`);
   }
 }
-
-export type InlineConfigComment = {
+type InlineConfigComment = {
   description?: string | undefined;
   rulesRecord: Partial<Linter.RulesRecord>;
   range: [number, number];

@@ -30,8 +30,3 @@ export type FixContext = {
   ruleIds: string[];
   fixer: Rule.RuleFixer;
 };
-
-/**
- * The type representing the fix function.
- */
-export type FixFunction<T> = (context: FixContext, args: T) => Rule.Fix[];
