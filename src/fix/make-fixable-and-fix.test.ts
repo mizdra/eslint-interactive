@@ -1,6 +1,6 @@
 import { basename } from 'node:path';
 import { describe, expect, test } from 'vitest';
-import { FixTester } from '../../test-util/fix-tester.js';
+import { FixTester } from '../test-util/fix-tester.js';
 import { createFixToMakeFixableAndFix, FixToMakeFixableAndFixArgs } from './make-fixable-and-fix.js';
 
 const tester = new FixTester<FixToMakeFixableAndFixArgs>(

@@ -1,7 +1,7 @@
 import { Linter, Rule, SourceCode } from 'eslint';
 import { DescriptionPosition } from 'src/cli/prompt.js';
-import { mergeFixes } from '../../eslint/report-translator.js';
-import { groupBy, unique } from '../../util/array.js';
+import { mergeFixes } from '../eslint/report-translator.js';
+import { groupBy, unique } from '../util/array.js';
 import {
   DisableComment,
   insertDescriptionCommentStatementBeforeLine,
@@ -10,9 +10,9 @@ import {
   mergeRuleIds,
   parseDisableComment,
   updateDisableComment,
-} from '../../util/eslint.js';
-import { notEmpty } from '../../util/type-check.js';
-import { FixContext } from '../index.js';
+} from '../util/eslint.js';
+import { notEmpty } from '../util/type-check.js';
+import { FixContext } from './index.js';
 
 export type FixToDisablePerLineArgs = {
   description?: string | undefined;

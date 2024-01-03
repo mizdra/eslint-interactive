@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { FixTester } from '../../test-util/fix-tester.js';
+import { FixTester } from '../test-util/fix-tester.js';
 import { createFixToConvertErrorToWarningPerFile } from './convert-error-to-warning-per-file.js';
 
 const tester = new FixTester(

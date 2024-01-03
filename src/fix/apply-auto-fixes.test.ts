@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
-import { FixTester } from '../../test-util/fix-tester.js';
-import { createFixToApplyAutoFixes } from './index.js';
+import { FixTester } from '../test-util/fix-tester.js';
+import { createFixToApplyAutoFixes } from './apply-auto-fixes.js';
 
 const tester = new FixTester(
   createFixToApplyAutoFixes,

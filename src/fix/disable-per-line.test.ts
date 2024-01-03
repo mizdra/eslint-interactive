@@ -1,7 +1,7 @@
 /* eslint-disable no-irregular-whitespace */
 import { describe, expect, test } from 'vitest';
 
-import { FixTester } from '../../test-util/fix-tester.js';
+import { FixTester } from '../test-util/fix-tester.js';
 import { createFixToDisablePerLine } from './disable-per-line.js';
 
 const tester = new FixTester(

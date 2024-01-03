@@ -4,7 +4,7 @@ import nodeEndpoint from 'comlink/dist/esm/node-adapter.mjs';
 import { ESLint } from 'eslint';
 import { Config } from './config.js';
 import { Core } from './core.js';
-import { FixableMaker, SuggestionFilter } from './fixer/index.js';
+import { FixableMaker, SuggestionFilter } from './fix/index.js';
 
 /**
  * @file This is a wrapper module for using the Core API with comlink.

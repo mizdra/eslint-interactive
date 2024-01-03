@@ -15,7 +15,7 @@ import {
   SuggestionFilter,
   FixContext,
   verifyAndFix,
-} from './fixer/index.js';
+} from './fix/index.js';
 import { format } from './formatter/index.js';
 import { filterResultsByRuleId } from './util/eslint.js';
 

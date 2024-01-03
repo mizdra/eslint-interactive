@@ -8,7 +8,7 @@
  */
 
 import { Linter, Rule } from 'eslint';
-import { FixContext } from '../fixer/index.js';
+import { FixContext } from '../fix/index.js';
 import { ruleFixer } from './rule-fixer.js';
 import { SourceCodeFixer } from './source-code-fixer.js';
 
