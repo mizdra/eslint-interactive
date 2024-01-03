@@ -14,7 +14,7 @@ import { SourceCodeFixer } from './source-code-fixer.js';
 
 const MAX_AUTOFIX_PASSES = 10;
 
-export type FixedResult = {
+type FixedResult = {
   fixed: boolean;
   output: string;
 };

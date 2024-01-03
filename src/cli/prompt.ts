@@ -31,12 +31,12 @@ export type Action =
  * `printInTerminalWithPager` means to print the lint results in the terminal with a pager (e.g. `less`).
  * `writeToFile` means to write the lint results to a file.
  */
-export type DisplayMode = 'printInTerminal' | 'printInTerminalWithPager' | 'writeToFile';
+type DisplayMode = 'printInTerminal' | 'printInTerminalWithPager' | 'writeToFile';
 
 /**
  * The type that represents what to do next.
  */
-export type NextStep = 'fixOtherRules' | 'exit' | 'undoTheFix';
+type NextStep = 'fixOtherRules' | 'exit' | 'undoTheFix';
 
 export type DescriptionPosition = 'sameLine' | 'previousLine';
 
