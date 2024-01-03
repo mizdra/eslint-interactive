@@ -8,8 +8,6 @@ import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { Core } from './core.js';
 import { createIFF } from './test-util/fixtures.js';
 
-const testIf = (condition: boolean) => (condition ? test : test.skip);
-
 const rootDir = join(dirname(fileURLToPath(import.meta.url)), '..');
 
 // Normalize `message` for the snapshot.
@@ -181,8 +179,7 @@ describe('Core', () => {
       expect(countWarnings(resultsWithQuiet)).toEqual(0);
     });
   });
-  // This test fails because the documentation url format is not supported in eslint 7.x.x and 8.0.0. Therefore, ignore this test.
-  testIf(!ESLint.version.startsWith('7.'))('printSummaryOfResults', async () => {
+  test('printSummaryOfResults', async () => {
     const results = await core.lint();
     vi.spyOn(ESLint.prototype, 'getRulesMetaForResults').mockImplementationOnce(() => {
       return {

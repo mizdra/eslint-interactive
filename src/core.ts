@@ -62,10 +62,7 @@ export class Core {
    * @param results The lint results of the project to print summary
    */
   formatResultSummary(results: ESLint.LintResult[]): string {
-    // NOTE: `getRulesMetaForResults` is a feature added in ESLint 7.29.0.
-    // Therefore, the function may not exist in versions lower than 7.29.0.
-    const rulesMeta: ESLint.LintResultData['rulesMeta'] = this.eslint.getRulesMetaForResults?.(results) ?? {};
-
+    const rulesMeta = this.eslint.getRulesMetaForResults(results);
     return format(results, { rulesMeta, cwd: this.config.cwd });
   }
 
