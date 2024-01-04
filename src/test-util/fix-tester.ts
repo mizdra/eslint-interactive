@@ -42,7 +42,7 @@ export class FixTester<FixArgs> {
     defaultFixArgs: FixArgs,
     defaultLinterConfig: Linter.Config,
   ) {
-    this.linter = new Linter();
+    this.linter = new Linter({ configType: 'eslintrc' });
     this.linter.defineRule('prefer-addition-shorthand', preferAdditionShorthandRule);
     this.fixCreator = fixCreator;
     this.defaultFixArgs = defaultFixArgs;

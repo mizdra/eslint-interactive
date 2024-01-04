@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url';
 import { Worker } from 'node:worker_threads';
 import { wrap } from 'comlink';
 import nodeEndpoint from 'comlink/dist/esm/node-adapter.mjs';
+import eslintPkg from 'eslint/use-at-your-own-risk';
 import isInstalledGlobally from 'is-installed-globally';
 import terminalLink from 'terminal-link';
 import { warn } from '../cli/log.js';
@@ -10,6 +11,8 @@ import { parseArgv } from '../cli/parse-argv.js';
 import { translateCLIOptions } from '../config.js';
 import { SerializableCore } from '../core-worker.js';
 import { lint, selectAction, selectRuleIds, checkResults, NextScene } from '../scene/index.js';
+
+const { shouldUseFlatConfig } = eslintPkg;
 
 export type Options = {
   argv: string[];
@@ -27,6 +30,10 @@ export async function run(options: Options) {
     );
   }
   const parsedCLIOptions = parseArgv(options.argv);
+  const usingFlatConfig = await shouldUseFlatConfig();
+  if (usingFlatConfig) {
+    throw new Error('Flat Config is not yet supported.'); // TODO: support flat config
+  }
   const config = translateCLIOptions(parsedCLIOptions, 'eslintrc'); // TODO: support flat config
 
   // Directly executing the Core API will hog the main thread and halt the spinner.

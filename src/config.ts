@@ -1,8 +1,8 @@
-import { ESLint } from 'eslint';
+import type { LegacyESLint } from 'eslint/use-at-your-own-risk';
 import { cliOptionsDefaults, ParsedCLIOptions } from './cli/parse-argv.js';
 import { DeepPartial } from './util/type-check.js';
-type ESLintrcESLintOptions = { type: 'eslintrc' } & Pick<
-  ESLint.Options,
+type LegacyESLintOptions = { type: 'eslintrc' } & Pick<
+  LegacyESLint.Options,
   | 'useEslintrc'
   | 'overrideConfigFile'
   | 'extensions'
@@ -15,7 +15,7 @@ type ESLintrcESLintOptions = { type: 'eslintrc' } & Pick<
   | 'resolvePluginsRelativeTo'
 >;
 
-export type ESLintOptions = ESLintrcESLintOptions; // TODO: support flat config
+export type ESLintOptions = LegacyESLintOptions; // TODO: support flat config
 
 /** The config of eslint-interactive */
 export type Config = {
