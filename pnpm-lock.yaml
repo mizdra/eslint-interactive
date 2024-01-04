@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  '@types/eslint@8.44.6':
+    hash: qh2z4gts23iqxgbr3skltsgoyi
+    path: patches/@types__eslint@8.44.6.patch
+
 importers:
 
   .:
@@ -65,7 +70,7 @@ importers:
         version: 2.0.2
       '@types/eslint':
         specifier: ^8.44.6
-        version: 8.44.6
+        version: 8.44.6(patch_hash=qh2z4gts23iqxgbr3skltsgoyi)
       '@types/estraverse':
         specifier: ^5.1.6
         version: 5.1.6
@@ -626,12 +631,13 @@ packages:
     resolution: {integrity: sha512-jt4jIsWKvUvuY6adJnQJlb/UR7DdjC8CjHI/OaSQruj2yX9/K6+KOvDt/vD6udqos/FUk5Op66CvYT7TBLYO5Q==}
     dev: true
 
-  /@types/eslint@8.44.6:
+  /@types/eslint@8.44.6(patch_hash=qh2z4gts23iqxgbr3skltsgoyi):
     resolution: {integrity: sha512-P6bY56TVmX8y9J87jHNgQh43h6VVU+6H7oN7hgvivV81K2XY8qJZ5vqPy/HdUoVIelii2kChYVzQanlswPWVFw==}
     dependencies:
       '@types/estree': 1.0.5
       '@types/json-schema': 7.0.14
     dev: true
+    patched: true
 
   /@types/estraverse@5.1.6:
     resolution: {integrity: sha512-IL4TOP+KA2BvqAv4jWQ1HXzIeQ4AecgY8SBgdLMIlkMll8nki/OB1z0LGU/K8y3udZuyBvjOG97j/RE1cgUlCA==}
