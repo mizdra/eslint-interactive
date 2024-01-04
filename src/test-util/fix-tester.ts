@@ -42,7 +42,8 @@ export class FixTester<FixArgs> {
     defaultFixArgs: FixArgs,
     defaultLinterConfig: Linter.Config,
   ) {
-    this.linter = new Linter();
+    // @ts-expect-error FIXME
+    this.linter = new Linter({ configType: 'eslintrc' });
     this.linter.defineRule('prefer-addition-shorthand', preferAdditionShorthandRule);
     this.fixCreator = fixCreator;
     this.defaultFixArgs = defaultFixArgs;

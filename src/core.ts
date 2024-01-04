@@ -188,7 +188,8 @@ export class Core {
   ): Promise<Undo> {
     // NOTE: Extract only necessary results and files for performance
     const filteredResultsOfLint = filterResultsByRuleId(resultsOfLint, ruleIds);
-    const linter = new Linter();
+    // @ts-expect-error FIXME
+    const linter = new Linter({ configType: 'eslintrc' });
 
     // eslint-disable-next-line prefer-const
     for (let { filePath, source } of filteredResultsOfLint) {
