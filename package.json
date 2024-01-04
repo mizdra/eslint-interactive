@@ -70,7 +70,7 @@
     "yargs": "^17.7.2"
   },
   "peerDependencies": {
-    "eslint": ">=8.0.0"
+    "eslint": ">=8.45.0"
   },
   "engines": {
     "node": ">=18.0.0"
