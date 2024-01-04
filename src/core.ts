@@ -45,7 +45,12 @@ export class Core {
   constructor(config: Config) {
     this.config = normalizeConfig(config);
     const { type, ...eslintOptions } = this.config.eslintOptions;
-    this.eslint = new LegacyESLint(eslintOptions);
+    if (type === 'eslintrc') {
+      this.eslint = new LegacyESLint(eslintOptions);
+    } else {
+      // TODO: support flat config
+      throw new Error(`Flat Config is not yet supported.`);
+    }
   }
 
   /**

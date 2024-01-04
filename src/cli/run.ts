@@ -10,6 +10,7 @@ import { parseArgv } from '../cli/parse-argv.js';
 import { translateCLIOptions } from '../config.js';
 import { SerializableCore } from '../core-worker.js';
 import { lint, selectAction, selectRuleIds, checkResults, NextScene } from '../scene/index.js';
+import { shouldUseFlatConfig } from '../eslint/eslint.js';
 
 export type Options = {
   argv: string[];
@@ -27,6 +28,10 @@ export async function run(options: Options) {
     );
   }
   const parsedCLIOptions = parseArgv(options.argv);
+  const usingFlatConfig = await shouldUseFlatConfig();
+  if (usingFlatConfig) {
+    throw new Error('Flat Config is not yet supported.'); // TODO: support flat config
+  }
   const config = translateCLIOptions(parsedCLIOptions, 'eslintrc'); // TODO: support flat config
 
   // Directly executing the Core API will hog the main thread and halt the spinner.
