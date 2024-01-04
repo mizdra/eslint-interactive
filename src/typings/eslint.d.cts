@@ -1,13 +1,12 @@
 export {};
 
 declare module 'eslint' {
-  // export * from 'eslint';
   async function shouldUseFlatConfig(): Promise<boolean>;
   export { shouldUseFlatConfig };
 }
 
 declare module 'eslint/use-at-your-own-risk' {
-  import { ESLint, Linter } from 'eslint';
+  import { ESLint, Linter, shouldUseFlatConfig } from 'eslint';
 
   // https://eslint.org/blog/2022/08/new-config-system-part-3/#using-flat-config-with-the-eslint-class
   // https://github.com/eslint/eslint/blob/0a9c43339a4adef24ef83034d0b078dd279cc977/lib/eslint/flat-eslint.js#L66-L88
@@ -44,7 +43,7 @@ declare module 'eslint/use-at-your-own-risk' {
     cacheStrategy?: 'content' | 'metadata' | undefined;
   }
 
-  class FlatESLint {
+  export class FlatESLint {
     constructor(options?: FlatESLintOptions);
 
     /**
@@ -139,10 +138,5 @@ declare module 'eslint/use-at-your-own-risk' {
     async isPathIgnored(filePath: string): Promise<boolean>;
   }
 
-  async function shouldUseFlatConfig(): Promise<boolean>;
-
-  module.exports = {
-    FlatESLint,
-    shouldUseFlatConfig,
-  };
+  export { shouldUseFlatConfig, ESLint as LegacyESLint };
 }
