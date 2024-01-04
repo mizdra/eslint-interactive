@@ -3,6 +3,7 @@ import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import dedent from 'dedent';
 import { ESLint, Linter } from 'eslint';
+import { LegacyESLint } from 'eslint/use-at-your-own-risk';
 import { resolve } from 'import-meta-resolve';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { Core } from './core.js';
@@ -181,7 +182,7 @@ describe('Core', () => {
   });
   test('printSummaryOfResults', async () => {
     const results = await core.lint();
-    vi.spyOn(ESLint.prototype, 'getRulesMetaForResults').mockImplementationOnce(() => {
+    vi.spyOn(LegacyESLint.prototype, 'getRulesMetaForResults').mockImplementationOnce(() => {
       return {
         'prefer-const': {
           docs: {
