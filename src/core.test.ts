@@ -3,11 +3,13 @@ import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import dedent from 'dedent';
 import { ESLint, Linter } from 'eslint';
-import { LegacyESLint } from 'eslint/use-at-your-own-risk';
+import eslintPkg from 'eslint/use-at-your-own-risk';
 import { resolve } from 'import-meta-resolve';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { Core } from './core.js';
 import { createIFF } from './test-util/fixtures.js';
+
+const { LegacyESLint } = eslintPkg;
 
 const rootDir = join(dirname(fileURLToPath(import.meta.url)), '..');
 

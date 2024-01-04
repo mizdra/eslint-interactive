@@ -1,7 +1,7 @@
 import { writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { ESLint, Linter, Rule } from 'eslint';
-import { LegacyESLint } from 'eslint/use-at-your-own-risk';
+import eslintPkg, { LegacyESLint as LegacyESLintNS } from 'eslint/use-at-your-own-risk';
 import isInstalledGlobally from 'is-installed-globally';
 import { DescriptionPosition } from './cli/prompt.js';
 import { Config, NormalizedConfig, normalizeConfig } from './config.js';
@@ -20,12 +20,14 @@ import {
 import { format } from './formatter/index.js';
 import { filterResultsByRuleId } from './util/eslint.js';
 
+const { LegacyESLint } = eslintPkg;
+
 /**
  * Generate results to undo.
  * @param resultsOfLint The results of lint.
  * @returns The results to undo.
  */
-function generateResultsToUndo(resultsOfLint: LegacyESLint.LintResult[]): LegacyESLint.LintResult[] {
+function generateResultsToUndo(resultsOfLint: LegacyESLintNS.LintResult[]): LegacyESLintNS.LintResult[] {
   return resultsOfLint.map((resultOfLint) => {
     // NOTE: THIS IS HACK.
     return { ...resultOfLint, output: resultOfLint.source };
@@ -40,7 +42,7 @@ export type Undo = () => Promise<void>;
  */
 export class Core {
   readonly config: NormalizedConfig;
-  readonly eslint: LegacyESLint;
+  readonly eslint: LegacyESLintNS;
 
   constructor(config: Config) {
     this.config = normalizeConfig(config);
@@ -77,7 +79,7 @@ export class Core {
    * @param results The lint results of the project to print summary
    * @param ruleIds The rule ids to print details
    */
-  async formatResultDetails(results: LegacyESLint.LintResult[], ruleIds: (string | null)[]): Promise<string> {
+  async formatResultDetails(results: LegacyESLintNS.LintResult[], ruleIds: (string | null)[]): Promise<string> {
     const formatterName = this.config.formatterName;
 
     // When eslint-interactive is installed globally, eslint-formatter-codeframe will also be installed globally.
@@ -95,7 +97,7 @@ export class Core {
    * Run `eslint --fix`.
    * @param ruleIds The rule ids to fix
    */
-  async applyAutoFixes(results: LegacyESLint.LintResult[], ruleIds: string[]): Promise<Undo> {
+  async applyAutoFixes(results: LegacyESLintNS.LintResult[], ruleIds: string[]): Promise<Undo> {
     return this.fix(results, ruleIds, (context) => createFixToApplyAutoFixes(context, {}));
   }
 
@@ -107,7 +109,7 @@ export class Core {
    * @param descriptionPosition The position of the description
    */
   async disablePerLine(
-    results: LegacyESLint.LintResult[],
+    results: LegacyESLintNS.LintResult[],
     ruleIds: string[],
     description?: string,
     descriptionPosition?: DescriptionPosition,
@@ -125,7 +127,7 @@ export class Core {
    * @param descriptionPosition The position of the description
    */
   async disablePerFile(
-    results: LegacyESLint.LintResult[],
+    results: LegacyESLintNS.LintResult[],
     ruleIds: string[],
     description?: string,
     descriptionPosition?: DescriptionPosition,
@@ -142,7 +144,7 @@ export class Core {
    * @param description The comment explaining the reason for converting
    */
   async convertErrorToWarningPerFile(
-    results: LegacyESLint.LintResult[],
+    results: LegacyESLintNS.LintResult[],
     ruleIds: string[],
     description?: string,
   ): Promise<Undo> {
@@ -156,7 +158,7 @@ export class Core {
    * @param filter The script to filter suggestions
    */
   async applySuggestions(
-    results: LegacyESLint.LintResult[],
+    results: LegacyESLintNS.LintResult[],
     ruleIds: string[],
     filter: SuggestionFilter,
   ): Promise<Undo> {
@@ -170,7 +172,7 @@ export class Core {
    * @param fixableMaker The function to make `Linter.LintMessage` forcibly fixable.
    */
   async makeFixableAndFix(
-    results: LegacyESLint.LintResult[],
+    results: LegacyESLintNS.LintResult[],
     ruleIds: string[],
     fixableMaker: FixableMaker,
   ): Promise<Undo> {
@@ -182,7 +184,7 @@ export class Core {
    * @param fix The fix information to do.
    */
   private async fix(
-    resultsOfLint: LegacyESLint.LintResult[],
+    resultsOfLint: LegacyESLintNS.LintResult[],
     ruleIds: string[],
     fixCreator: (context: FixContext) => Rule.Fix[],
   ): Promise<Undo> {

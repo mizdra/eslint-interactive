@@ -1,4 +1,4 @@
-import { LegacyESLint } from 'eslint/use-at-your-own-risk';
+import type { LegacyESLint } from 'eslint/use-at-your-own-risk';
 import { cliOptionsDefaults, ParsedCLIOptions } from './cli/parse-argv.js';
 import { DeepPartial } from './util/type-check.js';
 type LegacyESLintOptions = { type: 'eslintrc' } & Pick<
