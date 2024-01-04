@@ -1,10 +1,5 @@
 export {};
 
-declare module 'eslint' {
-  async function shouldUseFlatConfig(): Promise<boolean>;
-  export { shouldUseFlatConfig };
-}
-
 declare module 'eslint/use-at-your-own-risk' {
   import { ESLint, Linter, shouldUseFlatConfig } from 'eslint';
 

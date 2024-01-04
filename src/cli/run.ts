@@ -10,7 +10,9 @@ import { parseArgv } from '../cli/parse-argv.js';
 import { translateCLIOptions } from '../config.js';
 import { SerializableCore } from '../core-worker.js';
 import { lint, selectAction, selectRuleIds, checkResults, NextScene } from '../scene/index.js';
-import { shouldUseFlatConfig } from '../eslint/eslint.js';
+import eslintPkg from 'eslint/use-at-your-own-risk';
+
+const { shouldUseFlatConfig } = eslintPkg;
 
 export type Options = {
   argv: string[];
