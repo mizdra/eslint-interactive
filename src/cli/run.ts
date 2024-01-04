@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url';
 import { Worker } from 'node:worker_threads';
 import { wrap } from 'comlink';
 import nodeEndpoint from 'comlink/dist/esm/node-adapter.mjs';
+import eslintPkg from 'eslint/use-at-your-own-risk';
 import isInstalledGlobally from 'is-installed-globally';
 import terminalLink from 'terminal-link';
 import { warn } from '../cli/log.js';
@@ -10,7 +11,6 @@ import { parseArgv } from '../cli/parse-argv.js';
 import { translateCLIOptions } from '../config.js';
 import { SerializableCore } from '../core-worker.js';
 import { lint, selectAction, selectRuleIds, checkResults, NextScene } from '../scene/index.js';
-import eslintPkg from 'eslint/use-at-your-own-risk';
 
 const { shouldUseFlatConfig } = eslintPkg;
 
