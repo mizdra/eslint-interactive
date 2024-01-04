@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1704355101411,
+  "lastUpdate": 1704387085166,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -1721,6 +1721,35 @@ window.BENCHMARK_DATA = {
           {
             "name": "cachegrind-benchmarking",
             "value": 8264050407,
+            "unit": "instructions"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "pp.mizdra@gmail.com",
+            "name": "mizdra",
+            "username": "mizdra"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "7784fa15ae358da0139d44ae0f71225598d8b2db",
+          "message": "Merge pull request #341 from mizdra/support-eslint-v9-alpha\n\nSupport ESLint v9 (Excluding flat config support)",
+          "timestamp": "2024-01-05T01:50:11+09:00",
+          "tree_id": "1da321e627434a547995e83d091fab56bd614c94",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/7784fa15ae358da0139d44ae0f71225598d8b2db"
+        },
+        "date": 1704387084491,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "cachegrind-benchmarking",
+            "value": 8264588514,
             "unit": "instructions"
           }
         ]
