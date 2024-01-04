@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1704267448161,
+  "lastUpdate": 1704350020657,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -1663,6 +1663,35 @@ window.BENCHMARK_DATA = {
           {
             "name": "cachegrind-benchmarking",
             "value": 8262785717,
+            "unit": "instructions"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "pp.mizdra@gmail.com",
+            "name": "mizdra",
+            "username": "mizdra"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "60db0e33f2ac896c12b6490199ccb1bb1f486c50",
+          "message": "Merge pull request #339 from mizdra/drop-eslint-v7\n\nDrop ESLint v7",
+          "timestamp": "2024-01-04T15:32:28+09:00",
+          "tree_id": "4c9a3f28422fb219ff0a504f82dc68110de73221",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/60db0e33f2ac896c12b6490199ccb1bb1f486c50"
+        },
+        "date": 1704350020204,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "cachegrind-benchmarking",
+            "value": 8281592351,
             "unit": "instructions"
           }
         ]
