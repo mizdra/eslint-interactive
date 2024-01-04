@@ -38,6 +38,12 @@ It also supports the following actions in addition to `eslint --fix`. All action
 - Apply suggestions
 - Make forcibly fixable and run `eslint --fix`
 
+## Requirements
+
+- Node.js `>=18.0.0`
+- ESLint `>=8.45.0`
+  - If you use ESLint `<8.45.0`, use `eslint-interactive@^10`.
+
 ## Installation
 
 :memo: NOTE: The globally installed `eslint-interactive` is **not officially supported**. It is recommended to install `eslint-interactive` locally. See [FAQ](#why-is-global-installation-not-officially-supported).
