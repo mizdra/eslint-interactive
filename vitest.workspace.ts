@@ -1,7 +1,7 @@
-import { defineConfig, configDefaults } from 'vitest/config';
+import { defineConfig, defineWorkspace, configDefaults } from 'vitest/config';
 import GithubActionsReporter from 'vitest-github-actions-reporter';
 
-export const baseConfig = defineConfig({
+const baseConfig = defineConfig({
   test: {
     reporters: process.env['GITHUB_ACTIONS'] ? ['default', new GithubActionsReporter()] : 'default',
     cache: {
@@ -16,3 +16,23 @@ export const baseConfig = defineConfig({
     watchExclude: [...configDefaults.watchExclude, 'fixtures-tmp/**', 'tmp/**', 'benchmark/fixtures/**'],
   },
 });
+
+// eslint-disable-next-line import/no-default-export
+export default defineWorkspace([
+  {
+    ...baseConfig,
+    test: {
+      ...baseConfig.test,
+      name: 'unit',
+      include: ['src/**/*.test.ts'],
+    },
+  },
+  {
+    ...baseConfig,
+    test: {
+      ...baseConfig.test,
+      name: 'e2e',
+      include: ['e2e-test/**/*.test.ts'],
+    },
+  },
+]);
