@@ -36,7 +36,7 @@ jobs:
 
       # ref: https://stackoverflow.com/a/59277514
       - name: Cache valgrind
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: cache-valgrind
         with:
           path: '~/valgrind'
