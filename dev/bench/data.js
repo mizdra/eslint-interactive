@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1711788602527,
+  "lastUpdate": 1711805982473,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -1833,6 +1833,35 @@ window.BENCHMARK_DATA = {
           {
             "name": "cachegrind-benchmarking",
             "value": 8273258956,
+            "unit": "instructions"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "pp.mizdra@gmail.com",
+            "name": "mizdra",
+            "username": "mizdra"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "14f18832c2008a736076965fe76912b90908ed4a",
+          "message": "Merge pull request #349 from mizdra/support-flat-config-2024-3\n\nSupport flat config",
+          "timestamp": "2024-03-30T22:38:25+09:00",
+          "tree_id": "f48b0cf08aaf8834bbf1cb17b758ac49db9bde83",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/14f18832c2008a736076965fe76912b90908ed4a"
+        },
+        "date": 1711805981456,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "cachegrind-benchmarking",
+            "value": 8191374405,
             "unit": "instructions"
           }
         ]
