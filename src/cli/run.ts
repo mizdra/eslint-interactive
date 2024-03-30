@@ -31,10 +31,7 @@ export async function run(options: Options) {
   }
   const parsedCLIOptions = parseArgv(options.argv);
   const usingFlatConfig = await shouldUseFlatConfig();
-  if (usingFlatConfig) {
-    throw new Error('Flat Config is not yet supported.'); // TODO: support flat config
-  }
-  const config = translateCLIOptions(parsedCLIOptions, 'eslintrc'); // TODO: support flat config
+  const config = translateCLIOptions(parsedCLIOptions, usingFlatConfig ? 'flat' : 'eslintrc');
 
   // Directly executing the Core API will hog the main thread and halt the spinner.
   // So we wrap it with comlink and run it on the Worker.

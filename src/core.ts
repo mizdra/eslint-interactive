@@ -20,7 +20,7 @@ import {
 import { format } from './formatter/index.js';
 import { filterResultsByRuleId } from './util/eslint.js';
 
-const { LegacyESLint } = eslintPkg;
+const { LegacyESLint, FlatESLint } = eslintPkg;
 
 /**
  * Generate results to undo.
@@ -46,12 +46,13 @@ export class Core {
 
   constructor(config: Config) {
     this.config = normalizeConfig(config);
-    const { type, ...eslintOptions } = this.config.eslintOptions;
-    if (type === 'eslintrc') {
-      this.eslint = new LegacyESLint(eslintOptions);
+    const eslintOptions = this.config.eslintOptions;
+    if (eslintOptions.type === 'eslintrc') {
+      const { type, ...rest } = eslintOptions;
+      this.eslint = new LegacyESLint(rest);
     } else {
-      // TODO: support flat config
-      throw new Error(`Flat Config is not yet supported.`);
+      const { type, ...rest } = eslintOptions;
+      this.eslint = new FlatESLint(rest);
     }
   }
 
@@ -190,13 +191,17 @@ export class Core {
   ): Promise<Undo> {
     // NOTE: Extract only necessary results and files for performance
     const filteredResultsOfLint = filterResultsByRuleId(resultsOfLint, ruleIds);
-    const linter = new Linter({ configType: 'eslintrc' });
+    const linter = new Linter({ configType: this.config.eslintOptions.type });
 
     // eslint-disable-next-line prefer-const
     for (let { filePath, source } of filteredResultsOfLint) {
       if (!source) throw new Error('Source code is required to apply fixes.');
-      // eslint-disable-next-line no-await-in-loop
-      const config: Linter.Config = await this.eslint.calculateConfigForFile(filePath);
+      const config: Linter.Config | Linter.FlatConfig[] =
+        this.config.eslintOptions.type === 'eslintrc'
+          ? // eslint-disable-next-line no-await-in-loop
+            await this.eslint.calculateConfigForFile(filePath)
+          : // eslint-disable-next-line no-await-in-loop
+            [{ ...(await this.eslint.calculateConfigForFile(filePath)), files: ['**/*.*', '**/*'] }];
 
       const fixedResult = verifyAndFix(linter, source, config, filePath, ruleIds, fixCreator);
 

@@ -1,4 +1,4 @@
-import type { LegacyESLint } from 'eslint/use-at-your-own-risk';
+import type { LegacyESLint, FlatESLint } from 'eslint/use-at-your-own-risk';
 import { cliOptionsDefaults, ParsedCLIOptions } from './cli/parse-argv.js';
 import { DeepPartial } from './util/type-check.js';
 type LegacyESLintOptions = { type: 'eslintrc' } & Pick<
@@ -14,8 +14,12 @@ type LegacyESLintOptions = { type: 'eslintrc' } & Pick<
   | 'cwd'
   | 'resolvePluginsRelativeTo'
 >;
+type FlatESLintOptions = { type: 'flat' } & Pick<
+  FlatESLint.Options,
+  'overrideConfigFile' | 'cache' | 'cacheLocation' | 'overrideConfig' | 'cwd'
+>;
 
-export type ESLintOptions = LegacyESLintOptions; // TODO: support flat config
+export type ESLintOptions = LegacyESLintOptions | FlatESLintOptions;
 
 /** The config of eslint-interactive */
 export type Config = {
@@ -47,7 +51,17 @@ export function translateCLIOptions(options: ParsedCLIOptions, eslintOptionsType
       },
     };
   } else if (eslintOptionsType === 'flat') {
-    throw new Error('Flat config is not supported yet');
+    return {
+      patterns: options.patterns,
+      formatterName: options.formatterName,
+      quiet: options.quiet,
+      eslintOptions: {
+        type: 'flat',
+        overrideConfigFile: options.overrideConfigFile,
+        cache: options.cache,
+        cacheLocation: options.cacheLocation,
+      },
+    };
   } else {
     throw new Error(`Unexpected configType: ${String(eslintOptionsType)}`);
   }
@@ -81,12 +95,9 @@ export type NormalizedConfig = {
 
 export function normalizeConfig(config: Config): NormalizedConfig {
   const cwd = config.cwd ?? configDefaults.cwd;
-  return {
-    patterns: config.patterns,
-    formatterName: config.formatterName ?? configDefaults.formatterName,
-    quiet: config.quiet ?? configDefaults.quiet,
-    cwd,
-    eslintOptions: {
+  let eslintOptions: NormalizedConfig['eslintOptions'];
+  if (config.eslintOptions.type === 'eslintrc') {
+    eslintOptions = {
       type: 'eslintrc',
       useEslintrc: config.eslintOptions.useEslintrc ?? configDefaults.eslintOptions.useEslintrc,
       overrideConfigFile: config.eslintOptions.overrideConfigFile ?? configDefaults.eslintOptions.overrideConfigFile,
@@ -99,6 +110,22 @@ export function normalizeConfig(config: Config): NormalizedConfig {
       cwd,
       resolvePluginsRelativeTo:
         config.eslintOptions.resolvePluginsRelativeTo ?? configDefaults.eslintOptions.resolvePluginsRelativeTo,
-    },
+    };
+  } else {
+    eslintOptions = {
+      type: 'flat',
+      overrideConfigFile: config.eslintOptions.overrideConfigFile ?? configDefaults.eslintOptions.overrideConfigFile,
+      cache: config.eslintOptions.cache ?? configDefaults.eslintOptions.cache,
+      cacheLocation: config.eslintOptions.cacheLocation ?? configDefaults.eslintOptions.cacheLocation,
+      overrideConfig: config.eslintOptions.overrideConfig ?? configDefaults.eslintOptions.overrideConfig,
+      cwd,
+    };
+  }
+  return {
+    patterns: config.patterns,
+    formatterName: config.formatterName ?? configDefaults.formatterName,
+    quiet: config.quiet ?? configDefaults.quiet,
+    cwd,
+    eslintOptions,
   };
 }
