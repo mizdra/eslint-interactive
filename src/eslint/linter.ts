@@ -27,7 +27,7 @@ type FixedResult = {
 export function verifyAndFix(
   linter: Linter,
   text: string,
-  config: Linter.Config,
+  config: Linter.Config | Linter.FlatConfig[],
   filePath: string,
   ruleIds: string[],
   fixCreator: (context: FixContext) => Rule.Fix[],

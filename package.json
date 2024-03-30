@@ -44,7 +44,7 @@
     "@types/node": "^20.8.10",
     "@types/yargs": "^17.0.29",
     "dedent": "^1.5.1",
-    "eslint": "^8.53.0",
+    "eslint": "^8.57.0",
     "fs-extra": "^11.1.1",
     "import-meta-resolve": "^4.0.0",
     "npm-run-all": "^4.1.5",
