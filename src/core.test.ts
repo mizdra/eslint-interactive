@@ -272,4 +272,44 @@ describe('Core', () => {
     await undo();
     expect(await readFile(iff.paths['src/no-unused-vars.js'], 'utf-8')).toEqual(original);
   });
+  test('flat config', async () => {
+    const iff = await createIFF({
+      'src/index.js': 'let a = 1;',
+      'src/index.mjs': 'let a = 1;',
+      'src/index.jsx': 'let a = 1;',
+      'src/.index.js': 'let a = 1;',
+      'eslint.config.js': dedent`
+        export default [
+          {
+            files: ['**/*.js', '**/*.mjs', '**/*.jsx'],
+            languageOptions: {
+              sourceType: 'module',
+              ecmaVersion: 2020,
+              parserOptions: {
+                ecmaFeatures: {
+                  jsx: true,
+                },
+              },
+            },
+            rules: { 'prefer-const': 'error' },
+          },
+        ];
+      `,
+      'package.json': '{ "type": "module" }',
+    });
+    const core = new Core({
+      patterns: ['src'],
+      cwd: iff.rootDir,
+      eslintOptions: {
+        type: 'flat',
+      },
+    });
+    const results = await core.lint();
+    expect(normalizeResults(results, iff.rootDir)).toMatchSnapshot();
+    await core.applyAutoFixes(results, ['prefer-const']);
+    expect(await readFile(iff.paths['src/index.js'], 'utf-8')).toMatchSnapshot();
+    expect(await readFile(iff.paths['src/index.mjs'], 'utf-8')).toMatchSnapshot();
+    expect(await readFile(iff.paths['src/index.jsx'], 'utf-8')).toMatchSnapshot();
+    expect(await readFile(iff.paths['src/.index.js'], 'utf-8')).toMatchSnapshot();
+  });
 });

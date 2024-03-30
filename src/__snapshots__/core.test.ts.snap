@@ -69,6 +69,63 @@ exports[`Core > disablePerLine 1`] = `
 let a = 1;"
 `;
 
+exports[`Core > flat config 1`] = `
+[
+  {
+    "errorCount": 1,
+    "filePath": "<fixture>/src/.index.js",
+    "messages": [
+      {
+        "ruleId": "prefer-const",
+        "severity": 2,
+      },
+    ],
+    "warningCount": 0,
+  },
+  {
+    "errorCount": 1,
+    "filePath": "<fixture>/src/index.js",
+    "messages": [
+      {
+        "ruleId": "prefer-const",
+        "severity": 2,
+      },
+    ],
+    "warningCount": 0,
+  },
+  {
+    "errorCount": 1,
+    "filePath": "<fixture>/src/index.jsx",
+    "messages": [
+      {
+        "ruleId": "prefer-const",
+        "severity": 2,
+      },
+    ],
+    "warningCount": 0,
+  },
+  {
+    "errorCount": 1,
+    "filePath": "<fixture>/src/index.mjs",
+    "messages": [
+      {
+        "ruleId": "prefer-const",
+        "severity": 2,
+      },
+    ],
+    "warningCount": 0,
+  },
+]
+`;
+
+exports[`Core > flat config 2`] = `"const a = 1;"`;
+
+exports[`Core > flat config 3`] = `"const a = 1;"`;
+
+exports[`Core > flat config 4`] = `"const a = 1;"`;
+
+exports[`Core > flat config 5`] = `"const a = 1;"`;
+
 exports[`Core > lint > returns lint results 1`] = `
 [
   {
