@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1707706073638,
+  "lastUpdate": 1711788602527,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -1804,6 +1804,35 @@ window.BENCHMARK_DATA = {
           {
             "name": "cachegrind-benchmarking",
             "value": 8266098682,
+            "unit": "instructions"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "pp.mizdra@gmail.com",
+            "name": "mizdra",
+            "username": "mizdra"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "8cef9dd3552601e8337c421f9fe3073e37907137",
+          "message": "Merge pull request #348 from mizdra/upgrade-eslint-dev-deps\n\nUpgrade eslint from 9.0.0-alpha.0 to 9.0.0-rc.0",
+          "timestamp": "2024-03-30T17:48:41+09:00",
+          "tree_id": "030973bfeb73f090ad8a9c9e8038eb25a25492c6",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/8cef9dd3552601e8337c421f9fe3073e37907137"
+        },
+        "date": 1711788601864,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "cachegrind-benchmarking",
+            "value": 8273258956,
             "unit": "instructions"
           }
         ]
