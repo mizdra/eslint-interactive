@@ -36,7 +36,7 @@ test('can print error with eslint-formatter-codeframe', async () => {
     ],
     { shell: true, stdio: 'pipe', cwd: __dirname, env: { ...process.env, ESLINT_USE_FLAT_CONFIG: 'false' } },
   );
-  const streamWatcher = createStreamWatcher(child.stdout, { debug: true });
+  const streamWatcher = createStreamWatcher(child.stdout, { debug: false });
 
   await streamWatcher.match(/Which rules would you like to apply action\?/);
   child.stdin.write(' '); // Select `semi` rule

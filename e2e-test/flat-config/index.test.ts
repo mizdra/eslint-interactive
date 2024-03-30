@@ -46,7 +46,7 @@ test('fix problems with flat config', async () => {
     ],
     { shell: true, stdio: 'pipe', cwd: iff.rootDir, env: { ...process.env, ESLINT_USE_FLAT_CONFIG: 'true' } },
   );
-  const streamWatcher = createStreamWatcher(child.stdout, { debug: true });
+  const streamWatcher = createStreamWatcher(child.stdout, { debug: false });
 
   await streamWatcher.match(/Which rules would you like to apply action\?/);
   child.stdin.write(' '); // Select `prefer-const` rule
