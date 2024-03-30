@@ -200,7 +200,8 @@ export class Core {
         this.config.eslintOptions.type === 'eslintrc'
           ? // eslint-disable-next-line no-await-in-loop
             await this.eslint.calculateConfigForFile(filePath)
-          : // eslint-disable-next-line no-await-in-loop
+          : // NOTE: For some reason, if files is not specified, it will not match .jsx
+            // eslint-disable-next-line no-await-in-loop
             [{ ...(await this.eslint.calculateConfigForFile(filePath)), files: ['**/*.*', '**/*'] }];
 
       const fixedResult = verifyAndFix(linter, source, config, filePath, ruleIds, fixCreator);
