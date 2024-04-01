@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1711806029341,
+  "lastUpdate": 1711937370569,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -1891,6 +1891,35 @@ window.BENCHMARK_DATA = {
           {
             "name": "cachegrind-benchmarking",
             "value": 8195255084,
+            "unit": "instructions"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "pp.mizdra@gmail.com",
+            "name": "mizdra",
+            "username": "mizdra"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "6de5a170c97e51de186e4a4815838a9b5b719515",
+          "message": "Merge pull request #351 from mizdra/fix-build-config\n\nFix missing dist directory",
+          "timestamp": "2024-04-01T11:08:19+09:00",
+          "tree_id": "fcac379699cde8b9e5d75c9bb2cbb3c033a70416",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/6de5a170c97e51de186e4a4815838a9b5b719515"
+        },
+        "date": 1711937370097,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "cachegrind-benchmarking",
+            "value": 8193195320,
             "unit": "instructions"
           }
         ]
