@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1711937370569,
+  "lastUpdate": 1711937456496,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -1920,6 +1920,35 @@ window.BENCHMARK_DATA = {
           {
             "name": "cachegrind-benchmarking",
             "value": 8193195320,
+            "unit": "instructions"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "pp.mizdra@gmail.com",
+            "name": "mizdra",
+            "username": "mizdra"
+          },
+          "committer": {
+            "email": "pp.mizdra@gmail.com",
+            "name": "mizdra",
+            "username": "mizdra"
+          },
+          "distinct": true,
+          "id": "a5ab787c4ccc780a2999b88d59d719cd6c1e651d",
+          "message": "11.0.1",
+          "timestamp": "2024-04-01T11:09:17+09:00",
+          "tree_id": "72629cef1ea8990aed94b3499e61d3ca145fc848",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/a5ab787c4ccc780a2999b88d59d719cd6c1e651d"
+        },
+        "date": 1711937456068,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "cachegrind-benchmarking",
+            "value": 8195078840,
             "unit": "instructions"
           }
         ]
