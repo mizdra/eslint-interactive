@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1711937456496,
+  "lastUpdate": 1715440355358,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -1949,6 +1949,35 @@ window.BENCHMARK_DATA = {
           {
             "name": "cachegrind-benchmarking",
             "value": 8195078840,
+            "unit": "instructions"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "pp.mizdra@gmail.com",
+            "name": "mizdra",
+            "username": "mizdra"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "c4f0f907f90c8ce6ea178a59e1bf8b5e72fab19f",
+          "message": "Merge pull request #356 from mizdra/fix-peer-deps\n\nFix peer deps range",
+          "timestamp": "2024-05-12T00:11:22+09:00",
+          "tree_id": "3030e994daa5d48eda4cf716a93b9670e8b0a30a",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/c4f0f907f90c8ce6ea178a59e1bf8b5e72fab19f"
+        },
+        "date": 1715440354703,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "cachegrind-benchmarking",
+            "value": 8277217467,
             "unit": "instructions"
           }
         ]
