@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1715440585652,
+  "lastUpdate": 1721751455670,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -2007,6 +2007,35 @@ window.BENCHMARK_DATA = {
           {
             "name": "cachegrind-benchmarking",
             "value": 8192784238,
+            "unit": "instructions"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "pp.mizdra@gmail.com",
+            "name": "mizdra",
+            "username": "mizdra"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "94487468e8917c76f5e0e24685a2708799c3642d",
+          "message": "Merge pull request #343 from mizdra/renovate/npm-run-all-replacement\n\nReplace dependency npm-run-all with npm-run-all2 ^5.0.0",
+          "timestamp": "2024-07-24T01:16:08+09:00",
+          "tree_id": "49428916d6dea7a0150de2dcd6ff784fd34063dd",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/94487468e8917c76f5e0e24685a2708799c3642d"
+        },
+        "date": 1721751454685,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "cachegrind-benchmarking",
+            "value": 8187810057,
             "unit": "instructions"
           }
         ]
