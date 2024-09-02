@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1721751455670,
+  "lastUpdate": 1725293834470,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -2036,6 +2036,35 @@ window.BENCHMARK_DATA = {
           {
             "name": "cachegrind-benchmarking",
             "value": 8187810057,
+            "unit": "instructions"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "pp.mizdra@gmail.com",
+            "name": "mizdra",
+            "username": "mizdra"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "a32d53fe04a5739594a41f50ea7692b6582fabfb",
+          "message": "Merge pull request #362 from mizdra/fix-unknown-language-key-in-config\n\nFix `Config (unnamed): Key \"language\"`",
+          "timestamp": "2024-09-03T01:15:55+09:00",
+          "tree_id": "767e289c0e61cd2fe24f39872b071503dfd646cd",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/a32d53fe04a5739594a41f50ea7692b6582fabfb"
+        },
+        "date": 1725293834067,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "cachegrind-benchmarking",
+            "value": 8274963991,
             "unit": "instructions"
           }
         ]
