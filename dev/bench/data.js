@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1725293834470,
+  "lastUpdate": 1725294193528,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -2065,6 +2065,35 @@ window.BENCHMARK_DATA = {
           {
             "name": "cachegrind-benchmarking",
             "value": 8274963991,
+            "unit": "instructions"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "pp.mizdra@gmail.com",
+            "name": "mizdra",
+            "username": "mizdra"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "dc7c960064d3b5c17f88f887a8edd5669130412d",
+          "message": "Merge pull request #363 from mizdra/disable-source-maps\n\nRemove source map in production as it does not make debugging easier",
+          "timestamp": "2024-09-03T01:21:56+09:00",
+          "tree_id": "0021d425553dddfdf12eb24986b4e3f3f1739d74",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/dc7c960064d3b5c17f88f887a8edd5669130412d"
+        },
+        "date": 1725294192568,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "cachegrind-benchmarking",
+            "value": 8275319431,
             "unit": "instructions"
           }
         ]
