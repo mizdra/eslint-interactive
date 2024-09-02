@@ -202,7 +202,7 @@ export class Core {
             await this.eslint.calculateConfigForFile(filePath)
           : // NOTE: For some reason, if files is not specified, it will not match .jsx
             // eslint-disable-next-line no-await-in-loop
-            [{ ...(await this.eslint.calculateConfigForFile(filePath)), files: ['**/*.*', '**/*'] }];
+            [{ ...(await calculateConfigForFile(this.eslint, filePath)), files: ['**/*.*', '**/*'] }];
 
       const fixedResult = verifyAndFix(linter, source, config, filePath, ruleIds, fixCreator);
 
@@ -218,4 +218,12 @@ export class Core {
       await LegacyESLint.outputFixes(resultsToUndo);
     };
   }
+}
+
+async function calculateConfigForFile(eslint: ESLint, filePath: string): Promise<Linter.FlatConfig> {
+  const config = await eslint.calculateConfigForFile(filePath);
+  // `language` property has been added to the object returned by `ESLint.prototype.calculateConfigForFile(filePath)` since ESLint v9.5.0.
+  // But, `Linter.prototype.verify()` does not accept `language` option. So, remove it.
+  delete config['language'];
+  return config;
 }
