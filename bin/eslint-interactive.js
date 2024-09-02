@@ -12,12 +12,6 @@ const scriptFile = resolve(dir, '_eslint-interactive.js');
 
 spawnSync(
   'node',
-  [
-    '--enable-source-maps',
-    '--unhandled-rejections=strict',
-    '--experimental-import-meta-resolve',
-    scriptFile,
-    ...process.argv.slice(2),
-  ],
+  ['--unhandled-rejections=strict', '--experimental-import-meta-resolve', scriptFile, ...process.argv.slice(2)],
   { stdio: 'inherit' },
 );
