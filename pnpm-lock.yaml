@@ -4,11 +4,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-patchedDependencies:
-  '@types/eslint@8.44.6':
-    hash: qh2z4gts23iqxgbr3skltsgoyi
-    path: patches/@types__eslint@8.44.6.patch
-
 importers:
 
   .:
@@ -69,14 +64,14 @@ importers:
         specifier: ^2.0.2
         version: 2.0.2
       '@types/eslint':
-        specifier: ^8.44.6
-        version: 8.44.6(patch_hash=qh2z4gts23iqxgbr3skltsgoyi)
+        specifier: ^9.6.1
+        version: 9.6.1
       '@types/estraverse':
-        specifier: ^5.1.6
-        version: 5.1.6
+        specifier: ^5.1.7
+        version: 5.1.7
       '@types/estree':
-        specifier: ^1.0.5
-        version: 1.0.5
+        specifier: ^1.0.6
+        version: 1.0.6
       '@types/fs-extra':
         specifier: ^11.0.4
         version: 11.0.4
@@ -631,22 +626,21 @@ packages:
     resolution: {integrity: sha512-jt4jIsWKvUvuY6adJnQJlb/UR7DdjC8CjHI/OaSQruj2yX9/K6+KOvDt/vD6udqos/FUk5Op66CvYT7TBLYO5Q==}
     dev: true
 
-  /@types/eslint@8.44.6(patch_hash=qh2z4gts23iqxgbr3skltsgoyi):
-    resolution: {integrity: sha512-P6bY56TVmX8y9J87jHNgQh43h6VVU+6H7oN7hgvivV81K2XY8qJZ5vqPy/HdUoVIelii2kChYVzQanlswPWVFw==}
+  /@types/eslint@9.6.1:
+    resolution: {integrity: sha512-FXx2pKgId/WyYo2jXw63kk7/+TY7u7AziEJxJAnSFzHlqTAS3Ync6SvgYAN/k4/PQpnnVuzoMuVnByKK2qp0ag==}
     dependencies:
-      '@types/estree': 1.0.5
+      '@types/estree': 1.0.6
       '@types/json-schema': 7.0.14
     dev: true
-    patched: true
 
-  /@types/estraverse@5.1.6:
-    resolution: {integrity: sha512-IL4TOP+KA2BvqAv4jWQ1HXzIeQ4AecgY8SBgdLMIlkMll8nki/OB1z0LGU/K8y3udZuyBvjOG97j/RE1cgUlCA==}
+  /@types/estraverse@5.1.7:
+    resolution: {integrity: sha512-JRVtdKYZz7VkNp7hMC/WKoiZ8DS3byw20ZGoMZ1R8eBrBPIY7iBaDAS1zcrnXQCwK44G4vbXkimeU7R0VLG8UQ==}
     dependencies:
-      '@types/estree': 1.0.5
+      '@types/estree': 1.0.6
     dev: true
 
-  /@types/estree@1.0.5:
-    resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}
+  /@types/estree@1.0.6:
+    resolution: {integrity: sha512-AYnb1nQyY49te+VRAVgmzfcgjYS91mY5P0TKUDCLEM+gNnA+3T6rWITXRLYCpahpqSQbN5cE+gHpnPyXjHWxcw==}
     dev: true
 
   /@types/fs-extra@11.0.4:
