@@ -1,7 +1,8 @@
 import { Linter, Rule } from 'eslint';
+import { LegacyESLint } from 'eslint/use-at-your-own-risk';
 import { verifyAndFix } from '../eslint/linter.js';
 import { FixContext } from '../fix/index.js';
-import { preferAdditionShorthandRule } from './prefer-addition-shorthand-rule.js';
+import { plugin } from '../plugin.js';
 
 const DEFAULT_FILENAME = 'test.js';
 
@@ -33,7 +34,6 @@ type TestResult = string | null;
  * The test utility for the fix.
  */
 export class FixTester<FixArgs> {
-  private linter: Linter;
   private fixCreator: (context: FixContext, args: FixArgs) => Rule.Fix[];
   private defaultFixArgs: FixArgs;
   private defaultLinterConfig: Linter.Config;
@@ -42,8 +42,6 @@ export class FixTester<FixArgs> {
     defaultFixArgs: FixArgs,
     defaultLinterConfig: Linter.Config,
   ) {
-    this.linter = new Linter({ configType: 'eslintrc' });
-    this.linter.defineRule('prefer-addition-shorthand', preferAdditionShorthandRule);
     this.fixCreator = fixCreator;
     this.defaultFixArgs = defaultFixArgs;
     this.defaultLinterConfig = defaultLinterConfig;
@@ -53,20 +51,28 @@ export class FixTester<FixArgs> {
    * @param testCase The test case.
    * @returns The fixed code. If the fix skipped, null is returned.
    */
-  test(testCase: TestCase<FixArgs>): TestResult {
+  async test(testCase: TestCase<FixArgs>): Promise<TestResult> {
     const code = Array.isArray(testCase.code) ? testCase.code.join('\n') : testCase.code;
 
     const filePath = testCase.filename ?? DEFAULT_FILENAME;
 
-    const config: Linter.Config = {
-      ...this.defaultLinterConfig,
-      rules: {
-        ...this.defaultLinterConfig.rules,
-        ...testCase.rules,
-      },
-    };
     const ruleIdsToFix = Object.keys(testCase.rules);
-    const fixedResult = verifyAndFix(this.linter, code, config, filePath, ruleIdsToFix, (context) =>
+    const eslint = new LegacyESLint({
+      useEslintrc: false,
+      plugins: {
+        'eslint-interactive': plugin,
+      },
+      overrideConfig: {
+        ...this.defaultLinterConfig,
+        plugins: ['eslint-interactive', ...(this.defaultLinterConfig.plugins ?? [])],
+        rules: {
+          ...this.defaultLinterConfig.rules,
+          ...testCase.rules,
+          'eslint-interactive/source-code-snatcher': 'error',
+        },
+      },
+    });
+    const fixedResult = await verifyAndFix(eslint, code, filePath, ruleIdsToFix, (context) =>
       this.fixCreator(context, testCase.args ?? this.defaultFixArgs),
     );
 

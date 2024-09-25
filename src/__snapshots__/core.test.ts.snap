@@ -71,15 +71,6 @@ let a = 1;"
 
 exports[`Core > fixes problems with legacy config and 3rd-party plugins 1`] = `
 "// eslint-disable-next-line test/ban-nullish-coalescing-operator
-// eslint-disable-next-line test/ban-nullish-coalescing-operator
-// eslint-disable-next-line test/ban-nullish-coalescing-operator
-// eslint-disable-next-line test/ban-nullish-coalescing-operator
-// eslint-disable-next-line test/ban-nullish-coalescing-operator
-// eslint-disable-next-line test/ban-nullish-coalescing-operator
-// eslint-disable-next-line test/ban-nullish-coalescing-operator
-// eslint-disable-next-line test/ban-nullish-coalescing-operator
-// eslint-disable-next-line test/ban-nullish-coalescing-operator
-// eslint-disable-next-line test/ban-nullish-coalescing-operator
 2 ?? 2;"
 `;
 
