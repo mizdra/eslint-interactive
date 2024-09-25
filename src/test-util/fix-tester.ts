@@ -36,11 +36,11 @@ export class FixTester<FixArgs> {
   private linter: Linter;
   private fixCreator: (context: FixContext, args: FixArgs) => Rule.Fix[];
   private defaultFixArgs: FixArgs;
-  private defaultLinterConfig: Linter.Config;
+  private defaultLinterConfig: Linter.LegacyConfig;
   constructor(
     fixCreator: (context: FixContext, args: FixArgs) => Rule.Fix[],
     defaultFixArgs: FixArgs,
-    defaultLinterConfig: Linter.Config,
+    defaultLinterConfig: Linter.LegacyConfig,
   ) {
     this.linter = new Linter({ configType: 'eslintrc' });
     this.linter.defineRule('prefer-addition-shorthand', preferAdditionShorthandRule);
@@ -58,7 +58,7 @@ export class FixTester<FixArgs> {
 
     const filePath = testCase.filename ?? DEFAULT_FILENAME;
 
-    const config: Linter.Config = {
+    const config: Linter.LegacyConfig = {
       ...this.defaultLinterConfig,
       rules: {
         ...this.defaultLinterConfig.rules,

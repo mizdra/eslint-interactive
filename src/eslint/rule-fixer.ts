@@ -16,8 +16,7 @@
 // Helpers
 // ------------------------------------------------------------------------------
 
-import { AST, Rule } from 'eslint';
-import type { Node } from 'estree';
+import { Rule } from 'eslint';
 
 /**
  * Creates a fix command that inserts text at the specified index in the source text.
@@ -42,7 +41,7 @@ function insertTextAt(index: number, text: string): Rule.Fix {
  */
 
 /** @type {import('eslint').Rule.RuleFixer} */
-const ruleFixer = Object.freeze({
+const ruleFixer: Rule.RuleFixer = {
   /**
    * Creates a fix command that inserts text after the given node or token.
    * The fix is not applied until applyFixes() is called.
@@ -50,7 +49,7 @@ const ruleFixer = Object.freeze({
    * @param {string} text The text to insert.
    * @returns {Object} The fix command.
    */
-  insertTextAfter(nodeOrToken: Node | AST.Token, text: string): Rule.Fix {
+  insertTextAfter(nodeOrToken, text) {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return this.insertTextAfterRange(nodeOrToken.range!, text);
   },
@@ -63,7 +62,7 @@ const ruleFixer = Object.freeze({
    * @param {string} text The text to insert.
    * @returns {Object} The fix command.
    */
-  insertTextAfterRange(range: AST.Range, text: string): Rule.Fix {
+  insertTextAfterRange(range, text) {
     return insertTextAt(range[1], text);
   },
 
@@ -74,7 +73,7 @@ const ruleFixer = Object.freeze({
    * @param {string} text The text to insert.
    * @returns {Object} The fix command.
    */
-  insertTextBefore(nodeOrToken: Node | AST.Token, text: string): Rule.Fix {
+  insertTextBefore(nodeOrToken, text) {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return this.insertTextBeforeRange(nodeOrToken.range!, text);
   },
@@ -87,7 +86,7 @@ const ruleFixer = Object.freeze({
    * @param {string} text The text to insert.
    * @returns {Object} The fix command.
    */
-  insertTextBeforeRange(range: AST.Range, text: string): Rule.Fix {
+  insertTextBeforeRange(range, text) {
     return insertTextAt(range[0], text);
   },
 
@@ -98,7 +97,7 @@ const ruleFixer = Object.freeze({
    * @param {string} text The text to insert.
    * @returns {Object} The fix command.
    */
-  replaceText(nodeOrToken: Node | AST.Token, text: string): Rule.Fix {
+  replaceText(nodeOrToken, text) {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return this.replaceTextRange(nodeOrToken.range!, text);
   },
@@ -111,7 +110,7 @@ const ruleFixer = Object.freeze({
    * @param {string} text The text to insert.
    * @returns {Object} The fix command.
    */
-  replaceTextRange(range: AST.Range, text: string): Rule.Fix {
+  replaceTextRange(range, text) {
     return {
       range,
       text,
@@ -124,7 +123,7 @@ const ruleFixer = Object.freeze({
    * @param {ASTNode|Token} nodeOrToken The node or token to remove.
    * @returns {Object} The fix command.
    */
-  remove(nodeOrToken: Node | AST.Token): Rule.Fix {
+  remove(nodeOrToken) {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return this.removeRange(nodeOrToken.range!);
   },
@@ -136,12 +135,12 @@ const ruleFixer = Object.freeze({
    *      is end of range.
    * @returns {Object} The fix command.
    */
-  removeRange(range: AST.Range): Rule.Fix {
+  removeRange(range) {
     return {
       range,
       text: '',
     };
   },
-});
+};
 
 export { ruleFixer };

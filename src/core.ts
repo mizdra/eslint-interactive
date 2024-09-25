@@ -1,7 +1,7 @@
 import { writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { ESLint, Linter, Rule } from 'eslint';
-import eslintPkg, { LegacyESLint as LegacyESLintNS } from 'eslint/use-at-your-own-risk';
+import eslintPkg from 'eslint/use-at-your-own-risk';
 import isInstalledGlobally from 'is-installed-globally';
 import { DescriptionPosition } from './cli/prompt.js';
 import { Config, NormalizedConfig, normalizeConfig } from './config.js';
@@ -27,7 +27,7 @@ const { LegacyESLint, FlatESLint } = eslintPkg;
  * @param resultsOfLint The results of lint.
  * @returns The results to undo.
  */
-function generateResultsToUndo(resultsOfLint: LegacyESLintNS.LintResult[]): LegacyESLintNS.LintResult[] {
+function generateResultsToUndo(resultsOfLint: ESLint.LintResult[]): ESLint.LintResult[] {
   return resultsOfLint.map((resultOfLint) => {
     // NOTE: THIS IS HACK.
     return { ...resultOfLint, output: resultOfLint.source };
@@ -42,7 +42,7 @@ export type Undo = () => Promise<void>;
  */
 export class Core {
   readonly config: NormalizedConfig;
-  readonly eslint: LegacyESLintNS;
+  readonly eslint: InstanceType<typeof LegacyESLint | typeof FlatESLint>;
 
   constructor(config: Config) {
     this.config = normalizeConfig(config);
@@ -80,7 +80,7 @@ export class Core {
    * @param results The lint results of the project to print summary
    * @param ruleIds The rule ids to print details
    */
-  async formatResultDetails(results: LegacyESLintNS.LintResult[], ruleIds: (string | null)[]): Promise<string> {
+  async formatResultDetails(results: ESLint.LintResult[], ruleIds: (string | null)[]): Promise<string> {
     const formatterName = this.config.formatterName;
 
     // When eslint-interactive is installed globally, eslint-formatter-codeframe will also be installed globally.
@@ -91,14 +91,15 @@ export class Core {
         : formatterName;
 
     const formatter = await this.eslint.loadFormatter(resolvedFormatterNameOrPath);
-    return formatter.format(filterResultsByRuleId(results, ruleIds));
+    const rulesMeta = this.eslint.getRulesMetaForResults(results);
+    return formatter.format(filterResultsByRuleId(results, ruleIds), { rulesMeta, cwd: this.config.cwd });
   }
 
   /**
    * Run `eslint --fix`.
    * @param ruleIds The rule ids to fix
    */
-  async applyAutoFixes(results: LegacyESLintNS.LintResult[], ruleIds: string[]): Promise<Undo> {
+  async applyAutoFixes(results: ESLint.LintResult[], ruleIds: string[]): Promise<Undo> {
     return this.fix(results, ruleIds, (context) => createFixToApplyAutoFixes(context, {}));
   }
 
@@ -110,7 +111,7 @@ export class Core {
    * @param descriptionPosition The position of the description
    */
   async disablePerLine(
-    results: LegacyESLintNS.LintResult[],
+    results: ESLint.LintResult[],
     ruleIds: string[],
     description?: string,
     descriptionPosition?: DescriptionPosition,
@@ -128,7 +129,7 @@ export class Core {
    * @param descriptionPosition The position of the description
    */
   async disablePerFile(
-    results: LegacyESLintNS.LintResult[],
+    results: ESLint.LintResult[],
     ruleIds: string[],
     description?: string,
     descriptionPosition?: DescriptionPosition,
@@ -145,7 +146,7 @@ export class Core {
    * @param description The comment explaining the reason for converting
    */
   async convertErrorToWarningPerFile(
-    results: LegacyESLintNS.LintResult[],
+    results: ESLint.LintResult[],
     ruleIds: string[],
     description?: string,
   ): Promise<Undo> {
@@ -158,11 +159,7 @@ export class Core {
    * @param ruleIds The rule ids to apply suggestions
    * @param filter The script to filter suggestions
    */
-  async applySuggestions(
-    results: LegacyESLintNS.LintResult[],
-    ruleIds: string[],
-    filter: SuggestionFilter,
-  ): Promise<Undo> {
+  async applySuggestions(results: ESLint.LintResult[], ruleIds: string[], filter: SuggestionFilter): Promise<Undo> {
     return this.fix(results, ruleIds, (context) => createFixToApplySuggestions(context, { filter }));
   }
 
@@ -172,11 +169,7 @@ export class Core {
    * @param ruleIds The rule ids to apply suggestions
    * @param fixableMaker The function to make `Linter.LintMessage` forcibly fixable.
    */
-  async makeFixableAndFix(
-    results: LegacyESLintNS.LintResult[],
-    ruleIds: string[],
-    fixableMaker: FixableMaker,
-  ): Promise<Undo> {
+  async makeFixableAndFix(results: ESLint.LintResult[], ruleIds: string[], fixableMaker: FixableMaker): Promise<Undo> {
     return this.fix(results, ruleIds, (context) => createFixToMakeFixableAndFix(context, { fixableMaker }));
   }
 
@@ -185,7 +178,7 @@ export class Core {
    * @param fix The fix information to do.
    */
   private async fix(
-    resultsOfLint: LegacyESLintNS.LintResult[],
+    resultsOfLint: ESLint.LintResult[],
     ruleIds: string[],
     fixCreator: (context: FixContext) => Rule.Fix[],
   ): Promise<Undo> {
@@ -196,7 +189,7 @@ export class Core {
     // eslint-disable-next-line prefer-const
     for (let { filePath, source } of filteredResultsOfLint) {
       if (!source) throw new Error('Source code is required to apply fixes.');
-      const config: Linter.Config | Linter.FlatConfig[] =
+      const config: Linter.LegacyConfig | Linter.FlatConfig[] =
         this.config.eslintOptions.type === 'eslintrc'
           ? // eslint-disable-next-line no-await-in-loop
             await this.eslint.calculateConfigForFile(filePath)
@@ -220,7 +213,10 @@ export class Core {
   }
 }
 
-async function calculateConfigForFile(eslint: ESLint, filePath: string): Promise<Linter.FlatConfig> {
+async function calculateConfigForFile(
+  eslint: InstanceType<typeof LegacyESLint | typeof FlatESLint>,
+  filePath: string,
+): Promise<Linter.FlatConfig> {
   const config = await eslint.calculateConfigForFile(filePath);
   // `language` property has been added to the object returned by `ESLint.prototype.calculateConfigForFile(filePath)` since ESLint v9.5.0.
   // But, `Linter.prototype.verify()` does not accept `language` option. So, remove it.

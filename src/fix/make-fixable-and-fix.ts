@@ -46,7 +46,7 @@ function getMessageToSourceNode(sourceCode: SourceCode, messages: Linter.LintMes
   traverse(sourceCode.ast, {
     // Required to traverse extension nodes such as `JSXElement`.
     fallback: 'iteration',
-    enter(node: Node) {
+    enter(node) {
       for (const message of messages) {
         if (isMessageSourceNode(sourceCode, node, message)) {
           result.set(message, node);
