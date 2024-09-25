@@ -82,6 +82,9 @@ const iff = await createIFF({
   'src/ban-exponentiation-operator.js': dedent`
     2 ** 2;
   `,
+  'src/ban-nullish-coalescing-operator.js': dedent`
+    2 ?? 2;
+  `,
   'src/no-unused-vars.js': dedent`
     const a = 1;
   `,
@@ -91,6 +94,33 @@ const iff = await createIFF({
   'src/no-unsafe-negation.js': dedent`
     if (!key in object) {}
   `,
+  'node_modules/eslint-plugin-test/package.json': dedent`
+    {
+      "name": "eslint-plugin-test",
+      "version": "1.0.0",
+      "main": "index.js"
+    }
+  `,
+  'node_modules/eslint-plugin-test/index.js': dedent`
+    module.exports = {
+      rules: {
+        'ban-nullish-coalescing-operator': {
+          create(context) {
+            return {
+              LogicalExpression: (node) => {
+                if (node.operator === '??') {
+                  context.report({
+                    node,
+                    message: 'Ban nullish coalescing operator',
+                  });
+                }
+              },
+            };
+          },
+        },
+      },
+    };
+  `,
   '.eslintrc.js': dedent`
     module.exports = {
       root: true,
@@ -98,11 +128,13 @@ const iff = await createIFF({
         ecmaVersion: 2021,
         sourceType: 'module',
       },
+      plugins: ['test'],
       overrides: [
         { files: ['prefer-const.js'], rules: { 'prefer-const': 'error' } },
         { files: ['arrow-body-style.js'], rules: { 'arrow-body-style': ['error', 'always'] } },
         { files: ['import-order.js'], rules: { 'import/order': 'error' } },
         { files: ['ban-exponentiation-operator.js'], rules: { 'ban-exponentiation-operator': 'error' } },
+        { files: ['ban-nullish-coalescing-operator.js'], rules: { 'test/ban-nullish-coalescing-operator': 'error' } },
         {
           files: ['no-unused-vars.js'],
           rules: { 'no-unused-vars': ['error', { varsIgnorePattern: '^_' }] },
@@ -311,5 +343,10 @@ describe('Core', () => {
     expect(await readFile(iff.paths['src/index.mjs'], 'utf-8')).toMatchSnapshot();
     expect(await readFile(iff.paths['src/index.jsx'], 'utf-8')).toMatchSnapshot();
     expect(await readFile(iff.paths['src/.index.js'], 'utf-8')).toMatchSnapshot();
+  });
+  test('fixes problems with legacy config and 3rd-party plugins', async () => {
+    const results = await core.lint();
+    await core.disablePerLine(results, ['test/ban-nullish-coalescing-operator']);
+    expect(await readFile(iff.paths['src/ban-nullish-coalescing-operator.js'], 'utf-8')).toMatchSnapshot();
   });
 });
