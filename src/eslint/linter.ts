@@ -10,6 +10,7 @@
 import { Rule } from 'eslint';
 import { LegacyESLint } from 'eslint/use-at-your-own-risk';
 import { FixContext } from '../fix/index.js';
+import { getLastSourceCode } from '../plugin.js';
 import { ruleFixer } from './rule-fixer.js';
 import { SourceCodeFixer } from './source-code-fixer.js';
 
@@ -54,7 +55,8 @@ export async function verifyAndFix(
     const messages = results
       .flatMap((result) => result.messages)
       .filter((message) => message.ruleId && ruleIds.includes(message.ruleId));
-    const sourceCode = null as any; // TODO: Get `SourceCode` from `eslint`
+    const sourceCode = getLastSourceCode();
+    if (!sourceCode) throw new Error('Failed to get the last source code.');
 
     // Create `Rule.Fix[]`
     const fixContext: FixContext = {

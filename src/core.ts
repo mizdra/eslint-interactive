@@ -18,6 +18,7 @@ import {
   verifyAndFix,
 } from './fix/index.js';
 import { format } from './formatter/index.js';
+import { plugin } from './plugin.js';
 import { filterResultsByRuleId } from './util/eslint.js';
 
 const { LegacyESLint, FlatESLint } = eslintPkg;
@@ -51,15 +52,39 @@ export class Core {
       const { type, ...rest } = eslintOptions;
       this.eslint = new LegacyESLint({
         ...rest,
-        plugins: {},
+        plugins: {
+          ...rest.plugins,
+          'eslint-interactive': plugin,
+        },
         overrideConfig: {
           ...rest.overrideConfig,
-          plugins: [...(rest.overrideConfig?.plugins ?? []), 'eslint-plugin-eslint-interactive'],
+          plugins: [...(rest.overrideConfig?.plugins ?? []), 'eslint-interactive'],
+          rules: {
+            ...rest.overrideConfig?.rules,
+            'eslint-interactive/source-code-snatcher': 'error',
+          },
         },
       });
     } else {
       const { type, ...rest } = eslintOptions;
-      this.eslint = new FlatESLint(rest);
+      const overrideConfigs = Array.isArray(rest.overrideConfig)
+        ? rest.overrideConfig
+        : rest.overrideConfig
+        ? [rest.overrideConfig]
+        : [];
+      this.eslint = new FlatESLint({
+        ...rest,
+        overrideConfig: [
+          ...overrideConfigs,
+          {
+            ...rest.overrideConfig,
+            plugins: { 'eslint-interactive': plugin },
+            rules: {
+              'eslint-interactive/source-code-snatcher': 'error',
+            },
+          },
+        ],
+      });
     }
   }
 
