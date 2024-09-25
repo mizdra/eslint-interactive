@@ -49,9 +49,9 @@ export function verifyAndFix(
   do {
     passNumber++;
 
-    const unfilteredMessages = linter.verify(currentText, config, filePath);
-    if (passNumber === 1) console.log('unfilteredMessages', unfilteredMessages);
-    const messages = unfilteredMessages.filter((message) => message.ruleId && ruleIds.includes(message.ruleId));
+    const messages = linter
+      .verify(currentText, config, filePath)
+      .filter((message) => message.ruleId && ruleIds.includes(message.ruleId));
     const sourceCode = linter.getSourceCode();
 
     // Create `Rule.Fix[]`
