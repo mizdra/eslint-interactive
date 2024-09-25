@@ -13,6 +13,7 @@ type LegacyESLintOptions = { type: 'eslintrc' } & Pick<
   | 'overrideConfig'
   | 'cwd'
   | 'resolvePluginsRelativeTo'
+  | 'plugins'
 >;
 type FlatESLintOptions = { type: 'flat' } & Pick<
   FlatESLint.Options,
@@ -110,6 +111,7 @@ export function normalizeConfig(config: Config): NormalizedConfig {
       cwd,
       resolvePluginsRelativeTo:
         config.eslintOptions.resolvePluginsRelativeTo ?? configDefaults.eslintOptions.resolvePluginsRelativeTo,
+      plugins: config.eslintOptions.plugins,
     };
   } else {
     eslintOptions = {

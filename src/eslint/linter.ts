@@ -7,7 +7,8 @@
  * @author aladdin-add
  */
 
-import { Linter, Rule } from 'eslint';
+import { Rule } from 'eslint';
+import { LegacyESLint } from 'eslint/use-at-your-own-risk';
 import { FixContext } from '../fix/index.js';
 import { ruleFixer } from './rule-fixer.js';
 import { SourceCodeFixer } from './source-code-fixer.js';
@@ -24,14 +25,13 @@ type FixedResult = {
  * @param linter
  */
 // eslint-disable-next-line max-params
-export function verifyAndFix(
-  linter: Linter,
+export async function verifyAndFix(
+  eslint: LegacyESLint,
   text: string,
-  config: Linter.Config | Linter.FlatConfig[],
   filePath: string,
   ruleIds: string[],
   fixCreator: (context: FixContext) => Rule.Fix[],
-): FixedResult {
+): Promise<FixedResult> {
   let fixedResult: FixedResult;
   let fixed = false;
   let passNumber = 0;
@@ -49,10 +49,12 @@ export function verifyAndFix(
   do {
     passNumber++;
 
-    const messages = linter
-      .verify(currentText, config, filePath)
+    // eslint-disable-next-line no-await-in-loop
+    const results = await eslint.lintText(currentText, { filePath });
+    const messages = results
+      .flatMap((result) => result.messages)
       .filter((message) => message.ruleId && ruleIds.includes(message.ruleId));
-    const sourceCode = linter.getSourceCode();
+    const sourceCode = null as any; // TODO: Get `SourceCode` from `eslint`
 
     // Create `Rule.Fix[]`
     const fixContext: FixContext = {
