@@ -26,7 +26,7 @@
     "lint:prettier": "prettier --check .",
     "test": "vitest",
     "e2e": "run-s e2e:prepare e2e:run",
-    "e2e:prepare": "pnpm run build",
+    "e2e:prepare": "pnpm run build --noCheck",
     "e2e:run": "vitest -c vite.config.e2e.ts"
   },
   "prettier": "@mizdra/prettier-config-mizdra",
