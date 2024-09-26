@@ -9,25 +9,25 @@ const tester = new FixTester(
 );
 
 describe('apply-auto-fixes', () => {
-  test('basic', () => {
+  test('basic', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: 'var val',
         rules: { semi: 'error' },
       }),
     ).toMatchInlineSnapshot(`"var val;"`);
   });
-  test('同一行にて複数の rule を同時に fix できる', () => {
+  test('同一行にて複数の rule を同時に fix できる', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: 'var val',
         rules: { 'semi': 'error', 'no-var': 'error' },
       }),
     ).toMatchInlineSnapshot(`"let val;"`);
   });
-  test('複数行を同時に fix できる', () => {
+  test('複数行を同時に fix できる', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: ['var val1', 'var val2', '', 'var val3'],
         rules: { semi: 'error' },
       }),
@@ -38,9 +38,9 @@ describe('apply-auto-fixes', () => {
       var val3;"
     `);
   });
-  test('fixable な problem がない場合は何もしない', () => {
+  test('fixable な problem がない場合は何もしない', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: 'var val;',
         rules: { semi: 'error' },
       }),

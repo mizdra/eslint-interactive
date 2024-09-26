@@ -11,9 +11,9 @@ const tester = new FixTester(
 );
 
 describe('disable-per-line', () => {
-  test('basic', () => {
+  test('basic', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: 'var val',
         rules: { semi: 'error' },
       }),
@@ -22,9 +22,9 @@ describe('disable-per-line', () => {
       var val"
     `);
   });
-  test('同一行にて複数の rule を同時に disable できる', () => {
+  test('同一行にて複数の rule を同時に disable できる', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: 'var val',
         rules: { 'semi': 'error', 'no-var': 'error' },
       }),
@@ -33,9 +33,9 @@ describe('disable-per-line', () => {
       var val"
     `);
   });
-  test('既に disable comment が付いている場合は、末尾に足す', () => {
+  test('既に disable comment が付いている場合は、末尾に足す', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: ['// eslint-disable-next-line semi', 'var val'],
         rules: { 'no-var': 'error' },
       }),
@@ -44,17 +44,17 @@ describe('disable-per-line', () => {
       var val"
     `);
   });
-  test('既に disable されている場合は何もしない', () => {
+  test('既に disable されている場合は何もしない', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: ['// eslint-disable-next-line semi', 'var val'],
         rules: { semi: 'error' },
       }),
     ).toMatchInlineSnapshot(`null`);
   });
-  test('`/* ... */` スタイルであっても disable できる', () => {
+  test('`/* ... */` スタイルであっても disable できる', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: ['/* eslint-disable-next-line semi */', 'var val'],
         rules: { 'no-var': 'error' },
       }),
@@ -63,9 +63,9 @@ describe('disable-per-line', () => {
       var val"
     `);
   });
-  test('disable description があっても disable できる', () => {
+  test('disable description があっても disable できる', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: ['// eslint-disable-next-line semi -- comment', 'var val'],
         rules: { 'no-var': 'error' },
       }),
@@ -74,9 +74,9 @@ describe('disable-per-line', () => {
       var val"
     `);
   });
-  test('disable description を追加できる', () => {
+  test('disable description を追加できる', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: ['// eslint-disable-next-line semi', 'var val'],
         rules: { 'no-var': 'error' },
         args: { description: 'comment' },
@@ -86,9 +86,9 @@ describe('disable-per-line', () => {
       var val"
     `);
   });
-  test('既に disable description があるコメントに対しても disable description を追加できる', () => {
+  test('既に disable description があるコメントに対しても disable description を追加できる', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: ['// eslint-disable-next-line semi -- foo', 'var val'],
         rules: { 'no-var': 'error' },
         args: { description: 'bar' },
@@ -98,9 +98,9 @@ describe('disable-per-line', () => {
       var val"
     `);
   });
-  test('add a description to the line before the disable comment if there is already disable comment', () => {
+  test('add a description to the line before the disable comment if there is already disable comment', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: ['// eslint-disable-next-line semi -- foo', 'var val'],
         rules: { 'no-var': 'error' },
         args: { description: 'bar', descriptionPosition: 'previousLine' },
@@ -111,9 +111,9 @@ describe('disable-per-line', () => {
       var val"
     `);
   });
-  test('add a description comment before the line with the problem', () => {
+  test('add a description comment before the line with the problem', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: ['var val'],
         rules: { semi: 'error' },
         args: { description: 'foo', descriptionPosition: 'previousLine' },
@@ -124,9 +124,9 @@ describe('disable-per-line', () => {
       var val"
     `);
   });
-  test('複数行を同時に disable できる', () => {
+  test('複数行を同時に disable できる', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: ['var val1', 'var val2', '', 'var val3'],
         rules: { 'no-var': 'error' },
       }),
@@ -141,9 +141,9 @@ describe('disable-per-line', () => {
     `);
   });
   describe('add a disable comment for JSX', () => {
-    test('when descriptionPosition is sameLine', () => {
+    test('when descriptionPosition is sameLine', async () => {
       expect(
-        tester.test({
+        await tester.test({
           code: [
             'var jsx = <div>',
             '  <span>text1</span>',
@@ -173,9 +173,9 @@ describe('disable-per-line', () => {
         </div>;"
       `);
     });
-    test('when descriptionPosition is previousLine', () => {
+    test('when descriptionPosition is previousLine', async () => {
       expect(
-        tester.test({
+        await tester.test({
           code: [
             'var jsx = <div>',
             '  <span>text1</span>',
@@ -210,9 +210,9 @@ describe('disable-per-line', () => {
       `);
     });
   });
-  test('disable comment のある行に disable comment 以外の Node があっても disable できる', () => {
+  test('disable comment のある行に disable comment 以外の Node があっても disable できる', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: [
           'var val1; // eslint-disable-next-line semi',
           'var val2;',
@@ -235,9 +235,9 @@ describe('disable-per-line', () => {
       var val6;"
     `);
   });
-  test('supports auto-indent', () => {
+  test('supports auto-indent', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: [
           '{',
           '  void 0;',

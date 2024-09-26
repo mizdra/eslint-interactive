@@ -18,9 +18,9 @@ const tester = new FixTester<FixToMakeFixableAndFixArgs>(
 );
 
 describe('make-fixable-and-fix', () => {
-  test('basic', () => {
+  test('basic', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: 'const a = 1;',
         rules: { 'no-unused-vars': ['error', { varsIgnorePattern: '^_' }] },
         args: {
@@ -32,9 +32,9 @@ describe('make-fixable-and-fix', () => {
       }),
     ).toMatchInlineSnapshot(`"const _a = 1;"`);
   });
-  test('can process multiple messages at once', () => {
+  test('can process multiple messages at once', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: ['const a = 1;', 'const b = 2;'],
         rules: { 'no-unused-vars': ['error', { varsIgnorePattern: '^_' }] },
         args: {
@@ -49,9 +49,9 @@ describe('make-fixable-and-fix', () => {
       const _b = 2;"
     `);
   });
-  test('can process messages of multiple rules at once', () => {
+  test('can process messages of multiple rules at once', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: ['const a = 1;', 'let b = 2;', 'b++;', 'console.log(b);'],
         rules: { 'no-unused-vars': ['error', { varsIgnorePattern: '^_' }], 'no-plusplus': 'error' },
         args: {
@@ -74,9 +74,9 @@ describe('make-fixable-and-fix', () => {
       console.log(b);"
     `);
   });
-  test('can process messages on the same line', () => {
+  test('can process messages on the same line', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: ['const a = 1; const b = 2;'],
         rules: { 'no-unused-vars': ['error', { varsIgnorePattern: '^_' }] },
         args: {
@@ -88,8 +88,8 @@ describe('make-fixable-and-fix', () => {
       }),
     ).toMatchInlineSnapshot(`"const _a = 1; const _b = 2;"`);
   });
-  test('`fixableMaker` receives the message and node.', () => {
-    tester.test({
+  test('`fixableMaker` receives the message and node.', async () => {
+    await tester.test({
       code: ['const a = 1;'],
       rules: { 'no-unused-vars': ['error', { varsIgnorePattern: '^_' }] },
       args: {
@@ -110,8 +110,8 @@ describe('make-fixable-and-fix', () => {
       },
     });
   });
-  test('node is null if message is not associated with a node', () => {
-    tester.test({
+  test('node is null if message is not associated with a node', async () => {
+    await tester.test({
       code: ['// this is comment'],
       rules: { 'capitalized-comments': 'error' },
       args: {
@@ -122,9 +122,9 @@ describe('make-fixable-and-fix', () => {
       },
     });
   });
-  test('do not process if `fixableMaker` returns null', () => {
+  test('do not process if `fixableMaker` returns null', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: 'const a = 1;',
         rules: { 'no-unused-vars': ['error', { varsIgnorePattern: '^_' }] },
         args: {

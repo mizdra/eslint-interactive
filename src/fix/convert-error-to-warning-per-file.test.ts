@@ -9,9 +9,9 @@ const tester = new FixTester(
 );
 
 describe('convert-error-to-warning-per-file', () => {
-  test('basic', () => {
+  test('basic', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: 'var val',
         rules: { semi: 'error' },
       }),
@@ -20,9 +20,9 @@ describe('convert-error-to-warning-per-file', () => {
       var val"
     `);
   });
-  test('fixes multiple rules', () => {
+  test('fixes multiple rules', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: 'var val',
         rules: { 'semi': 'error', 'no-var': 'error' },
       }),
@@ -31,9 +31,9 @@ describe('convert-error-to-warning-per-file', () => {
       var val"
     `);
   });
-  test('can add description', () => {
+  test('can add description', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: 'var val',
         rules: { semi: 'error' },
         args: { description: 'comment' },
@@ -43,17 +43,17 @@ describe('convert-error-to-warning-per-file', () => {
       var val"
     `);
   });
-  test('ignores warnings', () => {
+  test('ignores warnings', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: ['/* eslint semi: 1 */', 'var val'],
         rules: { semi: 'error' },
       }),
     ).toMatchInlineSnapshot(`null`);
   });
-  test('combines directives into one', () => {
+  test('combines directives into one', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: ['var val', 'var val'],
         rules: { semi: 'error' },
       }),
@@ -63,9 +63,9 @@ describe('convert-error-to-warning-per-file', () => {
       var val"
     `);
   });
-  test('`eslint` directive has precedence over `@ts-check`', () => {
+  test('`eslint` directive has precedence over `@ts-check`', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: ['// @ts-check', 'var val'],
         rules: { 'no-var': 'error' },
       }),
@@ -75,9 +75,9 @@ describe('convert-error-to-warning-per-file', () => {
       var val"
     `);
   });
-  test('`eslint` directive has precedence over `/* @jsxImportSource xxx */`', () => {
+  test('`eslint` directive has precedence over `/* @jsxImportSource xxx */`', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: ['/* @jsxImportSource @emotion/react */', 'var val'],
         rules: { 'no-var': 'error' },
       }),
@@ -87,9 +87,9 @@ describe('convert-error-to-warning-per-file', () => {
       var val"
     `);
   });
-  test('The shebang has precedence over `eslint` directive', () => {
+  test('The shebang has precedence over `eslint` directive', async () => {
     expect(
-      tester.test({
+      await tester.test({
         code: ['#!/usr/bin/env node', 'var val'],
         rules: { 'no-var': 'error' },
       }),

@@ -1,6 +1,6 @@
 import { writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
-import { ESLint, Linter, Rule } from 'eslint';
+import { ESLint, Rule } from 'eslint';
 import eslintPkg, { LegacyESLint as LegacyESLintNS } from 'eslint/use-at-your-own-risk';
 import isInstalledGlobally from 'is-installed-globally';
 import { DescriptionPosition } from './cli/prompt.js';
@@ -18,6 +18,7 @@ import {
   verifyAndFix,
 } from './fix/index.js';
 import { format } from './formatter/index.js';
+import { plugin } from './plugin.js';
 import { filterResultsByRuleId } from './util/eslint.js';
 
 const { LegacyESLint, FlatESLint } = eslintPkg;
@@ -49,10 +50,41 @@ export class Core {
     const eslintOptions = this.config.eslintOptions;
     if (eslintOptions.type === 'eslintrc') {
       const { type, ...rest } = eslintOptions;
-      this.eslint = new LegacyESLint(rest);
+      this.eslint = new LegacyESLint({
+        ...rest,
+        plugins: {
+          ...rest.plugins,
+          'eslint-interactive': plugin,
+        },
+        overrideConfig: {
+          ...rest.overrideConfig,
+          plugins: [...(rest.overrideConfig?.plugins ?? []), 'eslint-interactive'],
+          rules: {
+            ...rest.overrideConfig?.rules,
+            'eslint-interactive/source-code-snatcher': 'error',
+          },
+        },
+      });
     } else {
       const { type, ...rest } = eslintOptions;
-      this.eslint = new FlatESLint(rest);
+      const overrideConfigs = Array.isArray(rest.overrideConfig)
+        ? rest.overrideConfig
+        : rest.overrideConfig
+        ? [rest.overrideConfig]
+        : [];
+      this.eslint = new FlatESLint({
+        ...rest,
+        overrideConfig: [
+          ...overrideConfigs,
+          {
+            ...rest.overrideConfig,
+            plugins: { 'eslint-interactive': plugin },
+            rules: {
+              'eslint-interactive/source-code-snatcher': 'error',
+            },
+          },
+        ],
+      });
     }
   }
 
@@ -191,20 +223,13 @@ export class Core {
   ): Promise<Undo> {
     // NOTE: Extract only necessary results and files for performance
     const filteredResultsOfLint = filterResultsByRuleId(resultsOfLint, ruleIds);
-    const linter = new Linter({ configType: this.config.eslintOptions.type });
 
     // eslint-disable-next-line prefer-const
     for (let { filePath, source } of filteredResultsOfLint) {
       if (!source) throw new Error('Source code is required to apply fixes.');
-      const config: Linter.Config | Linter.FlatConfig[] =
-        this.config.eslintOptions.type === 'eslintrc'
-          ? // eslint-disable-next-line no-await-in-loop
-            await this.eslint.calculateConfigForFile(filePath)
-          : // NOTE: For some reason, if files is not specified, it will not match .jsx
-            // eslint-disable-next-line no-await-in-loop
-            [{ ...(await calculateConfigForFile(this.eslint, filePath)), files: ['**/*.*', '**/*'] }];
 
-      const fixedResult = verifyAndFix(linter, source, config, filePath, ruleIds, fixCreator);
+      // eslint-disable-next-line no-await-in-loop
+      const fixedResult = await verifyAndFix(this.eslint, source, filePath, ruleIds, fixCreator);
 
       // Write the fixed source code to the file
       if (fixedResult.fixed) {
@@ -218,12 +243,4 @@ export class Core {
       await LegacyESLint.outputFixes(resultsToUndo);
     };
   }
-}
-
-async function calculateConfigForFile(eslint: ESLint, filePath: string): Promise<Linter.FlatConfig> {
-  const config = await eslint.calculateConfigForFile(filePath);
-  // `language` property has been added to the object returned by `ESLint.prototype.calculateConfigForFile(filePath)` since ESLint v9.5.0.
-  // But, `Linter.prototype.verify()` does not accept `language` option. So, remove it.
-  delete config['language'];
-  return config;
 }
