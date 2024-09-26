@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1727366854887,
+  "lastUpdate": 1727367147983,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -2152,6 +2152,35 @@ window.BENCHMARK_DATA = {
           {
             "name": "cachegrind-benchmarking",
             "value": 8197614065,
+            "unit": "instructions"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "pp.mizdra@gmail.com",
+            "name": "mizdra",
+            "username": "mizdra"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "01b0b5b320d62a4fbb36d7c14f0b0fb35c37ec65",
+          "message": "Merge pull request #366 from mizdra/fix-problems-with-legacy-config-and-3rd-party-plugin\n\nFix a problem that 3rd-party plugins could not be loaded with legacy config",
+          "timestamp": "2024-09-27T01:10:52+09:00",
+          "tree_id": "73931a63838108bd9d2fdcde795a05ec2521c536",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/01b0b5b320d62a4fbb36d7c14f0b0fb35c37ec65"
+        },
+        "date": 1727367146992,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "cachegrind-benchmarking",
+            "value": 8320617162,
             "unit": "instructions"
           }
         ]
