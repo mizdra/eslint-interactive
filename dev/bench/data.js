@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1725294277664,
+  "lastUpdate": 1727366854887,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -2123,6 +2123,35 @@ window.BENCHMARK_DATA = {
           {
             "name": "cachegrind-benchmarking",
             "value": 8184378465,
+            "unit": "instructions"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "pp.mizdra@gmail.com",
+            "name": "mizdra",
+            "username": "mizdra"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "f8944f72464f12d4b59943e5bb8b8ad36c90cb2a",
+          "message": "Merge pull request #368 from mizdra/suppress-type-errors-during-e2e-testing\n\nSuppress type errors during E2E testing",
+          "timestamp": "2024-09-27T01:05:58+09:00",
+          "tree_id": "a609083a1cfbc0c5fa616922b387b3cbfbe0e46b",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/f8944f72464f12d4b59943e5bb8b8ad36c90cb2a"
+        },
+        "date": 1727366853608,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "cachegrind-benchmarking",
+            "value": 8197614065,
             "unit": "instructions"
           }
         ]
