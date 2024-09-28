@@ -3,7 +3,6 @@ import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import dedent from 'dedent';
 import { ESLint, Linter } from 'eslint';
-import { resolve } from 'import-meta-resolve';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { Core } from './core.js';
 import { LegacyESLint } from './eslint/use-at-your-own-risk.js';
@@ -149,9 +148,7 @@ const iff = await createIFF({
 
 const core = new Core({
   patterns: ['src'],
-  // For some reason, the test fails if `formatterName === 'codeframe'`.
-  // So here we overwrite it.
-  formatterName: fileURLToPath(resolve('eslint-formatter-codeframe', import.meta.url)),
+  formatterName: 'stylish',
   cwd: iff.rootDir,
   eslintOptions: { type: 'eslintrc', rulePaths: ['rules'] },
 });

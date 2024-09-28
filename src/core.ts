@@ -1,7 +1,5 @@
 import { writeFile } from 'node:fs/promises';
-import { fileURLToPath } from 'node:url';
 import { ESLint, Rule } from 'eslint';
-import isInstalledGlobally from 'is-installed-globally';
 import { DescriptionPosition } from './cli/prompt.js';
 import { Config, NormalizedConfig, normalizeConfig } from './config.js';
 import { LegacyESLint, FlatESLint } from './eslint/use-at-your-own-risk.js';
@@ -112,15 +110,7 @@ export class Core {
    */
   async formatResultDetails(results: ESLint.LintResult[], ruleIds: (string | null)[]): Promise<string> {
     const formatterName = this.config.formatterName;
-
-    // When eslint-interactive is installed globally, eslint-formatter-codeframe will also be installed globally.
-    // On the other hand, `eslint.loadFormatter` cannot load the globally installed formatter by name. So here it loads them by path.
-    const resolvedFormatterNameOrPath =
-      isInstalledGlobally && formatterName === 'codeframe'
-        ? fileURLToPath(import.meta.resolve('eslint-formatter-codeframe', import.meta.resolve('eslint-interactive')))
-        : formatterName;
-
-    const formatter = await this.eslint.loadFormatter(resolvedFormatterNameOrPath);
+    const formatter = await this.eslint.loadFormatter(formatterName);
     return formatter.format(filterResultsByRuleId(results, ruleIds));
   }
 

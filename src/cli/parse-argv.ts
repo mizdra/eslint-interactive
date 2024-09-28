@@ -20,7 +20,7 @@ export type ParsedCLIOptions = {
 
 /** Default CLI Options */
 export const cliOptionsDefaults = {
-  formatterName: 'codeframe',
+  formatterName: 'stylish',
   quiet: false,
   useEslintrc: true,
   cache: true,
