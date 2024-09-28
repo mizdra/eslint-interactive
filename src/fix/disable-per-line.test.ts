@@ -140,6 +140,48 @@ describe('disable-per-line', () => {
       var val3"
     `);
   });
+  test('add a disable comment in template literal', async () => {
+    expect(
+      await tester.test({
+        code: [
+          '`',
+          // eslint-disable-next-line no-template-curly-in-string
+          '${void 1}',
+          // eslint-disable-next-line no-template-curly-in-string
+          '${0 + void 1}',
+          '${',
+          'void 1',
+          '}',
+          // eslint-disable-next-line no-template-curly-in-string
+          '${`${void 1}`}',
+          '`;',
+          // MEMO: Code that includes indents can be fixed, but it will not be formatted prettily. This is a limitation of eslint-interactive.
+          'const withIndent = `',
+          // eslint-disable-next-line no-template-curly-in-string
+          '  ${void 1}',
+          '`;',
+        ],
+        rules: { 'no-void': 'error' },
+      }),
+    ).toMatchInlineSnapshot(`
+      "\`
+      \${// eslint-disable-next-line no-void
+      void 1}
+      \${// eslint-disable-next-line no-void
+      0 + void 1}
+      \${
+      // eslint-disable-next-line no-void
+      void 1
+      }
+      \${\`\${// eslint-disable-next-line no-void
+      void 1}\`}
+      \`;
+      const withIndent = \`
+        \${  // eslint-disable-next-line no-void
+      void 1}
+      \`;"
+    `);
+  });
   describe('add a disable comment for JSX', () => {
     test('when descriptionPosition is sameLine', async () => {
       expect(

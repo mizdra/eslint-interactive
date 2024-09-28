@@ -54,6 +54,7 @@ function generateFix(
         fixer,
         sourceCode,
         line: lineToInsert,
+        column: 0,
         description,
       }),
     );
@@ -76,6 +77,7 @@ function generateFix(
         fixer,
         sourceCode,
         line: lineToInsert,
+        column: 0,
         scope: 'file',
         ruleIds: ruleIdsToDisable,
         description: isPreviousLine ? undefined : description,

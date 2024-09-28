@@ -13,3 +13,7 @@ const jsx = (
     <div>{2 ** 10}</div>
   </>
 );
+const foo = `
+  This is a template literal
+  ${2 ** 10}
+`;

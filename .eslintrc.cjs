@@ -42,6 +42,8 @@ module.exports = {
         ],
       },
     ],
+    // 煩い上にこれに怒られてもリファクタリングしようという気持ちにならないので off
+    'max-params': 'off',
   },
   overrides: [
     // for typescript
