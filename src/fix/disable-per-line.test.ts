@@ -155,17 +155,8 @@ describe('disable-per-line', () => {
     ).toMatchInlineSnapshot(`
       "const foo = \`
         This is a template literal
-        // eslint-disable-next-line no-void
-        // eslint-disable-next-line no-void
-        // eslint-disable-next-line no-void
-        // eslint-disable-next-line no-void
-        // eslint-disable-next-line no-void
-        // eslint-disable-next-line no-void
-        // eslint-disable-next-line no-void
-        // eslint-disable-next-line no-void
-        // eslint-disable-next-line no-void
-        // eslint-disable-next-line no-void
-        \${void 1}
+        \${  // eslint-disable-next-line no-void
+      void 1}
       \`;"
     `);
   });

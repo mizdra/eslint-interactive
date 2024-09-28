@@ -4,8 +4,10 @@ import { mergeFixes } from '../eslint/report-translator.js';
 import { groupBy, unique } from '../util/array.js';
 import {
   DisableComment,
+  getStartColumnOfTemplateExpression,
   insertDescriptionCommentStatementBeforeLine,
   insertDisableCommentStatementBeforeLine,
+  isLineInTemplateLiteral,
   mergeDescription,
   mergeRuleIds,
   parseDisableComment,
@@ -85,10 +87,18 @@ function generateFixesPerLine(
  * Create fix to add disable comment per line.
  */
 export function createFixToDisablePerLine(context: FixContext, args: FixToDisablePerLineArgs): Rule.Fix[] {
-  const lineToMessages = groupBy(context.messages, (message) => message.line);
+  const groupedMessages = groupBy(context.messages, (message) => {
+    if (isLineInTemplateLiteral(context.sourceCode, message.line)) {
+      const column = getStartColumnOfTemplateExpression(context.sourceCode, message);
+      return `${message.line}:${column}`;
+    } else {
+      return `${message.line}:0`;
+    }
+  });
   const fixes: Rule.Fix[] = [];
-  for (const [line, messagesInLine] of lineToMessages) {
-    const fix = generateFixesPerLine(context, args.description, args.descriptionPosition, line, 0, messagesInLine);
+  for (const [lineAndColumn, messagesInLine] of groupedMessages) {
+    const [line, column] = lineAndColumn.split(':').map(Number) as [number, number];
+    const fix = generateFixesPerLine(context, args.description, args.descriptionPosition, line, column, messagesInLine);
     if (fix) fixes.push(fix);
   }
   return fixes;

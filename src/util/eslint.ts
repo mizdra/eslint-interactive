@@ -109,6 +109,27 @@ function isLineInJSXText(sourceCode: SourceCode, line: number): boolean {
   return headNode?.type === 'JSXText';
 }
 
+export function isLineInTemplateLiteral(sourceCode: SourceCode, line: number): boolean {
+  const headNodeIndex = sourceCode.getIndexFromLoc({ line, column: 0 });
+  const headNode = sourceCode.getNodeByRangeIndex(headNodeIndex);
+  return headNode?.type === 'TemplateElement';
+}
+
+export function getStartColumnOfTemplateExpression(sourceCode: SourceCode, message: Linter.LintMessage): number {
+  for (let i = message.column; i >= 1; i--) {
+    const index = sourceCode.getIndexFromLoc({
+      line: message.line,
+      // Convert 1-indexed to 0-indexed
+      column: i - 1,
+    });
+    const node = sourceCode.getNodeByRangeIndex(index);
+    if (node?.type === 'TemplateElement') {
+      return i;
+    }
+  }
+  throw new Error(`unreachable: The line ${message.line} does not have a template element.`);
+}
+
 /**
  * Merge the ruleIds of the disable comments.
  * @param a The ruleIds of first disable comment
