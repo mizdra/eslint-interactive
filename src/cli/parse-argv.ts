@@ -40,7 +40,10 @@ export function parseArgv(argv: string[]): ParsedCLIOptions {
     'quiet': { type: 'boolean', default: cliOptionsDefaults.quiet },
     'cache': { type: 'boolean', default: cliOptionsDefaults.cache },
     'cache-location': { type: 'string', default: cliOptionsDefaults.cacheLocation },
+    'version': { type: 'boolean' },
+    'help': { type: 'boolean' },
   } as const;
+
   const { values, positionals } = parseArgs({
     allowPositionals: true,
     allowNegative: true,
@@ -48,6 +51,29 @@ export function parseArgv(argv: string[]): ParsedCLIOptions {
     args: argv.slice(2),
     options,
   });
+
+  if (values.version) {
+    console.log(`Version: ${VERSION}`);
+    process.exit(0);
+  }
+
+  if (values.help) {
+    console.log(`Usage: eslint [options] [file|dir|glob]`);
+    console.log(`Options:`);
+    console.log(`  --version           Show version number`);
+    console.log(`  --help              Show help`);
+    console.log(`  --eslintrc          Use configuration from .eslintrc`);
+    console.log(`  --config            Use this configuration, overriding .eslintrc`);
+    console.log(`  --ext               Specify JavaScript file extensions`);
+    console.log(`  --resolve-plugins-relative-to  A folder where plugins should be resolved from`);
+    console.log(`  --rulesdir          Use additional rules from this directory`);
+    console.log(`  --ignore-path       Specify path of ignore file`);
+    console.log(`  --format            Use a specific output format`);
+    console.log(`  --quiet             Report errors only`);
+    console.log(`  --cache             Only check changed files`);
+    console.log(`  --cache-location    Path to the cache file or directory`);
+    process.exit(0);
+  }
 
   const patterns = positionals.map((pattern) => pattern.toString());
   const rulePaths = values.rulesdir?.map((rulePath) => rulePath.toString());
