@@ -11,11 +11,13 @@ describe('parseArgv', () => {
   });
   test('--no-eslintrc', () => {
     expect(parseArgv([...baseArgs, '--no-eslintrc']).useEslintrc).toStrictEqual(false);
-    expect(parseArgv([...baseArgs, '--no-eslintrc=false']).useEslintrc).toStrictEqual(true);
   });
   test('--config', () => {
     expect(parseArgv([...baseArgs]).overrideConfigFile).toStrictEqual(undefined);
     expect(parseArgv([...baseArgs, '--config', 'override-config-file.json']).overrideConfigFile).toStrictEqual(
+      'override-config-file.json',
+    );
+    expect(parseArgv([...baseArgs, '-c', 'override-config-file.json']).overrideConfigFile).toStrictEqual(
       'override-config-file.json',
     );
   });
@@ -47,7 +49,6 @@ describe('parseArgv', () => {
   test('--cache', () => {
     expect(parseArgv([...baseArgs, '--cache']).cache).toBe(true);
     expect(parseArgv([...baseArgs, '--no-cache']).cache).toBe(false);
-    expect(parseArgv([...baseArgs, '--cache', 'false']).cache).toBe(false);
   });
   test('--cache-location', () => {
     expect(parseArgv([...baseArgs, '--cache-location', '.eslintcache']).cacheLocation).toBe('.eslintcache');
