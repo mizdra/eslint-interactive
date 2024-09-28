@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1727507248561,
+  "lastUpdate": 1727507542411,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -2210,6 +2210,35 @@ window.BENCHMARK_DATA = {
           {
             "name": "cachegrind-benchmarking",
             "value": 8313333191,
+            "unit": "instructions"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "pp.mizdra@gmail.com",
+            "name": "mizdra",
+            "username": "mizdra"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "247bd5d1836cc0cf3eaa2e67f7f6bbe3d0ea4a7e",
+          "message": "Merge pull request #369 from mizdra/fix-adding-disable-comment-in-template-literal\n\nFix adding a disable comment in template literal",
+          "timestamp": "2024-09-28T16:11:03+09:00",
+          "tree_id": "09de57377102b9617f1fb5bf4117c7e829c09587",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/247bd5d1836cc0cf3eaa2e67f7f6bbe3d0ea4a7e"
+        },
+        "date": 1727507541134,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "cachegrind-benchmarking",
+            "value": 8330106800,
             "unit": "instructions"
           }
         ]
