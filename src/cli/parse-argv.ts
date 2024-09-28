@@ -40,8 +40,14 @@ export function parseArgv(argv: string[]): ParsedCLIOptions {
     'quiet': { type: 'boolean', default: cliOptionsDefaults.quiet },
     'cache': { type: 'boolean', default: cliOptionsDefaults.cache },
     'cache-location': { type: 'string', default: cliOptionsDefaults.cacheLocation },
-  };
-  const { values, positionals } = parseArgs({ args: argv.slice(2), options });
+  } as const;
+  const { values, positionals } = parseArgs({
+    allowPositionals: true,
+    allowNegative: true,
+    strict: true,
+    args: argv.slice(2),
+    options,
+  });
 
   const patterns = positionals.map((pattern) => pattern.toString());
   const rulePaths = values.rulesdir?.map((rulePath) => rulePath.toString());
