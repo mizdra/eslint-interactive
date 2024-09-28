@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1727367147983,
+  "lastUpdate": 1727507248561,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -2181,6 +2181,35 @@ window.BENCHMARK_DATA = {
           {
             "name": "cachegrind-benchmarking",
             "value": 8320617162,
+            "unit": "instructions"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "pp.mizdra@gmail.com",
+            "name": "mizdra",
+            "username": "mizdra"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "845018896f097664f5d6a6dea99d58fe821cb0d8",
+          "message": "Merge pull request #370 from mizdra/fix-dev-command\n\nFix to load custom rules for `pnpm dev`",
+          "timestamp": "2024-09-28T16:06:10+09:00",
+          "tree_id": "57a3d1f6a286a5e60dd33e70f063c64c91e64fc0",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/845018896f097664f5d6a6dea99d58fe821cb0d8"
+        },
+        "date": 1727507247616,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "cachegrind-benchmarking",
+            "value": 8313333191,
             "unit": "instructions"
           }
         ]
