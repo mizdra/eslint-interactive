@@ -697,7 +697,7 @@ packages:
     dependencies:
       '@typescript-eslint/typescript-estree': 5.59.2(typescript@5.6.2)
       '@typescript-eslint/utils': 5.59.2(eslint@8.57.0)(typescript@5.6.2)
-      debug: 4.3.4
+      debug: 4.3.7
       eslint: 8.57.0
       tsutils: 3.21.0(typescript@5.6.2)
       typescript: 5.6.2
@@ -721,7 +721,7 @@ packages:
     dependencies:
       '@typescript-eslint/types': 5.59.2
       '@typescript-eslint/visitor-keys': 5.59.2
-      debug: 4.3.4
+      debug: 4.3.7
       globby: 11.1.0
       is-glob: 4.0.3
       semver: 7.5.4
