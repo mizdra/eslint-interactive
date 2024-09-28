@@ -140,6 +140,35 @@ describe('disable-per-line', () => {
       var val3"
     `);
   });
+  test('add a disable comment in template literal', async () => {
+    expect(
+      await tester.test({
+        code: [
+          'const foo = `',
+          '  This is a template literal',
+          // eslint-disable-next-line no-template-curly-in-string
+          '  ${void 1}',
+          '`;',
+        ],
+        rules: { 'no-void': 'error' },
+      }),
+    ).toMatchInlineSnapshot(`
+      "const foo = \`
+        This is a template literal
+        // eslint-disable-next-line no-void
+        // eslint-disable-next-line no-void
+        // eslint-disable-next-line no-void
+        // eslint-disable-next-line no-void
+        // eslint-disable-next-line no-void
+        // eslint-disable-next-line no-void
+        // eslint-disable-next-line no-void
+        // eslint-disable-next-line no-void
+        // eslint-disable-next-line no-void
+        // eslint-disable-next-line no-void
+        \${void 1}
+      \`;"
+    `);
+  });
   describe('add a disable comment for JSX', () => {
     test('when descriptionPosition is sameLine', async () => {
       expect(
