@@ -12,7 +12,6 @@ export const baseConfig = defineConfig({
     env: {
       FORCE_HYPERLINK: '1',
       FORCE_COLOR: '1',
-      NODE_OPTIONS: '--experimental-import-meta-resolve',
     },
     exclude: [...configDefaults.exclude, 'tmp/**'],
   },
