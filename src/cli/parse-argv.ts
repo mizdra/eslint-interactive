@@ -31,7 +31,7 @@ export const cliOptionsDefaults = {
 export function parseArgv(argv: string[]): ParsedCLIOptions {
   const options = {
     'eslintrc': { type: 'boolean', default: cliOptionsDefaults.useEslintrc },
-    'config': { type: 'string' },
+    'config': { type: 'string', short: 'c' },
     'ext': { type: 'string', multiple: true },
     'resolve-plugins-relative-to': { type: 'string' },
     'rulesdir': { type: 'string', multiple: true },
@@ -53,25 +53,38 @@ export function parseArgv(argv: string[]): ParsedCLIOptions {
   });
 
   if (values.version) {
-    console.log(`Version: ${VERSION}`);
+    console.log(VERSION);
+    // eslint-disable-next-line n/no-process-exit
     process.exit(0);
   }
 
   if (values.help) {
-    console.log(`Usage: eslint [options] [file|dir|glob]`);
-    console.log(`Options:`);
-    console.log(`  --version           Show version number`);
-    console.log(`  --help              Show help`);
-    console.log(`  --eslintrc          Use configuration from .eslintrc`);
-    console.log(`  --config            Use this configuration, overriding .eslintrc`);
-    console.log(`  --ext               Specify JavaScript file extensions`);
-    console.log(`  --resolve-plugins-relative-to  A folder where plugins should be resolved from`);
-    console.log(`  --rulesdir          Use additional rules from this directory`);
-    console.log(`  --ignore-path       Specify path of ignore file`);
-    console.log(`  --format            Use a specific output format`);
-    console.log(`  --quiet             Report errors only`);
-    console.log(`  --cache             Only check changed files`);
-    console.log(`  --cache-location    Path to the cache file or directory`);
+    console.log(`
+eslint-interactive [file.js] [dir]
+
+Options:
+      --help                         Show help                                                                                     [boolean]
+      --version                      Show version number                                                                           [boolean]
+      --eslintrc                     Enable use of configuration from .eslintrc.*                                  [boolean] [default: true]
+  -c, --config                       Use this configuration, overriding .eslintrc.* config options if present                       [string]
+      --resolve-plugins-relative-to  A folder where plugins should be resolved from, CWD by default                                 [string]
+      --ext                          Specify JavaScript file extensions                                                              [array]
+      --rulesdir                     Use additional rules from this directory                                                        [array]
+      --ignore-path                  Specify path of ignore file                                                                    [string]
+      --format                       Specify the format to be used for the \`Display problem messages\` action [string] [default: "codeframe"]
+      --quiet                        Report errors only                                                           [boolean] [default: false]
+      --cache                        Only check changed files                                                      [boolean] [default: true]
+      --cache-location               Path to the cache file or directory
+
+Examples:
+  eslint-interactive ./src                                           Lint ./src/ directory
+  eslint-interactive ./src ./test                                    Lint multiple directories
+  eslint-interactive './src/**/*.{ts,tsx,vue}'                       Lint with glob pattern
+  eslint-interactive ./src --ext .ts,.tsx,.vue                       Lint with custom extensions
+  eslint-interactive ./src --rulesdir ./rules                        Lint with custom rules
+  eslint-interactive ./src --no-eslintrc --config ./.eslintrc.ci.js  Lint with custom config
+      `);
+    // eslint-disable-next-line n/no-process-exit
     process.exit(0);
   }
 
