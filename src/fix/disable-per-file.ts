@@ -39,10 +39,9 @@ function generateFix(
 
   // if shebang exists, insert comment after shebang
   const shebang = findShebang(context.sourceCode.text);
-  const lineToInsert = disableCommentPerFile
-    ? disableCommentPerFile.loc.start.line
-    : shebang
-    ? sourceCode.getLocFromIndex(shebang.range[0]).line + 1
+  const lineToInsert =
+    disableCommentPerFile ? disableCommentPerFile.loc.start.line
+    : shebang ? sourceCode.getLocFromIndex(shebang.range[0]).line + 1
     : 1;
 
   const fixes: Rule.Fix[] = [];
@@ -66,8 +65,9 @@ function generateFix(
         fixer,
         disableComment: disableCommentPerFile,
         newRules: mergeRuleIds(disableCommentPerFile.ruleIds, ruleIdsToDisable),
-        newDescription: isPreviousLine
-          ? disableCommentPerFile.description
+        newDescription:
+          isPreviousLine ?
+            disableCommentPerFile.description
           : mergeDescription(disableCommentPerFile.description, description),
       }),
     );

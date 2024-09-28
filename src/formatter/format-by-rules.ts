@@ -44,9 +44,8 @@ export function formatByRules(results: ESLint.LintResult[], data?: ESLint.LintRe
   ruleStatistics.forEach((ruleStatistic) => {
     const { ruleId } = ruleStatistic;
     const ruleMetaData = data?.rulesMeta[ruleId];
-    const ruleCell = ruleMetaData?.docs?.url
-      ? terminalLink(ruleId, ruleMetaData?.docs.url, { fallback: false })
-      : ruleId;
+    const ruleCell =
+      ruleMetaData?.docs?.url ? terminalLink(ruleId, ruleMetaData?.docs.url, { fallback: false }) : ruleId;
     result = result.replace(` ${ruleId} `, ` ${ruleCell} `);
   });
 

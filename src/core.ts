@@ -63,10 +63,9 @@ export class Core {
       });
     } else {
       const { type, ...rest } = eslintOptions;
-      const overrideConfigs = Array.isArray(rest.overrideConfig)
-        ? rest.overrideConfig
-        : rest.overrideConfig
-        ? [rest.overrideConfig]
+      const overrideConfigs =
+        Array.isArray(rest.overrideConfig) ? rest.overrideConfig
+        : rest.overrideConfig ? [rest.overrideConfig]
         : [];
       this.eslint = new FlatESLint({
         ...rest,

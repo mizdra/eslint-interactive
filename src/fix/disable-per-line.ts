@@ -62,8 +62,9 @@ function generateFixesPerLine(
         fixer,
         disableComment: disableCommentPerLine,
         newRules: mergeRuleIds(disableCommentPerLine.ruleIds, ruleIdsToDisable),
-        newDescription: isPreviousLine
-          ? disableCommentPerLine.description
+        newDescription:
+          isPreviousLine ?
+            disableCommentPerLine.description
           : mergeDescription(disableCommentPerLine.description, description),
       }),
     );
