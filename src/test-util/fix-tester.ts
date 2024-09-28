@@ -1,6 +1,6 @@
 import { Linter, Rule } from 'eslint';
-import { LegacyESLint } from 'eslint/use-at-your-own-risk';
 import { verifyAndFix } from '../eslint/linter.js';
+import { LegacyESLint } from '../eslint/use-at-your-own-risk.js';
 import { FixContext } from '../fix/index.js';
 import { plugin } from '../plugin.js';
 

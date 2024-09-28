@@ -37,7 +37,7 @@
     "@mizdra/prettier-config-mizdra": "^1.0.0",
     "@tsconfig/node18": "^18.2.2",
     "@tsconfig/strictest": "^2.0.2",
-    "@types/eslint": "^8.44.6",
+    "@types/eslint": "^8.56.12",
     "@types/estraverse": "^5.1.6",
     "@types/estree": "^1.0.5",
     "@types/fs-extra": "^11.0.4",
@@ -93,10 +93,5 @@
     "!src/**/__snapshots__",
     "dist",
     "static"
-  ],
-  "pnpm": {
-    "patchedDependencies": {
-      "@types/eslint@8.44.6": "patches/@types__eslint@8.44.6.patch"
-    }
-  }
+  ]
 }
