@@ -1,8 +1,9 @@
-import type { LegacyESLint, FlatESLint } from 'eslint/use-at-your-own-risk';
+import { ESLint } from 'eslint';
 import { cliOptionsDefaults, ParsedCLIOptions } from './cli/parse-argv.js';
+import { FlatESLint } from './eslint/use-at-your-own-risk.js';
 import { DeepPartial } from './util/type-check.js';
 type LegacyESLintOptions = { type: 'eslintrc' } & Pick<
-  LegacyESLint.Options,
+  ESLint.Options,
   | 'useEslintrc'
   | 'overrideConfigFile'
   | 'extensions'

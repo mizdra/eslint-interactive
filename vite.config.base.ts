@@ -1,18 +1,19 @@
 import { defineConfig, configDefaults } from 'vitest/config';
-import GithubActionsReporter from 'vitest-github-actions-reporter';
 
 export const baseConfig = defineConfig({
-  test: {
-    reporters: process.env['GITHUB_ACTIONS'] ? ['default', new GithubActionsReporter()] : 'default',
-    cache: {
-      dir: 'node_modules/.cache/vitest',
+  cacheDir: 'node_modules/.cache/vitest',
+  server: {
+    watch: {
+      ignored: ['**/fixtures-tmp/**', '**/tmp/**', '**/benchmark/fixtures/**'],
     },
+  },
+  test: {
+    reporters: process.env['GITHUB_ACTIONS'] ? ['default', 'github-actions'] : 'default',
     env: {
       FORCE_HYPERLINK: '1',
       FORCE_COLOR: '1',
       NODE_OPTIONS: '--experimental-import-meta-resolve',
     },
     exclude: [...configDefaults.exclude, 'tmp/**'],
-    watchExclude: [...configDefaults.watchExclude, 'fixtures-tmp/**', 'tmp/**', 'benchmark/fixtures/**'],
   },
 });
