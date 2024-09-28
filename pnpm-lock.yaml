@@ -78,9 +78,6 @@ importers:
       eslint:
         specifier: ^8.57.0
         version: 8.57.0
-      import-meta-resolve:
-        specifier: ^4.0.0
-        version: 4.0.0
       npm-run-all2:
         specifier: ^5.0.0
         version: 5.0.2
@@ -1982,10 +1979,6 @@ packages:
     dependencies:
       parent-module: 1.0.1
       resolve-from: 4.0.0
-    dev: true
-
-  /import-meta-resolve@4.0.0:
-    resolution: {integrity: sha512-okYUR7ZQPH+efeuMJGlq4f8ubUgO50kByRPyt/Cy1Io4PSRsPjxME+YlVaCOx+NIToW7hCsZNFJyTPFFKepRSA==}
     dev: true
 
   /imurmurhash@0.1.4:
