@@ -26,7 +26,7 @@ test('verify installation', async () => {
   expect(result.toString().trim()).toBe(VERSION);
 });
 
-test('can print error with eslint-formatter-codeframe', async () => {
+test('can print error with stylish', async () => {
   const child = spawn(
     'eslint-interactive',
     [
@@ -46,6 +46,6 @@ test('can print error with eslint-formatter-codeframe', async () => {
   await streamWatcher.match(/In what way are the details displayed\?/);
   child.stdin.write('0'); // Focus on `Print in terminal`
   child.stdin.write(LF); // Confirm the choice
-  await streamWatcher.match(/Missing semicolon/); // formatted by eslint-formatter-codeframe
+  await streamWatcher.match(/Missing semicolon/);
   child.stdin.write(ETX); // Exit
 });

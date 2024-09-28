@@ -271,18 +271,15 @@ exports[`Core > lint > returns lint results 1`] = `
 exports[`Core > makeFixableAndFix 1`] = `"const _a = 1;"`;
 
 exports[`Core > printDetailsOfResults 1`] = `
-"[31merror[39m: [1mBan exponentiation operator[22m [2m(ban-exponentiation-operator)[22m at [32m<fixture>/src/ban-exponentiation-operator.js:1:1[39m:
-> 1 | 2 ** 2;
-    | ^
-
-
-[31merror[39m: [1mDefinition for rule 'import/order' was not found[22m [2m(import/order)[22m at [32m<fixture>/src/import-order.js:1:1[39m:
-> 1 | import b from 'b';
-    | ^
-  2 | import a from 'a';
-
-
-[31m[1m2 errors found.[22m[39m"
+"[0m[0m
+[0m[4m<fixture>/src/ban-exponentiation-operator.js[24m[0m
+[0m  [2m1:1[22m  [31merror[39m  Ban exponentiation operator  [2mban-exponentiation-operator[22m[0m
+[0m[0m
+[0m[4m<fixture>/src/import-order.js[24m[0m
+[0m  [2m1:1[22m  [31merror[39m  Definition for rule 'import/order' was not found  [2mimport/order[22m[0m
+[0m[0m
+[0m[31m[1m✖ 2 problems (2 errors, 0 warnings)[22m[39m[0m
+[0m[31m[1m[22m[39m[0m"
 `;
 
 exports[`Core > printSummaryOfResults 1`] = `
