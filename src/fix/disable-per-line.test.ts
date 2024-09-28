@@ -144,8 +144,19 @@ describe('disable-per-line', () => {
     expect(
       await tester.test({
         code: [
-          'const foo = `',
-          '  This is a template literal',
+          '`',
+          // eslint-disable-next-line no-template-curly-in-string
+          '${void 1}',
+          // eslint-disable-next-line no-template-curly-in-string
+          '${0 + void 1}',
+          '${',
+          'void 1',
+          '}',
+          // eslint-disable-next-line no-template-curly-in-string
+          '${`${void 1}`}',
+          '`;',
+          // MEMO: Code that includes indents can be fixed, but it will not be formatted prettily. This is a limitation of eslint-interactive.
+          'const withIndent = `',
           // eslint-disable-next-line no-template-curly-in-string
           '  ${void 1}',
           '`;',
@@ -153,8 +164,19 @@ describe('disable-per-line', () => {
         rules: { 'no-void': 'error' },
       }),
     ).toMatchInlineSnapshot(`
-      "const foo = \`
-        This is a template literal
+      "\`
+      \${// eslint-disable-next-line no-void
+      void 1}
+      \${// eslint-disable-next-line no-void
+      0 + void 1}
+      \${
+      // eslint-disable-next-line no-void
+      void 1
+      }
+      \${\`\${// eslint-disable-next-line no-void
+      void 1}\`}
+      \`;
+      const withIndent = \`
         \${  // eslint-disable-next-line no-void
       void 1}
       \`;"
