@@ -30,6 +30,7 @@ function generateFixesPerLine(
   description: string | undefined,
   descriptionPosition: DescriptionPosition | undefined,
   line: number,
+  column: number,
   messagesInLine: Linter.LintMessage[],
 ): Rule.Fix | null {
   const { fixer, sourceCode } = context;
@@ -48,6 +49,7 @@ function generateFixesPerLine(
         fixer,
         sourceCode,
         line: disableCommentPerLine ? disableCommentPerLine.loc.start.line : line,
+        column,
         description,
       }),
     );
@@ -69,6 +71,7 @@ function generateFixesPerLine(
         fixer,
         sourceCode,
         line,
+        column,
         scope: 'next-line',
         ruleIds: ruleIdsToDisable,
         description: isPreviousLine ? undefined : description,
@@ -85,7 +88,7 @@ export function createFixToDisablePerLine(context: FixContext, args: FixToDisabl
   const lineToMessages = groupBy(context.messages, (message) => message.line);
   const fixes: Rule.Fix[] = [];
   for (const [line, messagesInLine] of lineToMessages) {
-    const fix = generateFixesPerLine(context, args.description, args.descriptionPosition, line, messagesInLine);
+    const fix = generateFixesPerLine(context, args.description, args.descriptionPosition, line, 0, messagesInLine);
     if (fix) fixes.push(fix);
   }
   return fixes;
