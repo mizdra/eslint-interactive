@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1727512734565,
+  "lastUpdate": 1727513828514,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -2268,6 +2268,35 @@ window.BENCHMARK_DATA = {
           {
             "name": "cachegrind-benchmarking",
             "value": 8317393098,
+            "unit": "instructions"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "pp.mizdra@gmail.com",
+            "name": "mizdra",
+            "username": "mizdra"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "48c9f39af92a0f3f14e03275b41375532843350a",
+          "message": "Merge pull request #378 from mizdra/use-util-pkg-instead-of-strip-ansi\n\nUse `util.stripVTControlCharacters` instead of `strip-ansi`",
+          "timestamp": "2024-09-28T17:55:55+09:00",
+          "tree_id": "aa4585ff12132c9969cff56a2ed548c4bc1a4a06",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/48c9f39af92a0f3f14e03275b41375532843350a"
+        },
+        "date": 1727513827986,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "cachegrind-benchmarking",
+            "value": 8315024125,
             "unit": "instructions"
           }
         ]
