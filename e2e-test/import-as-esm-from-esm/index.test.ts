@@ -1,8 +1,8 @@
 import { afterEach, expect, test } from 'vitest';
-import stripAnsi from 'strip-ansi';
 import { createIFF } from '../../src/test-util/fixtures.js';
 import dedent from 'dedent';
 import { readFile } from 'fs/promises';
+import { stripVTControlCharacters } from 'util';
 
 const { Core, takeRuleStatistics } = await import('eslint-interactive');
 
@@ -39,7 +39,7 @@ test('Programmable API', async () => {
   });
   const results = await core.lint();
 
-  expect(stripAnsi(core.formatResultSummary(results))).toMatchSnapshot();
+  expect(stripVTControlCharacters(core.formatResultSummary(results))).toMatchSnapshot();
   const statistics = takeRuleStatistics(results);
   expect(statistics).toMatchSnapshot();
 
