@@ -17,6 +17,9 @@ describe('parseArgv', () => {
     expect(parseArgv([...baseArgs, '--config', 'override-config-file.json']).overrideConfigFile).toStrictEqual(
       'override-config-file.json',
     );
+    expect(parseArgv([...baseArgs, '-c', 'override-config-file.json']).overrideConfigFile).toStrictEqual(
+      'override-config-file.json',
+    );
   });
   test('--rulesdir', () => {
     expect(parseArgv([...baseArgs, '--rulesdir', 'foo']).rulePaths).toStrictEqual(['foo']);
