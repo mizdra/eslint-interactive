@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1727513828514,
+  "lastUpdate": 1727516039077,
   "repoUrl": "https://github.com/mizdra/eslint-interactive",
   "entries": {
     "Benchmark": [
@@ -2297,6 +2297,35 @@ window.BENCHMARK_DATA = {
           {
             "name": "cachegrind-benchmarking",
             "value": 8315024125,
+            "unit": "instructions"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "pp.mizdra@gmail.com",
+            "name": "mizdra",
+            "username": "mizdra"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "f3575cf977f98b2ece1303c0905b92444d8ea99d",
+          "message": "Merge pull request #379 from mizdra/use-default-formatter\n\nUse `stylish` as default formatter instead of eslint-formatter-codeframe",
+          "timestamp": "2024-09-28T18:32:39+09:00",
+          "tree_id": "420e8c6ff7cce95ba9fa4c8ec3722a1fd87c41b6",
+          "url": "https://github.com/mizdra/eslint-interactive/commit/f3575cf977f98b2ece1303c0905b92444d8ea99d"
+        },
+        "date": 1727516038089,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "cachegrind-benchmarking",
+            "value": 8295855394,
             "unit": "instructions"
           }
         ]
