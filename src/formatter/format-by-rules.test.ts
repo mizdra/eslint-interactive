@@ -1,6 +1,6 @@
 /* eslint-disable no-irregular-whitespace */
+import { stripVTControlCharacters } from 'node:util';
 import { ESLint } from 'eslint';
-import stripAnsi from 'strip-ansi';
 import { describe, expect, test } from 'vitest';
 import { fakeLintResult, fakeLintMessage, fakeFix, fakeSuggestions } from '../test-util/eslint.js';
 import { formatByRules } from './format-by-rules.js';
@@ -28,7 +28,7 @@ describe('formatByRules', () => {
       }),
     ];
     const formattedText = formatByRules(results);
-    expect(stripAnsi(formattedText)).toMatchInlineSnapshot(`
+    expect(stripVTControlCharacters(formattedText)).toMatchInlineSnapshot(`
       "╔════════╤═══════╤═════════╤════════════╤═════════════════╗
       ║ Rule   │ Error │ Warning │ is fixable │ has suggestions ║
       ╟────────┼───────┼─────────┼────────────┼─────────────────╢
@@ -66,7 +66,7 @@ describe('formatByRules', () => {
         'plugin/rule-c': { docs: { url: 'https://example.com/plugin/rule-c' } },
       },
     });
-    expect(stripAnsi(formattedText)).toMatchInlineSnapshot(`
+    expect(stripVTControlCharacters(formattedText)).toMatchInlineSnapshot(`
       "╔═══════════════╤═══════╤═════════╤════════════╤═════════════════╗
       ║ Rule          │ Error │ Warning │ is fixable │ has suggestions ║
       ╟───────────────┼───────┼─────────┼────────────┼─────────────────╢

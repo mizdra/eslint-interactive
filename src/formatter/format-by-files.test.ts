@@ -1,5 +1,5 @@
+import { stripVTControlCharacters } from 'node:util';
 import { ESLint } from 'eslint';
-import stripAnsi from 'strip-ansi';
 import { describe, expect, test } from 'vitest';
 import { fakeLintResult, fakeLintMessage } from '../test-util/eslint.js';
 import { formatByFiles } from './format-by-files.js';
@@ -23,7 +23,7 @@ describe('formatByFiles', () => {
       }),
     ];
     const formattedText = formatByFiles(results);
-    expect(stripAnsi(formattedText)).toMatchInlineSnapshot(`
+    expect(stripVTControlCharacters(formattedText)).toMatchInlineSnapshot(`
 "- 2 files (1 file passed, 1 file failed) checked.
 - 3 problems (2 errors, 1 warning) found."
 `);

@@ -35,9 +35,6 @@ importers:
       ora:
         specifier: ^7.0.1
         version: 7.0.1
-      strip-ansi:
-        specifier: ^7.1.0
-        version: 7.1.0
       table:
         specifier: ^6.8.1
         version: 6.8.1
