@@ -1,11 +1,8 @@
-import { exec as execOriginal } from 'node:child_process';
+import { spawnSync } from 'node:child_process';
 import { mkdir, appendFile, readFile, access } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { promisify } from 'node:util';
 import { getCacheDir } from './cache.js';
-
-const exec = promisify(execOriginal);
 
 const DEFAULT_EDITOR_COMMAND = 'vi';
 
@@ -19,7 +16,10 @@ export async function editFileWithEditor(filepath: string): Promise<string> {
   await access(filepath).catch(async () => {
     await appendFile(filepath, '', 'utf8');
   });
-  await exec(`${command} ${filepath}`);
+  const { error } = spawnSync(command, [filepath], { stdio: 'inherit' });
+  if (error) {
+    throw error;
+  }
   const newContent = await readFile(filepath, 'utf8');
   return newContent;
 }
