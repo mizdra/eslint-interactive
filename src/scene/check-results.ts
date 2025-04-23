@@ -1,7 +1,7 @@
 import type { ESLint } from 'eslint';
-import { undoingSpinner } from '../cli/ora.js';
 import type { Action } from '../cli/prompt.js';
 import { promptToInputWhatToDoNext } from '../cli/prompt.js';
+import { undoingSpinner } from '../cli/spinner.js';
 import type { Undo } from '../core.js';
 import type { NextScene } from './index.js';
 
