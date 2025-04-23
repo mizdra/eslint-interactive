@@ -1,4 +1,4 @@
-import { CheckResultsArgs } from './check-results.js';
+import type { CheckResultsArgs } from './check-results.js';
 import { selectAction, type SelectActionArgs } from './select-action.js';
 import { selectRuleIds, type SelectRuleIdsArgs } from './select-rule-ids.js';
 

@@ -1,4 +1,4 @@
-import { ESLint, Rule, SourceCode } from 'eslint';
+import type { ESLint, Rule, SourceCode } from 'eslint';
 
 let lastSourceCode: SourceCode | null = null;
 
@@ -14,7 +14,7 @@ export const plugin: ESLint.Plugin = {
      */
     'source-code-snatcher': {
       create(context) {
-        lastSourceCode = context.sourceCode;
+        lastSourceCode = context.sourceCode as SourceCode;
         return {};
       },
     },

@@ -1,5 +1,5 @@
-import { Remote } from 'comlink';
-import { ESLint } from 'eslint';
+import type { Remote } from 'comlink';
+import type { ESLint } from 'eslint';
 import {
   doApplySuggestionsAction,
   doConvertErrorToWarningPerFileAction,
@@ -9,11 +9,12 @@ import {
   doMakeFixableAndFixAction,
   doPrintResultDetailsAction,
 } from '../action/index.js';
-import { Action, promptToInputAction } from '../cli/prompt.js';
-import { SerializableCore } from '../core-worker.js';
-import { Undo } from '../core.js';
+import type { Action } from '../cli/prompt.js';
+import { promptToInputAction } from '../cli/prompt.js';
+import type { Undo } from '../core.js';
+import type { SerializableCore } from '../core-worker.js';
 import { unreachable } from '../util/type-check.js';
-import { NextScene } from './index.js';
+import type { NextScene } from './index.js';
 
 export type SelectActionArgs = {
   /** The lint results of the project */

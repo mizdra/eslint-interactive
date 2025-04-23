@@ -1,9 +1,10 @@
-import { Remote } from 'comlink';
-import { ESLint } from 'eslint';
+import type { Remote } from 'comlink';
+import type { ESLint } from 'eslint';
 import { fixingSpinner } from '../cli/ora.js';
-import { DescriptionPosition, promptToInputDescription, promptToInputDescriptionPosition } from '../cli/prompt.js';
-import { SerializableCore } from '../core-worker.js';
-import { Undo } from '../core.js';
+import type { DescriptionPosition } from '../cli/prompt.js';
+import { promptToInputDescription, promptToInputDescriptionPosition } from '../cli/prompt.js';
+import type { Undo } from '../core.js';
+import type { SerializableCore } from '../core-worker.js';
 
 export async function doDisablePerFileAction(
   core: Remote<SerializableCore>,

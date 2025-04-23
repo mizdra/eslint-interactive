@@ -1,7 +1,8 @@
 import { basename } from 'node:path';
 import { describe, expect, test } from 'vitest';
 import { FixTester } from '../test-util/fix-tester.js';
-import { createFixToApplySuggestions, FixToApplySuggestionsArgs } from './apply-suggestions.js';
+import type { FixToApplySuggestionsArgs } from './apply-suggestions.js';
+import { createFixToApplySuggestions } from './apply-suggestions.js';
 
 const tester = new FixTester<FixToApplySuggestionsArgs>(
   createFixToApplySuggestions,

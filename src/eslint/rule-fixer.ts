@@ -16,7 +16,7 @@
 // Helpers
 // ------------------------------------------------------------------------------
 
-import { AST, Rule } from 'eslint';
+import type { AST, Rule } from 'eslint';
 import type { Node } from 'estree';
 
 /**
@@ -51,7 +51,6 @@ const ruleFixer = Object.freeze({
    * @returns {Object} The fix command.
    */
   insertTextAfter(nodeOrToken: Node | AST.Token, text: string): Rule.Fix {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return this.insertTextAfterRange(nodeOrToken.range!, text);
   },
 
@@ -75,7 +74,6 @@ const ruleFixer = Object.freeze({
    * @returns {Object} The fix command.
    */
   insertTextBefore(nodeOrToken: Node | AST.Token, text: string): Rule.Fix {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return this.insertTextBeforeRange(nodeOrToken.range!, text);
   },
 
@@ -99,7 +97,6 @@ const ruleFixer = Object.freeze({
    * @returns {Object} The fix command.
    */
   replaceText(nodeOrToken: Node | AST.Token, text: string): Rule.Fix {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return this.replaceTextRange(nodeOrToken.range!, text);
   },
 
@@ -125,7 +122,6 @@ const ruleFixer = Object.freeze({
    * @returns {Object} The fix command.
    */
   remove(nodeOrToken: Node | AST.Token): Rule.Fix {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return this.removeRange(nodeOrToken.range!);
   },
 

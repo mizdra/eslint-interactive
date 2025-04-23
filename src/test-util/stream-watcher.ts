@@ -1,4 +1,4 @@
-import { Readable } from 'node:stream';
+import type { Readable } from 'node:stream';
 
 export function createStreamWatcher(stream: Readable, { debug = false } = {}) {
   let allData = '';

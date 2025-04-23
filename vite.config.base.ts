@@ -1,4 +1,4 @@
-import { defineConfig, configDefaults } from 'vitest/config';
+import { configDefaults, defineConfig } from 'vitest/config';
 
 export const baseConfig = defineConfig({
   cacheDir: 'node_modules/.cache/vitest',

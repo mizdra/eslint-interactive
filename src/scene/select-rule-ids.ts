@@ -1,9 +1,9 @@
-import { Remote } from 'comlink';
-import { ESLint } from 'eslint';
+import type { Remote } from 'comlink';
+import type { ESLint } from 'eslint';
 import { promptToInputRuleIds } from '../cli/prompt.js';
-import { SerializableCore } from '../core-worker.js';
+import type { SerializableCore } from '../core-worker.js';
+import type { NextScene } from './index.js';
 import { selectAction } from './select-action.js';
-import { NextScene } from './index.js';
 
 export type SelectRuleIdsArgs = {
   /** The lint results of the project */

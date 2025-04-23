@@ -1,9 +1,10 @@
-import { ESLint } from 'eslint';
-import { cliOptionsDefaults, ParsedCLIOptions } from './cli/parse-argv.js';
-import { FlatESLint } from './eslint/use-at-your-own-risk.js';
-import { DeepPartial } from './util/type-check.js';
+import type { ESLint } from 'eslint';
+import type { ParsedCLIOptions } from './cli/parse-argv.js';
+import { cliOptionsDefaults } from './cli/parse-argv.js';
+import type { DeepPartial } from './util/type-check.js';
+
 type LegacyESLintOptions = { type: 'eslintrc' } & Pick<
-  ESLint.Options,
+  ESLint.LegacyOptions,
   | 'useEslintrc'
   | 'overrideConfigFile'
   | 'extensions'
@@ -17,7 +18,7 @@ type LegacyESLintOptions = { type: 'eslintrc' } & Pick<
   | 'plugins'
 >;
 type FlatESLintOptions = { type: 'flat' } & Pick<
-  FlatESLint.Options,
+  ESLint.Options,
   'overrideConfigFile' | 'cache' | 'cacheLocation' | 'overrideConfig' | 'cwd'
 >;
 

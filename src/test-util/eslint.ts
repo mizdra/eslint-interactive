@@ -1,4 +1,4 @@
-import { Rule, Linter, ESLint } from 'eslint';
+import type { ESLint, Linter, Rule } from 'eslint';
 
 export function fakeFix(arg?: Partial<Rule.Fix>): Rule.Fix {
   return {

@@ -1,4 +1,4 @@
-import { Linter, Rule, SourceCode } from 'eslint';
+import type { Linter, Rule, SourceCode } from 'eslint';
 
 export { verifyAndFix } from '../eslint/linter.js';
 

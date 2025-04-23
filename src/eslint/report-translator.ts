@@ -7,7 +7,7 @@
  */
 
 import assert from 'node:assert';
-import { Rule, SourceCode } from 'eslint';
+import type { Rule, SourceCode } from 'eslint';
 
 /**
  * Clones the given fix object.
@@ -71,9 +71,9 @@ export function mergeFixes(fixes: Rule.Fix[], sourceCode: SourceCode): Rule.Fix 
   fixes.sort(compareFixesByRange);
 
   const originalText = sourceCode.text;
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
   const start = fixes[0]!.range[0];
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
   const end = fixes[fixes.length - 1]!.range[1];
   let text = '';
   let lastPos = Number.MIN_SAFE_INTEGER;

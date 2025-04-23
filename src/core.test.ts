@@ -1,8 +1,10 @@
+// eslint-disable-next-line n/no-unsupported-features/node-builtins -- Allow for testing
 import { constants, cp, readFile } from 'node:fs/promises';
 import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import dedent from 'dedent';
-import { ESLint, Linter } from 'eslint';
+import type { Linter } from 'eslint';
+import { ESLint } from 'eslint';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { Core } from './core.js';
 import { LegacyESLint } from './eslint/use-at-your-own-risk.js';
@@ -209,7 +211,20 @@ describe('Core', () => {
       expect(countWarnings(resultsWithQuiet)).toEqual(0);
     });
   });
-  test('printSummaryOfResults', async () => {
+  test.runIf(!ESLint.version.startsWith('8.'))('printSummaryOfResults in ESLint v9+', async () => {
+    const results = await core.lint();
+    vi.spyOn(LegacyESLint.prototype, 'getRulesMetaForResults').mockImplementationOnce(() => {
+      return {
+        'prefer-const': {
+          docs: {
+            url: 'https://example.com',
+          },
+        },
+      };
+    });
+    expect(core.formatResultSummary(results)).toMatchSnapshot();
+  });
+  test.runIf(ESLint.version.startsWith('8.'))('printSummaryOfResults in ESLint v8', async () => {
     const results = await core.lint();
     vi.spyOn(LegacyESLint.prototype, 'getRulesMetaForResults').mockImplementationOnce(() => {
       return {

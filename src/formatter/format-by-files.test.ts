@@ -1,7 +1,7 @@
 import { stripVTControlCharacters } from 'node:util';
-import { ESLint } from 'eslint';
+import type { ESLint } from 'eslint';
 import { describe, expect, test } from 'vitest';
-import { fakeLintResult, fakeLintMessage } from '../test-util/eslint.js';
+import { fakeLintMessage, fakeLintResult } from '../test-util/eslint.js';
 import { formatByFiles } from './format-by-files.js';
 
 describe('formatByFiles', () => {

@@ -1,4 +1,4 @@
-import { ESLint } from 'eslint';
+import type { ESLint } from 'eslint';
 import { formatByFiles } from './format-by-files.js';
 import { formatByRules } from './format-by-rules.js';
 

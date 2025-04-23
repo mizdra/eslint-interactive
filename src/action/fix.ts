@@ -1,8 +1,8 @@
-import { Remote } from 'comlink';
-import { ESLint } from 'eslint';
+import type { Remote } from 'comlink';
+import type { ESLint } from 'eslint';
 import { fixingSpinner } from '../cli/ora.js';
-import { SerializableCore } from '../core-worker.js';
-import { Undo } from '../core.js';
+import type { Undo } from '../core.js';
+import type { SerializableCore } from '../core-worker.js';
 
 export async function doFixAction(
   core: Remote<SerializableCore>,

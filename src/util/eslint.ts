@@ -1,4 +1,4 @@
-import { AST, ESLint, Linter, Rule, SourceCode } from 'eslint';
+import type { AST, ESLint, Linter, Rule, SourceCode } from 'eslint';
 import type { Comment, SourceLocation } from 'estree';
 import { unique } from './array.js';
 

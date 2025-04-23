@@ -1,16 +1,16 @@
-import { ESLint } from 'eslint';
-import { SourceLocation } from 'estree';
+import type { ESLint } from 'eslint';
+import type { SourceLocation } from 'estree';
 import { describe, expect, test } from 'vitest';
 import { fakeLintMessage, fakeLintResult } from '../test-util/eslint.js';
 import {
-  parseDisableComment,
-  findShebang,
   filterResultsByRuleId,
-  toInlineConfigCommentText,
-  toDisableCommentText,
-  toCommentText,
-  mergeRuleIds,
+  findShebang,
   mergeDescription,
+  mergeRuleIds,
+  parseDisableComment,
+  toCommentText,
+  toDisableCommentText,
+  toInlineConfigCommentText,
 } from './eslint.js';
 
 const range: [number, number] = [0, 1];
