@@ -1,25 +1,22 @@
-import { oraPromise } from 'ora';
+import { createSpinner } from 'nanospinner';
 
 export async function lintingSpinner<T>(cb: () => Promise<T>): Promise<T> {
-  return oraPromise(cb, {
-    text: 'Linting...',
-    spinner: 'clock',
-    successText: 'Linting done.',
-  });
+  const spinner = createSpinner('Linting...').start();
+  const result = await cb();
+  spinner.success();
+  return result;
 }
 
 export async function fixingSpinner<T>(cb: () => Promise<T>): Promise<T> {
-  return oraPromise(cb, {
-    text: 'Fixing...',
-    spinner: 'clock',
-    successText: 'Fixing done.',
-  });
+  const spinner = createSpinner('Fixing...').start();
+  const result = await cb();
+  spinner.success();
+  return result;
 }
 
 export async function undoingSpinner<T>(cb: () => Promise<T>): Promise<T> {
-  return oraPromise(cb, {
-    text: 'Undoing...',
-    spinner: 'timeTravel',
-    successText: 'Undoing done.',
-  });
+  const spinner = createSpinner('Undoing...').start();
+  const result = await cb();
+  spinner.success();
+  return result;
 }

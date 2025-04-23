@@ -54,7 +54,7 @@ test('fix problems with flat config', async () => {
   await streamWatcher.match(/Which action do you want to do\?/);
   child.stdin.write('1'); // Focus on `Run `eslint --fix``
   child.stdin.write(LF); // Confirm the choice
-  await streamWatcher.match(/Fixing done\./);
+  await streamWatcher.match(/What's the next step\?/);
   expect(await readFile(iff.paths['src/index.js'], 'utf-8')).toMatchSnapshot();
   child.stdin.write(ETX); // Exit
 });
