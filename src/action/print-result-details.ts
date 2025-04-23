@@ -2,11 +2,11 @@ import { writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { stripVTControlCharacters } from 'node:util';
 import chalk from 'chalk';
-import { Remote } from 'comlink';
-import { ESLint } from 'eslint';
+import type { Remote } from 'comlink';
+import type { ESLint } from 'eslint';
 import { pager } from '../cli/pager.js';
 import { promptToInputDisplayMode } from '../cli/prompt.js';
-import { SerializableCore } from '../core-worker.js';
+import type { SerializableCore } from '../core-worker.js';
 import { getCacheDir } from '../util/cache.js';
 import { unreachable } from '../util/type-check.js';
 

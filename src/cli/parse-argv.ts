@@ -1,7 +1,7 @@
 import { join, relative } from 'node:path';
 import yargs from 'yargs';
 import { getCacheDir } from '../util/cache.js';
-import { DeepPartial } from '../util/type-check.js';
+import type { DeepPartial } from '../util/type-check.js';
 import { VERSION } from './package.js';
 
 export type ParsedCLIOptions = {

@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import { ESLint } from 'eslint';
+import type { ESLint } from 'eslint';
 import table from 'table';
 import terminalLink from 'terminal-link';
 import { ERROR_COLOR } from './colors.js';

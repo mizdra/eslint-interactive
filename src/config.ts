@@ -1,6 +1,7 @@
 import type { ESLint } from 'eslint';
-import { cliOptionsDefaults, ParsedCLIOptions } from './cli/parse-argv.js';
-import { DeepPartial } from './util/type-check.js';
+import type { ParsedCLIOptions } from './cli/parse-argv.js';
+import { cliOptionsDefaults } from './cli/parse-argv.js';
+import type { DeepPartial } from './util/type-check.js';
 
 type LegacyESLintOptions = { type: 'eslintrc' } & Pick<
   ESLint.LegacyOptions,

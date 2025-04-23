@@ -1,8 +1,8 @@
-import { Rule, Linter } from 'eslint';
+import type { Linter, Rule } from 'eslint';
 import { unique } from '../util/array.js';
 import { findShebang, toInlineConfigCommentText } from '../util/eslint.js';
 import { notEmpty } from '../util/type-check.js';
-import { FixContext } from './index.js';
+import type { FixContext } from './index.js';
 
 export type FixToConvertErrorToWarningPerFileArgs = {
   description?: string | undefined;

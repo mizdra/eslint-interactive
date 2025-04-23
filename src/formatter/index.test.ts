@@ -1,6 +1,6 @@
-import { ESLint } from 'eslint';
+import type { ESLint } from 'eslint';
 import { describe, expect, test } from 'vitest';
-import { fakeLintResult, fakeLintMessage } from '../test-util/eslint.js';
+import { fakeLintMessage, fakeLintResult } from '../test-util/eslint.js';
 import { format } from './index.js';
 
 describe('format', () => {

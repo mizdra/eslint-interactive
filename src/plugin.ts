@@ -1,4 +1,4 @@
-import { ESLint, Rule, SourceCode } from 'eslint';
+import type { ESLint, Rule, SourceCode } from 'eslint';
 
 let lastSourceCode: SourceCode | null = null;
 

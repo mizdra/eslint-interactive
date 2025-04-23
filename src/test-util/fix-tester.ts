@@ -1,7 +1,7 @@
-import { Linter, Rule } from 'eslint';
+import type { Linter, Rule } from 'eslint';
 import { verifyAndFix } from '../eslint/linter.js';
 import { LegacyESLint } from '../eslint/use-at-your-own-risk.js';
-import { FixContext } from '../fix/index.js';
+import type { FixContext } from '../fix/index.js';
 import { plugin } from '../plugin.js';
 
 const DEFAULT_FILENAME = 'test.js';

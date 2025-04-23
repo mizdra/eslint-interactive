@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 
 import enquirer from 'enquirer';
-import { ESLint } from 'eslint';
+import type { ESLint } from 'eslint';
 import { takeRuleStatistics } from '../formatter/index.js';
 
 const { prompt } = enquirer;

@@ -1,8 +1,8 @@
-import { Linter, Rule, SourceCode } from 'eslint';
+import type { Linter, Rule, SourceCode } from 'eslint';
 import { traverse } from 'estraverse';
 import type { Node } from 'estree';
 import { unreachable } from '../util/type-check.js';
-import { FixContext } from './index.js';
+import type { FixContext } from './index.js';
 
 export type FixableMaker = (
   message: Linter.LintMessage,

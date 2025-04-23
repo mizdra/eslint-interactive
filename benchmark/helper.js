@@ -1,8 +1,8 @@
 // @ts-check
 
-import { mkdir, writeFile, rm, appendFile } from 'fs/promises';
-import { dirname, join } from 'path';
-import { fileURLToPath } from 'url';
+import { appendFile,mkdir, rm, writeFile } from 'node:fs/promises';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { Core } from '../dist/core.js';
 
 /** @typedef {{ label: string, source: string, amount: number }} Case */

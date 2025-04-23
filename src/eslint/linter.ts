@@ -7,12 +7,12 @@
  * @author aladdin-add
  */
 
-import { Rule } from 'eslint';
-import { FixContext } from '../fix/index.js';
+import type { Rule } from 'eslint';
+import type { FixContext } from '../fix/index.js';
 import { getLastSourceCode } from '../plugin.js';
 import { ruleFixer } from './rule-fixer.js';
 import { SourceCodeFixer } from './source-code-fixer.js';
-import { FlatESLint, LegacyESLint } from './use-at-your-own-risk.js';
+import type { FlatESLint, LegacyESLint } from './use-at-your-own-risk.js';
 
 const MAX_AUTOFIX_PASSES = 10;
 
@@ -25,7 +25,7 @@ type FixedResult = {
  * Performs multiple autofix passes over the text until as many fixes as possible have been applied.
  * @param linter
  */
-// eslint-disable-next-line max-params
+
 export async function verifyAndFix(
   eslint: InstanceType<typeof FlatESLint> | InstanceType<typeof LegacyESLint>,
   text: string,

@@ -1,6 +1,7 @@
 import { describe, expect, test } from 'vitest';
 import { FixTester } from '../test-util/fix-tester.js';
-import { createFixToMakeFixableAndFix, FixToMakeFixableAndFixArgs } from './make-fixable-and-fix.js';
+import type { FixToMakeFixableAndFixArgs } from './make-fixable-and-fix.js';
+import { createFixToMakeFixableAndFix } from './make-fixable-and-fix.js';
 
 const tester = new FixTester<FixToMakeFixableAndFixArgs>(
   createFixToMakeFixableAndFix,

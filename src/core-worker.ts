@@ -1,10 +1,10 @@
 import { parentPort } from 'node:worker_threads';
 import { expose, proxy } from 'comlink';
 import nodeEndpoint from 'comlink/dist/esm/node-adapter.mjs';
-import { ESLint } from 'eslint';
-import { Config } from './config.js';
+import type { ESLint } from 'eslint';
+import type { Config } from './config.js';
 import { Core } from './core.js';
-import { FixableMaker, SuggestionFilter } from './fix/index.js';
+import type { FixableMaker, SuggestionFilter } from './fix/index.js';
 
 /**
  * @file This is a wrapper module for using the Core API with comlink.

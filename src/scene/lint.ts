@@ -1,10 +1,10 @@
-import { Remote } from 'comlink';
+import type { Remote } from 'comlink';
 import { warn } from '../cli/log.js';
 import { lintingSpinner } from '../cli/ora.js';
-import { SerializableCore } from '../core-worker.js';
+import type { SerializableCore } from '../core-worker.js';
 import { unique } from '../util/array.js';
 import { notEmpty } from '../util/type-check.js';
-import { NextScene } from './index.js';
+import type { NextScene } from './index.js';
 
 /**
  * Run the scene to lint.

@@ -1,11 +1,11 @@
 import { access, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname } from 'node:path';
-import { Remote } from 'comlink';
-import { ESLint } from 'eslint';
+import type { Remote } from 'comlink';
+import type { ESLint } from 'eslint';
 import { fixingSpinner } from '../cli/ora.js';
 import { promptToInputReuseScript } from '../cli/prompt.js';
-import { SerializableCore } from '../core-worker.js';
-import { Undo } from '../core.js';
+import type { Undo } from '../core.js';
+import type { SerializableCore } from '../core-worker.js';
 import {
   editFileWithEditor,
   generateExampleFixableMakerScriptFilePath,

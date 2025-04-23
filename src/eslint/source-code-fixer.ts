@@ -11,7 +11,7 @@
 // Requirements
 // ------------------------------------------------------------------------------
 
-import { Linter } from 'eslint';
+import type { Linter } from 'eslint';
 const debug = (..._args: unknown[]) => {};
 // const debug = require('debug')('eslint:source-code-fixer');
 

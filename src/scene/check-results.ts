@@ -1,8 +1,9 @@
-import { ESLint } from 'eslint';
+import type { ESLint } from 'eslint';
 import { undoingSpinner } from '../cli/ora.js';
-import { Action, promptToInputWhatToDoNext } from '../cli/prompt.js';
-import { Undo } from '../core.js';
-import { NextScene } from './index.js';
+import type { Action } from '../cli/prompt.js';
+import { promptToInputWhatToDoNext } from '../cli/prompt.js';
+import type { Undo } from '../core.js';
+import type { NextScene } from './index.js';
 
 export type CheckResultsArgs = {
   /** The lint results of the project */

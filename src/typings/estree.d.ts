@@ -1,5 +1,5 @@
 declare module 'estree' {
-  import { BaseNode, BaseExpression } from 'estree';
+  import type { BaseExpression, BaseNode } from 'estree';
   interface JSXText extends BaseNode, BaseExpression {
     type: 'JSXText';
   }

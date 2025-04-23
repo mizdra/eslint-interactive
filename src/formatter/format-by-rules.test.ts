@@ -1,8 +1,7 @@
-/* eslint-disable no-irregular-whitespace */
 import { stripVTControlCharacters } from 'node:util';
-import { ESLint } from 'eslint';
+import type { ESLint } from 'eslint';
 import { describe, expect, test } from 'vitest';
-import { fakeLintResult, fakeLintMessage, fakeFix, fakeSuggestions } from '../test-util/eslint.js';
+import { fakeFix, fakeLintMessage, fakeLintResult, fakeSuggestions } from '../test-util/eslint.js';
 import { formatByRules } from './format-by-rules.js';
 
 describe('formatByRules', () => {

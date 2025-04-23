@@ -1,7 +1,7 @@
-import { ESLint } from 'eslint';
+import type { ESLint } from 'eslint';
 import { describe, expect, test } from 'vitest';
-import { fakeLintResult, fakeLintMessage, fakeFix, fakeSuggestions } from '../test-util/eslint.js';
-import { takeRuleStatistics, type RuleStatistic } from './take-rule-statistics.js';
+import { fakeFix, fakeLintMessage, fakeLintResult, fakeSuggestions } from '../test-util/eslint.js';
+import { type RuleStatistic, takeRuleStatistics } from './take-rule-statistics.js';
 
 describe('takeRuleStatistics', () => {
   test('aggregates errors and warnings for each rule', () => {

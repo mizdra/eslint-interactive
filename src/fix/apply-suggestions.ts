@@ -1,5 +1,5 @@
-import { Linter, Rule } from 'eslint';
-import { FixContext } from './index.js';
+import type { Linter, Rule } from 'eslint';
+import type { FixContext } from './index.js';
 
 export type SuggestionFilter = (
   suggestions: Linter.LintSuggestion[],

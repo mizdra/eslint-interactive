@@ -1,6 +1,6 @@
-import { join, dirname } from 'path';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { createFixtures } from './helper.js';
-import { fileURLToPath } from 'url';
 
 const __dirname = join(dirname(fileURLToPath(import.meta.url)));
 

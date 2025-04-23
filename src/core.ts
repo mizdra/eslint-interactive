@@ -1,8 +1,10 @@
 import { writeFile } from 'node:fs/promises';
-import { ESLint, Rule } from 'eslint';
-import { DescriptionPosition } from './cli/prompt.js';
-import { Config, NormalizedConfig, normalizeConfig } from './config.js';
-import { LegacyESLint, FlatESLint } from './eslint/use-at-your-own-risk.js';
+import type { ESLint, Rule } from 'eslint';
+import type { DescriptionPosition } from './cli/prompt.js';
+import type { Config, NormalizedConfig } from './config.js';
+import { normalizeConfig } from './config.js';
+import { FlatESLint, LegacyESLint } from './eslint/use-at-your-own-risk.js';
+import type { FixableMaker, FixContext, SuggestionFilter } from './fix/index.js';
 import {
   createFixToApplyAutoFixes,
   createFixToApplySuggestions,
@@ -10,9 +12,6 @@ import {
   createFixToDisablePerFile,
   createFixToDisablePerLine,
   createFixToMakeFixableAndFix,
-  FixableMaker,
-  SuggestionFilter,
-  FixContext,
   verifyAndFix,
 } from './fix/index.js';
 import { format } from './formatter/index.js';
@@ -212,7 +211,7 @@ export class Core {
 
       // Write the fixed source code to the file
       if (fixedResult.fixed) {
-        // eslint-disable-next-line no-await-in-loop, @typescript-eslint/no-non-null-assertion
+        // eslint-disable-next-line no-await-in-loop
         await writeFile(filePath, fixedResult.output);
       }
     }
