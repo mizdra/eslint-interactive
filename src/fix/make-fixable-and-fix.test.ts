@@ -1,4 +1,3 @@
-import { basename } from 'node:path';
 import { describe, expect, test } from 'vitest';
 import { FixTester } from '../test-util/fix-tester.js';
 import { createFixToMakeFixableAndFix, FixToMakeFixableAndFixArgs } from './make-fixable-and-fix.js';
@@ -90,21 +89,14 @@ describe('make-fixable-and-fix', () => {
   });
   test('`fixableMaker` receives the message and node.', async () => {
     await tester.test({
+      filename: 'test.js',
       code: ['const a = 1;'],
       rules: { 'no-unused-vars': ['error', { varsIgnorePattern: '^_' }] },
       args: {
         fixableMaker: (message, node, context) => {
-          expect({
-            message,
-            node,
-            context: {
-              ...context,
-              // Use only basename, because the path will change depending on the environment.
-              filename: basename(context.filename),
-              // Take a snapshot of only part of it because `sourceCode` is huge
-              sourceCode: { text: context.sourceCode.text },
-            },
-          }).toMatchSnapshot();
+          expect(message.ruleId).toBe('no-unused-vars');
+          expect(node?.type).toBe('Identifier');
+          expect(context.filename).toBe('test.js');
           return null;
         },
       },

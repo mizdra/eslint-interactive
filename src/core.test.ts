@@ -209,7 +209,20 @@ describe('Core', () => {
       expect(countWarnings(resultsWithQuiet)).toEqual(0);
     });
   });
-  test('printSummaryOfResults', async () => {
+  test.runIf(!ESLint.version.startsWith('8.'))('printSummaryOfResults in ESLint v9+', async () => {
+    const results = await core.lint();
+    vi.spyOn(LegacyESLint.prototype, 'getRulesMetaForResults').mockImplementationOnce(() => {
+      return {
+        'prefer-const': {
+          docs: {
+            url: 'https://example.com',
+          },
+        },
+      };
+    });
+    expect(core.formatResultSummary(results)).toMatchSnapshot();
+  });
+  test.runIf(ESLint.version.startsWith('8.'))('printSummaryOfResults in ESLint v8', async () => {
     const results = await core.lint();
     vi.spyOn(LegacyESLint.prototype, 'getRulesMetaForResults').mockImplementationOnce(() => {
       return {
