@@ -12,6 +12,8 @@ export default [
     files: ['**/*.{js,jsx,mjs,cjs}', '**/*.{ts,tsx,cts,mts}'],
     rules: {
       'no-console': 'off',
+      // template literal を積極的に使っても読みやすくなるとは限らないので off
+      'prefer-template': 'off',
       // 子ディレクトリ  (実際には孫など子以降を含む) のモジュールの import を禁止する
       'no-restricted-imports': [
         'error',
