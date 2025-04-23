@@ -10,8 +10,8 @@ import { parseArgv } from '../cli/parse-argv.js';
 import { translateCLIOptions } from '../config.js';
 import type { SerializableCore } from '../core-worker.js';
 import { shouldUseFlatConfig } from '../eslint/use-at-your-own-risk.js';
-import type { NextScene} from '../scene/index.js';
-import { checkResults, lint,selectAction, selectRuleIds } from '../scene/index.js';
+import type { NextScene } from '../scene/index.js';
+import { checkResults, lint, selectAction, selectRuleIds } from '../scene/index.js';
 
 export type Options = {
   argv: string[];
@@ -29,6 +29,7 @@ export async function run(options: Options) {
     );
   }
   const parsedCLIOptions = parseArgv(options.argv);
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
   const usingFlatConfig = await shouldUseFlatConfig();
   const config = translateCLIOptions(parsedCLIOptions, usingFlatConfig ? 'flat' : 'eslintrc');
 

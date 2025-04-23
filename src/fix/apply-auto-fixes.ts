@@ -2,7 +2,7 @@ import type { Rule } from 'eslint';
 import { notEmpty } from '../util/type-check.js';
 import type { FixContext } from './index.js';
 
-// eslint-disable-next-line @typescript-eslint/ban-types
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export type FixToApplyAutoFixesArgs = {};
 
 /**

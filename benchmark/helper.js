@@ -1,9 +1,7 @@
 // @ts-check
 
-import { appendFile,mkdir, rm, writeFile } from 'node:fs/promises';
-import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { Core } from '../dist/core.js';
+import { mkdir, rm, writeFile } from 'node:fs/promises';
+import { join } from 'node:path';
 
 /** @typedef {{ label: string, source: string, amount: number }} Case */
 
@@ -31,7 +29,7 @@ export async function createFixtures(fixturesDirPath, cases) {
 }
 
 /**
- * @param {Core} core
+ * @param {import('../dist/core.js').Core} core
  */
 export async function runAllFixes(core) {
   const results = await core.lint();

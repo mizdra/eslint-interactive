@@ -18,6 +18,7 @@ export type FixToMakeFixableAndFixArgs = {
  * Check the node is the source of the message.
  */
 function isMessageSourceNode(sourceCode: SourceCode, node: Node, message: Linter.LintMessage): boolean {
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- TODO: Do not use `nodeType` in the future.
   if (message.nodeType === undefined) return false;
 
   // In some cases there may be no `endLine` or `endColumn`.
@@ -35,6 +36,7 @@ function isMessageSourceNode(sourceCode: SourceCode, node: Node, message: Linter
     // NOTE: `column` of `ESLint.LintMessage` is 1-based, but `column` of `ESTree.Position` is 0-based.
     column: message.endColumn - 1,
   });
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- TODO: Do not use `nodeType` in the future.
   const nodeType = message.nodeType;
 
   return node.range[0] === index && node.range[1] === endIndex && node.type === nodeType;
