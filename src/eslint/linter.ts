@@ -7,11 +7,12 @@
  * @author aladdin-add
  */
 
-import { ESLint, Rule } from 'eslint';
+import { Rule } from 'eslint';
 import { FixContext } from '../fix/index.js';
 import { getLastSourceCode } from '../plugin.js';
 import { ruleFixer } from './rule-fixer.js';
 import { SourceCodeFixer } from './source-code-fixer.js';
+import { FlatESLint, LegacyESLint } from './use-at-your-own-risk.js';
 
 const MAX_AUTOFIX_PASSES = 10;
 
@@ -26,7 +27,7 @@ type FixedResult = {
  */
 // eslint-disable-next-line max-params
 export async function verifyAndFix(
-  eslint: ESLint,
+  eslint: InstanceType<typeof FlatESLint> | InstanceType<typeof LegacyESLint>,
   text: string,
   filePath: string,
   ruleIds: string[],

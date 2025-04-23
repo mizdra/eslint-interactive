@@ -39,7 +39,7 @@ export type Undo = () => Promise<void>;
  */
 export class Core {
   readonly config: NormalizedConfig;
-  readonly eslint: ESLint;
+  readonly eslint: InstanceType<typeof FlatESLint> | InstanceType<typeof LegacyESLint>;
 
   constructor(config: Config) {
     this.config = normalizeConfig(config);

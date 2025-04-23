@@ -36,11 +36,11 @@ type TestResult = string | null;
 export class FixTester<FixArgs> {
   private fixCreator: (context: FixContext, args: FixArgs) => Rule.Fix[];
   private defaultFixArgs: FixArgs;
-  private defaultLinterConfig: Linter.Config;
+  private defaultLinterConfig: Linter.LegacyConfig;
   constructor(
     fixCreator: (context: FixContext, args: FixArgs) => Rule.Fix[],
     defaultFixArgs: FixArgs,
-    defaultLinterConfig: Linter.Config,
+    defaultLinterConfig: Linter.LegacyConfig,
   ) {
     this.fixCreator = fixCreator;
     this.defaultFixArgs = defaultFixArgs;
