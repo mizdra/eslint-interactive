@@ -13,7 +13,7 @@ permissions:
   contents: write
 
 env:
-  VALGRIND_VERSION: '1:3.18.1-1ubuntu2'
+  VALGRIND_VERSION: '1:3.22.0-0ubuntu3'
 
 jobs:
   benchmark:
