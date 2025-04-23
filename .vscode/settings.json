@@ -16,9 +16,6 @@
     "benchmark/fixtures": true,
     "fixtures-tmp": true
   },
-  "eslint.options": {
-    "rulePaths": ["fixtures/rules"]
-  },
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
