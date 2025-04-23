@@ -14,7 +14,7 @@ export const plugin: ESLint.Plugin = {
      */
     'source-code-snatcher': {
       create(context) {
-        lastSourceCode = context.sourceCode;
+        lastSourceCode = context.sourceCode as SourceCode;
         return {};
       },
     },
