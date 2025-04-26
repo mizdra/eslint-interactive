@@ -359,4 +359,68 @@ describe('Core', () => {
     await core.disablePerLine(results, ['test/ban-nullish-coalescing-operator']);
     expect(await readFile(iff.paths['src/ban-nullish-coalescing-operator.js'], 'utf-8')).toMatchSnapshot();
   });
+  test('unstable-config-lookup-from-file', async () => {
+    const iff = await createIFF({
+      'eslint.config.js': dedent`export default [{}]`,
+      'eslint.base.config.js': dedent`
+        export default { 
+            files: ['**/*.js'],
+            languageOptions: {
+              sourceType: 'module',
+              ecmaVersion: 2020,
+            },
+            rules: { 'prefer-const': 'error' } 
+        };
+      `,
+
+      // createIFF doesn't support recursive directory creation
+      'packages/touch': '',
+
+      // Should be corrected due to the base config rule
+      'packages/a/src/let.js': 'let a = 1;',
+      // Should be ignored
+      'packages/a/src/console.js': 'console.log();',
+      'packages/a/eslint.config.js': dedent`
+        import baseConfig from "../../eslint.base.config.js";
+        export default [baseConfig];
+      `,
+
+      // Should be corrected due to the base config rule
+      'packages/b/src/let.js': 'let b = 1;',
+      // Should be corrected due to the directory config rule
+      'packages/b/src/console.js': 'console.log();',
+      'packages/b/eslint.config.js': dedent`
+        import baseConfig from "../../eslint.base.config.js";
+        export default [
+          baseConfig,
+          { rules: { 'no-console': 'error' } },
+        ];
+      `,
+
+      // Should be ignored
+      'packages/c/src/let.js': 'let c = 1;',
+      // Should be corrected due to the directory config rule
+      'packages/c/src/console.js': 'console.log();',
+      'packages/c/eslint.config.js': dedent`
+        export default [
+          { rules: { 'no-console': 'error' } }
+        ];
+      `,
+
+      'package.json': '{ "type": "module" }',
+    });
+
+    const core = new Core({
+      patterns: ['./packages'],
+      cwd: iff.rootDir,
+      eslintOptions: {
+        type: 'flat',
+        flags: ['unstable_config_lookup_from_file'],
+      },
+    });
+
+    const results = await core.lint();
+    expect(results.length).toEqual(9);
+    expect(normalizeResults(results, iff.rootDir)).toMatchSnapshot();
+  });
 });

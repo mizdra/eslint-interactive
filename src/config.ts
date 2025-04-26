@@ -19,7 +19,7 @@ type LegacyESLintOptions = { type: 'eslintrc' } & Pick<
 >;
 type FlatESLintOptions = { type: 'flat' } & Pick<
   ESLint.Options,
-  'overrideConfigFile' | 'cache' | 'cacheLocation' | 'overrideConfig' | 'cwd'
+  'overrideConfigFile' | 'cache' | 'cacheLocation' | 'overrideConfig' | 'cwd' | 'flags'
 >;
 
 export type ESLintOptions = LegacyESLintOptions | FlatESLintOptions;
@@ -31,6 +31,7 @@ export type Config = {
   quiet?: boolean | undefined;
   cwd?: string | undefined;
   eslintOptions: ESLintOptions;
+  flags?: string[] | undefined;
 };
 
 type ESLintOptionsType = 'eslintrc' | 'flat';
@@ -85,6 +86,7 @@ export const configDefaults = {
     cacheLocation: cliOptionsDefaults.cacheLocation,
     overrideConfig: undefined,
     resolvePluginsRelativeTo: undefined,
+    flags: undefined,
   },
 } satisfies DeepPartial<Config>;
 
@@ -123,6 +125,7 @@ export function normalizeConfig(config: Config): NormalizedConfig {
       cacheLocation: config.eslintOptions.cacheLocation ?? configDefaults.eslintOptions.cacheLocation,
       overrideConfig: config.eslintOptions.overrideConfig ?? configDefaults.eslintOptions.overrideConfig,
       cwd,
+      flags: config.eslintOptions.flags ?? configDefaults.eslintOptions.flags,
     };
   }
   return {

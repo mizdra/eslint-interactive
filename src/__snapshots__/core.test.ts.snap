@@ -327,3 +327,82 @@ exports[`Core > printSummaryOfResults in ESLint v9+ 1`] = `
 ╚══════════════════════════════════════╧═══════╧═════════╧════════════╧═════════════════╝
 "
 `;
+
+exports[`Core > unstable-config-lookup-from-file 1`] = `
+[
+  {
+    "errorCount": 0,
+    "filePath": "<fixture>/packages/a/eslint.config.js",
+    "messages": [],
+    "warningCount": 0,
+  },
+  {
+    "errorCount": 0,
+    "filePath": "<fixture>/packages/a/src/console.js",
+    "messages": [],
+    "warningCount": 0,
+  },
+  {
+    "errorCount": 1,
+    "filePath": "<fixture>/packages/a/src/let.js",
+    "messages": [
+      {
+        "ruleId": "prefer-const",
+        "severity": 2,
+      },
+    ],
+    "warningCount": 0,
+  },
+  {
+    "errorCount": 0,
+    "filePath": "<fixture>/packages/b/eslint.config.js",
+    "messages": [],
+    "warningCount": 0,
+  },
+  {
+    "errorCount": 1,
+    "filePath": "<fixture>/packages/b/src/console.js",
+    "messages": [
+      {
+        "ruleId": "no-console",
+        "severity": 2,
+      },
+    ],
+    "warningCount": 0,
+  },
+  {
+    "errorCount": 1,
+    "filePath": "<fixture>/packages/b/src/let.js",
+    "messages": [
+      {
+        "ruleId": "prefer-const",
+        "severity": 2,
+      },
+    ],
+    "warningCount": 0,
+  },
+  {
+    "errorCount": 0,
+    "filePath": "<fixture>/packages/c/eslint.config.js",
+    "messages": [],
+    "warningCount": 0,
+  },
+  {
+    "errorCount": 1,
+    "filePath": "<fixture>/packages/c/src/console.js",
+    "messages": [
+      {
+        "ruleId": "no-console",
+        "severity": 2,
+      },
+    ],
+    "warningCount": 0,
+  },
+  {
+    "errorCount": 0,
+    "filePath": "<fixture>/packages/c/src/let.js",
+    "messages": [],
+    "warningCount": 0,
+  },
+]
+`;
