@@ -64,6 +64,7 @@ export function translateCLIOptions(options: ParsedCLIOptions, eslintOptionsType
         overrideConfigFile: options.overrideConfigFile,
         cache: options.cache,
         cacheLocation: options.cacheLocation,
+        flags: options.flags,
       },
     };
   } else {

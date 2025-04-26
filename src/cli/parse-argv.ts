@@ -16,6 +16,7 @@ export type ParsedCLIOptions = {
   cache: boolean | undefined;
   cacheLocation: string | undefined;
   resolvePluginsRelativeTo: string | undefined;
+  flags: string[] | undefined;
 };
 
 /** Default CLI Options */
@@ -42,6 +43,7 @@ export function parseArgv(argv: string[]): ParsedCLIOptions {
     'cache-location': { type: 'string', default: cliOptionsDefaults.cacheLocation },
     'version': { type: 'boolean' },
     'help': { type: 'boolean' },
+    'flag': { type: 'string', multiple: true },
   } as const;
 
   const { values, positionals } = parseArgs({
@@ -75,6 +77,7 @@ Options:
       --quiet                        Report errors only                                                           [boolean] [default: false]
       --cache                        Only check changed files                                                      [boolean] [default: true]
       --cache-location               Path to the cache file or directory
+      --flag                         ESLint experimental flags
 
 Examples:
   eslint-interactive ./src                                           Lint ./src/ directory
@@ -105,5 +108,6 @@ Examples:
     cache: values.cache,
     cacheLocation: values['cache-location'],
     resolvePluginsRelativeTo: values['resolve-plugins-relative-to'],
+    flags: values.flag,
   };
 }
