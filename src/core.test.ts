@@ -359,47 +359,42 @@ describe('Core', () => {
     await core.disablePerLine(results, ['test/ban-nullish-coalescing-operator']);
     expect(await readFile(iff.paths['src/ban-nullish-coalescing-operator.js'], 'utf-8')).toMatchSnapshot();
   });
-  test('unstable-config-lookup-from-file', async () => {
+
+  test('supports unstable_config_lookup_from_file flag', async () => {
     const iff = await createIFF({
       'eslint.config.js': dedent`export default [{}]`,
       'eslint.base.config.js': dedent`
-        export default { 
-            files: ['**/*.js'],
-            languageOptions: {
-              sourceType: 'module',
-              ecmaVersion: 2020,
-            },
-            rules: { 'prefer-const': 'error' } 
-        };
+        import { globalIgnores } from "eslint/config";
+        export default [
+          globalIgnores(['eslint.config.js']),
+          {rules: { 'prefer-const': 'error' } },
+        ];
       `,
 
-      // createIFF doesn't support recursive directory creation
-      'packages/touch': '',
-
-      // Should be corrected due to the base config rule
+      // Should be detected due to the base config rule
       'packages/a/src/let.js': 'let a = 1;',
       // Should be ignored
       'packages/a/src/console.js': 'console.log();',
       'packages/a/eslint.config.js': dedent`
         import baseConfig from "../../eslint.base.config.js";
-        export default [baseConfig];
+        export default baseConfig;
       `,
 
-      // Should be corrected due to the base config rule
+      // Should be detected due to the base config rule
       'packages/b/src/let.js': 'let b = 1;',
-      // Should be corrected due to the directory config rule
+      // Should be detected due to the directory config rule
       'packages/b/src/console.js': 'console.log();',
       'packages/b/eslint.config.js': dedent`
         import baseConfig from "../../eslint.base.config.js";
         export default [
-          baseConfig,
+          ...baseConfig,
           { rules: { 'no-console': 'error' } },
         ];
       `,
 
       // Should be ignored
       'packages/c/src/let.js': 'let c = 1;',
-      // Should be corrected due to the directory config rule
+      // Should be detected due to the directory config rule
       'packages/c/src/console.js': 'console.log();',
       'packages/c/eslint.config.js': dedent`
         export default [
@@ -420,7 +415,6 @@ describe('Core', () => {
     });
 
     const results = await core.lint();
-    expect(results.length).toEqual(9);
     expect(normalizeResults(results, iff.rootDir)).toMatchSnapshot();
   });
 });
