@@ -359,8 +359,7 @@ describe('Core', () => {
     await core.disablePerLine(results, ['test/ban-nullish-coalescing-operator']);
     expect(await readFile(iff.paths['src/ban-nullish-coalescing-operator.js'], 'utf-8')).toMatchSnapshot();
   });
-
-  test('supports unstable_config_lookup_from_file flag', async () => {
+  test.runIf(ESLint.version.startsWith('9.'))('supports unstable_config_lookup_from_file flag', async () => {
     const iff = await createIFF({
       'eslint.config.js': dedent`export default [{}]`,
       'eslint.base.config.js': dedent`
