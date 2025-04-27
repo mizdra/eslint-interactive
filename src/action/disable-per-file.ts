@@ -1,8 +1,8 @@
 import type { Remote } from 'comlink';
 import type { ESLint } from 'eslint';
-import { fixingSpinner } from '../cli/ora.js';
 import type { DescriptionPosition } from '../cli/prompt.js';
 import { promptToInputDescription, promptToInputDescriptionPosition } from '../cli/prompt.js';
+import { fixingSpinner } from '../cli/spinner.js';
 import type { Undo } from '../core.js';
 import type { SerializableCore } from '../core-worker.js';
 
