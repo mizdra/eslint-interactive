@@ -327,3 +327,36 @@ exports[`Core > printSummaryOfResults in ESLint v9+ 1`] = `
 ╚══════════════════════════════════════╧═══════╧═════════╧════════════╧═════════════════╝
 "
 `;
+
+exports[`Core > supports unstable_config_lookup_from_file flag 1`] = `
+[
+  {
+    "errorCount": 0,
+    "filePath": "<fixture>/src/dir/eslint.config.js",
+    "messages": [],
+    "warningCount": 0,
+  },
+  {
+    "errorCount": 1,
+    "filePath": "<fixture>/src/dir/test.js",
+    "messages": [
+      {
+        "ruleId": "no-console",
+        "severity": 2,
+      },
+    ],
+    "warningCount": 0,
+  },
+  {
+    "errorCount": 1,
+    "filePath": "<fixture>/src/test.js",
+    "messages": [
+      {
+        "ruleId": "prefer-const",
+        "severity": 2,
+      },
+    ],
+    "warningCount": 0,
+  },
+]
+`;

@@ -53,4 +53,10 @@ describe('parseArgv', () => {
   test('--cache-location', () => {
     expect(parseArgv([...baseArgs, '--cache-location', '.eslintcache']).cacheLocation).toBe('.eslintcache');
   });
+  test('--flag', () => {
+    expect(parseArgv([...baseArgs, '--flag', 'foo']).flags).toStrictEqual(['foo']);
+    expect(parseArgv([...baseArgs, '--flag', 'foo', '--flag', 'bar']).flags).toStrictEqual(['foo', 'bar']);
+    expect(parseArgv([...baseArgs, '--flag', 'foo', 'bar']).flags).toStrictEqual(['foo']);
+    expect(parseArgv([...baseArgs, '--flag', '1', '--flag', 'true']).flags).toStrictEqual(['1', 'true']);
+  });
 });

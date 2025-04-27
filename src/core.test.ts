@@ -359,4 +359,34 @@ describe('Core', () => {
     await core.disablePerLine(results, ['test/ban-nullish-coalescing-operator']);
     expect(await readFile(iff.paths['src/ban-nullish-coalescing-operator.js'], 'utf-8')).toMatchSnapshot();
   });
+  test.runIf(ESLint.version.startsWith('9.'))('supports unstable_config_lookup_from_file flag', async () => {
+    const iff = await createIFF({
+      'eslint.config.js': dedent`
+        export default [{ rules: { 'prefer-const': 'error' } }];
+      `,
+      'src/test.js': dedent`
+        let a = 1;
+        console.log(a);
+      `,
+      'src/dir/eslint.config.js': dedent`
+        export default [{ rules: { 'no-console': 'error' } }];
+      `,
+      'src/dir/test.js': dedent`
+        let a = 1;
+        console.log(a);
+      `,
+      'package.json': '{ "type": "module" }',
+    });
+    const core = new Core({
+      patterns: ['src'],
+      cwd: iff.rootDir,
+      eslintOptions: {
+        type: 'flat',
+        flags: ['unstable_config_lookup_from_file'],
+      },
+    });
+
+    const results = await core.lint();
+    expect(normalizeResults(results, iff.rootDir)).toMatchSnapshot();
+  });
 });
