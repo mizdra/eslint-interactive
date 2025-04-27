@@ -77,7 +77,7 @@ Options:
       --quiet                        Report errors only                                                             [boolean] [default: false]
       --cache                        Only check changed files                                                        [boolean] [default: true]
       --cache-location               Path to the cache file or directory                                                              [string]
-      --flag                         ESLint experimental feature flags                                                                 [array]
+      --flag                         Enable a feature flag                                                                             [array]
 
 Examples:
   eslint-interactive ./src                                           Lint ./src/ directory
