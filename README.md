@@ -85,6 +85,8 @@ Options:
       --cache                        Only check changed files                                                      [boolean] [default: true]
       --cache-location               Path to the cache file or directory
                                                             [string] [default: "node_modules/.cache/eslint-interactive/10.6.0/.eslintcache"]
+      --flag                         Enable a feature flag                                                                           [array]
+
 
 Examples:
   eslint-interactive ./src                                           Lint ./src/ directory
