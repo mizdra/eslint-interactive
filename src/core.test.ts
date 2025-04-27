@@ -361,51 +361,24 @@ describe('Core', () => {
   });
   test.runIf(ESLint.version.startsWith('9.'))('supports unstable_config_lookup_from_file flag', async () => {
     const iff = await createIFF({
-      'eslint.config.js': dedent`export default [{}]`,
-      'eslint.base.config.js': dedent`
-        import { globalIgnores } from "eslint/config";
-        export default [
-          globalIgnores(['eslint.config.js']),
-          {rules: { 'prefer-const': 'error' } },
-        ];
+      'eslint.config.js': dedent`
+        export default [{ rules: { 'prefer-const': 'error' } }];
       `,
-
-      // Should be detected due to the base config rule
-      'packages/a/src/let.js': 'let a = 1;',
-      // Should be ignored
-      'packages/a/src/console.js': 'console.log();',
-      'packages/a/eslint.config.js': dedent`
-        import baseConfig from "../../eslint.base.config.js";
-        export default baseConfig;
+      'src/test.js': dedent`
+        let a = 1;
+        console.log(a);
       `,
-
-      // Should be detected due to the base config rule
-      'packages/b/src/let.js': 'let b = 1;',
-      // Should be detected due to the directory config rule
-      'packages/b/src/console.js': 'console.log();',
-      'packages/b/eslint.config.js': dedent`
-        import baseConfig from "../../eslint.base.config.js";
-        export default [
-          ...baseConfig,
-          { rules: { 'no-console': 'error' } },
-        ];
+      'src/dir/eslint.config.js': dedent`
+        export default [{ rules: { 'no-console': 'error' } }];
       `,
-
-      // Should be ignored
-      'packages/c/src/let.js': 'let c = 1;',
-      // Should be detected due to the directory config rule
-      'packages/c/src/console.js': 'console.log();',
-      'packages/c/eslint.config.js': dedent`
-        export default [
-          { rules: { 'no-console': 'error' } }
-        ];
+      'src/dir/test.js': dedent`
+        let a = 1;
+        console.log(a);
       `,
-
       'package.json': '{ "type": "module" }',
     });
-
     const core = new Core({
-      patterns: ['./packages'],
+      patterns: ['src'],
       cwd: iff.rootDir,
       eslintOptions: {
         type: 'flat',

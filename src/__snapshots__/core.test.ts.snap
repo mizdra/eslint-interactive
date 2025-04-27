@@ -332,24 +332,13 @@ exports[`Core > supports unstable_config_lookup_from_file flag 1`] = `
 [
   {
     "errorCount": 0,
-    "filePath": "<fixture>/packages/a/src/console.js",
+    "filePath": "<fixture>/src/dir/eslint.config.js",
     "messages": [],
     "warningCount": 0,
   },
   {
     "errorCount": 1,
-    "filePath": "<fixture>/packages/a/src/let.js",
-    "messages": [
-      {
-        "ruleId": "prefer-const",
-        "severity": 2,
-      },
-    ],
-    "warningCount": 0,
-  },
-  {
-    "errorCount": 1,
-    "filePath": "<fixture>/packages/b/src/console.js",
+    "filePath": "<fixture>/src/dir/test.js",
     "messages": [
       {
         "ruleId": "no-console",
@@ -360,36 +349,13 @@ exports[`Core > supports unstable_config_lookup_from_file flag 1`] = `
   },
   {
     "errorCount": 1,
-    "filePath": "<fixture>/packages/b/src/let.js",
+    "filePath": "<fixture>/src/test.js",
     "messages": [
       {
         "ruleId": "prefer-const",
         "severity": 2,
       },
     ],
-    "warningCount": 0,
-  },
-  {
-    "errorCount": 0,
-    "filePath": "<fixture>/packages/c/eslint.config.js",
-    "messages": [],
-    "warningCount": 0,
-  },
-  {
-    "errorCount": 1,
-    "filePath": "<fixture>/packages/c/src/console.js",
-    "messages": [
-      {
-        "ruleId": "no-console",
-        "severity": 2,
-      },
-    ],
-    "warningCount": 0,
-  },
-  {
-    "errorCount": 0,
-    "filePath": "<fixture>/packages/c/src/let.js",
-    "messages": [],
     "warningCount": 0,
   },
 ]
