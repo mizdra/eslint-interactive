@@ -64,7 +64,8 @@ export function translateCLIOptions(options: ParsedCLIOptions, eslintOptionsType
         overrideConfigFile: options.overrideConfigFile,
         cache: options.cache,
         cacheLocation: options.cacheLocation,
-        flags: options.flags,
+        // Pass flags conditionally to avoid errors in ESLint v8
+        ...(options.flags && options.flags.length > 0 ? { flags: options.flags } : {}),
       },
     };
   } else {
@@ -87,7 +88,6 @@ export const configDefaults = {
     cacheLocation: cliOptionsDefaults.cacheLocation,
     overrideConfig: undefined,
     resolvePluginsRelativeTo: undefined,
-    flags: undefined,
   },
 } satisfies DeepPartial<Config>;
 
@@ -126,7 +126,10 @@ export function normalizeConfig(config: Config): NormalizedConfig {
       cacheLocation: config.eslintOptions.cacheLocation ?? configDefaults.eslintOptions.cacheLocation,
       overrideConfig: config.eslintOptions.overrideConfig ?? configDefaults.eslintOptions.overrideConfig,
       cwd,
-      flags: config.eslintOptions.flags ?? configDefaults.eslintOptions.flags,
+      // Pass flags conditionally to avoid errors in ESLint v8
+      ...(config.eslintOptions.flags && config.eslintOptions.flags.length > 0 ?
+        { flags: config.eslintOptions.flags }
+      : {}),
     };
   }
   return {
