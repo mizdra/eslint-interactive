@@ -1,4 +1,3 @@
-// eslint-disable-next-line n/no-unsupported-features/node-builtins -- Ignore Node.js v21
 import { styleText } from 'node:util';
 import type { ESLint } from 'eslint';
 import table from 'table';
