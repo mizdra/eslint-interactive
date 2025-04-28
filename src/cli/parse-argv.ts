@@ -24,7 +24,7 @@ export const cliOptionsDefaults = {
   formatterName: 'stylish',
   quiet: false,
   useEslintrc: true,
-  cache: true,
+  cache: false,
   cacheLocation: relative(process.cwd(), join(getCacheDir(), '.eslintcache')),
 } satisfies DeepPartial<ParsedCLIOptions>;
 
@@ -75,7 +75,7 @@ Options:
       --ignore-path                  Specify path of ignore file                                                                      [string]
       --format                       Specify the format to be used for the \`Display problem messages\` action [string] [default: "codeframe"]
       --quiet                        Report errors only                                                             [boolean] [default: false]
-      --cache                        Only check changed files                                                        [boolean] [default: true]
+      --cache                        Only check changed files                                                       [boolean] [default: false]
       --cache-location               Path to the cache file or directory                                                              [string]
       --flag                         Enable a feature flag (requires ESLint v9.6.0+)                                                   [array]
 
