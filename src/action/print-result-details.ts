@@ -1,5 +1,6 @@
 import { writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
+// eslint-disable-next-line n/no-unsupported-features/node-builtins -- Ignore Node.js v21
 import { stripVTControlCharacters, styleText } from 'node:util';
 import type { Remote } from 'comlink';
 import type { ESLint } from 'eslint';

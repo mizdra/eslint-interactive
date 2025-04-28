@@ -1,9 +1,10 @@
+// eslint-disable-next-line n/no-unsupported-features/node-builtins -- Ignore Node.js v21
+import { styleText } from 'node:util';
 import type { ESLint } from 'eslint';
 import table from 'table';
 import terminalLink from 'terminal-link';
 import { ERROR_COLOR } from './colors.js';
 import { takeRuleStatistics } from './take-rule-statistics.js';
-import { styleText } from 'node:util';
 
 type Row = [
   ruleCell: string,
