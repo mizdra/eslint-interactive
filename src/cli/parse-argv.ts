@@ -1,6 +1,4 @@
-import { join, relative } from 'node:path';
 import { parseArgs } from 'node:util';
-import { getCacheDir } from '../util/cache.js';
 import type { DeepPartial } from '../util/type-check.js';
 import { VERSION } from './package.js';
 
@@ -24,8 +22,7 @@ export const cliOptionsDefaults = {
   formatterName: 'stylish',
   quiet: false,
   useEslintrc: true,
-  cache: true,
-  cacheLocation: relative(process.cwd(), join(getCacheDir(), '.eslintcache')),
+  cache: false,
 } satisfies DeepPartial<ParsedCLIOptions>;
 
 /** Parse CLI options */
@@ -40,7 +37,7 @@ export function parseArgv(argv: string[]): ParsedCLIOptions {
     'format': { type: 'string', default: cliOptionsDefaults.formatterName },
     'quiet': { type: 'boolean', default: cliOptionsDefaults.quiet },
     'cache': { type: 'boolean', default: cliOptionsDefaults.cache },
-    'cache-location': { type: 'string', default: cliOptionsDefaults.cacheLocation },
+    'cache-location': { type: 'string' },
     'version': { type: 'boolean' },
     'help': { type: 'boolean' },
     'flag': { type: 'string', multiple: true },
@@ -75,7 +72,7 @@ Options:
       --ignore-path                  Specify path of ignore file                                                                      [string]
       --format                       Specify the format to be used for the \`Display problem messages\` action   [string] [default: "stylish"]
       --quiet                        Report errors only                                                             [boolean] [default: false]
-      --cache                        Only check changed files                                                        [boolean] [default: true]
+      --cache                        Only check changed files                                                       [boolean] [default: false]
       --cache-location               Path to the cache file or directory                                                              [string]
       --flag                         Enable a feature flag (requires ESLint v9.6.0+)                                                   [array]
 

@@ -82,9 +82,8 @@ Options:
       --ignore-path                  Specify path of ignore file                                                                    [string]
       --format                       Specify the format to be used for the `Display problem messages` action   [string] [default: "stylish"]
       --quiet                        Report errors only                                                           [boolean] [default: false]
-      --cache                        Only check changed files                                                      [boolean] [default: true]
-      --cache-location               Path to the cache file or directory
-                                                            [string] [default: "node_modules/.cache/eslint-interactive/10.6.0/.eslintcache"]
+      --cache                        Only check changed files                                                     [boolean] [default: false]
+      --cache-location               Path to the cache file or directory                                                            [string]
       --flag                         Enable a feature flag (requires ESLint v9.6.0+)                                                 [array]
 
 
