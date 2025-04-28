@@ -85,7 +85,7 @@ export const configDefaults = {
     rulePaths: undefined,
     ignorePath: undefined,
     cache: cliOptionsDefaults.cache,
-    cacheLocation: cliOptionsDefaults.cacheLocation,
+    cacheLocation: undefined,
     overrideConfig: undefined,
     resolvePluginsRelativeTo: undefined,
   },

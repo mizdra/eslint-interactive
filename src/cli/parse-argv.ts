@@ -1,6 +1,4 @@
-import { join, relative } from 'node:path';
 import { parseArgs } from 'node:util';
-import { getCacheDir } from '../util/cache.js';
 import type { DeepPartial } from '../util/type-check.js';
 import { VERSION } from './package.js';
 
@@ -25,7 +23,6 @@ export const cliOptionsDefaults = {
   quiet: false,
   useEslintrc: true,
   cache: false,
-  cacheLocation: relative(process.cwd(), join(getCacheDir(), '.eslintcache')),
 } satisfies DeepPartial<ParsedCLIOptions>;
 
 /** Parse CLI options */
@@ -40,7 +37,7 @@ export function parseArgv(argv: string[]): ParsedCLIOptions {
     'format': { type: 'string', default: cliOptionsDefaults.formatterName },
     'quiet': { type: 'boolean', default: cliOptionsDefaults.quiet },
     'cache': { type: 'boolean', default: cliOptionsDefaults.cache },
-    'cache-location': { type: 'string', default: cliOptionsDefaults.cacheLocation },
+    'cache-location': { type: 'string' },
     'version': { type: 'boolean' },
     'help': { type: 'boolean' },
     'flag': { type: 'string', multiple: true },
