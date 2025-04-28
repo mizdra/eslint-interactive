@@ -13,8 +13,8 @@ describe('format', () => {
     const data: ESLint.LintResultData = { cwd: '/tmp', rulesMeta: {} };
     const formattedText = format(results, data);
     expect(formattedText).toMatchInlineSnapshot(`
-      "[1m- 1 file (0 file passed, [91m1 file failed[39m) checked.[22m
-      [1m[22m
+      "[1m- 1 file (0 file passed, [91m1 file failed[39m) checked.
+      [22m
       ╔════════╤═══════╤═════════╤════════════╤═════════════════╗
       ║ Rule   │ Error │ Warning │ is fixable │ has suggestions ║
       ╟────────┼───────┼─────────┼────────────┼─────────────────╢
