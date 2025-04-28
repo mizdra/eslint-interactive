@@ -28,8 +28,8 @@ describe('formatByFiles', () => {
 - 3 problems (2 errors, 1 warning) found."
 `);
     expect(formattedText).toMatchInlineSnapshot(`
-"[1m- 2 files (1 file passed, [91m1 file failed[39m) checked.[22m
-[1m- 3 problems ([31m2 errors[39m, [33m1 warning[39m) found.[22m"
-`);
+      "[1m- 2 files (1 file passed, [91m1 file failed[39m) checked.
+      - 3 problems ([31m2 errors[39m, [33m1 warning[39m) found.[22m"
+    `);
   });
 });

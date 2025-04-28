@@ -1,4 +1,5 @@
-import chalk from 'chalk';
+// eslint-disable-next-line n/no-unsupported-features/node-builtins -- Ignore Node.js v21
+import { styleText } from 'node:util';
 import type { ESLint } from 'eslint';
 import { ERROR_COLOR, FAILED_COLOR, WARNING_COLOR } from './colors.js';
 
@@ -32,17 +33,17 @@ export function formatByFiles(results: ESLint.LintResult[]): string {
   summary += ' (';
   summary += `${passCount} ${pluralize('file', passCount)} passed`;
   summary += ', ';
-  summary += chalk[FAILED_COLOR](`${failureCount} ${pluralize('file', failureCount)} failed`);
+  summary += styleText(FAILED_COLOR, `${failureCount} ${pluralize('file', failureCount)} failed`);
   summary += ') checked.\n';
 
   if (problemCount > 0) {
     summary += `- ${problemCount} ${pluralize('problem', problemCount)}`;
     summary += ' (';
-    summary += chalk[ERROR_COLOR](`${errorCount} ${pluralize('error', errorCount)}`);
+    summary += styleText(ERROR_COLOR, `${errorCount} ${pluralize('error', errorCount)}`);
     summary += ', ';
-    summary += chalk[WARNING_COLOR](`${warningCount} ${pluralize('warning', warningCount)}`);
+    summary += styleText(WARNING_COLOR, `${warningCount} ${pluralize('warning', warningCount)}`);
     summary += ') found.';
   }
 
-  return chalk.bold(summary);
+  return styleText('bold', summary);
 }

@@ -1,4 +1,5 @@
-import chalk from 'chalk';
+// eslint-disable-next-line n/no-unsupported-features/node-builtins -- Ignore Node.js v21
+import { styleText } from 'node:util';
 import type { ESLint } from 'eslint';
 import table from 'table';
 import terminalLink from 'terminal-link';
@@ -14,7 +15,7 @@ type Row = [
 ];
 
 function numCell(num: number): string {
-  return num > 0 ? chalk[ERROR_COLOR].bold(num) : num.toString();
+  return num > 0 ? styleText([ERROR_COLOR, 'bold'], num.toString()) : num.toString();
 }
 
 export function formatByRules(results: ESLint.LintResult[], data?: ESLint.LintResultData): string {

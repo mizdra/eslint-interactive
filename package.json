@@ -17,7 +17,7 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "dev": "run-s dev:prepare dev:run",
+    "dev": "FORCE_COLOR=1 run-s dev:prepare dev:run",
     "dev:prepare": "pnpm run build",
     "dev:run": "cd fixtures && ../bin/eslint-interactive.js ./lib",
     "lint": "run-s -c lint:*",
@@ -51,7 +51,6 @@
   },
   "dependencies": {
     "boxen": "^8.0.1",
-    "chalk": "^5.3.0",
     "comlink": "^4.4.1",
     "enquirer": "^2.4.1",
     "estraverse": "^5.3.0",
