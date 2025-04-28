@@ -51,7 +51,6 @@
   },
   "dependencies": {
     "boxen": "^8.0.1",
-    "chalk": "^5.3.0",
     "comlink": "^4.4.1",
     "enquirer": "^2.4.1",
     "estraverse": "^5.3.0",

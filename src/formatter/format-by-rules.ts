@@ -1,9 +1,9 @@
-import chalk from 'chalk';
 import type { ESLint } from 'eslint';
 import table from 'table';
 import terminalLink from 'terminal-link';
 import { ERROR_COLOR } from './colors.js';
 import { takeRuleStatistics } from './take-rule-statistics.js';
+import { styleText } from 'node:util';
 
 type Row = [
   ruleCell: string,
@@ -14,7 +14,7 @@ type Row = [
 ];
 
 function numCell(num: number): string {
-  return num > 0 ? chalk[ERROR_COLOR].bold(num) : num.toString();
+  return num > 0 ? styleText([ERROR_COLOR, 'bold'], num.toString()) : num.toString();
 }
 
 export function formatByRules(results: ESLint.LintResult[], data?: ESLint.LintResultData): string {
