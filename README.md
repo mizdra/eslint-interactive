@@ -125,6 +125,10 @@ Actions can be executed per rule.
 
 See [Programmable API documentation](./docs/programmable-api.md).
 
+## Playground
+
+https://stackblitz.com/edit/eslint-interactive-playground?file=src%2Findex.ts&view=editor
+
 ## FAQ
 
 ### What's _suggestions_?
