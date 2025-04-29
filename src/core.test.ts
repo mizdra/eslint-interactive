@@ -145,7 +145,7 @@ const iff = await createIFF({
   `,
   'package.json': '{ "type": "commonjs" }',
   'rules': async (path) =>
-    cp(join(rootDir, 'fixtures/rules'), path, { mode: constants.COPYFILE_FICLONE, recursive: true }),
+    cp(join(rootDir, 'example/rules'), path, { mode: constants.COPYFILE_FICLONE, recursive: true }),
 });
 
 const core = new Core({
@@ -166,7 +166,7 @@ describe('Core', () => {
         'src/index.js': 'let a = 1;',
         'src/index.mjs': '2 ** 2;',
         'rules': async (path) =>
-          cp(join(rootDir, 'fixtures/rules'), path, { mode: constants.COPYFILE_FICLONE, recursive: true }),
+          cp(join(rootDir, 'example/rules'), path, { mode: constants.COPYFILE_FICLONE, recursive: true }),
         'package.json': '{ "type": "commonjs" }',
       });
       const core = new Core({

@@ -19,7 +19,7 @@
     "build": "tsc -p tsconfig.build.json",
     "dev": "FORCE_COLOR=1 run-s dev:prepare dev:run",
     "dev:prepare": "pnpm run build",
-    "dev:run": "cd fixtures && ../bin/eslint-interactive.js ./lib",
+    "dev:run": "cd example && ../bin/eslint-interactive.js ./lib",
     "lint": "run-s -c lint:*",
     "lint:tsc": "tsc -p tsconfig.json --noEmit",
     "lint:eslint": "eslint .",

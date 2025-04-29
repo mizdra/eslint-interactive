@@ -15,7 +15,7 @@ import { exec } from 'child_process';
 import { Core, takeRuleStatistics } from 'eslint-interactive';
 
 const core = new Core({
-  patterns: ['fixtures'],
+  patterns: ['example'],
   cwd: resolve('./github.com/mizdra/eslint-interactive'),
   eslintOptions: {
     type: 'eslintrc',
