@@ -4,7 +4,7 @@ import { globalIgnores } from 'eslint/config';
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
-  globalIgnores(['dist', 'bin', 'static', 'e2e-test', 'fixtures', 'tmp']),
+  globalIgnores(['dist', 'bin', 'static', 'e2e-test', 'example']),
   ...mizdra.baseConfigs,
   ...mizdra.typescriptConfigs,
   ...mizdra.nodeConfigs,
