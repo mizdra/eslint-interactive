@@ -3,7 +3,7 @@ import { access, appendFile, mkdir, readFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { promisify } from 'node:util';
-import { getCacheDir } from './cache.js';
+import { getTempDir } from './file-system.js';
 
 const exec = promisify(execOriginal);
 
@@ -26,13 +26,13 @@ export async function editFileWithEditor(filepath: string): Promise<string> {
 
 export function generateFilterScriptFilePath(ruleIds: string[]): string {
   const basename = `${ruleIds.join('_').replace(/[^\w-]/gu, '')}.js`;
-  const filepath = join(getCacheDir(), 'filter-script', basename);
+  const filepath = join(getTempDir(), 'filter-script', basename);
   return filepath;
 }
 
 export function generateFixableMakerScriptFilePath(ruleIds: string[]): string {
   const basename = `${ruleIds.join('_').replace(/[^\w-]/gu, '')}.js`;
-  const filepath = join(getCacheDir(), 'fixable-maker-script', basename);
+  const filepath = join(getTempDir(), 'fixable-maker-script', basename);
   return filepath;
 }
 

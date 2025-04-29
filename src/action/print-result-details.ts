@@ -6,7 +6,7 @@ import type { ESLint } from 'eslint';
 import { pager } from '../cli/pager.js';
 import { promptToInputDisplayMode } from '../cli/prompt.js';
 import type { SerializableCore } from '../core-worker.js';
-import { getCacheDir } from '../util/cache.js';
+import { getTempDir } from '../util/file-system.js';
 import { unreachable } from '../util/type-check.js';
 
 export async function doPrintResultDetailsAction(
@@ -21,7 +21,7 @@ export async function doPrintResultDetailsAction(
   } else if (displayMode === 'printInTerminalWithPager') {
     await pager(formattedResultDetails);
   } else if (displayMode === 'writeToFile') {
-    const filePath = join(getCacheDir(), 'lint-result-details.txt');
+    const filePath = join(getTempDir(), 'lint-result-details.txt');
     await writeFile(filePath, stripVTControlCharacters(formattedResultDetails), 'utf8');
     console.log(styleText('cyan', `Wrote to ${filePath}`));
   } else {
