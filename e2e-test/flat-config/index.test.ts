@@ -52,9 +52,20 @@ test('fix problems with flat config', async () => {
   child.stdin.write(' '); // Select `prefer-const` rule
   child.stdin.write(LF); // Confirm the choice
   await streamWatcher.match(/Which action do you want to do\?/);
+
+  // Test pager
+  child.stdin.write(LF); // Select `Display details of lint results`
+  await streamWatcher.match(/In what way are the details displayed\?/);
+  child.stdin.write('1'); // Focus on `Print in terminal with pager`
+  child.stdin.write(LF); // Confirm the choice
+  await streamWatcher.match(/prefer-const/);
+  child.stdin.write('q'); // Exit pager
+
+  // Test fixing
   child.stdin.write('1'); // Focus on `Run `eslint --fix``
   child.stdin.write(LF); // Confirm the choice
   await streamWatcher.match(/What's the next step\?/);
   expect(await readFile(iff.paths['src/index.js'], 'utf-8')).toMatchSnapshot();
+
   child.stdin.write(ETX); // Exit
 });
