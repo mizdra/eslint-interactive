@@ -1,10 +1,10 @@
-import { configDefaults, defineConfig } from 'vitest/config';
+import { defineConfig } from 'vitest/config';
 
 export const baseConfig = defineConfig({
   cacheDir: 'node_modules/.cache/vitest',
   server: {
     watch: {
-      ignored: ['**/tmp/**', '**/benchmark/fixtures/**'],
+      ignored: ['**/benchmark/fixtures/**'],
     },
   },
   test: {
@@ -13,6 +13,5 @@ export const baseConfig = defineConfig({
       FORCE_HYPERLINK: '1',
       FORCE_COLOR: '1',
     },
-    exclude: [...configDefaults.exclude, 'tmp/**'],
   },
 });

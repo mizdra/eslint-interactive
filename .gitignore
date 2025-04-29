@@ -62,4 +62,3 @@ Cargo.lock
 *.tsbuildinfo
 eslint-interactive-*.tgz
 .pnpm-store
-/tmp
