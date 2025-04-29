@@ -28,8 +28,7 @@ export async function doMakeFixableAndFixAction(
       await writeFile(fixableMakerScriptFilePath, exampleScript);
     }
   } else {
-    // ディレクトリがない可能性を考慮して作成しておく
-    await mkdir(dirname(fixableMakerScriptFilePath), { recursive: true });
+    await mkdir(dirname(fixableMakerScriptFilePath), { recursive: true }); // Create the directory because it might not exist
     await writeFile(fixableMakerScriptFilePath, exampleScript);
   }
   console.log('Opening editor...');
