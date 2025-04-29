@@ -53,13 +53,20 @@ test('fix problems with flat config', async () => {
   child.stdin.write(LF); // Confirm the choice
   await streamWatcher.match(/Which action do you want to do\?/);
 
-  // Test pager
+  // Test for `Print in terminal with pager`
   child.stdin.write(LF); // Select `Display details of lint results`
   await streamWatcher.match(/In what way are the details displayed\?/);
   child.stdin.write('1'); // Focus on `Print in terminal with pager`
   child.stdin.write(LF); // Confirm the choice
   await streamWatcher.match(/prefer-const/);
   child.stdin.write('q'); // Exit pager
+
+  // Test for `Write to file`
+  child.stdin.write(LF); // Select `Display details of lint results`
+  await streamWatcher.match(/In what way are the details displayed\?/);
+  child.stdin.write('2'); // Focus on `Write to file`
+  child.stdin.write(LF); // Confirm the choice
+  await streamWatcher.match(/Wrote to/);
 
   // Test fixing
   child.stdin.write('1'); // Focus on `Run `eslint --fix``
