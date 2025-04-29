@@ -1,34 +1,32 @@
-import { spawnSync } from 'node:child_process';
-import { writeFile } from 'node:fs/promises';
-import { join } from 'node:path';
-import { getCacheDir } from '../util/cache.js';
-
-const PAGER_CONTENT_FILE_PATH = join(getCacheDir(), 'pager-content.txt');
+import { spawn } from 'node:child_process';
 
 export async function pager(content: string): Promise<void> {
   if (process.platform === 'win32') {
-    return pagerForWindows(content);
+    return spawnPager('more', [], content);
   } else {
-    return pagerForPOSIX(content);
+    return spawnPager('less', ['-R'], content);
   }
 }
 
-async function pagerForWindows(content: string): Promise<void> {
-  await writeFile(PAGER_CONTENT_FILE_PATH, content, 'utf-8');
-  try {
-    spawnSync('more', [PAGER_CONTENT_FILE_PATH], { shell: true, stdio: 'inherit' });
-  } catch (e) {
-    console.error('Failed to execute `more` command. Please install `more` command.');
-    throw e;
-  }
-}
-
-async function pagerForPOSIX(content: string): Promise<void> {
-  await writeFile(PAGER_CONTENT_FILE_PATH, content, 'utf-8');
-  try {
-    spawnSync('less', ['-R', PAGER_CONTENT_FILE_PATH], { shell: true, stdio: 'inherit' });
-  } catch (e) {
-    console.error('Failed to execute `less` command. Please install `less` command.');
-    throw e;
-  }
+async function spawnPager(command: string, options: string[], content: string): Promise<void> {
+  return new Promise<void>((resolve, reject) => {
+    try {
+      const process = spawn(command, options, { shell: true, stdio: ['pipe', 'inherit', 'inherit'] });
+      process.stdin.write(content);
+      process.stdin.end();
+      process.addListener('exit', (code) => {
+        if (code !== 0) {
+          reject(new Error(`\`${command}\` exited with code ${code}`));
+        } else {
+          resolve();
+        }
+      });
+      process.addListener('error', (err) => {
+        reject(new Error(`\`${command}\` throws an error: ${err.message}`));
+      });
+    } catch (e) {
+      const cause = e instanceof Error ? e.message : String(e);
+      reject(new Error(`Failed to execute \`${command}\`: ${cause}`));
+    }
+  });
 }
