@@ -1,4 +1,5 @@
 import { writeFile } from 'node:fs/promises';
+import { mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { stripVTControlCharacters, styleText } from 'node:util';
 import type { Remote } from 'comlink';
@@ -21,7 +22,9 @@ export async function doPrintResultDetailsAction(
   } else if (displayMode === 'printInTerminalWithPager') {
     await pager(formattedResultDetails);
   } else if (displayMode === 'writeToFile') {
-    const filePath = join(getTempDir(), 'lint-result-details.txt');
+    const tempDir = getTempDir();
+    const filePath = join(tempDir, 'lint-result-details.txt');
+    await mkdir(tempDir, { recursive: true }); // Create the directory because it might not exist
     await writeFile(filePath, stripVTControlCharacters(formattedResultDetails), 'utf8');
     console.log(styleText('cyan', `Wrote to ${filePath}`));
   } else {

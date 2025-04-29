@@ -28,8 +28,7 @@ export async function doApplySuggestionsAction(
       await writeFile(filterScriptFilePath, exampleScript);
     }
   } else {
-    // ディレクトリがない可能性を考慮して作成しておく
-    await mkdir(dirname(filterScriptFilePath), { recursive: true });
+    await mkdir(dirname(filterScriptFilePath), { recursive: true }); // Create the directory because it might not exist
     await writeFile(filterScriptFilePath, exampleScript);
   }
   console.log('Opening editor...');
