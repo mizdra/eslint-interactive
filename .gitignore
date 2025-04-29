@@ -60,7 +60,6 @@ Cargo.lock
 /.cache
 .netlify
 *.tsbuildinfo
-/fixtures-tmp
 eslint-interactive-*.tgz
 .pnpm-store
 /tmp

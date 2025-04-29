@@ -4,7 +4,7 @@ export const baseConfig = defineConfig({
   cacheDir: 'node_modules/.cache/vitest',
   server: {
     watch: {
-      ignored: ['**/fixtures-tmp/**', '**/tmp/**', '**/benchmark/fixtures/**'],
+      ignored: ['**/tmp/**', '**/benchmark/fixtures/**'],
     },
   },
   test: {
