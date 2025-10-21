@@ -6,4 +6,4 @@ Security updates are provided only for the latest version and v12. However, secu
 
 ## Reporting a Vulnerability
 
-To report a vulnerability, please open a private vulnerability report at https://github.com/mizdra/css-modules-kit/security.
+To report a vulnerability, please open a private vulnerability report at https://github.com/mizdra/eslint-interactive/security.
