@@ -22,6 +22,7 @@ export type Action =
   | 'convertErrorToWarningPerFile'
   | 'applySuggestions'
   | 'makeFixableAndFix'
+  | 'relintAndReselectRules'
   | 'reselectRules';
 
 /**
@@ -98,6 +99,7 @@ export async function promptToInputAction(
       name: 'makeFixableAndFix',
       message: '🔧 Make forcibly fixable and run `eslint --fix` (experimental, for experts)',
     },
+    { name: 'relintAndReselectRules', message: '🔄 Re-lint and reselect rules' },
     { name: 'reselectRules', message: '↩️  Reselect rules' },
   ];
 
