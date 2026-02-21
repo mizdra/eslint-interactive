@@ -9,9 +9,6 @@ describe('parseArgv', () => {
     expect(parseArgv([...baseArgs, 'foo', 'bar']).patterns).toStrictEqual(['foo', 'bar']);
     expect(parseArgv([...baseArgs, '1', 'true']).patterns).toStrictEqual(['1', 'true']);
   });
-  test('--no-eslintrc', () => {
-    expect(parseArgv([...baseArgs, '--no-eslintrc']).useEslintrc).toStrictEqual(false);
-  });
   test('--config', () => {
     expect(parseArgv([...baseArgs]).overrideConfigFile).toStrictEqual(undefined);
     expect(parseArgv([...baseArgs, '--config', 'override-config-file.json']).overrideConfigFile).toStrictEqual(
@@ -20,23 +17,6 @@ describe('parseArgv', () => {
     expect(parseArgv([...baseArgs, '-c', 'override-config-file.json']).overrideConfigFile).toStrictEqual(
       'override-config-file.json',
     );
-  });
-  test('--rulesdir', () => {
-    expect(parseArgv([...baseArgs, '--rulesdir', 'foo']).rulePaths).toStrictEqual(['foo']);
-    expect(parseArgv([...baseArgs, '--rulesdir', 'foo', '--rulesdir', 'bar']).rulePaths).toStrictEqual(['foo', 'bar']);
-    expect(parseArgv([...baseArgs, '--rulesdir', 'foo', 'bar']).rulePaths).toStrictEqual(['foo']);
-    expect(parseArgv([...baseArgs, '--rulesdir', '1', '--rulesdir', 'true']).rulePaths).toStrictEqual(['1', 'true']);
-  });
-  test('--ignore-path', () => {
-    expect(parseArgv([...baseArgs]).ignorePath).toStrictEqual(undefined);
-    expect(parseArgv([...baseArgs, '--ignore-path', 'foo']).ignorePath).toStrictEqual('foo');
-  });
-  test('--ext', () => {
-    expect(parseArgv([...baseArgs, '--ext', 'js']).extensions).toStrictEqual(['js']);
-    expect(parseArgv([...baseArgs, '--ext', 'js', '--ext', 'ts']).extensions).toStrictEqual(['js', 'ts']);
-    expect(parseArgv([...baseArgs, '--ext', 'js', 'ts']).extensions).toStrictEqual(['js']);
-    expect(parseArgv([...baseArgs, '--ext', 'js,ts,tsx']).extensions).toStrictEqual(['js', 'ts', 'tsx']);
-    expect(parseArgv([...baseArgs, '--ext', '1', '--ext', 'true']).extensions).toStrictEqual(['1', 'true']);
   });
   test('--format', () => {
     expect(parseArgv([...baseArgs, '--format', 'foo']).formatterName).toBe('foo');

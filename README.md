@@ -64,7 +64,7 @@ $ pnpm exec eslint-interactive --help
 
 ## Usage
 
-The interface of `eslint-interactive` is partially compatible with `eslint`. So, in most cases, simply replacing `eslint` with `eslint-interactive` in the command to lint (e.g. `eslint ./src --ext .ts,.tsx`) will work. However, eslint-interactive is installed locally, so you need to add `npx`.
+The interface of `eslint-interactive` is partially compatible with `eslint`. So, in most cases, simply replacing `eslint` with `eslint-interactive` in the command to lint (e.g. `eslint --quiet ./src`) will work. However, eslint-interactive is installed locally, so you need to add `npx`.
 
 ```console
 $ # Show help
@@ -72,28 +72,19 @@ $ npx eslint-interactive --help
 eslint-interactive [file.js] [dir]
 
 Options:
-      --help                         Show help                                                                                     [boolean]
-      --version                      Show version number                                                                           [boolean]
-      --eslintrc                     Enable use of configuration from .eslintrc.*                                  [boolean] [default: true]
-  -c, --config                       Use this configuration, overriding .eslintrc.* config options if present                       [string]
-      --resolve-plugins-relative-to  A folder where plugins should be resolved from, CWD by default                                 [string]
-      --ext                          Specify JavaScript file extensions                                                              [array]
-      --rulesdir                     Use additional rules from this directory                                                        [array]
-      --ignore-path                  Specify path of ignore file                                                                    [string]
-      --format                       Specify the format to be used for the `Display problem messages` action   [string] [default: "stylish"]
-      --quiet                        Report errors only                                                           [boolean] [default: false]
-      --cache                        Only check changed files                                                     [boolean] [default: false]
-      --cache-location               Path to the cache file or directory                                                            [string]
-      --flag                         Enable a feature flag (requires ESLint v9.6.0+)                                                 [array]
-
+      --help            Show help                                                                                    [boolean]
+      --version         Show version number                                                                          [boolean]
+  -c, --config          Use this configuration, overriding config options if present                                  [string]
+      --format          Specify the format to be used for the "Display problem messages" action  [string] [default: "stylish"]
+      --quiet           Report errors only                                                          [boolean] [default: false]
+      --cache           Only check changed files                                                    [boolean] [default: false]
+      --cache-location  Path to the cache file or directory                                                           [string]
+      --flag            Enable a feature flag (requires ESLint v9.6.0+)                                                [array]
 
 Examples:
-  eslint-interactive ./src                                           Lint ./src/ directory
-  eslint-interactive ./src ./test                                    Lint multiple directories
-  eslint-interactive './src/**/*.{ts,tsx,vue}'                       Lint with glob pattern
-  eslint-interactive ./src --ext .ts,.tsx,.vue                       Lint with custom extensions
-  eslint-interactive ./src --rulesdir ./rules                        Lint with custom rules
-  eslint-interactive ./src --no-eslintrc --config ./.eslintrc.ci.js  Lint with custom config
+  eslint-interactive ./src                      Lint ./src/ directory
+  eslint-interactive ./src ./test               Lint multiple directories
+  eslint-interactive './src/**/*.{ts,tsx,vue}'  Lint with glob pattern
 ```
 
 ## Available actions
