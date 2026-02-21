@@ -24,7 +24,7 @@
     "lint:tsc": "tsc -p tsconfig.json --noEmit",
     "lint:eslint": "eslint .",
     "lint:prettier": "prettier --check .",
-    "test": "vitest",
+    "test": "vitest --run",
     "e2e": "run-s e2e:prepare e2e:run",
     "e2e:prepare": "pnpm run build --noCheck",
     "e2e:run": "vitest -c vite.config.e2e.ts"
