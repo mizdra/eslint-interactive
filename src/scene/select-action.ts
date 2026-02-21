@@ -47,6 +47,7 @@ export async function selectAction(
   }
 
   if (selectedAction === 'reselectRules') return selectRuleIdsScene;
+  if (selectedAction === 'relintAndReselectRules') return { name: 'lint' };
 
   if (selectedAction === 'printResultDetails') {
     await doPrintResultDetailsAction(core, results, selectedRuleIds);

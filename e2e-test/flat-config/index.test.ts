@@ -76,3 +76,31 @@ test('fix problems with flat config', async () => {
 
   child.stdin.write(ETX); // Exit
 });
+
+test('go back to the rule selection screen ', async () => {
+  child = spawn(
+    'node',
+    [
+      join(__dirname, '../../bin/eslint-interactive.js'),
+      'src',
+      // merge stderr to stdout
+      '2>&1',
+    ],
+    { shell: true, stdio: 'pipe', cwd: iff.rootDir, env: { ...process.env, ESLINT_USE_FLAT_CONFIG: 'true' } },
+  );
+  const streamWatcher = createStreamWatcher(child.stdout, { debug: false });
+
+  await streamWatcher.match(/Which rules would you like to apply action\?/);
+  child.stdin.write(' '); // Select `prefer-const` rule
+  child.stdin.write(LF); // Confirm the choice
+  await streamWatcher.match(/Which action do you want to do\?/);
+
+  // Select "Go back"
+  child.stdin.write('8'); // Focus on `Go back`
+  child.stdin.write(LF); // Confirm the choice
+
+  // Should go back to rule selection with fresh lint results
+  await streamWatcher.match(/Which rules would you like to apply action\?/);
+
+  child.stdin.write(ETX); // Exit
+});
