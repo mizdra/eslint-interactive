@@ -99,8 +99,8 @@ export async function promptToInputAction(
       name: 'makeFixableAndFix',
       message: '🔧 Make forcibly fixable and run `eslint --fix` (experimental, for experts)',
     },
-    { name: 'relintAndReselectRules', message: '↩️ Reselect rules (with re-lint)' },
-    { name: 'reselectRules', message: '↩️ Reselect rules' },
+    { name: 'relintAndReselectRules', message: '↩️ Go back (with re-lint)' },
+    { name: 'reselectRules', message: '↩️ Go back' },
   ];
 
   const { action } = await prompt<{
