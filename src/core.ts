@@ -1,9 +1,9 @@
 import { writeFile } from 'node:fs/promises';
-import type { ESLint, Rule } from 'eslint';
+import type { Rule } from 'eslint';
+import { ESLint } from 'eslint';
 import type { DescriptionPosition } from './cli/prompt.js';
 import type { Config, NormalizedConfig } from './config.js';
 import { normalizeConfig } from './config.js';
-import { FlatESLint, LegacyESLint } from './eslint/use-at-your-own-risk.js';
 import type { FixableMaker, FixContext, SuggestionFilter } from './fix/index.js';
 import {
   createFixToApplyAutoFixes,
@@ -38,7 +38,7 @@ export type Undo = () => Promise<void>;
  */
 export class Core {
   readonly config: NormalizedConfig;
-  readonly eslint: InstanceType<typeof FlatESLint> | InstanceType<typeof LegacyESLint>;
+  readonly eslint: ESLint;
 
   constructor(config: Config) {
     this.config = normalizeConfig(config);
@@ -47,7 +47,7 @@ export class Core {
       Array.isArray(eslintOptions.overrideConfig) ? eslintOptions.overrideConfig
       : eslintOptions.overrideConfig ? [eslintOptions.overrideConfig]
       : [];
-    this.eslint = new FlatESLint({
+    this.eslint = new ESLint({
       ...eslintOptions,
       overrideConfig: [
         ...overrideConfigs,
@@ -68,7 +68,7 @@ export class Core {
    */
   async lint(): Promise<ESLint.LintResult[]> {
     let results = await this.eslint.lintFiles(this.config.patterns);
-    if (this.config.quiet) results = LegacyESLint.getErrorResults(results);
+    if (this.config.quiet) results = ESLint.getErrorResults(results);
     return results;
   }
 
@@ -198,7 +198,7 @@ export class Core {
 
     return async () => {
       const resultsToUndo = generateResultsToUndo(filteredResultsOfLint);
-      await LegacyESLint.outputFixes(resultsToUndo);
+      await ESLint.outputFixes(resultsToUndo);
     };
   }
 }
