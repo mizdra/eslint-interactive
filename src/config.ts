@@ -88,6 +88,7 @@ export const configDefaults = {
     cacheLocation: undefined,
     overrideConfig: undefined,
     resolvePluginsRelativeTo: undefined,
+    flags: undefined,
   },
 } satisfies DeepPartial<Config>;
 
