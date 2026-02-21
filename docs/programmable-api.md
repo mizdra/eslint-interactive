@@ -18,7 +18,7 @@ const core = new Core({
   patterns: ['example'],
   cwd: resolve('./github.com/mizdra/eslint-interactive'),
   eslintOptions: {
-    type: 'eslintrc',
+    type: 'flat',
   },
 });
 const results = await core.lint();
@@ -86,7 +86,7 @@ and details.
 
 The `Core()` constructor accepts a subset of the options available in the
 [ESLint Node.js API](https://eslint.org/docs/latest/developer-guide/nodejs-api#-new-eslintoptions), including
-`overrideConfig` and `useEslintrc`. You may use these, for example, to override the configuration completely and
+`overrideConfigFile` and `overrideConfig`. You may use these, for example, to override the configuration completely and
 only run a subset of rules if you want:
 
 ```typescript
@@ -96,8 +96,7 @@ const core = new Core({
   patterns: ['src'],
   cwd: resolve('./github.com/mizdra/eslint-interactive'),
   eslintOptions: {
-    type: 'eslintrc',
-    useEslintrc: false,
+    overrideConfigFile: true,
     overrideConfig: {
       rules: {
         'sort-keys': 'error',

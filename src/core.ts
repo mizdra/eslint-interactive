@@ -42,44 +42,24 @@ export class Core {
 
   constructor(config: Config) {
     this.config = normalizeConfig(config);
-    const eslintOptions = this.config.eslintOptions;
-    if (eslintOptions.type === 'eslintrc') {
-      const { type, ...rest } = eslintOptions;
-      this.eslint = new LegacyESLint({
-        ...rest,
-        plugins: {
-          ...rest.plugins,
-          'eslint-interactive': plugin,
-        },
-        overrideConfig: {
-          ...rest.overrideConfig,
-          plugins: [...(rest.overrideConfig?.plugins ?? []), 'eslint-interactive'],
+    const { type, ...eslintOptions } = this.config.eslintOptions;
+    const overrideConfigs =
+      Array.isArray(eslintOptions.overrideConfig) ? eslintOptions.overrideConfig
+      : eslintOptions.overrideConfig ? [eslintOptions.overrideConfig]
+      : [];
+    this.eslint = new FlatESLint({
+      ...eslintOptions,
+      overrideConfig: [
+        ...overrideConfigs,
+        {
+          ...eslintOptions.overrideConfig,
+          plugins: { 'eslint-interactive': plugin },
           rules: {
-            ...rest.overrideConfig?.rules,
             'eslint-interactive/source-code-snatcher': 'error',
           },
         },
-      });
-    } else {
-      const { type, ...rest } = eslintOptions;
-      const overrideConfigs =
-        Array.isArray(rest.overrideConfig) ? rest.overrideConfig
-        : rest.overrideConfig ? [rest.overrideConfig]
-        : [];
-      this.eslint = new FlatESLint({
-        ...rest,
-        overrideConfig: [
-          ...overrideConfigs,
-          {
-            ...rest.overrideConfig,
-            plugins: { 'eslint-interactive': plugin },
-            rules: {
-              'eslint-interactive/source-code-snatcher': 'error',
-            },
-          },
-        ],
-      });
-    }
+      ],
+    });
   }
 
   /**
