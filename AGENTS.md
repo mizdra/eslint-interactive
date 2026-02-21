@@ -56,8 +56,8 @@ Each scene returns a `NextScene` object indicating the next state.
 
 The main programmatic API. Key responsibilities:
 
+- This is the wrapper for the `ESLint` class in `eslint` package, which provides an API for applying fixes per rule
 - Runs ESLint with a custom plugin (`src/plugin.ts`) that captures source code via a "source-code-snatcher" rule
-- Supports both legacy (`.eslintrc`) and flat (`eslint.config.js`) ESLint configs via `LegacyESLint`/`FlatESLint`
 - Methods: `lint()`, `formatResultSummary()`, `formatResultDetails()`, `applyAutoFixes()`, `disablePerLine()`, `disablePerFile()`, `convertErrorToWarningPerFile()`, `applySuggestions()`, `makeFixableAndFix()`
 
 ### Fix System (`src/fix/`)
