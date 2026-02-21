@@ -77,7 +77,7 @@ test('fix problems with flat config', async () => {
   child.stdin.write(ETX); // Exit
 });
 
-test('re-lint and reselect rules', async () => {
+test('go back to the rule selection screen ', async () => {
   child = spawn(
     'node',
     [
@@ -95,8 +95,8 @@ test('re-lint and reselect rules', async () => {
   child.stdin.write(LF); // Confirm the choice
   await streamWatcher.match(/Which action do you want to do\?/);
 
-  // Select "Re-lint and reselect rules"
-  child.stdin.write('7'); // Focus on `Re-lint and reselect rules`
+  // Select "Go back"
+  child.stdin.write('8'); // Focus on `Go back`
   child.stdin.write(LF); // Confirm the choice
 
   // Should go back to rule selection with fresh lint results
