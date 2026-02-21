@@ -1,17 +1,12 @@
-// eslint-disable-next-line n/no-unsupported-features/node-builtins -- Allow for testing
-import { constants, cp, mkdir, readFile } from 'node:fs/promises';
-import { dirname, join, relative } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { readFile } from 'node:fs/promises';
+import { relative } from 'node:path';
 import { stripVTControlCharacters } from 'node:util';
 import dedent from 'dedent';
 import type { Linter } from 'eslint';
 import { ESLint } from 'eslint';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { Core } from './core.js';
-import { LegacyESLint } from './eslint/use-at-your-own-risk.js';
 import { createIFF } from './test-util/fixtures.js';
-
-const rootDir = join(dirname(fileURLToPath(import.meta.url)), '..');
 
 // Normalize `message` for the snapshot.
 function normalizeMessage(message: Linter.LintMessage) {
@@ -75,13 +70,6 @@ const iff = await createIFF({
       )
     );
   `,
-  'src/import-order.js': dedent`
-    import b from 'b';
-    import a from 'a';
-  `,
-  'src/ban-exponentiation-operator.js': dedent`
-    2 ** 2;
-  `,
   'src/ban-nullish-coalescing-operator.js': dedent`
     2 ?? 2;
   `,
@@ -121,41 +109,40 @@ const iff = await createIFF({
       },
     };
   `,
-  '.eslintrc.js': dedent`
-    module.exports = {
-      root: true,
-      parserOptions: {
-        ecmaVersion: 2021,
-        sourceType: 'module',
-      },
-      plugins: ['test'],
-      overrides: [
-        { files: ['prefer-const.js'], rules: { 'prefer-const': 'error' } },
-        { files: ['arrow-body-style.js'], rules: { 'arrow-body-style': ['error', 'always'] } },
-        { files: ['import-order.js'], rules: { 'import/order': 'error' } },
-        { files: ['ban-exponentiation-operator.js'], rules: { 'ban-exponentiation-operator': 'error' } },
-        { files: ['ban-nullish-coalescing-operator.js'], rules: { 'test/ban-nullish-coalescing-operator': 'error' } },
-        {
-          files: ['no-unused-vars.js'],
-          rules: { 'no-unused-vars': ['error', { varsIgnorePattern: '^_' }] },
+  'eslint.config.js': dedent`
+    import { createRequire } from 'module';
+    import testPlugin from 'eslint-plugin-test';
+
+    export default [
+      {
+        files: ['**/*.js'],
+        languageOptions: {
+          ecmaVersion: 2021,
+          sourceType: 'module',
         },
-        { files: ['warn.js'], rules: { 'prefer-const': 'warn' } },
-        { files: ['no-unsafe-negation.js'], rules: { 'no-unsafe-negation': 'error' } },
-      ],
-    };
+        plugins: {
+          test: testPlugin,
+        },
+      },
+      { files: ['src/prefer-const.js'], rules: { 'prefer-const': 'error' } },
+      { files: ['src/arrow-body-style.js'], rules: { 'arrow-body-style': ['error', 'always'] } },
+      { files: ['src/ban-nullish-coalescing-operator.js'], rules: { 'test/ban-nullish-coalescing-operator': 'error' } },
+      {
+        files: ['src/no-unused-vars.js'],
+        rules: { 'no-unused-vars': ['error', { varsIgnorePattern: '^_' }] },
+      },
+      { files: ['src/warn.js'], rules: { 'prefer-const': 'warn' } },
+      { files: ['src/no-unsafe-negation.js'], rules: { 'no-unsafe-negation': 'error' } },
+    ];
   `,
-  'package.json': '{ "type": "commonjs" }',
-  'rules': async (path) => {
-    await mkdir(dirname(path), { recursive: true });
-    await cp(join(rootDir, 'example/rules'), path, { mode: constants.COPYFILE_FICLONE, recursive: true });
-  },
+  'package.json': '{ "type": "module" }',
 });
 
 const core = new Core({
   patterns: ['src'],
   formatterName: 'stylish',
   cwd: iff.rootDir,
-  eslintOptions: { type: 'eslintrc', rulePaths: ['rules'] },
+  eslintOptions: { type: 'flat' },
 });
 
 beforeEach(async () => {
@@ -167,27 +154,21 @@ describe('Core', () => {
     test('pass options to eslint', async () => {
       const iff = await createIFF({
         'src/index.js': 'let a = 1;',
-        'src/index.mjs': '2 ** 2;',
-        'rules': async (path) => {
-          await mkdir(dirname(path), { recursive: true });
-          await cp(join(rootDir, 'example/rules'), path, { mode: constants.COPYFILE_FICLONE, recursive: true });
-        },
-        'package.json': '{ "type": "commonjs" }',
+        'package.json': '{ "type": "module" }',
       });
       const core = new Core({
         patterns: ['src'],
         cwd: iff.rootDir,
         eslintOptions: {
-          type: 'eslintrc',
-          useEslintrc: false,
-          rulePaths: ['rules'],
-          extensions: ['.js', '.mjs'],
+          type: 'flat',
+          overrideConfigFile: true,
           overrideConfig: {
-            parserOptions: {
+            files: ['**/*.js'],
+            languageOptions: {
               ecmaVersion: 2021,
               sourceType: 'module',
             },
-            rules: { 'prefer-const': 'error', 'ban-exponentiation-operator': 'error' },
+            rules: { 'prefer-const': 'error' },
           },
         },
       });
@@ -218,7 +199,7 @@ describe('Core', () => {
   });
   test('formatResultSummary', async () => {
     const results = await core.lint();
-    vi.spyOn(LegacyESLint.prototype, 'getRulesMetaForResults').mockImplementationOnce(() => {
+    vi.spyOn(ESLint.prototype, 'getRulesMetaForResults').mockImplementationOnce(() => {
       return {
         'prefer-const': {
           docs: {
@@ -231,7 +212,7 @@ describe('Core', () => {
   });
   test('formatResultDetails', async () => {
     const results = await core.lint();
-    const formatted = await core.formatResultDetails(results, ['import/order', 'ban-exponentiation-operator']);
+    const formatted = await core.formatResultDetails(results, ['test/ban-nullish-coalescing-operator']);
     expect(
       stripVTControlCharacters(
         formatted
@@ -309,7 +290,7 @@ describe('Core', () => {
     await undo();
     expect(await readFile(iff.paths['src/no-unused-vars.js'], 'utf-8')).toEqual(original);
   });
-  test('flat config', async () => {
+  test('lints files matching flat config patterns', async () => {
     const iff = await createIFF({
       'src/index.js': 'let a = 1;',
       'src/index.mjs': 'let a = 1;',
@@ -349,7 +330,7 @@ describe('Core', () => {
     expect(await readFile(iff.paths['src/index.jsx'], 'utf-8')).toMatchSnapshot();
     expect(await readFile(iff.paths['src/.index.js'], 'utf-8')).toMatchSnapshot();
   });
-  test('fixes problems with legacy config and 3rd-party plugins', async () => {
+  test('fixes problems with 3rd-party plugins', async () => {
     const results = await core.lint();
     await core.disablePerLine(results, ['test/ban-nullish-coalescing-operator']);
     expect(await readFile(iff.paths['src/ban-nullish-coalescing-operator.js'], 'utf-8')).toMatchSnapshot();
