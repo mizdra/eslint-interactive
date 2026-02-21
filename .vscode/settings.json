@@ -12,8 +12,7 @@
     "**/.hg": true,
     "**/CVS": true,
     "**/.DS_Store": true,
-    "**/Thumbs.db": true,
-    "benchmark/fixtures": true
+    "**/Thumbs.db": true
   },
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
