@@ -52,7 +52,6 @@ export class Core {
       overrideConfig: [
         ...overrideConfigs,
         {
-          ...eslintOptions.overrideConfig,
           plugins: { 'eslint-interactive': plugin },
           rules: {
             'eslint-interactive/source-code-snatcher': 'error',
