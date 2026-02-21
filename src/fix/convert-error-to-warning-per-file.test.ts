@@ -5,7 +5,7 @@ import { createFixToConvertErrorToWarningPerFile } from './convert-error-to-warn
 const tester = new FixTester(
   createFixToConvertErrorToWarningPerFile,
   {},
-  { parserOptions: { ecmaVersion: 2020, ecmaFeatures: { jsx: true } } },
+  { languageOptions: { ecmaVersion: 2020, parserOptions: { ecmaFeatures: { jsx: true } } } },
 );
 
 describe('convert-error-to-warning-per-file', () => {

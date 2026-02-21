@@ -6,7 +6,7 @@ import { createFixToDisablePerLine } from './disable-per-line.js';
 const tester = new FixTester(
   createFixToDisablePerLine,
   {},
-  { parserOptions: { ecmaVersion: 2020, ecmaFeatures: { jsx: true } } },
+  { languageOptions: { ecmaVersion: 2020, parserOptions: { ecmaFeatures: { jsx: true } } } },
 );
 
 describe('disable-per-line', () => {

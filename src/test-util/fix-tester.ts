@@ -1,6 +1,6 @@
 import type { Linter, Rule } from 'eslint';
+import { ESLint } from 'eslint';
 import { verifyAndFix } from '../eslint/linter.js';
-import { LegacyESLint } from '../eslint/use-at-your-own-risk.js';
 import type { FixContext } from '../fix/index.js';
 import { plugin } from '../plugin.js';
 
@@ -36,11 +36,11 @@ type TestResult = string | null;
 export class FixTester<FixArgs> {
   private fixCreator: (context: FixContext, args: FixArgs) => Rule.Fix[];
   private defaultFixArgs: FixArgs;
-  private defaultLinterConfig: Linter.LegacyConfig;
+  private defaultLinterConfig: Linter.Config;
   constructor(
     fixCreator: (context: FixContext, args: FixArgs) => Rule.Fix[],
     defaultFixArgs: FixArgs,
-    defaultLinterConfig: Linter.LegacyConfig,
+    defaultLinterConfig: Linter.Config,
   ) {
     this.fixCreator = fixCreator;
     this.defaultFixArgs = defaultFixArgs;
@@ -57,20 +57,21 @@ export class FixTester<FixArgs> {
     const filePath = testCase.filename ?? DEFAULT_FILENAME;
 
     const ruleIdsToFix = Object.keys(testCase.rules);
-    const eslint = new LegacyESLint({
-      useEslintrc: false,
-      plugins: {
-        'eslint-interactive': plugin,
-      },
-      overrideConfig: {
-        ...this.defaultLinterConfig,
-        plugins: ['eslint-interactive', ...(this.defaultLinterConfig.plugins ?? [])],
-        rules: {
-          ...this.defaultLinterConfig.rules,
-          ...testCase.rules,
-          'eslint-interactive/source-code-snatcher': 'error',
+    const eslint = new ESLint({
+      overrideConfigFile: true,
+      overrideConfig: [
+        {
+          ...this.defaultLinterConfig,
+          plugins: {
+            'eslint-interactive': plugin,
+          },
+          rules: {
+            ...this.defaultLinterConfig.rules,
+            ...testCase.rules,
+            'eslint-interactive/source-code-snatcher': 'error',
+          },
         },
-      },
+      ],
     });
     const fixedResult = await verifyAndFix(eslint, code, filePath, ruleIdsToFix, (context) =>
       this.fixCreator(context, testCase.args ?? this.defaultFixArgs),

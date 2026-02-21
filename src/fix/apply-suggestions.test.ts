@@ -7,7 +7,7 @@ import { createFixToApplySuggestions } from './apply-suggestions.js';
 const tester = new FixTester<FixToApplySuggestionsArgs>(
   createFixToApplySuggestions,
   { filter: (suggestions) => suggestions[0] },
-  { parserOptions: { ecmaVersion: 2020, ecmaFeatures: { jsx: true } } },
+  { languageOptions: { ecmaVersion: 2020, parserOptions: { ecmaFeatures: { jsx: true } } } },
 );
 
 describe('apply-suggestions', () => {

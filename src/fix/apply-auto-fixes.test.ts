@@ -5,7 +5,7 @@ import { createFixToApplyAutoFixes } from './apply-auto-fixes.js';
 const tester = new FixTester(
   createFixToApplyAutoFixes,
   {},
-  { parserOptions: { ecmaVersion: 2020, ecmaFeatures: { jsx: true, globalReturn: true } } },
+  { languageOptions: { ecmaVersion: 2020, parserOptions: { ecmaFeatures: { jsx: true, globalReturn: true } } } },
 );
 
 describe('apply-auto-fixes', () => {
