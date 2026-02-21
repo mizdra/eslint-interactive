@@ -215,7 +215,7 @@ describe('Core', () => {
       expect(countWarnings(resultsWithQuiet)).toEqual(0);
     });
   });
-  test('printSummaryOfResults', async () => {
+  test('formatResultSummary', async () => {
     const results = await core.lint();
     vi.spyOn(LegacyESLint.prototype, 'getRulesMetaForResults').mockImplementationOnce(() => {
       return {
@@ -228,7 +228,7 @@ describe('Core', () => {
     });
     expect(core.formatResultSummary(results)).toMatchSnapshot();
   });
-  test('printDetailsOfResults', async () => {
+  test('formatResultDetails', async () => {
     const results = await core.lint();
     expect(
       (await core.formatResultDetails(results, ['import/order', 'ban-exponentiation-operator']))
