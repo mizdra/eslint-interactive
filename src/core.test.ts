@@ -2,6 +2,7 @@
 import { constants, cp, mkdir, readFile } from 'node:fs/promises';
 import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { stripVTControlCharacters } from 'node:util';
 import dedent from 'dedent';
 import type { Linter } from 'eslint';
 import { ESLint } from 'eslint';
@@ -215,7 +216,7 @@ describe('Core', () => {
       expect(countWarnings(resultsWithQuiet)).toEqual(0);
     });
   });
-  test.runIf(!ESLint.version.startsWith('8.'))('printSummaryOfResults in ESLint v9+', async () => {
+  test('formatResultSummary', async () => {
     const results = await core.lint();
     vi.spyOn(LegacyESLint.prototype, 'getRulesMetaForResults').mockImplementationOnce(() => {
       return {
@@ -226,29 +227,19 @@ describe('Core', () => {
         },
       };
     });
-    expect(core.formatResultSummary(results)).toMatchSnapshot();
+    expect(stripVTControlCharacters(core.formatResultSummary(results))).toMatchSnapshot();
   });
-  test.runIf(ESLint.version.startsWith('8.'))('printSummaryOfResults in ESLint v8', async () => {
+  test('formatResultDetails', async () => {
     const results = await core.lint();
-    vi.spyOn(LegacyESLint.prototype, 'getRulesMetaForResults').mockImplementationOnce(() => {
-      return {
-        'prefer-const': {
-          docs: {
-            url: 'https://example.com',
-          },
-        },
-      };
-    });
-    expect(core.formatResultSummary(results)).toMatchSnapshot();
-  });
-  test('printDetailsOfResults', async () => {
-    const results = await core.lint();
+    const formatted = await core.formatResultDetails(results, ['import/order', 'ban-exponentiation-operator']);
     expect(
-      (await core.formatResultDetails(results, ['import/order', 'ban-exponentiation-operator']))
-        .replaceAll(iff.rootDir, '<fixture>')
-        .replaceAll(relative(process.cwd(), iff.rootDir), '<fixture>')
-        // for windows
-        .replace(/\\/gu, '/'),
+      stripVTControlCharacters(
+        formatted
+          .replaceAll(iff.rootDir, '<fixture>')
+          .replaceAll(relative(process.cwd(), iff.rootDir), '<fixture>')
+          // for windows
+          .replace(/\\/gu, '/'),
+      ),
     ).toMatchSnapshot();
   });
   describe('applyAutoFixes', () => {

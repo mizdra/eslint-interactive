@@ -57,7 +57,7 @@
     "terminal-link": "^3.0.0"
   },
   "peerDependencies": {
-    "eslint": "^8.45.0 || ^9.0.0"
+    "eslint": "^9.0.0"
   },
   "engines": {
     "node": "^20.19.0 || >=22.12.0"
