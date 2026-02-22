@@ -138,10 +138,11 @@ const iff = await createIFF({
   'package.json': '{ "type": "module" }',
 });
 
-const core = new Core({
+const options = {
   patterns: ['src'],
   cwd: iff.rootDir,
-});
+};
+const core = new Core(options);
 
 beforeEach(async () => {
   await iff.reset();
@@ -177,17 +178,11 @@ describe('Core', () => {
       expect(normalizeResults(results, iff.rootDir)).toMatchSnapshot();
     });
     test('filters warnings with --quiet option', async () => {
-      const coreWithoutQuiet = new Core({
-        ...core.config,
-        quiet: false,
-      });
+      const coreWithoutQuiet = new Core({ ...options, quiet: false });
       const resultsWithoutQuiet = await coreWithoutQuiet.lint();
       expect(countWarnings(resultsWithoutQuiet)).not.toEqual(0);
 
-      const coreWithQuiet = new Core({
-        ...core.config,
-        quiet: true,
-      });
+      const coreWithQuiet = new Core({ ...options, quiet: true });
       const resultsWithQuiet = await coreWithQuiet.lint();
       expect(countWarnings(resultsWithQuiet)).toEqual(0);
     });

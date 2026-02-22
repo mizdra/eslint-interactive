@@ -36,21 +36,21 @@ export type Undo = () => Promise<void>;
  * It uses ESLint's Node.js API to output a summary of problems, fix problems, apply suggestions, etc.
  */
 export class Core {
-  readonly config: NormalizedConfig;
-  readonly eslint: ESLint;
+  readonly #config: NormalizedConfig;
+  readonly #eslint: ESLint;
 
   constructor(config: Config) {
-    this.config = {
+    this.#config = {
       ...config,
       cwd: config.cwd ?? process.cwd(),
       quiet: config.quiet ?? false,
     };
-    const { formatterName, patterns, quiet, ...eslintOptions } = this.config;
+    const { formatterName, patterns, quiet, ...eslintOptions } = this.#config;
     const overrideConfigs =
       Array.isArray(eslintOptions.overrideConfig) ? eslintOptions.overrideConfig
       : eslintOptions.overrideConfig ? [eslintOptions.overrideConfig]
       : [];
-    this.eslint = new ESLint({
+    this.#eslint = new ESLint({
       ...eslintOptions,
       overrideConfig: [
         ...overrideConfigs,
@@ -69,8 +69,8 @@ export class Core {
    * @returns The results of linting
    */
   async lint(): Promise<ESLint.LintResult[]> {
-    let results = await this.eslint.lintFiles(this.config.patterns);
-    if (this.config.quiet) results = ESLint.getErrorResults(results);
+    let results = await this.#eslint.lintFiles(this.#config.patterns);
+    if (this.#config.quiet) results = ESLint.getErrorResults(results);
     return results;
   }
 
@@ -79,8 +79,8 @@ export class Core {
    * @param results The lint results of the project to print summary
    */
   formatResultSummary(results: ESLint.LintResult[]): string {
-    const rulesMeta = this.eslint.getRulesMetaForResults(results);
-    return format(results, { rulesMeta, cwd: this.config.cwd });
+    const rulesMeta = this.#eslint.getRulesMetaForResults(results);
+    return format(results, { rulesMeta, cwd: this.#config.cwd });
   }
 
   /**
@@ -89,7 +89,7 @@ export class Core {
    * @param ruleIds The rule ids to print details
    */
   async formatResultDetails(results: ESLint.LintResult[], ruleIds: (string | null)[]): Promise<string> {
-    const formatter = await this.eslint.loadFormatter(this.config.formatterName);
+    const formatter = await this.#eslint.loadFormatter(this.#config.formatterName);
     return formatter.format(filterResultsByRuleId(results, ruleIds));
   }
 
@@ -188,7 +188,7 @@ export class Core {
       if (!source) throw new Error('Source code is required to apply fixes.');
 
       // eslint-disable-next-line no-await-in-loop
-      const fixedResult = await verifyAndFix(this.eslint, source, filePath, ruleIds, fixCreator);
+      const fixedResult = await verifyAndFix(this.#eslint, source, filePath, ruleIds, fixCreator);
 
       // Write the fixed source code to the file
       if (fixedResult.fixed) {
