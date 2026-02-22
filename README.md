@@ -32,11 +32,17 @@ It also supports the following actions in addition to `eslint --fix`. All action
 
 - Display details of lint results
 - Run `eslint --fix`
-- Disable per line (by `// eslint-disable-next-line <rule-name>`)
+- Disable per line (`// eslint-disable-next-line <rule-name>`)
 - Disable per file (`/* eslint-disable <rule-name> */`)
+  - Add disable comments (`// eslint-disable <rule-name>`) per file.
 - Convert error to warning per file (`/* eslint <rule-name>: 1 */`)
-- Apply suggestions
-- Make forcibly fixable and run `eslint --fix`
+- Apply suggestions (via [Programmable API](./docs/programmable-api.md) only)
+  - Select one of the applicable suggestions and apply it. ([What's _suggestions_?](#whats-suggestions))
+  - Users can write JavaScript code to programmatically select the suggestion to be applied.
+  - See [Programmable API documentation](./docs/programmable-api.md#applySuggestions) for details.
+- Make forcibly fixable and run `eslint --fix` (via [Programmable API](./docs/programmable-api.md) only)
+  - This feature makes forcibly un-fixable problems fixable, and applies them.
+  - See [Programmable API documentation](./docs/programmable-api.md#makeFixableAndFix) for details.
 
 ## Requirements
 
@@ -86,30 +92,6 @@ Examples:
   eslint-interactive src test                 Lint specified directories
   eslint-interactive 'src/**/*.{ts,tsx,vue}'  Lint with glob pattern
 ```
-
-## Available actions
-
-Actions can be executed per rule.
-
-- Display details of lint results
-  - Displays ESLint error reports.
-- Run `eslint --fix`
-  - Apply fixable problems.
-- Disable per line
-  - Add disable comments (`// eslint-disable-next-line <rule-name>`) per line.
-- Disable per file
-  - Add disable comments (`// eslint-disable <rule-name>`) per file.
-- Convert error to warning per file
-  - Add inline config comments (`/* eslint <rule-name>: 1 */`) per file.
-- Apply suggestions (experimental, for experts)
-  - Select one of the applicable suggestions and apply it. ([What's _suggestions_?](#whats-suggestions))
-  - Users can write JavaScript code to programmatically select the suggestion to be applied.
-  - The tool will tell you how to use the feature in detail. Please follow the instructions of the tool.
-  - This feature is experimental and may change significantly.
-- Make forcibly fixable and run `eslint --fix` (experimental, for experts)
-  - This feature make forcibly un-fixable problems fixable, and apply them.
-  - The tool will tell you how to use the feature in detail. Please follow the instructions of the tool.
-  - This feature is experimental and may change significantly.
 
 ## Programmable API
 
