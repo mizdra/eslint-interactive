@@ -39,24 +39,26 @@ export function parseArgv(argv: string[]): ParsedCLIOptions {
   }
 
   if (values.help) {
-    console.log(`
-eslint-interactive [file.js] [dir]
+    console.log(
+      `
+eslint-interactive [...patterns]
 
 Options:
-      --help            Show help                                                                [boolean]
-      --version         Show version number                                                      [boolean]
-  -c, --config          Use this configuration, overriding config options if present              [string]
-      --format          Specify the format to be used for the "Display problem messages" action   [string]
-      --quiet           Report errors only                                                       [boolean]
-      --cache           Only check changed files                                                 [boolean]
-      --cache-location  Path to the cache file or directory                                       [string]
-      --flag            Enable a feature flag (requires ESLint v9.6.0+)                            [array]
+      --help                   Show help
+      --version                Show version number
+  -c, --config <path>          Use this configuration, overriding config options if present
+      --format <nameOrPath>    Specify the format to be used for the "Display problem messages" action
+      --quiet                  Report errors only
+      --cache                  Only check changed files
+      --cache-location <path>  Path to the cache file or directory
+      --flag <name>            Enable a feature flag (requires ESLint v9.6.0+)
 
 Examples:
-  eslint-interactive ./src                      Lint ./src/ directory
-  eslint-interactive ./src ./test               Lint multiple directories
-  eslint-interactive './src/**/*.{ts,tsx,vue}'  Lint with glob pattern
-      `);
+  eslint-interactive                          Lint all files in the project
+  eslint-interactive src test                 Lint specified directories
+  eslint-interactive 'src/**/*.{ts,tsx,vue}'  Lint with glob pattern
+`.trim(),
+    );
     // eslint-disable-next-line n/no-process-exit
     process.exit(0);
   }
