@@ -1,18 +1,9 @@
 import { parseArgs } from 'node:util';
+import type { Config } from '../type.ts';
 import { VERSION } from './package.js';
 
-export type ParsedCLIOptions = {
-  patterns: string[];
-  formatterName: string | undefined;
-  quiet: boolean | undefined;
-  overrideConfigFile: string | undefined;
-  cache: boolean | undefined;
-  cacheLocation: string | undefined;
-  flags: string[] | undefined;
-};
-
 /** Parse CLI options */
-export function parseArgv(argv: string[]): ParsedCLIOptions {
+export function parseArgv(argv: string[]): Config {
   const options = {
     'config': { type: 'string', short: 'c' },
     'format': { type: 'string' },
