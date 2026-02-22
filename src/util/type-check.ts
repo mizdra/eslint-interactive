@@ -6,7 +6,3 @@ export function unreachable(message?: string): never {
 export function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
   return value !== null && value !== undefined;
 }
-
-export type DeepPartial<T> = {
-  [P in keyof T]?: T[P] extends Record<string, unknown> ? DeepPartial<T[P]> : T[P];
-};
