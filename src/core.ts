@@ -2,7 +2,6 @@ import { writeFile } from 'node:fs/promises';
 import type { Rule } from 'eslint';
 import { ESLint } from 'eslint';
 import type { DescriptionPosition } from './cli/prompt.js';
-import type { Config } from './config.ts';
 import type { FixableMaker, FixContext, SuggestionFilter } from './fix/index.js';
 import {
   createFixToApplyAutoFixes,
@@ -15,6 +14,7 @@ import {
 } from './fix/index.js';
 import { format } from './formatter/index.js';
 import { plugin } from './plugin.js';
+import type { Config } from './type.js';
 import { filterResultsByRuleId } from './util/eslint.js';
 
 /**

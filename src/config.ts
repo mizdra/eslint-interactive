@@ -1,12 +1,5 @@
-import type { ESLint } from 'eslint';
 import type { ParsedCLIOptions } from './cli/parse-argv.js';
-
-/** The config of eslint-interactive */
-export type Config = ESLint.Options & {
-  patterns: string[];
-  formatterName?: string | undefined;
-  quiet?: boolean | undefined;
-};
+import type { Config } from './type.ts';
 
 export function translateCLIOptions(options: ParsedCLIOptions): Config {
   return {
