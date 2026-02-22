@@ -7,7 +7,6 @@ import isInstalledGlobally from 'is-installed-globally';
 import terminalLink from 'terminal-link';
 import { warn } from '../cli/log.js';
 import { parseArgv } from '../cli/parse-argv.js';
-import { translateCLIOptions } from '../config.js';
 import type { SerializableCore } from '../core-worker.js';
 import type { NextScene } from '../scene/index.js';
 import { checkResults, lint, selectAction, selectRuleIds } from '../scene/index.js';
@@ -27,8 +26,7 @@ export async function run(options: Options) {
         'It is recommended to install eslint-interactive locally.',
     );
   }
-  const parsedCLIOptions = parseArgv(options.argv);
-  const config = translateCLIOptions(parsedCLIOptions);
+  const config = parseArgv(options.argv);
 
   // Directly executing the Core API will hog the main thread and halt the spinner.
   // So we wrap it with comlink and run it on the Worker.
