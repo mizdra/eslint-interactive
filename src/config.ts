@@ -19,8 +19,3 @@ export function translateCLIOptions(options: ParsedCLIOptions): Config {
     flags: options.flags,
   };
 }
-
-export type NormalizedConfig = Config & {
-  quiet: boolean;
-  cwd: string;
-};

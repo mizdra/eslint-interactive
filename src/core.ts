@@ -2,7 +2,7 @@ import { writeFile } from 'node:fs/promises';
 import type { Rule } from 'eslint';
 import { ESLint } from 'eslint';
 import type { DescriptionPosition } from './cli/prompt.js';
-import type { Config, NormalizedConfig } from './config.js';
+import type { Config } from './config.ts';
 import type { FixableMaker, FixContext, SuggestionFilter } from './fix/index.js';
 import {
   createFixToApplyAutoFixes,
@@ -36,16 +36,21 @@ export type Undo = () => Promise<void>;
  * It uses ESLint's Node.js API to output a summary of problems, fix problems, apply suggestions, etc.
  */
 export class Core {
-  readonly #config: NormalizedConfig;
+  readonly #cwd: string;
+  readonly #patterns: string[];
+  readonly #quiet: boolean;
+  readonly #formatterName: string | undefined;
   readonly #eslint: ESLint;
 
   constructor(config: Config) {
-    this.#config = {
-      ...config,
-      cwd: config.cwd ?? process.cwd(),
-      quiet: config.quiet ?? false,
-    };
-    const { formatterName, patterns, quiet, ...eslintOptions } = this.#config;
+    this.#cwd = config.cwd ?? process.cwd();
+    this.#patterns = config.patterns;
+    this.#quiet = config.quiet ?? false;
+    this.#formatterName = config.formatterName;
+
+    // NOTE: Passing an option that does not exist to `new ESLint(...)` will throw an error.
+    // Therefore, only options supported by ESLint are extracted into the `eslintOptions` variable.
+    const { formatterName, patterns, quiet, ...eslintOptions } = config;
     const overrideConfigs =
       Array.isArray(eslintOptions.overrideConfig) ? eslintOptions.overrideConfig
       : eslintOptions.overrideConfig ? [eslintOptions.overrideConfig]
@@ -69,8 +74,8 @@ export class Core {
    * @returns The results of linting
    */
   async lint(): Promise<ESLint.LintResult[]> {
-    let results = await this.#eslint.lintFiles(this.#config.patterns);
-    if (this.#config.quiet) results = ESLint.getErrorResults(results);
+    let results = await this.#eslint.lintFiles(this.#patterns);
+    if (this.#quiet) results = ESLint.getErrorResults(results);
     return results;
   }
 
@@ -80,7 +85,7 @@ export class Core {
    */
   formatResultSummary(results: ESLint.LintResult[]): string {
     const rulesMeta = this.#eslint.getRulesMetaForResults(results);
-    return format(results, { rulesMeta, cwd: this.#config.cwd });
+    return format(results, { rulesMeta, cwd: this.#cwd });
   }
 
   /**
@@ -89,7 +94,7 @@ export class Core {
    * @param ruleIds The rule ids to print details
    */
   async formatResultDetails(results: ESLint.LintResult[], ruleIds: (string | null)[]): Promise<string> {
-    const formatter = await this.#eslint.loadFormatter(this.#config.formatterName);
+    const formatter = await this.#eslint.loadFormatter(this.#formatterName);
     return formatter.format(filterResultsByRuleId(results, ruleIds));
   }
 
