@@ -49,6 +49,8 @@ It also supports the following actions in addition to `eslint --fix`. All action
 - Node.js `^20.19.0 || >=22.12.0`
 - ESLint `>=8.45.0`
   - If you use ESLint `<8.45.0`, use `eslint-interactive@^10`.
+- Flat config (`eslint.config.js`)
+  - If you use legacy config (`.eslintrc.*`), use `eslint-interactive@^10`.
 
 ## Installation
 
