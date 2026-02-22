@@ -1,4 +1,3 @@
-import { basename } from 'node:path';
 import { describe, expect, test } from 'vitest';
 import { FixTester } from '../test-util/fix-tester.js';
 import type { FixToApplySuggestionsArgs } from './apply-suggestions.js';
@@ -59,17 +58,15 @@ describe('apply-suggestions', () => {
       rules: { 'eslint-interactive/prefer-addition-shorthand': 'error' },
       args: {
         filter: (suggestions, message, context) => {
-          expect({
-            suggestions,
-            message,
-            context: {
-              ...context,
-              // Use only basename, because the path will change depending on the environment.
-              filename: basename(context.filename),
-              // Take a snapshot of only part of it because `sourceCode` is huge
-              sourceCode: { text: context.sourceCode.text },
-            },
-          }).toMatchSnapshot();
+          expect(suggestions.map((s) => s.desc)).toMatchInlineSnapshot(`
+            [
+              "Use \`val += 1\` instead.",
+              "Use \`val++\` instead.",
+              "Use \`++val\` instead.",
+            ]
+          `);
+          expect(message.ruleId).toBe('eslint-interactive/prefer-addition-shorthand');
+          expect(context.filename).toBe('test.js');
           return null;
         },
       },
