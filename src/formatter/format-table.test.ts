@@ -1,3 +1,4 @@
+// eslint-disable-next-line n/no-unsupported-features/node-builtins
 import { stripVTControlCharacters, styleText } from 'node:util';
 import terminalLink from 'terminal-link';
 import { describe, expect, test } from 'vitest';

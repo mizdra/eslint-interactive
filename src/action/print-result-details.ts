@@ -2,6 +2,7 @@ import { writeFile } from 'node:fs/promises';
 import { mkdir } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+// eslint-disable-next-line n/no-unsupported-features/node-builtins
 import { stripVTControlCharacters, styleText } from 'node:util';
 import type { Remote } from 'comlink';
 import type { ESLint } from 'eslint';
