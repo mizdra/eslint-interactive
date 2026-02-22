@@ -96,7 +96,7 @@ test('go back to the rule selection screen ', async () => {
   await streamWatcher.match(/Which action do you want to do\?/);
 
   // Select "Go back"
-  child.stdin.write('8'); // Focus on `Go back`
+  child.stdin.write('6'); // Focus on `Go back`
   child.stdin.write(LF); // Confirm the choice
 
   // Should go back to rule selection with fresh lint results

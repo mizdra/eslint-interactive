@@ -20,8 +20,6 @@ export type Action =
   | 'disablePerLine'
   | 'disablePerFile'
   | 'convertErrorToWarningPerFile'
-  | 'applySuggestions'
-  | 'makeFixableAndFix'
   | 'relintAndReselectRules'
   | 'reselectRules';
 
@@ -79,9 +77,8 @@ export async function promptToInputAction(
   const foldedStatistics = ruleStatistics.reduce(
     (a, b) => ({
       isFixableCount: a.isFixableCount + b.isFixableCount,
-      hasSuggestionsCount: a.hasSuggestionsCount + b.hasSuggestionsCount,
     }),
-    { isFixableCount: 0, hasSuggestionsCount: 0 },
+    { isFixableCount: 0 },
   );
 
   const choices = [
@@ -90,15 +87,6 @@ export async function promptToInputAction(
     { name: 'disablePerLine', message: '🔧 Disable per line' },
     { name: 'disablePerFile', message: '🔧 Disable per file' },
     { name: 'convertErrorToWarningPerFile', message: '🔧 Convert error to warning per file' },
-    {
-      name: 'applySuggestions',
-      message: '🔧 Apply suggestions (experimental, for experts)',
-      disabled: foldedStatistics.hasSuggestionsCount === 0,
-    },
-    {
-      name: 'makeFixableAndFix',
-      message: '🔧 Make forcibly fixable and run `eslint --fix` (experimental, for experts)',
-    },
     { name: 'relintAndReselectRules', message: '↩️ Go back (with re-lint)' },
     { name: 'reselectRules', message: '↩️ Go back' },
   ];
@@ -200,38 +188,4 @@ export async function promptToInputWhatToDoNext(): Promise<NextStep> {
     },
   ]);
   return nextStep;
-}
-
-/**
- * Ask the user if they want to reuse the filter script.
- * @returns If it reuses, `true`, if not, `false`.
- */
-export async function promptToInputReuseFilterScript(): Promise<boolean> {
-  const { reuseFilterScript } = await prompt<{ reuseFilterScript: boolean }>([
-    {
-      name: 'reuseFilterScript',
-      type: 'confirm',
-      message: 'Do you want to reuse a previously edited filter script?',
-      initial: true,
-      onCancel,
-    },
-  ]);
-  return reuseFilterScript;
-}
-
-/**
- * Ask the user if they want to reuse the script.
- * @returns If it reuses, `true`, if not, `false`.
- */
-export async function promptToInputReuseScript(): Promise<boolean> {
-  const { reuseScript } = await prompt<{ reuseScript: boolean }>([
-    {
-      name: 'reuseScript',
-      type: 'confirm',
-      message: 'Do you want to reuse a previously edited script?',
-      initial: true,
-      onCancel,
-    },
-  ]);
-  return reuseScript;
 }

@@ -1,12 +1,10 @@
 import type { Remote } from 'comlink';
 import type { ESLint } from 'eslint';
 import {
-  doApplySuggestionsAction,
   doConvertErrorToWarningPerFileAction,
   doDisablePerFileAction,
   doDisablePerLineAction,
   doFixAction,
-  doMakeFixableAndFixAction,
   doPrintResultDetailsAction,
 } from '../action/index.js';
 import type { Action } from '../cli/prompt.js';
@@ -63,12 +61,6 @@ export async function selectAction(
     return createCheckResultsScene(undo);
   } else if (selectedAction === 'convertErrorToWarningPerFile') {
     const undo = await doConvertErrorToWarningPerFileAction(core, results, selectedRuleIds);
-    return createCheckResultsScene(undo);
-  } else if (selectedAction === 'applySuggestions') {
-    const undo = await doApplySuggestionsAction(core, results, selectedRuleIds);
-    return createCheckResultsScene(undo);
-  } else if (selectedAction === 'makeFixableAndFix') {
-    const undo = await doMakeFixableAndFixAction(core, results, selectedRuleIds);
     return createCheckResultsScene(undo);
   }
   // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
