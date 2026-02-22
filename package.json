@@ -39,7 +39,7 @@
     "@types/estree": "^1.0.8",
     "@types/node": "^22.15.3",
     "dedent": "^1.5.3",
-    "eslint": "^9.39.3",
+    "eslint": "^10.0.1",
     "eslint-plugin-import": "^2.32.0",
     "npm-run-all2": "^7.0.2",
     "prettier": "3.5.3",
