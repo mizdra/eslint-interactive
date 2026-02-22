@@ -1,9 +1,7 @@
 import { parentPort } from 'node:worker_threads';
 import { expose, proxy } from 'comlink';
 import nodeEndpoint from 'comlink/dist/esm/node-adapter.mjs';
-import type { ESLint } from 'eslint';
 import { Core } from './core.js';
-import type { FixableMaker, SuggestionFilter } from './fix/index.js';
 import type { Config } from './type.js';
 
 /**
@@ -45,24 +43,6 @@ export class SerializableCore {
     ...args: Parameters<Core['convertErrorToWarningPerFile']>
   ): ReturnType<Core['convertErrorToWarningPerFile']> {
     return proxy(await this.core.convertErrorToWarningPerFile(...args));
-  }
-  async applySuggestions(
-    results: ESLint.LintResult[],
-    ruleIds: string[],
-    filterScript: string,
-  ): ReturnType<Core['applySuggestions']> {
-    // eslint-disable-next-line no-eval -- TODO: replace with a better solution
-    const filter = eval(filterScript) as SuggestionFilter;
-    return proxy(await this.core.applySuggestions(results, ruleIds, filter));
-  }
-  async makeFixableAndFix(
-    results: ESLint.LintResult[],
-    ruleIds: string[],
-    fixableMakerScript: string,
-  ): ReturnType<Core['makeFixableAndFix']> {
-    // eslint-disable-next-line no-eval -- TODO: replace with a better solution
-    const fixableMaker = eval(fixableMakerScript) as FixableMaker;
-    return proxy(await this.core.makeFixableAndFix(results, ruleIds, fixableMaker));
   }
 }
 

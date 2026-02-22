@@ -101,9 +101,65 @@ const core = new Core({
 });
 ```
 
-## Limitation
+## `core.applySuggestions`
 
-- `eslint-interactive` is Pure ESM.
-  - CJS version is not supported.
-- If you want to use TypeScript, you have to enable `module: Node16` or `module: NodeNext` in `tsconfig.json`.
-  - This means that you need to use TypeScript v4.7.0+.
+`core.applySuggestions()` applies [ESLint suggestions](https://eslint.org/docs/latest/developer-guide/working-with-rules#providing-suggestions) for the specified rules. You provide a `SuggestionFilter` function that selects which suggestion to apply for each problem.
+
+```typescript
+import { Core } from 'eslint-interactive';
+
+const core = new Core({
+  patterns: ['src'],
+  cwd: '/path/to/project',
+});
+const results = await core.lint();
+
+await core.applySuggestions(results, ['no-unsafe-negation'], (suggestions, message, context) => {
+  if (message.ruleId === 'no-unsafe-negation') {
+    return suggestions.find((s) => s.desc.startsWith('Wrap negation'));
+  }
+  // Apply the first suggestion
+  return suggestions[0];
+});
+```
+
+The `SuggestionFilter` function receives:
+
+- `suggestions` — The list of suggestions (`Linter.LintSuggestion[]`) available for the problem
+- `message` — The lint message (`Linter.LintMessage`) that has suggestions
+- `context` — The fix context (`FixContext`) containing `filename`, `sourceCode`, `messages`, `ruleIds`, and `fixer`
+
+Return a single `Linter.LintSuggestion` to apply, or `null`/`undefined` to skip.
+
+## `core.makeFixableAndFix`
+
+`core.makeFixableAndFix()` allows you to create fixes for rules that are not auto-fixable. You provide a `FixableMaker` function that converts each lint message into a `Rule.Fix`.
+
+```typescript
+import { Core, type FixableMaker } from 'eslint-interactive';
+
+const core = new Core({
+  patterns: ['src'],
+  cwd: '/path/to/project',
+});
+const results = await core.lint();
+
+await core.makeFixableAndFix(results, ['no-unused-vars'], (message, node, context) => {
+  if (!node || !node.range) return null;
+
+  if (message.ruleId === 'no-unused-vars') {
+    // Add underscore prefix to unused variables
+    if (node.type !== 'Identifier') return null;
+    return context.fixer.insertTextBefore(node, '_');
+  }
+  return null;
+});
+```
+
+The `FixableMaker` function receives:
+
+- `message` — The lint message (`Linter.LintMessage`) to create a fix for
+- `node` — The AST node (`estree.Node | null`) associated with the message
+- `context` — The fix context (`FixContext`) containing `filename`, `sourceCode`, `messages`, `ruleIds`, and `fixer`
+
+Return a `Rule.Fix` object to apply, or `null`/`undefined` to skip the message. Use `context.fixer` (the `Rule.RuleFixer` API) to create fix objects.
