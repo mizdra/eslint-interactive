@@ -14,7 +14,7 @@ const tester = new FixTester<FixToMakeFixableAndFixArgs>(
       };
     },
   },
-  { parserOptions: { ecmaVersion: 2020, ecmaFeatures: { jsx: true } } },
+  { languageOptions: { ecmaVersion: 2020, parserOptions: { ecmaFeatures: { jsx: true } } } },
 );
 
 describe('make-fixable-and-fix', () => {

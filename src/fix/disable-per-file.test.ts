@@ -5,7 +5,7 @@ import { createFixToDisablePerFile } from './disable-per-file.js';
 const tester = new FixTester(
   createFixToDisablePerFile,
   {},
-  { parserOptions: { ecmaVersion: 2020, ecmaFeatures: { jsx: true } } },
+  { languageOptions: { ecmaVersion: 2020, parserOptions: { ecmaFeatures: { jsx: true } } } },
 );
 
 describe('disable-per-file', () => {

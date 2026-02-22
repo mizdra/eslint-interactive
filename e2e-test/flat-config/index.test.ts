@@ -44,7 +44,7 @@ test('fix problems with flat config', async () => {
       // merge stderr to stdout
       '2>&1',
     ],
-    { shell: true, stdio: 'pipe', cwd: iff.rootDir, env: { ...process.env, ESLINT_USE_FLAT_CONFIG: 'true' } },
+    { shell: true, stdio: 'pipe', cwd: iff.rootDir },
   );
   const streamWatcher = createStreamWatcher(child.stdout, { debug: false });
 
@@ -86,7 +86,7 @@ test('go back to the rule selection screen ', async () => {
       // merge stderr to stdout
       '2>&1',
     ],
-    { shell: true, stdio: 'pipe', cwd: iff.rootDir, env: { ...process.env, ESLINT_USE_FLAT_CONFIG: 'true' } },
+    { shell: true, stdio: 'pipe', cwd: iff.rootDir },
   );
   const streamWatcher = createStreamWatcher(child.stdout, { debug: false });
 

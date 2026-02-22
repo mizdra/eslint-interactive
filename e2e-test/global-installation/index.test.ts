@@ -34,7 +34,7 @@ test('can print error with stylish', async () => {
       // merge stderr to stdout
       '2>&1',
     ],
-    { shell: true, stdio: 'pipe', cwd: __dirname, env: { ...process.env, ESLINT_USE_FLAT_CONFIG: 'false' } },
+    { shell: true, stdio: 'pipe', cwd: __dirname },
   );
   const streamWatcher = createStreamWatcher(child.stdout, { debug: false });
 

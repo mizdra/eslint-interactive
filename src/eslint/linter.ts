@@ -7,12 +7,11 @@
  * @author aladdin-add
  */
 
-import type { Rule } from 'eslint';
+import type { ESLint, Rule } from 'eslint';
 import type { FixContext } from '../fix/index.js';
 import { getLastSourceCode } from '../plugin.js';
 import { ruleFixer } from './rule-fixer.js';
 import { SourceCodeFixer } from './source-code-fixer.js';
-import type { FlatESLint, LegacyESLint } from './use-at-your-own-risk.js';
 
 const MAX_AUTOFIX_PASSES = 10;
 
@@ -27,7 +26,7 @@ type FixedResult = {
  */
 
 export async function verifyAndFix(
-  eslint: InstanceType<typeof FlatESLint> | InstanceType<typeof LegacyESLint>,
+  eslint: ESLint,
   text: string,
   filePath: string,
   ruleIds: string[],

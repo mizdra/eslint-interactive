@@ -45,17 +45,6 @@ exports[`Core > constructor > pass options to eslint 1`] = `
     ],
     "warningCount": 0,
   },
-  {
-    "errorCount": 1,
-    "filePath": "<fixture>/src/index.mjs",
-    "messages": [
-      {
-        "ruleId": "ban-exponentiation-operator",
-        "severity": 2,
-      },
-    ],
-    "warningCount": 0,
-  },
 ]
 `;
 
@@ -69,93 +58,29 @@ exports[`Core > disablePerLine 1`] = `
 let a = 1;"
 `;
 
-exports[`Core > fixes problems with legacy config and 3rd-party plugins 1`] = `
+exports[`Core > fixes problems with 3rd-party plugins 1`] = `
 "// eslint-disable-next-line test/ban-nullish-coalescing-operator
 2 ?? 2;"
 `;
 
-exports[`Core > flat config 1`] = `
-[
-  {
-    "errorCount": 1,
-    "filePath": "<fixture>/src/.index.js",
-    "messages": [
-      {
-        "ruleId": "prefer-const",
-        "severity": 2,
-      },
-    ],
-    "warningCount": 0,
-  },
-  {
-    "errorCount": 1,
-    "filePath": "<fixture>/src/index.js",
-    "messages": [
-      {
-        "ruleId": "prefer-const",
-        "severity": 2,
-      },
-    ],
-    "warningCount": 0,
-  },
-  {
-    "errorCount": 1,
-    "filePath": "<fixture>/src/index.jsx",
-    "messages": [
-      {
-        "ruleId": "prefer-const",
-        "severity": 2,
-      },
-    ],
-    "warningCount": 0,
-  },
-  {
-    "errorCount": 1,
-    "filePath": "<fixture>/src/index.mjs",
-    "messages": [
-      {
-        "ruleId": "prefer-const",
-        "severity": 2,
-      },
-    ],
-    "warningCount": 0,
-  },
-]
-`;
-
-exports[`Core > flat config 2`] = `"const a = 1;"`;
-
-exports[`Core > flat config 3`] = `"const a = 1;"`;
-
-exports[`Core > flat config 4`] = `"const a = 1;"`;
-
-exports[`Core > flat config 5`] = `"const a = 1;"`;
-
 exports[`Core > formatResultDetails 1`] = `
 "
-<fixture>/src/ban-exponentiation-operator.js
-  1:1  error  Ban exponentiation operator  ban-exponentiation-operator
+<fixture>/src/ban-nullish-coalescing-operator.js
+  1:1  error  Ban nullish coalescing operator  test/ban-nullish-coalescing-operator
 
-<fixture>/src/import-order.js
-  1:1  error  Definition for rule 'import/order' was not found  import/order
-
-✖ 2 problems (2 errors, 0 warnings)
+✖ 1 problem (1 error, 0 warnings)
 "
 `;
 
 exports[`Core > formatResultSummary 1`] = `
-"- 8 files (0 file passed, 8 files failed) checked.
-- 19 problems (18 errors, 1 warning) found.
+"- 6 files (0 file passed, 6 files failed) checked.
+- 17 problems (16 errors, 1 warning) found.
 ╔══════════════════════════════════════╤═══════╤═════════╤════════════╤═════════════════╗
 ║ Rule                                 │ Error │ Warning │ is fixable │ has suggestions ║
 ╟──────────────────────────────────────┼───────┼─────────┼────────────┼─────────────────╢
 ║ arrow-body-style                     │ 12    │ 0       │ 12         │ 0               ║
 ╟──────────────────────────────────────┼───────┼─────────┼────────────┼─────────────────╢
-║ ban-exponentiation-operator          │ 1     │ 0       │ 0          │ 0               ║
-╟──────────────────────────────────────┼───────┼─────────┼────────────┼─────────────────╢
 ║ test/ban-nullish-coalescing-operator │ 1     │ 0       │ 0          │ 0               ║
-╟──────────────────────────────────────┼───────┼─────────┼────────────┼─────────────────╢
-║ import/order                         │ 1     │ 0       │ 0          │ 0               ║
 ╟──────────────────────────────────────┼───────┼─────────┼────────────┼─────────────────╢
 ║ no-unsafe-negation                   │ 1     │ 0       │ 0          │ 1               ║
 ╟──────────────────────────────────────┼───────┼─────────┼────────────┼─────────────────╢
@@ -225,32 +150,10 @@ exports[`Core > lint > returns lint results 1`] = `
   },
   {
     "errorCount": 1,
-    "filePath": "<fixture>/src/ban-exponentiation-operator.js",
-    "messages": [
-      {
-        "ruleId": "ban-exponentiation-operator",
-        "severity": 2,
-      },
-    ],
-    "warningCount": 0,
-  },
-  {
-    "errorCount": 1,
     "filePath": "<fixture>/src/ban-nullish-coalescing-operator.js",
     "messages": [
       {
         "ruleId": "test/ban-nullish-coalescing-operator",
-        "severity": 2,
-      },
-    ],
-    "warningCount": 0,
-  },
-  {
-    "errorCount": 1,
-    "filePath": "<fixture>/src/import-order.js",
-    "messages": [
-      {
-        "ruleId": "import/order",
         "severity": 2,
       },
     ],
@@ -302,6 +205,63 @@ exports[`Core > lint > returns lint results 1`] = `
   },
 ]
 `;
+
+exports[`Core > lints files matching flat config patterns 1`] = `
+[
+  {
+    "errorCount": 1,
+    "filePath": "<fixture>/src/.index.js",
+    "messages": [
+      {
+        "ruleId": "prefer-const",
+        "severity": 2,
+      },
+    ],
+    "warningCount": 0,
+  },
+  {
+    "errorCount": 1,
+    "filePath": "<fixture>/src/index.js",
+    "messages": [
+      {
+        "ruleId": "prefer-const",
+        "severity": 2,
+      },
+    ],
+    "warningCount": 0,
+  },
+  {
+    "errorCount": 1,
+    "filePath": "<fixture>/src/index.jsx",
+    "messages": [
+      {
+        "ruleId": "prefer-const",
+        "severity": 2,
+      },
+    ],
+    "warningCount": 0,
+  },
+  {
+    "errorCount": 1,
+    "filePath": "<fixture>/src/index.mjs",
+    "messages": [
+      {
+        "ruleId": "prefer-const",
+        "severity": 2,
+      },
+    ],
+    "warningCount": 0,
+  },
+]
+`;
+
+exports[`Core > lints files matching flat config patterns 2`] = `"const a = 1;"`;
+
+exports[`Core > lints files matching flat config patterns 3`] = `"const a = 1;"`;
+
+exports[`Core > lints files matching flat config patterns 4`] = `"const a = 1;"`;
+
+exports[`Core > lints files matching flat config patterns 5`] = `"const a = 1;"`;
 
 exports[`Core > makeFixableAndFix 1`] = `"const _a = 1;"`;
 

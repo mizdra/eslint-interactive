@@ -32,7 +32,7 @@ export async function lint(core: Remote<SerializableCore>): Promise<NextScene> {
       'ESLint Core Problems are found. ' +
         'The problems cannot be fixed by eslint-interactive. ' +
         'Check the details of the problem and fix it. ' +
-        'This is usually caused by the invalid eslintrc or the invalid syntax of the linted code.',
+        'This is usually caused by the invalid eslint config or the invalid syntax of the linted code.',
     );
     console.log(await core.formatResultDetails(results, [null]));
   }

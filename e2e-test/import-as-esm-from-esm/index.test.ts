@@ -10,19 +10,18 @@ const iff = await createIFF({
   'src/prefer-const.js': dedent`
     let a = 1;
   `,
-  '.eslintrc.js': dedent`
-    module.exports = {
-      root: true,
-      parserOptions: {
-        ecmaVersion: 2021,
-        sourceType: 'module',
+  'eslint.config.js': dedent`
+    export default [
+      {
+        languageOptions: {
+          ecmaVersion: 2021,
+          sourceType: 'module',
+        },
       },
-      overrides: [
-        { files: ['prefer-const.js'], rules: { 'prefer-const': 'error' } },
-      ],
-    };
+      { files: ['**/prefer-const.js'], rules: { 'prefer-const': 'error' } },
+    ];
   `,
-  'package.json': '{ "type": "commonjs" }',
+  'package.json': '{ "type": "module" }',
 });
 
 afterEach(async () => {
@@ -32,9 +31,7 @@ afterEach(async () => {
 test('Programmable API', async () => {
   const core = new Core({
     patterns: ['src'],
-    eslintOptions: {
-      type: 'eslintrc',
-    },
+    eslintOptions: {},
     cwd: iff.rootDir,
   });
   const results = await core.lint();
