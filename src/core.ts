@@ -3,7 +3,6 @@ import type { Rule } from 'eslint';
 import { ESLint } from 'eslint';
 import type { DescriptionPosition } from './cli/prompt.js';
 import type { Config, NormalizedConfig } from './config.js';
-import { normalizeConfig } from './config.js';
 import type { FixableMaker, FixContext, SuggestionFilter } from './fix/index.js';
 import {
   createFixToApplyAutoFixes,
@@ -41,7 +40,11 @@ export class Core {
   readonly eslint: ESLint;
 
   constructor(config: Config) {
-    this.config = normalizeConfig(config);
+    this.config = {
+      ...config,
+      cwd: config.cwd ?? process.cwd(),
+      quiet: config.quiet ?? false,
+    };
     const { formatterName, patterns, quiet, ...eslintOptions } = this.config;
     const overrideConfigs =
       Array.isArray(eslintOptions.overrideConfig) ? eslintOptions.overrideConfig
@@ -86,8 +89,7 @@ export class Core {
    * @param ruleIds The rule ids to print details
    */
   async formatResultDetails(results: ESLint.LintResult[], ruleIds: (string | null)[]): Promise<string> {
-    const formatterName = this.config.formatterName;
-    const formatter = await this.eslint.loadFormatter(formatterName);
+    const formatter = await this.eslint.loadFormatter(this.config.formatterName);
     return formatter.format(filterResultsByRuleId(results, ruleIds));
   }
 

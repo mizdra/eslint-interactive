@@ -1,5 +1,4 @@
 import { parseArgs } from 'node:util';
-import type { DeepPartial } from '../util/type-check.js';
 import { VERSION } from './package.js';
 
 export type ParsedCLIOptions = {
@@ -12,20 +11,13 @@ export type ParsedCLIOptions = {
   flags: string[] | undefined;
 };
 
-/** Default CLI Options */
-export const cliOptionsDefaults = {
-  formatterName: 'stylish',
-  quiet: false,
-  cache: false,
-} satisfies DeepPartial<ParsedCLIOptions>;
-
 /** Parse CLI options */
 export function parseArgv(argv: string[]): ParsedCLIOptions {
   const options = {
     'config': { type: 'string', short: 'c' },
-    'format': { type: 'string', default: cliOptionsDefaults.formatterName },
-    'quiet': { type: 'boolean', default: cliOptionsDefaults.quiet },
-    'cache': { type: 'boolean', default: cliOptionsDefaults.cache },
+    'format': { type: 'string' },
+    'quiet': { type: 'boolean' },
+    'cache': { type: 'boolean' },
     'cache-location': { type: 'string' },
     'version': { type: 'boolean' },
     'help': { type: 'boolean' },
@@ -51,14 +43,14 @@ export function parseArgv(argv: string[]): ParsedCLIOptions {
 eslint-interactive [file.js] [dir]
 
 Options:
-      --help            Show help                                                                                    [boolean]
-      --version         Show version number                                                                          [boolean]
-  -c, --config          Use this configuration, overriding config options if present                                  [string]
-      --format          Specify the format to be used for the "Display problem messages" action  [string] [default: "stylish"]
-      --quiet           Report errors only                                                          [boolean] [default: false]
-      --cache           Only check changed files                                                    [boolean] [default: false]
-      --cache-location  Path to the cache file or directory                                                           [string]
-      --flag            Enable a feature flag (requires ESLint v9.6.0+)                                                [array]
+      --help            Show help                                                                [boolean]
+      --version         Show version number                                                      [boolean]
+  -c, --config          Use this configuration, overriding config options if present              [string]
+      --format          Specify the format to be used for the "Display problem messages" action   [string]
+      --quiet           Report errors only                                                       [boolean]
+      --cache           Only check changed files                                                 [boolean]
+      --cache-location  Path to the cache file or directory                                       [string]
+      --flag            Enable a feature flag (requires ESLint v9.6.0+)                            [array]
 
 Examples:
   eslint-interactive ./src                      Lint ./src/ directory
