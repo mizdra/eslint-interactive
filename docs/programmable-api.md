@@ -163,10 +163,3 @@ The `FixableMaker` function receives:
 - `context` — The fix context (`FixContext`) containing `filename`, `sourceCode`, `messages`, `ruleIds`, and `fixer`
 
 Return a `Rule.Fix` object to apply, or `null`/`undefined` to skip the message. Use `context.fixer` (the `Rule.RuleFixer` API) to create fix objects.
-
-## Limitation
-
-- `eslint-interactive` is Pure ESM.
-  - CJS version is not supported.
-- If you want to use TypeScript, you have to enable `module: Node16` or `module: NodeNext` in `tsconfig.json`.
-  - This means that you need to use TypeScript v4.7.0+.
