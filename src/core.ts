@@ -42,7 +42,7 @@ export class Core {
 
   constructor(config: Config) {
     this.config = normalizeConfig(config);
-    const { type, ...eslintOptions } = this.config.eslintOptions;
+    const { formatterName, patterns, quiet, ...eslintOptions } = this.config;
     const overrideConfigs =
       Array.isArray(eslintOptions.overrideConfig) ? eslintOptions.overrideConfig
       : eslintOptions.overrideConfig ? [eslintOptions.overrideConfig]

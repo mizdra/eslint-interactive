@@ -142,7 +142,6 @@ const core = new Core({
   patterns: ['src'],
   formatterName: 'stylish',
   cwd: iff.rootDir,
-  eslintOptions: { type: 'flat' },
 });
 
 beforeEach(async () => {
@@ -159,17 +158,14 @@ describe('Core', () => {
       const core = new Core({
         patterns: ['src'],
         cwd: iff.rootDir,
-        eslintOptions: {
-          type: 'flat',
-          overrideConfigFile: true,
-          overrideConfig: {
-            files: ['**/*.js'],
-            languageOptions: {
-              ecmaVersion: 2021,
-              sourceType: 'module',
-            },
-            rules: { 'prefer-const': 'error' },
+        overrideConfigFile: true,
+        overrideConfig: {
+          files: ['**/*.js'],
+          languageOptions: {
+            ecmaVersion: 2021,
+            sourceType: 'module',
           },
+          rules: { 'prefer-const': 'error' },
         },
       });
       const results = await core.lint();
@@ -318,9 +314,6 @@ describe('Core', () => {
     const core = new Core({
       patterns: ['src'],
       cwd: iff.rootDir,
-      eslintOptions: {
-        type: 'flat',
-      },
     });
     const results = await core.lint();
     expect(normalizeResults(results, iff.rootDir)).toMatchSnapshot();
@@ -356,10 +349,7 @@ describe('Core', () => {
     const core = new Core({
       patterns: ['src'],
       cwd: iff.rootDir,
-      eslintOptions: {
-        type: 'flat',
-        flags: ['unstable_config_lookup_from_file'],
-      },
+      flags: ['unstable_config_lookup_from_file'],
     });
 
     const results = await core.lint();

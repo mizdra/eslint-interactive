@@ -3,19 +3,11 @@ import type { ParsedCLIOptions } from './cli/parse-argv.js';
 import { cliOptionsDefaults } from './cli/parse-argv.js';
 import type { DeepPartial } from './util/type-check.js';
 
-export type ESLintOptions = { type: 'flat' } & Pick<
-  ESLint.Options,
-  'overrideConfigFile' | 'cache' | 'cacheLocation' | 'overrideConfig' | 'cwd' | 'flags'
->;
-
 /** The config of eslint-interactive */
-export type Config = {
+export type Config = ESLint.Options & {
   patterns: string[];
   formatterName?: string | undefined;
   quiet?: boolean | undefined;
-  cwd?: string | undefined;
-  eslintOptions: ESLintOptions;
-  flags?: string[] | undefined;
 };
 
 export function translateCLIOptions(options: ParsedCLIOptions): Config {
@@ -23,13 +15,10 @@ export function translateCLIOptions(options: ParsedCLIOptions): Config {
     patterns: options.patterns,
     formatterName: options.formatterName,
     quiet: options.quiet,
-    eslintOptions: {
-      type: 'flat',
-      overrideConfigFile: options.overrideConfigFile,
-      cache: options.cache,
-      cacheLocation: options.cacheLocation,
-      flags: options.flags,
-    },
+    overrideConfigFile: options.overrideConfigFile,
+    cache: options.cache,
+    cacheLocation: options.cacheLocation,
+    flags: options.flags,
   };
 }
 
@@ -38,38 +27,32 @@ export const configDefaults = {
   formatterName: cliOptionsDefaults.formatterName,
   quiet: cliOptionsDefaults.quiet,
   cwd: process.cwd(),
-  eslintOptions: {
-    overrideConfigFile: undefined,
-    cache: cliOptionsDefaults.cache,
-    cacheLocation: undefined,
-    overrideConfig: undefined,
-    flags: undefined,
-  },
+  overrideConfigFile: undefined,
+  cache: cliOptionsDefaults.cache,
+  cacheLocation: undefined,
+  overrideConfig: undefined,
+  flags: undefined,
 } satisfies DeepPartial<Config>;
 
-export type NormalizedConfig = {
+export type NormalizedConfig = ESLint.Options & {
   patterns: string[];
   formatterName: string;
   quiet: boolean;
   cwd: string;
-  eslintOptions: ESLintOptions;
 };
 
 export function normalizeConfig(config: Config): NormalizedConfig {
   const cwd = config.cwd ?? configDefaults.cwd;
   return {
+    ...config,
     patterns: config.patterns,
     formatterName: config.formatterName ?? configDefaults.formatterName,
     quiet: config.quiet ?? configDefaults.quiet,
     cwd,
-    eslintOptions: {
-      type: 'flat',
-      overrideConfigFile: config.eslintOptions.overrideConfigFile ?? configDefaults.eslintOptions.overrideConfigFile,
-      cache: config.eslintOptions.cache ?? configDefaults.eslintOptions.cache,
-      cacheLocation: config.eslintOptions.cacheLocation ?? configDefaults.eslintOptions.cacheLocation,
-      overrideConfig: config.eslintOptions.overrideConfig ?? configDefaults.eslintOptions.overrideConfig,
-      cwd,
-      flags: config.eslintOptions.flags ?? configDefaults.eslintOptions.flags,
-    },
+    overrideConfigFile: config.overrideConfigFile ?? configDefaults.overrideConfigFile,
+    cache: config.cache ?? configDefaults.cache,
+    cacheLocation: config.cacheLocation ?? configDefaults.cacheLocation,
+    overrideConfig: config.overrideConfig ?? configDefaults.overrideConfig,
+    flags: config.flags ?? configDefaults.flags,
   };
 }
