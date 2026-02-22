@@ -201,7 +201,7 @@ export function insertDisableCommentStatementBeforeLine(args: {
   scope: 'file' | 'next-line';
   ruleIds: string[];
   description: string | undefined;
-}) {
+}): Rule.Fix {
   const { fixer, sourceCode, line, column, scope, ruleIds, description } = args;
   const indent = getIndentFromLine(sourceCode, line);
   const headNodeIndex = sourceCode.getIndexFromLoc({ line, column });

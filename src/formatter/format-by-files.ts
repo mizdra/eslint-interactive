@@ -1,3 +1,4 @@
+// eslint-disable-next-line n/no-unsupported-features/node-builtins
 import { styleText } from 'node:util';
 import type { ESLint } from 'eslint';
 import { ERROR_COLOR, FAILED_COLOR, WARNING_COLOR } from './colors.js';

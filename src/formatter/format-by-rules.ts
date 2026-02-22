@@ -1,3 +1,4 @@
+// eslint-disable-next-line n/no-unsupported-features/node-builtins
 import { styleText } from 'node:util';
 import type { ESLint } from 'eslint';
 import terminalLink from 'terminal-link';
