@@ -140,7 +140,6 @@ const iff = await createIFF({
 
 const core = new Core({
   patterns: ['src'],
-  formatterName: 'stylish',
   cwd: iff.rootDir,
 });
 
