@@ -31,7 +31,6 @@ afterEach(async () => {
 test('Programmable API', async () => {
   const core = new Core({
     patterns: ['src'],
-    eslintOptions: {},
     cwd: iff.rootDir,
   });
   const results = await core.lint();
