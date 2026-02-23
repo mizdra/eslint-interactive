@@ -115,11 +115,7 @@ const core = new Core({
 const results = await core.lint();
 
 await core.applySuggestions(results, ['no-unsafe-negation'], (suggestions, message, context) => {
-  if (message.ruleId === 'no-unsafe-negation') {
-    return suggestions.find((s) => s.desc.startsWith('Wrap negation'));
-  }
-  // Apply the first suggestion
-  return suggestions[0];
+  return suggestions.find((s) => s.desc.startsWith('Wrap negation'));
 });
 ```
 
@@ -144,22 +140,15 @@ const core = new Core({
 });
 const results = await core.lint();
 
-await core.makeFixableAndFix(results, ['no-unused-vars'], (message, node, context) => {
-  if (!node || !node.range) return null;
-
-  if (message.ruleId === 'no-unused-vars') {
-    // Add underscore prefix to unused variables
-    if (node.type !== 'Identifier') return null;
-    return context.fixer.insertTextBefore(node, '_');
-  }
-  return null;
+await core.makeFixableAndFix(results, ['no-unused-vars'], (message, range, context) => {
+  return context.fixer.insertTextBeforeRange(range, '_');
 });
 ```
 
 The `FixableMaker` function receives:
 
 - `message` — The lint message (`Linter.LintMessage`) to create a fix for
-- `node` — The AST node (`estree.Node | null`) associated with the message
+- `range` — The range (`AST.Range`) associated with the message
 - `context` — The fix context (`FixContext`) containing `filename`, `sourceCode`, `messages`, `ruleIds`, and `fixer`
 
 Return a `Rule.Fix` object to apply, or `null`/`undefined` to skip the message. Use `context.fixer` (the `Rule.RuleFixer` API) to create fix objects.
