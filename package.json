@@ -21,7 +21,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "predev": "pnpm run build",
-    "dev": "cd example && FORCE_COLOR=1 ../bin/eslint-interactive.js ./lib",
+    "dev": "cd example && ../bin/eslint-interactive.js ./lib",
     "lint": "pnpm run --no-bail /^lint:.*/",
     "lint:tsc": "tsc -p tsconfig.json --noEmit",
     "lint:eslint": "eslint .",
