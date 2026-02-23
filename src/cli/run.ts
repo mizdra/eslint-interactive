@@ -3,9 +3,7 @@ import { fileURLToPath } from 'node:url';
 import { Worker } from 'node:worker_threads';
 import { wrap } from 'comlink';
 import nodeEndpoint from 'comlink/dist/esm/node-adapter.mjs';
-import isInstalledGlobally from 'is-installed-globally';
 import terminalLink from 'terminal-link';
-import { warn } from '../cli/log.js';
 import { parseArgv } from '../cli/parse-argv.js';
 import type { SerializableCore } from '../core-worker.js';
 import type { NextScene } from '../scene/index.js';
@@ -19,13 +17,6 @@ export type Options = {
  * Run eslint-interactive.
  */
 export async function run(options: Options) {
-  if (isInstalledGlobally) {
-    warn(
-      'eslint-interactive is installed globally. ' +
-        'The globally installed eslint-interactive is not officially supported because some features do not work. ' +
-        'It is recommended to install eslint-interactive locally.',
-    );
-  }
   const config = parseArgv(options.argv);
 
   // Directly executing the Core API will hog the main thread and halt the spinner.

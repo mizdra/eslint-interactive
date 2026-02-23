@@ -54,7 +54,8 @@ It also supports the following actions in addition to `eslint --fix`. All action
 
 ## Installation
 
-:memo: NOTE: The globally installed `eslint-interactive` is **not officially supported**. It is recommended to install `eslint-interactive` locally. See [FAQ](#why-is-global-installation-not-officially-supported).
+> [!WARNING]
+> Global installation of `eslint-interactive` is **not recommended** and is only supported on a **best-effort basis**. It is recommended to install `eslint-interactive` locally. See [FAQ](#why-is-global-installation-not-recommended).
 
 ```console
 $ # For npm
@@ -113,13 +114,13 @@ In some cases fixes aren't appropriate to be automatically applied, for example,
 
 Suggestion can be one or more. The user has to manually decide if that fix should be applied or which fix should be applied because automatically applying of suggestion is inappropriate. For this reason, ESLint has stated that it will not officially provide a way to automatically apply suggestion ([ref](https://github.com/eslint/rfcs/tree/64b2511da6f2c10e1692671315459eb916aea53f/designs/2019-suggestions#:~:text=Unlike%20fixes%2C%20suggestion%20will%20not%20expose%20a%20new%20API%20function)). Instead, tools such as [`vscode-eslint`](https://github.com/microsoft/vscode-eslint) allow users to apply suggestions manually ([ref](https://github.com/microsoft/vscode-eslint/pull/814#issuecomment-587011529)).
 
-### Why is global installation not officially supported?
+### Why is global installation not recommended?
 
-`eslint` is installed locally in most projects. In such a case, if `eslint-interactive` is installed globally, it will be installed in a different space than `eslint`. The space separation makes some resources of `eslint-interactive` inaccessible from `eslint` and may break them (ref: [#77](https://github.com/mizdra/eslint-interactive/issues/77)). Therefore, global installation of `eslint-interactive` is not officially supported.
+`eslint` is installed locally in most projects. In such a case, if `eslint-interactive` is installed globally, it will be installed in a different space than `eslint`. The space separation makes some resources of `eslint-interactive` inaccessible from `eslint` and may break them (ref: [#77](https://github.com/mizdra/eslint-interactive/issues/77)). For this reason, local installation is recommended. Global installation is supported, but only on a best-effort basis.
 
 ### Is global installation prohibited?
 
-No. `eslint-interactive` does not prohibit global installation. Global installation is allowed because it has the advantage of saving installation effort. However, it is not officially supported and users must use it at their own risk.
+No. `eslint-interactive` does not prohibit global installation. Global installation is supported on a best-effort basis because it has the advantage of saving installation effort. However, it is not recommended and users should be aware that some issues may arise.
 
 If the global installation does not work, you can send a patch by pull request. However, whether the patch will be accepted depends on the case.
 

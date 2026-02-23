@@ -50,7 +50,6 @@
   "dependencies": {
     "comlink": "^4.4.1",
     "enquirer": "^2.4.1",
-    "is-installed-globally": "^1.0.0",
     "nanospinner": "^1.2.2",
     "terminal-link": "^3.0.0"
   },
