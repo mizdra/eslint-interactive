@@ -1,8 +1,8 @@
 import { afterEach, test, expect } from 'vitest';
-import { createIFF } from '../../src/test-util/fixtures.ts';
+import { createIFF } from '../../src/test-util/fixtures.js';
 import dedent from 'dedent';
 import { type ChildProcessWithoutNullStreams, spawn } from 'child_process';
-import { createStreamWatcher } from '../../src/test-util/stream-watcher.ts';
+import { createStreamWatcher } from '../../src/test-util/stream-watcher.js';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 
