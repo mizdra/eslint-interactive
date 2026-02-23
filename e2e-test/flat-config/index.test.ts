@@ -1,7 +1,7 @@
 import { afterEach, test, expect } from 'vitest';
 import { createIFF } from '../../src/test-util/fixtures.js';
 import dedent from 'dedent';
-import { ChildProcessWithoutNullStreams, spawn } from 'child_process';
+import { type ChildProcessWithoutNullStreams, spawn } from 'child_process';
 import { createStreamWatcher } from '../../src/test-util/stream-watcher.js';
 import { readFile } from 'node:fs/promises';
 import { dirname, join } from 'path';

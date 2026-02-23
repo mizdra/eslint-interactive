@@ -9,8 +9,6 @@ const d = 0
 const jsx = (
   <>
     <div>{2 ** 10}</div>
-    {/* eslint-disable-next-line semi */}
-    <div>{2 ** 10}</div>
   </>
 );
 const foo = `
