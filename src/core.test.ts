@@ -271,9 +271,9 @@ describe('Core', () => {
     const results = await core.lint();
     const original = await readFile(iff.paths['src/no-unused-vars.js'], 'utf-8');
 
-    const undo = await core.makeFixableAndFix(results, ['no-unused-vars'], (_message, node) => {
-      if (!node || !node.range) return null;
-      return { range: [node.range[0], node.range[0]], text: '_' };
+    const undo = await core.makeFixableAndFix(results, ['no-unused-vars'], (_message, range) => {
+      if (!range) return null;
+      return { range: [range[0], range[0]], text: '_' };
     });
 
     expect(await readFile(iff.paths['src/no-unused-vars.js'], 'utf-8')).toMatchSnapshot();

@@ -18,6 +18,20 @@ export const plugin: ESLint.Plugin = {
         return {};
       },
     },
+    /** This is a rule for testing purposes. It reports without end location (endLine/endColumn). */
+    'report-without-end-location': {
+      create(context: Rule.RuleContext) {
+        return {
+          // eslint-disable-next-line @typescript-eslint/naming-convention
+          Program(node) {
+            context.report({
+              loc: node.loc!.start,
+              message: 'Report without end location.',
+            });
+          },
+        };
+      },
+    },
     /** This is a rule for testing purposes. */
     'prefer-addition-shorthand': {
       meta: {

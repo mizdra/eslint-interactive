@@ -14,9 +14,6 @@ importers:
       enquirer:
         specifier: ^2.4.1
         version: 2.4.1
-      estraverse:
-        specifier: ^5.3.0
-        version: 5.3.0
       is-installed-globally:
         specifier: ^1.0.0
         version: 1.0.0
@@ -39,9 +36,6 @@ importers:
       '@mizdra/prettier-config-mizdra':
         specifier: ^2.0.0
         version: 2.0.0(prettier@3.5.3)
-      '@types/estraverse':
-        specifier: ^5.1.7
-        version: 5.1.7
       '@types/estree':
         specifier: ^1.0.8
         version: 1.0.8
@@ -503,9 +497,6 @@ packages:
 
   '@rtsao/scc@1.1.0':
     resolution: {integrity: sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==}
-
-  '@types/estraverse@5.1.7':
-    resolution: {integrity: sha512-JRVtdKYZz7VkNp7hMC/WKoiZ8DS3byw20ZGoMZ1R8eBrBPIY7iBaDAS1zcrnXQCwK44G4vbXkimeU7R0VLG8UQ==}
 
   '@types/estree@1.0.7':
     resolution: {integrity: sha512-w28IoSUCJpidD/TGviZwwMJckNESJZXFu7NBZ5YJ4mEUnNraUn9Pm8HSZm/jDF1pDWYKspWE7oVphigUPRakIQ==}
@@ -2262,10 +2253,6 @@ snapshots:
     optional: true
 
   '@rtsao/scc@1.1.0': {}
-
-  '@types/estraverse@5.1.7':
-    dependencies:
-      '@types/estree': 1.0.8
 
   '@types/estree@1.0.7': {}
 
