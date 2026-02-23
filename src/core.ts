@@ -12,9 +12,9 @@ import {
   createFixToMakeFixableAndFix,
   verifyAndFix,
 } from './fix/index.js';
-import { format } from './formatter/index.js';
+import { format, sortRuleStatistics, takeRuleStatistics } from './formatter/index.js';
 import { plugin } from './plugin.js';
-import type { Config } from './type.js';
+import type { Config, SortField, SortOrder } from './type.js';
 import { filterResultsByRuleId } from './util/eslint.js';
 
 /**
@@ -40,6 +40,8 @@ export class Core {
   readonly #patterns: string[];
   readonly #quiet: boolean;
   readonly #formatterName: string | undefined;
+  readonly #sort: SortField | undefined;
+  readonly #sortOrder: SortOrder | undefined;
   readonly #eslint: ESLint;
 
   constructor(config: Config) {
@@ -47,10 +49,12 @@ export class Core {
     this.#patterns = config.patterns;
     this.#quiet = config.quiet ?? false;
     this.#formatterName = config.formatterName;
+    this.#sort = config.sort;
+    this.#sortOrder = config.sortOrder;
 
     // NOTE: Passing an option that does not exist to `new ESLint(...)` will throw an error.
     // Therefore, only options supported by ESLint are extracted into the `eslintOptions` variable.
-    const { formatterName, patterns, quiet, ...eslintOptions } = config;
+    const { formatterName, patterns, quiet, sort, sortOrder, ...eslintOptions } = config;
     const overrideConfigs =
       Array.isArray(eslintOptions.overrideConfig) ? eslintOptions.overrideConfig
       : eslintOptions.overrideConfig ? [eslintOptions.overrideConfig]
@@ -85,7 +89,19 @@ export class Core {
    */
   formatResultSummary(results: ESLint.LintResult[]): string {
     const rulesMeta = this.#eslint.getRulesMetaForResults(results);
-    return format(results, { rulesMeta, cwd: this.#cwd });
+    return format(results, { rulesMeta, cwd: this.#cwd }, { sort: this.#sort, sortOrder: this.#sortOrder });
+  }
+
+  /**
+   * Returns ruleIds from lint results, sorted according to the configured sort options.
+   * @param results The lint results of the project
+   */
+  getSortedRuleIdsInResults(results: ESLint.LintResult[]): string[] {
+    let ruleStatistics = takeRuleStatistics(results);
+    if (this.#sort) {
+      ruleStatistics = sortRuleStatistics(ruleStatistics, this.#sort, this.#sortOrder);
+    }
+    return ruleStatistics.map((s) => s.ruleId);
   }
 
   /**
