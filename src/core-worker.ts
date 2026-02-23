@@ -27,6 +27,11 @@ export class SerializableCore {
   formatResultSummary(...args: Parameters<Core['formatResultSummary']>): ReturnType<Core['formatResultSummary']> {
     return this.core.formatResultSummary(...args);
   }
+  getSortedRuleIdsInResults(
+    ...args: Parameters<Core['getSortedRuleIdsInResults']>
+  ): ReturnType<Core['getSortedRuleIdsInResults']> {
+    return this.core.getSortedRuleIdsInResults(...args);
+  }
   async formatResultDetails(...args: Parameters<Core['formatResultDetails']>): ReturnType<Core['formatResultDetails']> {
     return this.core.formatResultDetails(...args);
   }

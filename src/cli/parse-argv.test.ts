@@ -39,4 +39,17 @@ describe('parseArgv', () => {
     expect(parseArgv([...baseArgs, '--flag', 'foo', 'bar']).flags).toStrictEqual(['foo']);
     expect(parseArgv([...baseArgs, '--flag', '1', '--flag', 'true']).flags).toStrictEqual(['1', 'true']);
   });
+  test('--sort', () => {
+    expect(parseArgv([...baseArgs]).sort).toStrictEqual(undefined);
+    expect(parseArgv([...baseArgs, '--sort', 'rule']).sort).toStrictEqual('rule');
+    expect(parseArgv([...baseArgs, '--sort', 'error']).sort).toStrictEqual('error');
+    expect(parseArgv([...baseArgs, '--sort', 'warning']).sort).toStrictEqual('warning');
+    expect(parseArgv([...baseArgs, '--sort', 'fixable']).sort).toStrictEqual('fixable');
+    expect(parseArgv([...baseArgs, '--sort', 'suggestions']).sort).toStrictEqual('suggestions');
+  });
+  test('--sort-order', () => {
+    expect(parseArgv([...baseArgs]).sortOrder).toStrictEqual(undefined);
+    expect(parseArgv([...baseArgs, '--sort-order', 'asc']).sortOrder).toStrictEqual('asc');
+    expect(parseArgv([...baseArgs, '--sort-order', 'desc']).sortOrder).toStrictEqual('desc');
+  });
 });

@@ -2,8 +2,6 @@ import type { Remote } from 'comlink';
 import { error } from '../cli/log.js';
 import { lintingSpinner } from '../cli/spinner.js';
 import type { SerializableCore } from '../core-worker.js';
-import { unique } from '../util/array.js';
-import { notEmpty } from '../util/type-check.js';
 import type { NextScene } from './index.js';
 
 /**
@@ -28,12 +26,7 @@ export async function lint(core: Remote<SerializableCore>): Promise<NextScene> {
     process.exit(1);
   }
 
-  const ruleIdsInResults = unique(
-    results
-      .flatMap((result) => result.messages)
-      .flatMap((message) => message.ruleId)
-      .filter(notEmpty),
-  );
+  const ruleIdsInResults = await core.getSortedRuleIdsInResults(results);
 
   if (ruleIdsInResults.length === 0) {
     console.log('💚 No error found.');

@@ -48,6 +48,23 @@ describe('formatByRules', () => {
       "
     `);
   });
+  test('sorts rules when sortOptions is provided', () => {
+    const results: ESLint.LintResult[] = [
+      fakeLintResult({
+        messages: [
+          fakeLintMessage({ ruleId: 'rule-a', severity: 2 }),
+          fakeLintMessage({ ruleId: 'rule-b', severity: 2 }),
+          fakeLintMessage({ ruleId: 'rule-b', severity: 2 }),
+        ],
+      }),
+    ];
+    const formattedText = formatByRules(results, undefined, { sort: 'error' });
+    const lines = stripVTControlCharacters(formattedText).split('\n');
+    // rule-b (2 errors) should come before rule-a (1 error) when sorted by error desc
+    const ruleAIndex = lines.findIndex((line) => line.includes('rule-a'));
+    const ruleBIndex = lines.findIndex((line) => line.includes('rule-b'));
+    expect(ruleBIndex).toBeLessThan(ruleAIndex);
+  });
   test('prints link', () => {
     const results: ESLint.LintResult[] = [
       fakeLintResult({

@@ -1,6 +1,9 @@
 import { parseArgs } from 'node:util';
-import type { Config } from '../type.ts';
+import type { Config, SortField, SortOrder } from '../type.js';
 import { VERSION } from './package.js';
+
+const VALID_SORT_FIELDS: readonly SortField[] = ['rule', 'error', 'warning', 'fixable', 'suggestions'];
+const VALID_SORT_ORDERS: readonly SortOrder[] = ['asc', 'desc'];
 
 /** Parse CLI options */
 export function parseArgv(argv: string[]): Config {
@@ -13,6 +16,8 @@ export function parseArgv(argv: string[]): Config {
     'version': { type: 'boolean' },
     'help': { type: 'boolean' },
     'flag': { type: 'string', multiple: true },
+    'sort': { type: 'string' },
+    'sort-order': { type: 'string' },
   } as const;
 
   const { values, positionals } = parseArgs({
@@ -22,6 +27,20 @@ export function parseArgv(argv: string[]): Config {
     args: argv.slice(2),
     options,
   });
+
+  // Validate `--sort` and `--sort-order`
+  if (values.sort !== undefined && !VALID_SORT_FIELDS.includes(values.sort as SortField)) {
+    console.error(`Invalid --sort value: "${values.sort}". Must be one of: ${VALID_SORT_FIELDS.join(', ')}`);
+    // eslint-disable-next-line n/no-process-exit
+    process.exit(1);
+  }
+  if (values['sort-order'] !== undefined && !VALID_SORT_ORDERS.includes(values['sort-order'] as SortOrder)) {
+    console.error(
+      `Invalid --sort-order value: "${values['sort-order']}". Must be one of: ${VALID_SORT_ORDERS.join(', ')}`,
+    );
+    // eslint-disable-next-line n/no-process-exit
+    process.exit(1);
+  }
 
   if (values.version) {
     console.log(VERSION);
@@ -43,11 +62,15 @@ Options:
       --cache                  Only check changed files
       --cache-location <path>  Path to the cache file or directory
       --flag <name>            Enable a feature flag (requires ESLint v9.6.0+)
+      --sort <field>           Sort rules by: rule, error, warning, fixable, suggestions
+      --sort-order <direction> Sort direction: asc, desc (default: desc for counts, asc for rule)
 
 Examples:
   eslint-interactive                          Lint all files in the project
   eslint-interactive src test                 Lint specified directories
   eslint-interactive 'src/**/*.{ts,tsx,vue}'  Lint with glob pattern
+  eslint-interactive --sort error             Sort rules by error count (descending)
+  eslint-interactive --sort rule              Sort rules by rule name (ascending)
 `.trim(),
     );
     // eslint-disable-next-line n/no-process-exit
@@ -65,5 +88,7 @@ Examples:
     cache: values.cache,
     cacheLocation: values['cache-location'],
     flags: values.flag,
+    sort: values.sort as SortField | undefined,
+    sortOrder: values['sort-order'] as SortOrder | undefined,
   };
 }
