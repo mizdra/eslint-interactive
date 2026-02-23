@@ -23,14 +23,12 @@ export async function run(options: Options) {
   // So we wrap it with comlink and run it on the Worker.
   const worker = new Worker(join(dirname(fileURLToPath(import.meta.url)), '..', 'core-worker.js'), {
     env: {
-      ...process.env,
-      // NOTE:
-      // - `terminal-link` uses `supports-hyperlinks` and `supports-color` to determine if a terminal that supports hyperlinks is in use.
-      // - If the terminal does not support hyperlinks, it will fallback to not print the link.
-      // - However, due to the specifications of Node.js, the decision does not work well on worker_threads.
-      // - So here we use a special environment variable to force the printing mode to be switched.
-      // ref: https://github.com/chalk/supports-color/issues/97, https://github.com/nodejs/node/issues/26946
+      // In worker threads, stdin is recognized as noTTY. Therefore, `util.styleText` and `terminalLink` disable colors and links.
+      // To work around this, we use environment variables to force colors and links to be enabled.
+      // ref: https://github.com/nodejs/node/issues/26946
+      FORCE_COLOR: process.stdin.isTTY ? '1' : '0',
       FORCE_HYPERLINK: terminalLink.isSupported ? '1' : '0',
+      ...process.env,
     },
     // NOTE: Pass CLI options (--unhandled-rejections=strict, etc.) to the worker
     execArgv: process.execArgv,
