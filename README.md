@@ -50,7 +50,7 @@ It also supports the following actions in addition to `eslint --fix`. All action
 - ESLint `>=9.0.0`
   - If you use ESLint `<8.45.0`, use `eslint-interactive@^10`.
 - Flat config (`eslint.config.js`)
-  - If you use legacy config (`.eslintrc.*`), use `eslint-interactive@^10`.
+  - If you use legacy config (`.eslintrc.*`), use `eslint-interactive@^12`.
 
 ## Installation
 
