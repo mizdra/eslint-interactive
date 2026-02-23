@@ -2,9 +2,9 @@
 import { styleText } from 'node:util';
 
 /**
- * Log a warning message to stderr
- * @param message The message to warn
+ * Log an error message to stderr
+ * @param message The message to report
  */
-export function warn(message: string) {
-  process.stderr.write(styleText('yellow', 'Warning') + ': ' + message + '\n');
+export function error(message: string) {
+  process.stderr.write(styleText('red', 'Error') + ': ' + message + '\n');
 }
