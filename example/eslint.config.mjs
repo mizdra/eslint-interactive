@@ -1,12 +1,8 @@
 // @ts-check
 
-import { FlatCompat } from '@eslint/eslintrc';
+import { defineConfig } from "eslint/config";
 
-const compat = new FlatCompat();
-
-export default [
-  ...compat.plugins('import'),
-  ...compat.env({ node: true, es2020: true }),
+export default defineConfig([
   {
     files: ['**/*.js', '**/*.mjs', '**/*.jsx'],
     languageOptions: {
@@ -20,7 +16,6 @@ export default [
     },
     rules: {
       'semi': 2,
-      'import/order': [2, { alphabetize: { order: 'asc' } }],
       'prefer-const': 2,
       'no-unused-vars': [
         2,
@@ -37,4 +32,4 @@ export default [
 
     },
   },
-]
+]);
