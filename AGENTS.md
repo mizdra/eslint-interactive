@@ -31,6 +31,9 @@ pnpm run lint
 pnpm run lint:tsc      # TypeScript type checking
 pnpm run lint:eslint   # ESLint
 pnpm run lint:prettier # Prettier
+
+# Auto-fix all fixable lint errors (for coding agents)
+pnpm run lint-fix
 ```
 
 ## Architecture
