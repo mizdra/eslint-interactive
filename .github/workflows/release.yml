@@ -22,4 +22,4 @@ jobs:
           cache: 'pnpm'
       - run: pnpm install
       - run: pnpm run build
-      - run: pnpm publish
+      - run: pnpm publish --no-git-checks
