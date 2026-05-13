@@ -44,6 +44,8 @@
     "@types/node": "^22.15.3",
     "dedent": "^1.5.3",
     "eslint": "^10.0.1",
+    "eslint-v9": "npm:eslint@^9.39.4",
+    "eslint-v10": "npm:eslint@^10.0.1",
     "prettier": "3.5.3",
     "stream-match": "^4.1.0",
     "typescript": "^5.8.3",

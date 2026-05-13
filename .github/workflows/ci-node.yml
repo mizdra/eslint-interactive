@@ -40,9 +40,10 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
           cache: 'pnpm'
-      - name: Change ESLint version
-        run: pnpm add -w -D "eslint@${{ matrix.eslint }}"
+      - run: pnpm install --frozen-lockfile
       - run: pnpm run test
+        env:
+          ESLINT_VERSION: ${{ matrix.eslint }}
 
   e2e:
     strategy:
@@ -59,6 +60,7 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
           cache: 'pnpm'
-      - name: Change ESLint version
-        run: pnpm add -w -D "eslint@${{ matrix.eslint }}"
+      - run: pnpm install --frozen-lockfile
       - run: pnpm run e2e
+        env:
+          ESLINT_VERSION: ${{ matrix.eslint }}
