@@ -1,2 +1,4 @@
 packages:
   - 'e2e-test/import-as-esm-from-esm'
+allowBuilds:
+  esbuild: false
