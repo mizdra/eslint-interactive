@@ -1,2 +1,6 @@
 packages:
   - 'e2e-test/import-as-esm-from-esm'
+allowBuilds:
+  esbuild: false
+minimumReleaseAge: 4320
+trustPolicy: no-downgrade
