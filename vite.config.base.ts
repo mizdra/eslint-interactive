@@ -19,7 +19,6 @@ export const baseConfig = defineConfig({
     },
   }),
   test: {
-    reporters: process.env['GITHUB_ACTIONS'] ? ['default', 'github-actions'] : 'default',
     env: {
       FORCE_HYPERLINK: '1',
       FORCE_COLOR: '1',
