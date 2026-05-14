@@ -1,8 +1,8 @@
 // eslint-disable-next-line n/no-unsupported-features/node-builtins
 import { styleText } from 'node:util';
 import type { ESLint } from 'eslint';
-import terminalLink from 'terminal-link';
 import type { SortField, SortOrder } from '../type.js';
+import { terminalLink } from '../util/terminal-link.js';
 import { ERROR_COLOR } from './colors.js';
 import { formatTable } from './format-table.js';
 import { sortRuleStatistics } from './sort-rule-statistics.js';
@@ -42,7 +42,7 @@ export function formatByRules(
     const { ruleId, errorCount, warningCount, isFixableCount, hasSuggestionsCount } = ruleStatistic;
     const ruleMetaData = data?.rulesMeta[ruleId];
     rows.push([
-      ruleMetaData?.docs?.url ? terminalLink(ruleId, ruleMetaData?.docs.url, { fallback: false }) : ruleId,
+      ruleMetaData?.docs?.url ? terminalLink(ruleId, ruleMetaData?.docs.url) : ruleId,
       numCell(errorCount),
       numCell(warningCount),
       numCell(isFixableCount),
