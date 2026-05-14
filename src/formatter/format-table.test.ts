@@ -1,7 +1,7 @@
 // eslint-disable-next-line n/no-unsupported-features/node-builtins
 import { stripVTControlCharacters, styleText } from 'node:util';
-import terminalLink from 'terminal-link';
 import { describe, expect, test } from 'vitest';
+import { terminalLink } from '../util/terminal-link.js';
 import { formatTable } from './format-table.js';
 
 const headerRow = ['Rule', 'Error', 'Warning', 'is fixable', 'has suggestions'];

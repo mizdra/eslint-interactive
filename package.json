@@ -52,8 +52,7 @@
     "vitest": "^2.1.1"
   },
   "dependencies": {
-    "enquirer": "^2.4.1",
-    "terminal-link": "^3.0.0"
+    "enquirer": "^2.4.1"
   },
   "peerDependencies": {
     "eslint": ">=9.0.0"
