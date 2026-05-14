@@ -1,14 +1,12 @@
-import type { Remote } from 'comlink';
-import { error } from '../cli/log.js';
-import { lintingSpinner } from '../cli/spinner.js';
-import type { SerializableCore } from '../core-worker.js';
+import { error, withProgress } from '../cli/log.js';
+import type { Core } from '../core.js';
 import type { NextScene } from './index.js';
 
 /**
  * Run the scene to lint.
  */
-export async function lint(core: Remote<SerializableCore>): Promise<NextScene> {
-  const results = await lintingSpinner(async () => core.lint());
+export async function lint(core: Core): Promise<NextScene> {
+  const results = await withProgress('Linting...', async () => core.lint());
   console.log();
 
   // Check for ESLint core problems (ruleId === null) first.
@@ -26,13 +24,13 @@ export async function lint(core: Remote<SerializableCore>): Promise<NextScene> {
     process.exit(1);
   }
 
-  const ruleIdsInResults = await core.getSortedRuleIdsInResults(results);
+  const ruleIdsInResults = core.getSortedRuleIdsInResults(results);
 
   if (ruleIdsInResults.length === 0) {
     console.log('💚 No error found.');
     return { name: 'exit' };
   }
-  console.log(await core.formatResultSummary(results));
+  console.log(core.formatResultSummary(results));
 
   console.log();
   return { name: 'selectRuleIds', args: { results, ruleIdsInResults } };

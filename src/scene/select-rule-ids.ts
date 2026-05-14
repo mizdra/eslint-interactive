@@ -1,7 +1,6 @@
-import type { Remote } from 'comlink';
 import type { ESLint } from 'eslint';
 import { promptToInputRuleIds } from '../cli/prompt.js';
-import type { SerializableCore } from '../core-worker.js';
+import type { Core } from '../core.js';
 import type { NextScene } from './index.js';
 import { selectAction } from './select-action.js';
 
@@ -15,10 +14,7 @@ export type SelectRuleIdsArgs = {
 /**
  * Run the scene where a user select rule ids.
  */
-export async function selectRuleIds(
-  core: Remote<SerializableCore>,
-  { results, ruleIdsInResults }: SelectRuleIdsArgs,
-): Promise<NextScene> {
+export async function selectRuleIds(core: Core, { results, ruleIdsInResults }: SelectRuleIdsArgs): Promise<NextScene> {
   const selectedRuleIds = await promptToInputRuleIds(ruleIdsInResults);
   return selectAction(core, { results, ruleIdsInResults, selectedRuleIds });
 }

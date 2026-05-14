@@ -1,14 +1,8 @@
-import type { Remote } from 'comlink';
 import type { ESLint } from 'eslint';
-import { fixingSpinner } from '../cli/spinner.js';
-import type { Undo } from '../core.js';
-import type { SerializableCore } from '../core-worker.js';
+import { withProgress } from '../cli/log.js';
+import type { Core, Undo } from '../core.js';
 
-export async function doFixAction(
-  core: Remote<SerializableCore>,
-  results: ESLint.LintResult[],
-  selectedRuleIds: string[],
-): Promise<Undo> {
-  const undo = await fixingSpinner(async () => core.applyAutoFixes(results, selectedRuleIds));
+export async function doFixAction(core: Core, results: ESLint.LintResult[], selectedRuleIds: string[]): Promise<Undo> {
+  const undo = await withProgress('Fixing...', async () => core.applyAutoFixes(results, selectedRuleIds));
   return undo;
 }

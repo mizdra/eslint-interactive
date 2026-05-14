@@ -4,19 +4,14 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 // eslint-disable-next-line n/no-unsupported-features/node-builtins
 import { stripVTControlCharacters, styleText } from 'node:util';
-import type { Remote } from 'comlink';
 import type { ESLint } from 'eslint';
 import { VERSION } from '../cli/package.js';
 import { pager } from '../cli/pager.js';
 import { promptToInputDisplayMode } from '../cli/prompt.js';
-import type { SerializableCore } from '../core-worker.js';
+import type { Core } from '../core.js';
 import { unreachable } from '../util/type-check.js';
 
-export async function doPrintResultDetailsAction(
-  core: Remote<SerializableCore>,
-  results: ESLint.LintResult[],
-  selectedRuleIds: string[],
-) {
+export async function doPrintResultDetailsAction(core: Core, results: ESLint.LintResult[], selectedRuleIds: string[]) {
   const displayMode = await promptToInputDisplayMode();
   const formattedResultDetails = await core.formatResultDetails(results, selectedRuleIds);
   if (displayMode === 'printInTerminal') {

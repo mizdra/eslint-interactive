@@ -1,7 +1,7 @@
 import type { ESLint } from 'eslint';
+import { withProgress } from '../cli/log.js';
 import type { Action } from '../cli/prompt.js';
 import { promptToInputWhatToDoNext } from '../cli/prompt.js';
-import { undoingSpinner } from '../cli/spinner.js';
 import type { Undo } from '../core.js';
 import type { NextScene } from './index.js';
 
@@ -31,7 +31,7 @@ export async function checkResults({
   const nextStep = await promptToInputWhatToDoNext();
   if (nextStep === 'exit') return { name: 'exit' };
   if (nextStep === 'undoTheFix') {
-    await undoingSpinner(async () => undo());
+    await withProgress('Undoing...', async () => undo());
     return {
       name: 'selectAction',
       args: { results, ruleIdsInResults, selectedRuleIds, initialAction: selectedAction },

@@ -1,11 +1,5 @@
-import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { Worker } from 'node:worker_threads';
-import { wrap } from 'comlink';
-import nodeEndpoint from 'comlink/dist/esm/node-adapter.mjs';
-import terminalLink from 'terminal-link';
 import { parseArgv } from '../cli/parse-argv.js';
-import type { SerializableCore } from '../core-worker.js';
+import { Core } from '../core.js';
 import type { NextScene } from '../scene/index.js';
 import { checkResults, lint, selectAction, selectRuleIds } from '../scene/index.js';
 
@@ -13,29 +7,10 @@ export type Options = {
   argv: string[];
 };
 
-/**
- * Run eslint-interactive.
- */
+/** Run eslint-interactive. */
 export async function run(options: Options) {
   const config = parseArgv(options.argv);
-
-  // Directly executing the Core API will hog the main thread and halt the spinner.
-  // So we wrap it with comlink and run it on the Worker.
-  const worker = new Worker(join(dirname(fileURLToPath(import.meta.url)), '..', 'core-worker.js'), {
-    env: {
-      // In worker threads, stdin is recognized as noTTY. Therefore, `util.styleText` and `terminalLink` disable colors and links.
-      // To work around this, we use environment variables to force colors and links to be enabled.
-      // ref: https://github.com/nodejs/node/issues/26946
-      FORCE_COLOR: process.stdin.isTTY ? '1' : '0',
-      FORCE_HYPERLINK: terminalLink.isSupported ? '1' : '0',
-      ...process.env,
-    },
-    // NOTE: Pass CLI options (--unhandled-rejections=strict, etc.) to the worker
-    execArgv: process.execArgv,
-  });
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const ProxiedCore = wrap<typeof SerializableCore>((nodeEndpoint as any)(worker));
-  const core = await new ProxiedCore(config);
+  const core = new Core(config);
 
   let nextScene: NextScene = { name: 'lint' };
   while (nextScene.name !== 'exit') {
@@ -53,5 +28,4 @@ export async function run(options: Options) {
       nextScene = await checkResults(nextScene.args);
     }
   }
-  await worker.terminate();
 }

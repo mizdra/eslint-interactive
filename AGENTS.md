@@ -49,12 +49,6 @@ The CLI uses a state machine with scenes in `src/scene/`:
 
 Each scene returns a `NextScene` object indicating the next state.
 
-### Worker Thread Architecture
-
-- `src/cli/run.ts`: Main entry point; spawns a worker thread
-- `src/core-worker.ts`: Wraps Core in a worker thread using **comlink** for RPC
-- This allows the CLI spinner to animate while linting/fixing runs on the worker thread
-
 ### Core API (`src/core.ts`)
 
 The main programmatic API. Key responsibilities:
@@ -69,7 +63,7 @@ Low-level fix implementations, one file per action type. Each takes ESLint lint 
 
 ### Action Handlers (`src/action/`)
 
-Higher-level orchestration: call Core methods, show spinners, handle user prompts. One file per action type, mirrors `src/fix/`.
+Higher-level orchestration: call Core methods, handle user prompts. One file per action type, mirrors `src/fix/`.
 
 ### Formatter (`src/formatter/`)
 
