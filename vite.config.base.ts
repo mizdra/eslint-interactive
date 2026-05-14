@@ -8,7 +8,6 @@ import { defineConfig } from 'vitest/config';
 const hookUrl = pathToFileURL(resolve('scripts/register-eslint-hook.mjs')).href;
 
 export const baseConfig = defineConfig({
-  cacheDir: 'node_modules/.cache/vitest',
   // vitest does not propagate parent `--import` flags or `NODE_OPTIONS` into
   // its worker, so `test.env.NODE_OPTIONS` cannot register a module hook inside
   // the worker. Therefore, we use `resolve.alias` to switch the ESLint version.
@@ -20,7 +19,6 @@ export const baseConfig = defineConfig({
     },
   }),
   test: {
-    reporters: process.env['GITHUB_ACTIONS'] ? ['default', 'github-actions'] : 'default',
     env: {
       FORCE_HYPERLINK: '1',
       FORCE_COLOR: '1',
