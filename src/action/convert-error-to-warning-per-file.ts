@@ -1,17 +1,15 @@
-import type { Remote } from 'comlink';
 import type { ESLint } from 'eslint';
+import { withProgress } from '../cli/log.js';
 import { promptToInputDescription } from '../cli/prompt.js';
-import { fixingSpinner } from '../cli/spinner.js';
-import type { Undo } from '../core.js';
-import type { SerializableCore } from '../core-worker.js';
+import type { Core, Undo } from '../core.js';
 
 export async function doConvertErrorToWarningPerFileAction(
-  core: Remote<SerializableCore>,
+  core: Core,
   results: ESLint.LintResult[],
   selectedRuleIds: string[],
 ): Promise<Undo> {
   const description = await promptToInputDescription();
-  const undo = await fixingSpinner(async () =>
+  const undo = await withProgress('Fixing...', async () =>
     core.convertErrorToWarningPerFile(results, selectedRuleIds, description),
   );
   return undo;

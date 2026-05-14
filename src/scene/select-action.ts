@@ -1,4 +1,3 @@
-import type { Remote } from 'comlink';
 import type { ESLint } from 'eslint';
 import {
   doConvertErrorToWarningPerFileAction,
@@ -9,8 +8,7 @@ import {
 } from '../action/index.js';
 import type { Action } from '../cli/prompt.js';
 import { promptToInputAction } from '../cli/prompt.js';
-import type { Undo } from '../core.js';
-import type { SerializableCore } from '../core-worker.js';
+import type { Core, Undo } from '../core.js';
 import { unreachable } from '../util/type-check.js';
 import type { NextScene } from './index.js';
 
@@ -29,7 +27,7 @@ export type SelectActionArgs = {
  * Run the scene where a user select the action to be performed for the problems of selected rules.
  */
 export async function selectAction(
-  core: Remote<SerializableCore>,
+  core: Core,
   { results, ruleIdsInResults, selectedRuleIds, initialAction }: SelectActionArgs,
 ): Promise<NextScene> {
   const selectedAction = await promptToInputAction(results, selectedRuleIds, initialAction);

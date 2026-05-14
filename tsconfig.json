@@ -14,11 +14,6 @@
     "module": "NodeNext",
     "noEmit": true,
     "erasableSyntaxOnly": true,
-    // The workaround for https://github.com/GoogleChromeLabs/comlink/issues/508
-    "baseUrl": ".",
-    "paths": {
-      "comlink/dist/esm/node-adapter.mjs": ["./node_modules/comlink/dist/esm/node-adapter.js"]
-    },
 
     /* Type Checking */
     "checkJs": true,

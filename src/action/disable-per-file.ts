@@ -1,13 +1,11 @@
-import type { Remote } from 'comlink';
 import type { ESLint } from 'eslint';
+import { withProgress } from '../cli/log.js';
 import type { DescriptionPosition } from '../cli/prompt.js';
 import { promptToInputDescription, promptToInputDescriptionPosition } from '../cli/prompt.js';
-import { fixingSpinner } from '../cli/spinner.js';
-import type { Undo } from '../core.js';
-import type { SerializableCore } from '../core-worker.js';
+import type { Core, Undo } from '../core.js';
 
 export async function doDisablePerFileAction(
-  core: Remote<SerializableCore>,
+  core: Core,
   results: ESLint.LintResult[],
   selectedRuleIds: string[],
 ): Promise<Undo> {
@@ -16,7 +14,7 @@ export async function doDisablePerFileAction(
   if (description) {
     descriptionPosition = await promptToInputDescriptionPosition();
   }
-  const undo = await fixingSpinner(async () =>
+  const undo = await withProgress('Fixing...', async () =>
     core.disablePerFile(results, selectedRuleIds, description, descriptionPosition),
   );
   return undo;
