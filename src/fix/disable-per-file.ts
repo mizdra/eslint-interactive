@@ -1,5 +1,5 @@
 import type { Rule, SourceCode } from 'eslint';
-import type { DescriptionPosition } from 'src/cli/prompt.js';
+import type { DescriptionPosition } from '../cli/prompt.js';
 import { mergeFixes } from '../eslint/report-translator.js';
 import { unique } from '../util/array.js';
 import type { DisableComment } from '../util/eslint.js';
