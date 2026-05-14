@@ -13,7 +13,6 @@
     "target": "ESNext",
     "module": "NodeNext",
     "noEmit": true,
-    "allowImportingTsExtensions": true,
     "erasableSyntaxOnly": true,
     // The workaround for https://github.com/GoogleChromeLabs/comlink/issues/508
     "baseUrl": ".",
