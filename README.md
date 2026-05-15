@@ -87,6 +87,7 @@ Options:
       --format <nameOrPath>     Specify the format to be used for the "Display problem messages" action
       --quiet                   Report errors only
       --ignore-pattern <string> Patterns of files to ignore
+      --no-ignore               Disable use of ignore files and patterns
       --cache                   Only check changed files
       --cache-location <path>   Path to the cache file or directory
       --flag <name>             Enable a feature flag (requires ESLint v9.6.0+)
