@@ -4,6 +4,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 // eslint-disable-next-line n/no-unsupported-features/node-builtins
 import { stripVTControlCharacters, styleText } from 'node:util';
+import { log } from '@clack/prompts';
 import type { ESLint } from 'eslint';
 import { VERSION } from '../cli/package.js';
 import { pager } from '../cli/pager.js';
@@ -15,7 +16,7 @@ export async function doPrintResultDetailsAction(core: Core, results: ESLint.Lin
   const displayMode = await promptToInputDisplayMode();
   const formattedResultDetails = await core.formatResultDetails(results, selectedRuleIds);
   if (displayMode === 'printInTerminal') {
-    console.log(formattedResultDetails);
+    log.message(formattedResultDetails);
   } else if (displayMode === 'printInTerminalWithPager') {
     await pager(formattedResultDetails);
   } else if (displayMode === 'writeToFile') {
@@ -23,7 +24,7 @@ export async function doPrintResultDetailsAction(core: Core, results: ESLint.Lin
     const filePath = join(tempDir, 'lint-result-details.txt');
     await mkdir(tempDir, { recursive: true }); // Create the directory because it might not exist
     await writeFile(filePath, stripVTControlCharacters(formattedResultDetails), 'utf8');
-    console.log(styleText('cyan', `Wrote to ${filePath}`));
+    log.message(styleText('cyan', `Wrote to ${filePath}`));
   } else {
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
     unreachable(`Unknown display mode: ${displayMode}`);

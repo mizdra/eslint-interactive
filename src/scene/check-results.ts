@@ -31,14 +31,11 @@ export async function checkResults({
   const nextStep = await promptToInputWhatToDoNext();
   if (nextStep === 'exit') return { name: 'exit' };
   if (nextStep === 'undoTheFix') {
-    await withProgress('Undoing...', async () => undo());
+    await withProgress('Undoing', async () => undo());
     return {
       name: 'selectAction',
       args: { results, ruleIdsInResults, selectedRuleIds, initialAction: selectedAction },
     };
   }
-  console.log();
-  console.log('─'.repeat(process.stdout.columns));
-  console.log();
   return { name: 'lint' };
 }

@@ -9,7 +9,7 @@ export async function doConvertErrorToWarningPerFileAction(
   selectedRuleIds: string[],
 ): Promise<Undo> {
   const description = await promptToInputDescription();
-  const undo = await withProgress('Fixing...', async () =>
+  const undo = await withProgress('Fixing', async () =>
     core.convertErrorToWarningPerFile(results, selectedRuleIds, description),
   );
   return undo;

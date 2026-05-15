@@ -10,7 +10,8 @@ import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const ETX = String.fromCharCode(0x03); // ^C
-const LF = String.fromCharCode(0x0a); // \n
+const CR = String.fromCharCode(0x0d); // \r (Enter in raw mode)
+const DOWN = '\x1B[B'; // arrow down
 
 const iff = await createIFF({
   'src/index.js': 'let a = 1;',
@@ -50,27 +51,27 @@ test('fix problems with flat config', async () => {
 
   await streamWatcher.match(/Which rules would you like to apply action\?/);
   child.stdin.write(' '); // Select `prefer-const` rule
-  child.stdin.write(LF); // Confirm the choice
+  child.stdin.write(CR); // Confirm the choice
   await streamWatcher.match(/Which action do you want to do\?/);
 
   // Test for `Print in terminal with pager`
-  child.stdin.write(LF); // Select `Display details of lint results`
+  child.stdin.write(CR); // Select `Display details of lint results`
   await streamWatcher.match(/In what way are the details displayed\?/);
-  child.stdin.write('1'); // Focus on `Print in terminal with pager`
-  child.stdin.write(LF); // Confirm the choice
+  child.stdin.write(DOWN); // Focus on `Print in terminal with pager`
+  child.stdin.write(CR); // Confirm the choice
   await streamWatcher.match(/prefer-const/);
   child.stdin.write('q'); // Exit pager
 
   // Test for `Write to file`
-  child.stdin.write(LF); // Select `Display details of lint results`
+  child.stdin.write(CR); // Select `Display details of lint results`
   await streamWatcher.match(/In what way are the details displayed\?/);
-  child.stdin.write('2'); // Focus on `Write to file`
-  child.stdin.write(LF); // Confirm the choice
+  child.stdin.write(DOWN.repeat(2)); // Focus on `Write to file`
+  child.stdin.write(CR); // Confirm the choice
   await streamWatcher.match(/Wrote to/);
 
   // Test fixing
-  child.stdin.write('1'); // Focus on `Run `eslint --fix``
-  child.stdin.write(LF); // Confirm the choice
+  child.stdin.write(DOWN); // Focus on `Run `eslint --fix``
+  child.stdin.write(CR); // Confirm the choice
   await streamWatcher.match(/What's the next step\?/);
   expect(await readFile(iff.paths['src/index.js'], 'utf-8')).toMatchSnapshot();
 
@@ -92,12 +93,12 @@ test('go back to the rule selection screen ', async () => {
 
   await streamWatcher.match(/Which rules would you like to apply action\?/);
   child.stdin.write(' '); // Select `prefer-const` rule
-  child.stdin.write(LF); // Confirm the choice
+  child.stdin.write(CR); // Confirm the choice
   await streamWatcher.match(/Which action do you want to do\?/);
 
   // Select "Go back"
-  child.stdin.write('6'); // Focus on `Go back`
-  child.stdin.write(LF); // Confirm the choice
+  child.stdin.write(DOWN.repeat(6)); // Focus on `Go back`
+  child.stdin.write(CR); // Confirm the choice
 
   // Should go back to rule selection with fresh lint results
   await streamWatcher.match(/Which rules would you like to apply action\?/);
