@@ -186,6 +186,23 @@ describe('Core', () => {
       const resultsWithQuiet = await coreWithQuiet.lint();
       expect(countWarnings(resultsWithQuiet)).toEqual(0);
     });
+    test('supports --ignore-pattern option', async () => {
+      const iff = await createIFF({
+        'src/index.js': 'let a = 1;',
+        'src/ignored.js': 'let b = 2;',
+        'eslint.config.js': dedent`
+          export default [{ files: ['**/*.js'], rules: { 'prefer-const': 'error' } }];
+        `,
+        'package.json': '{ "type": "module" }',
+      });
+      const coreWithoutIgnore = new Core({ patterns: ['src'], cwd: iff.rootDir });
+      const resultsWithoutIgnore = await coreWithoutIgnore.lint();
+      expect(resultsWithoutIgnore.filter((r) => r.errorCount > 0)).toHaveLength(2);
+
+      const coreWithIgnore = new Core({ patterns: ['src'], cwd: iff.rootDir, ignorePatterns: ['src/ignored.js'] });
+      const resultsWithIgnore = await coreWithIgnore.lint();
+      expect(resultsWithIgnore.filter((r) => r.errorCount > 0)).toHaveLength(1);
+    });
   });
   test('formatResultSummary', async () => {
     const results = await core.lint();

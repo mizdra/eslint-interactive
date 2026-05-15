@@ -11,6 +11,7 @@ export function parseArgv(argv: string[]): Config {
     'config': { type: 'string', short: 'c' },
     'format': { type: 'string' },
     'quiet': { type: 'boolean' },
+    'ignore-pattern': { type: 'string', multiple: true },
     'cache': { type: 'boolean' },
     'cache-location': { type: 'string' },
     'version': { type: 'boolean' },
@@ -59,6 +60,7 @@ Options:
   -c, --config <path>          Use this configuration, overriding config options if present
       --format <nameOrPath>    Specify the format to be used for the "Display problem messages" action
       --quiet                  Report errors only
+      --ignore-pattern <string> Patterns of files to ignore
       --cache                  Only check changed files
       --cache-location <path>  Path to the cache file or directory
       --flag <name>            Enable a feature flag (requires ESLint v9.6.0+)
@@ -84,6 +86,7 @@ Examples:
     patterns,
     formatterName,
     quiet: values.quiet,
+    ignorePatterns: values['ignore-pattern'],
     overrideConfigFile: values.config,
     cache: values.cache,
     cacheLocation: values['cache-location'],

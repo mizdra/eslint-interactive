@@ -33,6 +33,13 @@ describe('parseArgv', () => {
   test('--cache-location', () => {
     expect(parseArgv([...baseArgs, '--cache-location', '.eslintcache']).cacheLocation).toBe('.eslintcache');
   });
+  test('--ignore-pattern', () => {
+    expect(parseArgv([...baseArgs]).ignorePatterns).toStrictEqual(undefined);
+    expect(parseArgv([...baseArgs, '--ignore-pattern', 'dist']).ignorePatterns).toStrictEqual(['dist']);
+    expect(
+      parseArgv([...baseArgs, '--ignore-pattern', 'dist', '--ignore-pattern', 'node_modules']).ignorePatterns,
+    ).toStrictEqual(['dist', 'node_modules']);
+  });
   test('--flag', () => {
     expect(parseArgv([...baseArgs, '--flag', 'foo']).flags).toStrictEqual(['foo']);
     expect(parseArgv([...baseArgs, '--flag', 'foo', '--flag', 'bar']).flags).toStrictEqual(['foo', 'bar']);
