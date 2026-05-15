@@ -60,7 +60,7 @@ It also supports the following actions in addition to `eslint --fix`. All action
 ```console
 $ # For npm
 $ npm i -D eslint-interactive
-$ npx eslint-interactive --help
+$ npx --no --offline eslint-interactive --help
 
 $ # For yarn
 $ yarn add -D eslint-interactive
