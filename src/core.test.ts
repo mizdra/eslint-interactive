@@ -177,6 +177,25 @@ describe('Core', () => {
       const results = await core.lint();
       expect(normalizeResults(results, iff.rootDir)).toMatchSnapshot();
     });
+    test('supports --no-ignore option', async () => {
+      const iff = await createIFF({
+        'src/ignored.js': 'let a = 1;',
+        'eslint.config.js': dedent`
+          export default [
+            { ignores: ['src/ignored.js'] },
+            { files: ['**/*.js'], rules: { 'prefer-const': 'error' } },
+          ];
+        `,
+        'package.json': '{ "type": "module" }',
+      });
+
+      const core = new Core({ patterns: ['src'], cwd: iff.rootDir });
+      await expect(core.lint()).rejects.toThrow("All files matched by 'src' are ignored.");
+
+      const coreWithNoIgnore = new Core({ patterns: ['src'], cwd: iff.rootDir, ignore: false });
+      const results = await coreWithNoIgnore.lint();
+      expect(normalizeResults(results, iff.rootDir)).toMatchSnapshot();
+    });
     test('filters warnings with --quiet option', async () => {
       const coreWithoutQuiet = new Core({ ...options, quiet: false });
       const resultsWithoutQuiet = await coreWithoutQuiet.lint();
