@@ -1,3 +1,4 @@
+import { log } from '@clack/prompts';
 import { error, withProgress } from '../cli/log.js';
 import type { Core } from '../core.js';
 import type { NextScene } from './index.js';
@@ -6,8 +7,7 @@ import type { NextScene } from './index.js';
  * Run the scene to lint.
  */
 export async function lint(core: Core): Promise<NextScene> {
-  const results = await withProgress('Linting...', async () => core.lint());
-  console.log();
+  const results = await withProgress('Linting', async () => core.lint());
 
   // Check for ESLint core problems (ruleId === null) first.
   // These represent config errors, syntax errors, etc. that eslint-interactive cannot fix.
@@ -19,7 +19,7 @@ export async function lint(core: Core): Promise<NextScene> {
         'Check the details of the problem and fix it. ' +
         'This is usually caused by the invalid eslint config or the invalid syntax of the linted code.',
     );
-    console.log(await core.formatResultDetails(results, [null]));
+    log.message(await core.formatResultDetails(results, [null]), {});
     // eslint-disable-next-line n/no-process-exit
     process.exit(1);
   }
@@ -27,11 +27,10 @@ export async function lint(core: Core): Promise<NextScene> {
   const ruleIdsInResults = core.getSortedRuleIdsInResults(results);
 
   if (ruleIdsInResults.length === 0) {
-    console.log('💚 No error found.');
+    log.message('💚 No error found.');
     return { name: 'exit' };
   }
-  console.log(core.formatResultSummary(results));
+  log.message(core.formatResultSummary(results));
 
-  console.log();
   return { name: 'selectRuleIds', args: { results, ruleIdsInResults } };
 }

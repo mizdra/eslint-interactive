@@ -14,7 +14,7 @@ export async function doDisablePerLineAction(
   if (description) {
     descriptionPosition = await promptToInputDescriptionPosition();
   }
-  const undo = await withProgress('Fixing...', async () =>
+  const undo = await withProgress('Fixing', async () =>
     core.disablePerLine(results, selectedRuleIds, description, descriptionPosition),
   );
   return undo;

@@ -1,5 +1,6 @@
 // eslint-disable-next-line n/no-unsupported-features/node-builtins
 import { styleText } from 'node:util';
+import { taskLog } from '@clack/prompts';
 
 /**
  * Log an error message to stderr
@@ -9,11 +10,15 @@ export function error(message: string) {
   process.stderr.write(styleText('red', 'Error') + ': ' + message + '\n');
 }
 
-export async function withProgress<T>(label: string, cb: () => Promise<T>): Promise<T> {
-  console.log(label);
+export async function withProgress<T>(taskName: 'Linting' | 'Fixing' | 'Undoing', cb: () => Promise<T>): Promise<T> {
+  const log = taskLog({
+    title: `${taskName}...`,
+  });
   startProgress();
   try {
-    return await cb();
+    const result = await cb();
+    log.success(`${taskName} completed.`);
+    return result;
   } finally {
     endProgress();
   }

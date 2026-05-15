@@ -1,15 +1,16 @@
 /* istanbul ignore file */
 
-import enquirer from 'enquirer';
+import { isCancel, multiselect, select, text } from '@clack/prompts';
 import type { ESLint } from 'eslint';
 import { takeRuleStatistics } from '../formatter/index.js';
 
-const { prompt } = enquirer;
-
-// When combined with worker, for some reason the enquirer grabs the SIGINT and the process continues to survive.
-// Therefore, the process is explicitly terminated.
-// eslint-disable-next-line n/no-process-exit
-const onCancel = () => process.exit();
+function exitIfCancel<T>(value: T | symbol): T {
+  if (isCancel(value)) {
+    // eslint-disable-next-line n/no-process-exit
+    process.exit();
+  }
+  return value;
+}
 
 /**
  * The type that indicates what to do with the problems of selected rules.
@@ -45,21 +46,13 @@ export type DescriptionPosition = 'sameLine' | 'previousLine';
  * @returns The rule ids
  */
 export async function promptToInputRuleIds(ruleIdsInResults: string[]): Promise<string[]> {
-  const { ruleIds } = await prompt<{ ruleIds: string[] }>([
-    {
-      name: 'ruleIds',
-      type: 'multiselect',
+  return exitIfCancel(
+    await multiselect<string>({
       message: 'Which rules would you like to apply action?',
-      // @ts-expect-error
-      hint: 'Select all you want with <space> key.',
-      choices: ruleIdsInResults,
-      validate(value) {
-        return value.length === 0 ? `Select at least one rule with <space> key.` : true;
-      },
-      onCancel,
-    },
-  ]);
-  return ruleIds;
+      options: ruleIdsInResults.map((ruleId) => ({ value: ruleId })),
+      required: true,
+    }),
+  );
 }
 
 /**
@@ -81,29 +74,21 @@ export async function promptToInputAction(
     { isFixableCount: 0 },
   );
 
-  const choices = [
-    { name: 'printResultDetails', message: '🔎 Display details of lint results' },
-    { name: 'applyAutoFixes', message: '🔧 Run `eslint --fix`', disabled: foldedStatistics.isFixableCount === 0 },
-    { name: 'disablePerLine', message: '🔧 Disable per line' },
-    { name: 'disablePerFile', message: '🔧 Disable per file' },
-    { name: 'convertErrorToWarningPerFile', message: '🔧 Convert error to warning per file' },
-    { name: 'relintAndReselectRules', message: '↩️ Go back (with re-lint)' },
-    { name: 'reselectRules', message: '↩️ Go back' },
-  ];
-
-  const { action } = await prompt<{
-    action: Action;
-  }>([
-    {
-      name: 'action',
-      type: 'select',
+  return exitIfCancel(
+    await select<Action>({
       message: 'Which action do you want to do?',
-      choices,
-      initial: choices.findIndex((choice) => choice.name === initialAction) ?? 0,
-      onCancel,
-    },
-  ]);
-  return action;
+      options: [
+        { value: 'printResultDetails', label: '🔎 Display details of lint results' },
+        { value: 'applyAutoFixes', label: '🔧 Run `eslint --fix`', disabled: foldedStatistics.isFixableCount === 0 },
+        { value: 'disablePerLine', label: '🔧 Disable per line' },
+        { value: 'disablePerFile', label: '🔧 Disable per file' },
+        { value: 'convertErrorToWarningPerFile', label: '🔧 Convert error to warning per file' },
+        { value: 'relintAndReselectRules', label: '↩️ Go back (with re-lint)' },
+        { value: 'reselectRules', label: '↩️ Go back' },
+      ],
+      initialValue: initialAction,
+    }),
+  );
 }
 
 /**
@@ -111,22 +96,16 @@ export async function promptToInputAction(
  * @returns How to display
  */
 export async function promptToInputDisplayMode(): Promise<DisplayMode> {
-  const { displayMode } = await prompt<{
-    displayMode: DisplayMode;
-  }>([
-    {
-      name: 'displayMode',
-      type: 'select',
+  return exitIfCancel(
+    await select<DisplayMode>({
       message: 'In what way are the details displayed?',
-      choices: [
-        { name: 'printInTerminal', message: '🖨  Print in terminal' },
-        { name: 'printInTerminalWithPager', message: '↕️  Print in terminal with pager' },
-        { name: 'writeToFile', message: '📝 Write to file' },
+      options: [
+        { value: 'printInTerminal', label: '🖨  Print in terminal' },
+        { value: 'printInTerminalWithPager', label: '↕️  Print in terminal with pager' },
+        { value: 'writeToFile', label: '📝 Write to file' },
       ],
-      onCancel,
-    },
-  ]);
-  return displayMode;
+    }),
+  );
 }
 
 /**
@@ -134,17 +113,12 @@ export async function promptToInputDisplayMode(): Promise<DisplayMode> {
  * @returns The description
  */
 export async function promptToInputDescription(): Promise<string | undefined> {
-  const { description } = await prompt<{
-    description: string;
-  }>([
-    {
-      name: 'description',
-      type: 'input',
+  const description = exitIfCancel(
+    await text({
       message: 'Leave a code comment with your reason for fixing (Optional)',
-      onCancel,
-    },
-  ]);
-  return description === '' ? undefined : description;
+    }),
+  );
+  return description.trim() === '' ? undefined : description.trim();
 }
 
 /**
@@ -152,21 +126,15 @@ export async function promptToInputDescription(): Promise<string | undefined> {
  * @returns The description position
  */
 export async function promptToInputDescriptionPosition(): Promise<DescriptionPosition> {
-  const { descriptionPosition } = await prompt<{
-    descriptionPosition: DescriptionPosition;
-  }>([
-    {
-      name: 'descriptionPosition',
-      type: 'select',
+  return exitIfCancel(
+    await select<DescriptionPosition>({
       message: 'Where would you like to position the code comment?',
-      choices: [
-        { name: 'sameLine', message: "Same Line - Place on the same line as the eslint's disable comment." },
-        { name: 'previousLine', message: "Previous Line - Place on the line before the eslint's disable comment." },
+      options: [
+        { value: 'sameLine', label: "Same Line - Place on the same line as the eslint's disable comment." },
+        { value: 'previousLine', label: "Previous Line - Place on the line before the eslint's disable comment." },
       ],
-      onCancel,
-    },
-  ]);
-  return descriptionPosition;
+    }),
+  );
 }
 
 /**
@@ -174,18 +142,14 @@ export async function promptToInputDescriptionPosition(): Promise<DescriptionPos
  * @returns What to do next.
  */
 export async function promptToInputWhatToDoNext(): Promise<NextStep> {
-  const { nextStep } = await prompt<{ nextStep: NextStep }>([
-    {
-      name: 'nextStep',
-      type: 'select',
+  return exitIfCancel(
+    await select<NextStep>({
       message: "What's the next step?",
-      choices: [
-        { name: 'fixOtherRules', message: '🔧 Fix other rules' },
-        { name: 'undoTheFix', message: '↩️  Undo the fix' },
-        { name: 'exit', message: '💚 Exit' },
+      options: [
+        { value: 'fixOtherRules', label: '🔧 Fix other rules' },
+        { value: 'undoTheFix', label: '↩️  Undo the fix' },
+        { value: 'exit', label: '💚 Exit' },
       ],
-      onCancel,
-    },
-  ]);
-  return nextStep;
+    }),
+  );
 }
