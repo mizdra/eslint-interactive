@@ -206,6 +206,22 @@ exports[`Core > lint > returns lint results 1`] = `
 ]
 `;
 
+exports[`Core > lint > supports --no-ignore option 1`] = `
+[
+  {
+    "errorCount": 1,
+    "filePath": "<fixture>/src/ignored.js",
+    "messages": [
+      {
+        "ruleId": "prefer-const",
+        "severity": 2,
+      },
+    ],
+    "warningCount": 0,
+  },
+]
+`;
+
 exports[`Core > lints files matching flat config patterns 1`] = `
 [
   {

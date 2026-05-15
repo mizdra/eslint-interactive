@@ -26,6 +26,11 @@ describe('parseArgv', () => {
     expect(parseArgv([...baseArgs, '--quiet']).quiet).toBe(true);
     expect(parseArgv([...baseArgs, '--no-quiet']).quiet).toBe(false);
   });
+  test('--no-ignore', () => {
+    expect(parseArgv([...baseArgs]).ignore).toStrictEqual(undefined);
+    expect(parseArgv([...baseArgs, '--ignore']).ignore).toBe(true);
+    expect(parseArgv([...baseArgs, '--no-ignore']).ignore).toBe(false);
+  });
   test('--cache', () => {
     expect(parseArgv([...baseArgs, '--cache']).cache).toBe(true);
     expect(parseArgv([...baseArgs, '--no-cache']).cache).toBe(false);
