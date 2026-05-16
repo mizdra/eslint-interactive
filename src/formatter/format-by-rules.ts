@@ -1,9 +1,10 @@
 // eslint-disable-next-line n/no-unsupported-features/node-builtins
 import { styleText } from 'node:util';
 import type { ESLint } from 'eslint';
-import type { SortField, SortOrder } from '../type.js';
+import type { FilterCriterion, SortField, SortOrder } from '../type.js';
 import { terminalLink } from '../util/terminal-link.js';
 import { ERROR_COLOR } from './colors.js';
+import { filterRuleStatistics } from './filter-rule-statistics.js';
 import { formatTable } from './format-table.js';
 import { sortRuleStatistics } from './sort-rule-statistics.js';
 import { takeRuleStatistics } from './take-rule-statistics.js';
@@ -18,9 +19,10 @@ type Row = [
   hasSuggestionsCount: string,
 ];
 
-export type FormatByRulesSortOptions = {
+export type FormatByRulesOptions = {
   sort?: SortField | undefined;
   sortOrder?: SortOrder | undefined;
+  filters?: FilterCriterion[] | undefined;
 };
 
 function numCell(num: number): string {
@@ -30,11 +32,12 @@ function numCell(num: number): string {
 export function formatByRules(
   results: ESLint.LintResult[],
   data?: ESLint.LintResultData,
-  sortOptions?: FormatByRulesSortOptions,
+  options?: FormatByRulesOptions,
 ): string {
   let ruleStatistics = takeRuleStatistics(results);
-  if (sortOptions?.sort) {
-    ruleStatistics = sortRuleStatistics(ruleStatistics, sortOptions.sort, sortOptions.sortOrder);
+  ruleStatistics = filterRuleStatistics(ruleStatistics, options?.filters);
+  if (options?.sort) {
+    ruleStatistics = sortRuleStatistics(ruleStatistics, options.sort, options.sortOrder);
   }
 
   const rows: Row[] = [];

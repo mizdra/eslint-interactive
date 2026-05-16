@@ -93,6 +93,8 @@ Options:
       --flag <name>             Enable a feature flag (requires ESLint v9.6.0+)
       --sort <field>            Sort rules by: rule, error, warning, fixable, suggestions
       --sort-order <direction>  Sort direction: asc, desc (default: desc for counts, asc for rule)
+      --filter <criterion>      Show only rules matching the criterion: fixable, has-suggestions
+                                (repeatable; multiple values are OR-ed)
 
 Examples:
   eslint-interactive                          Lint all files in the project
@@ -100,6 +102,7 @@ Examples:
   eslint-interactive 'src/**/*.{ts,tsx,vue}'  Lint with glob pattern
   eslint-interactive --sort error             Sort rules by error count (descending)
   eslint-interactive --sort rule              Sort rules by rule name (ascending)
+  eslint-interactive --filter fixable         Show only rules that have fixable problems
 ```
 
 ## Programmable API

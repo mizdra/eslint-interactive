@@ -1,9 +1,10 @@
 import { parseArgs } from 'node:util';
-import type { Config, SortField, SortOrder } from '../type.js';
+import type { Config, FilterCriterion, SortField, SortOrder } from '../type.js';
 import { VERSION } from './package.js';
 
 const VALID_SORT_FIELDS: readonly SortField[] = ['rule', 'error', 'warning', 'fixable', 'suggestions'];
 const VALID_SORT_ORDERS: readonly SortOrder[] = ['asc', 'desc'];
+const VALID_FILTER_CRITERIA: readonly FilterCriterion[] = ['fixable', 'has-suggestions'];
 
 /** Parse CLI options */
 export function parseArgv(argv: string[]): Config {
@@ -20,6 +21,7 @@ export function parseArgv(argv: string[]): Config {
     'flag': { type: 'string', multiple: true },
     'sort': { type: 'string' },
     'sort-order': { type: 'string' },
+    'filter': { type: 'string', multiple: true },
   } as const;
 
   const { values, positionals } = parseArgs({
@@ -42,6 +44,15 @@ export function parseArgv(argv: string[]): Config {
     );
     // eslint-disable-next-line n/no-process-exit
     process.exit(1);
+  }
+  if (values.filter !== undefined) {
+    for (const filter of values.filter) {
+      if (!VALID_FILTER_CRITERIA.includes(filter as FilterCriterion)) {
+        console.error(`Invalid --filter value: "${filter}". Must be one of: ${VALID_FILTER_CRITERIA.join(', ')}`);
+        // eslint-disable-next-line n/no-process-exit
+        process.exit(1);
+      }
+    }
   }
 
   if (values.version) {
@@ -68,6 +79,8 @@ Options:
       --flag <name>             Enable a feature flag (requires ESLint v9.6.0+)
       --sort <field>            Sort rules by: rule, error, warning, fixable, suggestions
       --sort-order <direction>  Sort direction: asc, desc (default: desc for counts, asc for rule)
+      --filter <criterion>      Show only rules matching the criterion: fixable, has-suggestions
+                                (repeatable; multiple values are OR-ed)
 
 Examples:
   eslint-interactive                          Lint all files in the project
@@ -75,6 +88,7 @@ Examples:
   eslint-interactive 'src/**/*.{ts,tsx,vue}'  Lint with glob pattern
   eslint-interactive --sort error             Sort rules by error count (descending)
   eslint-interactive --sort rule              Sort rules by rule name (ascending)
+  eslint-interactive --filter fixable         Show only rules that have fixable problems
 `.trim(),
     );
     // eslint-disable-next-line n/no-process-exit
@@ -96,5 +110,6 @@ Examples:
     flags: values.flag,
     sort: values.sort as SortField | undefined,
     sortOrder: values['sort-order'] as SortOrder | undefined,
+    filters: values.filter as FilterCriterion[] | undefined,
   };
 }
