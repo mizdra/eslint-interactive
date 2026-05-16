@@ -91,7 +91,11 @@ export class Core {
    */
   formatResultSummary(results: ESLint.LintResult[]): string {
     const rulesMeta = this.#eslint.getRulesMetaForResults(results);
-    return format(results, { rulesMeta, cwd: this.#cwd }, { sort: this.#sort, sortOrder: this.#sortOrder });
+    return format(
+      results,
+      { rulesMeta, cwd: this.#cwd },
+      { sort: this.#sort, sortOrder: this.#sortOrder, filters: this.#filters },
+    );
   }
 
   /**

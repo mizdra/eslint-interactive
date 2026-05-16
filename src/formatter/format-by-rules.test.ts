@@ -65,6 +65,21 @@ describe('formatByRules', () => {
     const ruleBIndex = lines.findIndex((line) => line.includes('rule-b'));
     expect(ruleBIndex).toBeLessThan(ruleAIndex);
   });
+  test('filters rules when filters is provided', () => {
+    const results: ESLint.LintResult[] = [
+      fakeLintResult({
+        messages: [
+          fakeLintMessage({ ruleId: 'rule-fixable', severity: 2, fix: fakeFix() }),
+          fakeLintMessage({ ruleId: 'rule-suggest', severity: 2, suggestions: fakeSuggestions() }),
+          fakeLintMessage({ ruleId: 'rule-plain', severity: 2 }),
+        ],
+      }),
+    ];
+    const stripped = stripVTControlCharacters(formatByRules(results, undefined, { filters: ['fixable'] }));
+    expect(stripped).toContain('rule-fixable');
+    expect(stripped).not.toContain('rule-suggest');
+    expect(stripped).not.toContain('rule-plain');
+  });
   test('prints link', () => {
     const results: ESLint.LintResult[] = [
       fakeLintResult({
