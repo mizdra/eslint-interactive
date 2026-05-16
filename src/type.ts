@@ -8,7 +8,6 @@ export type Config = ESLint.Options & {
   patterns: string[];
   formatterName?: string | undefined;
   quiet?: boolean | undefined;
-  ignorePatterns?: string[] | undefined;
   sort?: SortField | undefined;
   sortOrder?: SortOrder | undefined;
 };

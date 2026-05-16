@@ -54,7 +54,7 @@ export class Core {
 
     // NOTE: Passing an option that does not exist to `new ESLint(...)` will throw an error.
     // Therefore, only options supported by ESLint are extracted into the `eslintOptions` variable.
-    const { formatterName, patterns, quiet, sort, sortOrder, ignorePatterns, ...eslintOptions } = config;
+    const { formatterName, patterns, quiet, sort, sortOrder, ...eslintOptions } = config;
     const overrideConfigs =
       Array.isArray(eslintOptions.overrideConfig) ? eslintOptions.overrideConfig
       : eslintOptions.overrideConfig ? [eslintOptions.overrideConfig]
@@ -62,7 +62,6 @@ export class Core {
     this.#eslint = new ESLint({
       ...eslintOptions,
       overrideConfig: [
-        ...(ignorePatterns && ignorePatterns.length > 0 ? [{ ignores: ignorePatterns }] : []),
         ...overrideConfigs,
         {
           plugins: { 'eslint-interactive': plugin },
