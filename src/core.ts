@@ -12,9 +12,9 @@ import {
   createFixToMakeFixableAndFix,
   verifyAndFix,
 } from './fix/index.js';
-import { format, sortRuleStatistics, takeRuleStatistics } from './formatter/index.js';
+import { filterRuleStatistics, format, sortRuleStatistics, takeRuleStatistics } from './formatter/index.js';
 import { plugin } from './plugin.js';
-import type { Config, SortField, SortOrder } from './type.js';
+import type { Config, FilterCriterion, SortField, SortOrder } from './type.js';
 import { filterResultsByRuleId } from './util/eslint.js';
 
 /**
@@ -42,6 +42,7 @@ export class Core {
   readonly #formatterName: string | undefined;
   readonly #sort: SortField | undefined;
   readonly #sortOrder: SortOrder | undefined;
+  readonly #filters: FilterCriterion[] | undefined;
   readonly #eslint: ESLint;
 
   constructor(config: Config) {
@@ -51,10 +52,11 @@ export class Core {
     this.#formatterName = config.formatterName;
     this.#sort = config.sort;
     this.#sortOrder = config.sortOrder;
+    this.#filters = config.filters;
 
     // NOTE: Passing an option that does not exist to `new ESLint(...)` will throw an error.
     // Therefore, only options supported by ESLint are extracted into the `eslintOptions` variable.
-    const { formatterName, patterns, quiet, sort, sortOrder, ...eslintOptions } = config;
+    const { formatterName, patterns, quiet, sort, sortOrder, filters, ...eslintOptions } = config;
     const overrideConfigs =
       Array.isArray(eslintOptions.overrideConfig) ? eslintOptions.overrideConfig
       : eslintOptions.overrideConfig ? [eslintOptions.overrideConfig]
@@ -93,11 +95,12 @@ export class Core {
   }
 
   /**
-   * Returns ruleIds from lint results, sorted according to the configured sort options.
+   * Returns ruleIds from lint results, filtered and sorted according to the configured options.
    * @param results The lint results of the project
    */
   getSortedRuleIdsInResults(results: ESLint.LintResult[]): string[] {
     let ruleStatistics = takeRuleStatistics(results);
+    ruleStatistics = filterRuleStatistics(ruleStatistics, this.#filters);
     if (this.#sort) {
       ruleStatistics = sortRuleStatistics(ruleStatistics, this.#sort, this.#sortOrder);
     }

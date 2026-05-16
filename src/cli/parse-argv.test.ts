@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 import { parseArgv } from './parse-argv.js';
 
 const baseArgs = ['node', 'eslint-interactive'];
@@ -63,5 +63,27 @@ describe('parseArgv', () => {
     expect(parseArgv([...baseArgs]).sortOrder).toStrictEqual(undefined);
     expect(parseArgv([...baseArgs, '--sort-order', 'asc']).sortOrder).toStrictEqual('asc');
     expect(parseArgv([...baseArgs, '--sort-order', 'desc']).sortOrder).toStrictEqual('desc');
+  });
+  test('--filter', () => {
+    expect(parseArgv([...baseArgs]).filters).toStrictEqual(undefined);
+    expect(parseArgv([...baseArgs, '--filter', 'fixable']).filters).toStrictEqual(['fixable']);
+    expect(parseArgv([...baseArgs, '--filter', 'has-suggestions']).filters).toStrictEqual(['has-suggestions']);
+    expect(parseArgv([...baseArgs, '--filter', 'fixable', '--filter', 'has-suggestions']).filters).toStrictEqual([
+      'fixable',
+      'has-suggestions',
+    ]);
+  });
+  test('--filter with invalid value exits with code 1', () => {
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const exitSpy = vi.spyOn(process, 'exit').mockImplementation(((code?: number) => {
+      throw new Error(`process.exit(${code})`);
+    }) as never);
+    try {
+      expect(() => parseArgv([...baseArgs, '--filter', 'invalid'])).toThrow('process.exit(1)');
+      expect(errorSpy).toHaveBeenCalledWith(expect.stringContaining('Invalid --filter value: "invalid"'));
+    } finally {
+      errorSpy.mockRestore();
+      exitSpy.mockRestore();
+    }
   });
 });

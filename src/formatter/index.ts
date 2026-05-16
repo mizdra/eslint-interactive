@@ -4,6 +4,7 @@ import { formatByRules, type FormatByRulesSortOptions } from './format-by-rules.
 
 export { takeRuleStatistics, type RuleStatistic } from './take-rule-statistics.js';
 export { sortRuleStatistics } from './sort-rule-statistics.js';
+export { filterRuleStatistics } from './filter-rule-statistics.js';
 
 export function format(
   results: ESLint.LintResult[],
