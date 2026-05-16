@@ -102,7 +102,7 @@ export class Core {
    * Returns ruleIds from lint results, filtered and sorted according to the configured options.
    * @param results The lint results of the project
    */
-  getSortedRuleIdsInResults(results: ESLint.LintResult[]): string[] {
+  getFilteredAndSortedRuleIds(results: ESLint.LintResult[]): string[] {
     let ruleStatistics = takeRuleStatistics(results);
     ruleStatistics = filterRuleStatistics(ruleStatistics, this.#filters);
     if (this.#sort) {

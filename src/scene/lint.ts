@@ -24,10 +24,15 @@ export async function lint(core: Core): Promise<NextScene> {
     process.exit(1);
   }
 
-  const ruleIdsInResults = core.getSortedRuleIdsInResults(results);
+  const ruleIdsInResults = core.getFilteredAndSortedRuleIds(results);
 
   if (ruleIdsInResults.length === 0) {
-    log.message('💚 No error found.');
+    const hasAnyMessage = results.some((result) => result.messages.length > 0);
+    if (hasAnyMessage) {
+      log.message('💚 No rules match the given --filter.');
+    } else {
+      log.message('💚 No rules with problems.');
+    }
     return { name: 'exit' };
   }
   log.message(core.formatResultSummary(results));
