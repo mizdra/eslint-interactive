@@ -102,6 +102,7 @@ Examples:
   eslint-interactive 'src/**/*.{ts,tsx,vue}'  Lint with glob pattern
   eslint-interactive --sort error             Sort rules by error count (descending)
   eslint-interactive --sort rule              Sort rules by rule name (ascending)
+  eslint-interactive --filter fixable         Show only rules that have fixable problems
 ```
 
 ## Programmable API
