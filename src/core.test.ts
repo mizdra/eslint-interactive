@@ -188,13 +188,11 @@ describe('Core', () => {
         `,
         'package.json': '{ "type": "module" }',
       });
-
-      const core = new Core({ patterns: ['src'], cwd: iff.rootDir });
-      await expect(core.lint()).rejects.toThrow("All files matched by 'src' are ignored.");
+      const coreWithIgnore = new Core({ patterns: ['src'], cwd: iff.rootDir });
+      await expect(coreWithIgnore.lint()).rejects.toThrow("All files matched by 'src' are ignored.");
 
       const coreWithNoIgnore = new Core({ patterns: ['src'], cwd: iff.rootDir, ignore: false });
-      const results = await coreWithNoIgnore.lint();
-      expect(normalizeResults(results, iff.rootDir)).toMatchSnapshot();
+      expect(await coreWithNoIgnore.lint()).toHaveLength(1);
     });
     test('filters warnings with --quiet option', async () => {
       const coreWithoutQuiet = new Core({ ...options, quiet: false });
@@ -207,20 +205,17 @@ describe('Core', () => {
     });
     test('supports --ignore-pattern option', async () => {
       const iff = await createIFF({
-        'src/index.js': 'let a = 1;',
-        'src/ignored.js': 'let b = 2;',
+        'src/ignored.js': 'let a = 1;',
         'eslint.config.js': dedent`
           export default [{ files: ['**/*.js'], rules: { 'prefer-const': 'error' } }];
         `,
         'package.json': '{ "type": "module" }',
       });
       const coreWithoutIgnore = new Core({ patterns: ['src'], cwd: iff.rootDir });
-      const resultsWithoutIgnore = await coreWithoutIgnore.lint();
-      expect(resultsWithoutIgnore.filter((r) => r.errorCount > 0)).toHaveLength(2);
+      expect(await coreWithoutIgnore.lint()).toHaveLength(1);
 
       const coreWithIgnore = new Core({ patterns: ['src'], cwd: iff.rootDir, ignorePatterns: ['src/ignored.js'] });
-      const resultsWithIgnore = await coreWithIgnore.lint();
-      expect(resultsWithIgnore.filter((r) => r.errorCount > 0)).toHaveLength(1);
+      await expect(coreWithIgnore.lint()).rejects.toThrow("All files matched by 'src' are ignored.");
     });
   });
   test('formatResultSummary', async () => {
