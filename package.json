@@ -78,5 +78,8 @@
     "!src/**/__snapshots__",
     "dist",
     "static"
-  ]
+  ],
+  "bugs": {
+    "url": "https://github.com/mizdra/eslint-interactive/issues"
+  }
 }
